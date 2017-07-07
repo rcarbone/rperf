@@ -1,0 +1,41 @@
+rbench is a development enviroment for hash tables which includes:
+
+  1. librhash - an abstract C library over real hash table implementations
+  2. rspeed   - a performance program
+  3. rbattle  - a benchmark tool
+
+
+How to add an implementation.
+=============================
+Please remember that each implementation under test is simply a plugin.
+So, go to the plugins/ directory and create a new one with the name of the
+implementation. In this directory copy the following 3 files from an already
+available implementation:
+
+ 1. Makefile
+ 2. README.c
+ 3. glue.c
+
+and edit these files in order to meet the requirements.
+
+- In file [Makefile] the only required definition to customize should be NAME and optionally
+  the CFLAGS and C++FLAGS. Do not edit anything below the separator because the Makefile
+  is automatically updated when needed.
+
+- In file [README.c] the section to customize is that contains Plugin definitions
+
+- In file [glue.c] must be implemented each function rhash_xxx() in order to map the
+  virtual interface defined in rhash.h over the real implementation
+
+When you have done please run in the directory with the new defined implementation
+the following commands:
+> make       (to compile everything)
+> make run   (to run the testsuite)
+> make leaks (to check for errors and memory leaks)
+
+(make help provides you all the available rules)
+
+
+Please not do forget ad the end of the process to add the name of the new directory
+in plugins/Makefile
+

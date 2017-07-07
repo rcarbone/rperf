@@ -1,0 +1,13 @@
+Author: Rusty Russell (rusty@rustcorp.com.au)
+
+Test case implemented in htable/tools (hsearchspeed.c)
+======================================================
+
+  [1] Initial insert
+  [2] Linear hit
+  [3] Linear miss
+  [4] Random hit
+  [5] Delete
+  [6] Reinsert
+  [7] Delete Half
+  [8] Add Half

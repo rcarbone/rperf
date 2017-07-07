@@ -1,0 +1,10 @@
+Author: Andrea Mazzoleni (amadvance@gmail.com)
+
+Test case implemented in http://www.tommyds.it/doc/benchmark.html
+=================================================================
+
+  [1]  Insert  -  Insert all the objects starting with an empty container
+  [2]  Hit     -  Find with success all the objects and dereference them
+  [3]  Miss    -  Find with failure all the objects
+  [4]  Remove  -  Remove all the objects and dereference them
+  [5]  Change  -  Find and remove one object and reinsert it with a different key, repeated for all the objects

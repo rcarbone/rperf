@@ -1,0 +1,14 @@
+Author: Craig Silverstein (csilvers@khanacademy.org)
+
+Test case implemented in Google sparse hash (time_hash_map.cc)
+==============================================================
+
+  [1] map_grow:             add N elements to the hash map
+  [2] map_predict/grow:     reserve space first, then add elements
+  [3] map_replace:          add elements, overwrite their values in another loop
+  [4] map_fetch_random:     fetch all elements one-by-one (indexing by random key), N elements in map
+  [5] map_fetch_sequential: fetch all elements one-by-one (indexing by key), N elements in map
+  [6] map_fetch_empty:      same, on empty map
+  [7] map_remove:           remove all elements from map, one by one, N elements in map
+  [8] map_toggle:           in every iteration add element, then erase it immediately
+  [9] map_iterate:          iterate over all the hash map

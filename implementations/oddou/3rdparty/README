@@ -1,0 +1,22 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, May 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         Vivien Oddou's hash map
+Module       hashmap
+Author       Vivien Oddou <erik@rigtorp.se>
+Description  open address hash map implementation in the STL-sense
+Download     http://github.com/lightness1024/cpp_open_addr_hashmap_container
+Date         2014 - 2015
+Language     C++ Template
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+The following sources files were copied from latest git version at:
+  http://github.com/lightness1024/cpp_open_addr_hashmap_container
+
+  - hashmap.hpp
+  - pool.hpp
+
+No modification was needed.

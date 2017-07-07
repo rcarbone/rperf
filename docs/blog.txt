@@ -1,0 +1,11 @@
+2003 Sean Barrett                 http://nothings.org/computer/judy       (updated 2011)
+2007 Maciej Sinilo                http://msinilo.pl/blog/?cat=6           (updated 2013)
+2008 Heng Li (Attractive Chaos)   http://attractivechaos.wordpress.com/2008/08/28/comparison-of-hash-table-libraries
+2008 Heng Li (Attractive Chaos)   http://attractivechaos.wordpress.com/2008/10/07/another-look-at-my-old-benchmark
+2010 Nick Welch (incise.org)      http://incise.org/hash-table-benchmarks.html
+2010 Rusty Russell (ccan)         http://rusty.ozlabs.org/?p=153
+2011 Jeff Preshing                http://preshing.com/20110603/hash-table-performance-tests
+2012 Eric Wing                    http://playcontrol.net/opensource/LuaHashMap/benchmarks.html
+2013 Andrea Mazzoleni             http://www.tommyds.it/doc/benchmark
+2014 Fredrik Widlund (lonewolfer) http://lonewolfer.wordpress.com/2014/03/13/benchmarking-hash-table-implementations-in-different-languages
+2015 Fredrik Widlund (lonewolfer) http://lonewolfer.wordpress.com/2015/02/07/benchmarking-string-hash-tables

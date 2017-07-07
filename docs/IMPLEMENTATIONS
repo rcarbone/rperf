@@ -1,0 +1,50 @@
+                               custom
+##  ##################  #####  ######     #######
+ 1. ulib                done!   yes       C macro
+ 2. libevent            done!   yes       C macro         - need memory allocation/deallocation
+ 3. khash               done!   yes       C macro
+ 4. ccan                done!   yes       C inline        - rhash_get() too slow implemented by mean of foreach()
+ 5. hashit              done!             C inline
+ 6. apr                 done!   yes       C inline
+ 7. glib                done!   yes       C library
+ 8. gcc-libiberty       done!   yes       C inline        - bug in htab_find() if the initial size is set to a value too lower
+ 9. uthash              done!   No        C macro         - use of private hash function must be implemented
+10. tommy               done!   yes       C inline        - rhash_get() too slow implemented by mean of tommy_foreach()
+11. python              done!   yes       C inline
+12. libcfu              done!   yes       C inline
+13. gthhash
+14. generic-c-hashmap
+15. CDS
+16. c-hashtable
+17. tcl
+18. c-algoritms
+19. ruby-st
+20. judy
+21. stb
+22. st
+23. google-c            done!   no        C inline
+24. lua-table
+25. hhash
+26. htable
+27. judyarray
+28. judy-template
+29. ltable
+30. sglib
+31. LuaHashMap
+32. perl
+
+C++
+===
+ 1. g++/unordered-map    done!   yes   C++ template
+ 2. g++/map              done!   na    C++ template
+ 3. sparsehash           done!   yes   C++ template
+ 4. densehash            done!   yes   C++ template
+ 5. rdestl               done!   yes   C++ template
+ 6. rigtorp              done!   yes   C++ template
+ 7. boost/unordered-map  done!   yes   C++ template
+ 8. amtl
+ 9. eastl
+10. emilib
+11. mct                  done!   yes   C++ template
+12. Qt
+13. khash++

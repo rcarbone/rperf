@@ -1,0 +1,92 @@
+# The name of the games
+TARGETS   = $(patsubst %.c,%, ${SRCS})
+
+# Object and depend files
+OBJS      = $(patsubst %.c,%.o, ${SRCS})
+DEPS      = $(patsubst %.c,%.M, ${SRCS})
+
+# C compiler and flags
+DEFINES   =
+INCLUDES  = -I. ${INCLUDE}
+CC        = gcc
+C++       = g++
+AR        = ar
+LD        = gcc
+CFLAGS    = -g -Wall ${INCLUDES} ${DEFINES} -fno-diagnostics-color
+C++FLAGS  = -g -Wall ${INCLUDES} ${DEFINES} -fpermissive
+SHFLAGS   = -shared
+ARFLAGS   = rv
+LDFLAGS   =
+
+# The main target is responsible to make all
+all: ${TARGETS}
+
+# All the binary programs
+%: %.o ${USRLIBS}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+c++: ${SRCS} ${USRLIBS}
+	@echo "=*= attemping to compile --- ${SRCS} --- for C++ =*="
+	@${C++} ${C++FLAGS} $^ ${SYSLIBS} -o $@
+	@rm -f $@
+
+# Cleanup rules
+clean:
+	@rm -f ${TARGETS}
+	@rm -f ${OBJS}
+	@rm -f *~
+
+distclean: clean
+	@rm -f ${DEPS}
+
+# How to make an object file from a C source
+%.o: %.c
+	@echo "=*= making object $@ =*="
+	@${CC} -c ${CFLAGS} $<
+
+# How to make a depend file from a C source
+%.M: %.c
+	@-${CC} -MM ${INCLUDES} $< -o $@
+
+-include ${DEPS}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+VFLAGS    = --show-leak-kinds=all --leak-check=full --error-exitcode=1
+VVFLAGS   = ${VFLAGS} --show-reachable=yes --error-limit=no --track-origins=yes # --gen-suppressions=all
+VVVFLAGS  = ${VVFLAGS} --read-var-info=yes
+
+# Run valgrind to check for all errors and memory leaks
+leaks: ${TARGETS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${TARGETS} ; do \
+           make -s leak-$$bin ; \
+         done
+
+vleaks: ${TARGETS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${TARGETS} ; do \
+           make -s vleak-$$bin ; \
+         done
+
+leak-%: %
+	@echo -n "  $^ "
+	@valgrind -q ${VFLAGS} $^ 1> /dev/null 2>& 1
+	@if [ $? ]; then echo -n "Ok"; fi
+	@echo
+
+vleak-%: %
+	@echo "  $^ "
+	@echo "valgrind ${VFLAGS} $^"
+	@valgrind ${VFLAGS} $^
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+help:
+	@echo "Usage:"
+	@echo
+	@echo "  make leaks"
+	@echo "  make vleaks"
+	@echo
+	@echo "  make c++"

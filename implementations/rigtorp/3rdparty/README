@@ -1,0 +1,21 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, May 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         Erik Rigtorp's hash table implementation
+Module       HashMap
+Author       Erik Rigtorp <erik@rigtorp.se>
+Description  A hash table mostly compatible with the C++11 *std::unordered_map* interface
+Download     http://github.com/rigtorp/HashMap
+Date         2016
+Language     C++ Template
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+The following sources files were copied from latest git version at:
+  http://github.com/rigtorp/HashMap
+
+  - HashMap.h
+
+No modification was needed.

@@ -1,0 +1,15 @@
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rut
+${RUTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RUTLIB} =*="
+	@(cd ${RUTDIR} && make)
+	@echo "==================="

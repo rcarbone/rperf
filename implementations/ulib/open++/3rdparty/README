@@ -1,0 +1,21 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, May 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         ulib
+Module       hash-open
+Author       Zilong Tan (eric.zltan@gmail.com)
+Description  The ULIB is an efficient algorithm library for C and C++ (based on khash)
+Download     http://github.com/ZilongTan/Coding/ulib
+Date         2011, 2013
+Language     C++ template
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+The following sources files were locally copied from latest git version:
+
+  - ulib/hash_open.h
+  - ulib/hash_open_prot.h
+  - ulib/util_algo.h
+  - ulib/util_class.h

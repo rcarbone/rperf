@@ -1,0 +1,17 @@
+* implementare le scelte dei casi di test da eseguire nella testsute
+
+* implementare sys-apr
+
+* implementare il plugin con il template C++ khash
+
+* rivedere tutti i Makefile dei vari plugins per il nome glue.cpp
+
+* copiare il file API.txt in ogni plugin
+
+* datasets
+
+* tests
+  =====
+  -l                             List test cases available in a test executable
+  -p TESTPATH                    Only start test cases matching TESTPATH
+  -s TESTPATH                    Skip all tests matching TESTPATH
