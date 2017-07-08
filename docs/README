@@ -1,10 +1,40 @@
-rperf is a non-functional test development enviroment for hash tables
-including at least:
+ 'rperf' is a development enviroment for hash tables both functional and non-functional tests.
 
-  1. librhash - an abstract C library over real hash table implementations
-                Keys/Values (char * keys, void * vals)
-  2. rspeed   - a performance tool to evaluate and compare wall-time spent
-  3. rbattle  - a benchmark tool to evaluate ranking in test execution
+It includes:
+  * librht  - an abstract C library to be mapped over real hash table implementations.
+
+              Defined and supported Keys/Values pairs:
+                only (char * keys, void * vals) at the time
+
+  * rspeed  - a performance tool to evaluate/compare/sort time spent in execution
+              of test suites.
+
+  * rbattle - a benchmark tool to evaluate relative ranking in test execution
+              (functional but it needs more work and cleanup).
+
+              Up to 24 C/C++ implementations are currently available for testing.
+              Each implementation is simply a plugin (shared object that can be
+              dynamically loaded/unloaded for the purpose of the tests.
+
+              Up to 6 different test suites can be run.
+
+          +========+                                +=========+
+          | rspeed |                                | rbattle |
+          +========+                                +=========+
+               Y           rht (virtual API)               Y
+   +==================================================================+
+   | rht_alloc() rht_set() rht_get() rht_del() rht_count() rht_free() |
+   |    |           |         |         |         |           |       |
+   |    Y           Y         Y         Y         Y           Y       |
+   +==================================================================+
+   |  rht_xxx() functions are implemented as wrappers foreach library |
+   |    |     |       |         |      |       |     |     |      |   |
+   | klib | ulib | libevent | ccan | tommy | glib | gcc | apr | ..... |
+   +==================================================================+
+   |                       true implementations                       |
+   | klib | ulib | libevent | ccan | tommy | glib | gcc | apr | ..... |
+   +==================================================================+
+
 
 # Results for the impatients
 Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.81-1 x86_64 GNU/Linux
