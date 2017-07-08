@@ -1,0 +1,8 @@
+rbattle
+rspeed
+rtest
+*.so
+*.a
+*.o
+*.M
+*~

@@ -1,8 +1,10 @@
 # The name of the game
 NAME      = khash
+
 # C source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
+
 #
 INCLUDE   = -I./3rdparty
 CFLAGS    =
@@ -147,6 +149,10 @@ clean:
 
 distclean: clean
 	@rm -f ${DEPS}
+	@rm -f plugin.c
+	@rm -f rut.c
+	@rm -f rts.c
+	@rm -f load.c
 
 # How to make an object file from a C source
 %.o: %.c

@@ -1,15 +1,17 @@
-rperf is a non-functional test development enviroment for hash tables
-including at least:
+Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.88-1 x86_64
 
-  1. librhash - an abstract C library over real hash table implementations
-                Keys/Values (char * keys, void * vals)
-  2. rspeed   - a performance tool to evaluate and compare wall-time spent
-  3. rbattle  - a benchmark tool to evaluate ranking in test execution
+Running test [grow]. Please wait ... Done
+Running test [hit]. Please wait ... Done
+Running test [miss]. Please wait ... Done
+Running test [delete]. Please wait ... Done
+Running test [replace]. Please wait ... Done
+Running test [chaos]. Please wait ... Done
 
 # Results for the impatients
+Data sorted by avg time spent to run 5 times the same test
+
 Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.81-1 x86_64 GNU/Linux
 Sat Jul  8 06:42:57 CEST 2017
-Data sorted by average wall-time spent to run 5 times the same test
 
 Results of test [grow] - 1e5 items (5 loops per test)
       Implementation       -    elapsed   -     avg         min         max   ms
@@ -170,71 +172,3 @@ Results of test [chaos] - 1e5 items (5 loops per test)
   21: ulib::chain-hash++   -       1.5 s  -   301.683  /  299.504  /  306.262
   22: google::sparsehash   -       3.9 s  -   780.223  /  779.521  /  781.297
   23: oddou::hashmap       -       5.7 s  -  1146.371  / 1144.948  / 1150.614
-
-
-Currently supported implementations
-===================================
- ## Library             Module               Author
-  1 Apache apr          apr/hashtable        Apache Software Foundation (ASF)
-  2 Boost C++ Libraries boost::unordered_map Jeremy B. Maitin-Shepard and Daniel James
-  3 Google libcash      google/c-dense       Craig Silverstein
-  4 Google libcash      google/c-sparse      Craig Silverstein
-  5 ulib                ulib::chain-hash++   Zilong Tan (eric.zltan@gmail.com)
-  6 ulib                ulib/chain-hash      Zilong Tan (eric.zltan@gmail.com)
-  7 mct                 mct::closed_hash_map Paul Pogonyshev (pogonyshev@gmail.net)
-  8 Google Hash-Map     google::densehash    Google Inc.
-  9 glib                glib/ghash           Peter Mattis, Spencer Kimball and Josh MacDonald
- 10 hashit              hashit/chain         David Gomez (david@pleyades.net)
- 11 hashit              hashit/open          David Gomez (david@pleyades.net)
- 12 hashit              hashit/overflow      David Gomez (david@pleyades.net)
- 13 GNU libiberty       gcc/hashtab          Vladimir Makarov (vmakarov@cygnus.com)
- 14 klib                klib/khash           Heng Li (lh3@me.com)
- 15 libcfu              libcfu/hashtable     Don Owens (don@owensnet.com)
- 16 mct                 mct::linked_hash_map Paul Pogonyshev (pogonyshev@gmail.net)
- 17 oddou               oddou::hashmap       Vivien Oddou <x@x.x>
- 18 ulib                ulib::open-hash++    Zilong Tan (eric.zltan@gmail.com)
- 19 ulib                ulib/open-hash       Zilong Tan (eric.zltan@gmail.com)
- 20 Python              python/hashtable     Don Owens (don@owensnet.com)
- 21 rdestl              rdestl::hash_map     Maciej Sinilo
- 22 rigtorp             rigtorp::hashmap     Erik Rigtorp <erik@rigtorp.se>
- 23 Google Hash-Map     google::sparsehash   Google Inc.
- 24 GNU C++ Library     std::unordered_map   Silicon Graphics Computer Systems, Inc.
-
-
-How to add an implementation
-============================
-Please remember that each implementation under test is simply a plugin.
-So, go to the implementations/ directory and create a new one with
-the name of the implementation.
-
-In this directory copy the following 3 files from an already available implementation:
-
- 1. Makefile
- 2. README.c
- 3. glue.c
-
-and edit these files in order to meet the requirements.
-
-- In file [Makefile] the only required definition to customize should be NAME and optionally
-  the CFLAGS and C++FLAGS.
-
-  Do not edit anything below the separator because the Makefile is automatically
-  updated when needed.
-
-- In file [README.c] the section to customize is that contains Plugin definitions
-
-- In file [glue.c] must be implemented each function rsuite_xxx() in order to map the
-  virtual interface defined in rhash.h over the real implementation
-
-
-When you have done please run in the directory with the new defined implementation
-the following commands:
-> make       (to compile everything)
-> make run   (to run the testsuite)
-> make leaks (to check for errors and memory leaks)
-
-(make help provides you all the available rules)
-
-
-Please not do forget at the end of the process to add the name of the new directory
-in implementations/Makefile.
