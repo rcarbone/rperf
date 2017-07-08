@@ -126,7 +126,7 @@ unsigned rp_maxm (plugin_t * argv []);
 unsigned rp_maxa (plugin_t * argv []);
 
 void rp_print_info (plugin_t * p, unsigned seq, unsigned maxi, unsigned maxl, unsigned maxm, unsigned maxa);
-void rp_print_id (plugin_t * p, unsigned seq, unsigned maxl, unsigned maxm);
+void rp_print_id (plugin_t * p, unsigned seq, unsigned maxl, unsigned maxm, unsigned maxa);
 
 void rp_print_infos (plugin_t * argv []);
 void rp_print_ids (plugin_t * argv []);

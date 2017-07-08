@@ -5,7 +5,7 @@ SUBDIRS += sparse
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-ROOTDIR   = /home/rocco/rbench
+ROOTDIR   = /home/rocco/rperf
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
 all: Makefile

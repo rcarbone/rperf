@@ -13,16 +13,16 @@ SYSLIBS   = -lstdc++ -lm
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 # The project's name
-PROJECT    = rht
+PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's tree
 ROOTDIR    = /home/rocco/${PROJECT}
 SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/lib
+INSTALLDIR = ${ROOTDIR}/plugins
 
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RUTDIR     = ${ROOTDIR}/rut
+RTESTDIR   = ${ROOTDIR}/rtest
 RSUITEDIR  = ${ROOTDIR}/tests/suite
 
 # rlibc
@@ -30,14 +30,10 @@ INCLUDE  += -I${RLIBCDIR}
 RLIBCLIB  = ${RLIBCDIR}/librlibc.a
 USRLIBS  += ${RLIBCLIB}
 
-# rut
-INCLUDE  += -I${RUTDIR}
-RUTLIB    = ${RUTDIR}/librut.a
-USRLIBS  += ${RUTLIB}
-
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
+# rtest
+INCLUDE  += -I${RTESTDIR}
+RTESTLIB  = ${RTESTDIR}/librtest.a
+USRLIBS  += ${RTESTLIB}
 
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
@@ -49,8 +45,8 @@ STLIB     = libr-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = run-suite
-PROGRAMS += rut
+PROGRAMS  = rut
+PROGRAMS += rts
 
 # All the targets
 TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -78,14 +74,8 @@ C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
 LDFLAGS   =
 
-# Static private libraries (order is relevant to link)
-USRLIBS   = ${RUTLIB}
-USRLIBS  += ${RSUITELIB}
-USRLIBS  += ${STLIB}
-USRLIBS  += ${RLIBCLIB}
-
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run-suite.c rut.c ${TARGETS} ${RHASHLIB} ${RUTLIB} ${RSUITELIB}
+all: Makefile plugin.c rut.c rts.c load.c ${TARGETS} ${RHASHLIB} ${RUTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -99,11 +89,15 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-run-suite.c: ${SHAREDIR}/run-suite.c
+rut.c: ${SHAREDIR}/rut.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-rut.c: ${SHAREDIR}/rut.c
+rts.c: ${SHAREDIR}/rts.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
+
+load.c: ${SHAREDIR}/load.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -113,9 +107,9 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o
+${SHLIB}: plugin.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making plugin $@ =*="
-	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
+	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
 ${INSTALLDIR}/${SHLIB}: ${SHLIB}
@@ -125,12 +119,16 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
           echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
          fi
 
-# All binary programs
-run-suite: run-suite.o ${USRLIBS}
+# Binary programs
+rut: rut.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-rut: rut.o ${USRLIBS}
+rts: rts.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+load: load.o ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -144,6 +142,8 @@ clean:
 	@rm -f *~
 	@rm -f plugin.o
 	@rm -f rut.o
+	@rm -f rts.o
+	@rm -f load.o
 
 distclean: clean
 	@rm -f ${DEPS}
@@ -235,11 +235,4 @@ ${RUTLIB}:
 	@echo "==================="
 	@echo "=*= making ${RUTLIB} =*="
 	@(cd ${RUTDIR} && make)
-	@echo "==================="
-
-# rsuite
-${RSUITELIB}:
-	@echo "==================="
-	@echo "=*= making ${RSUITELIB} =*="
-	@(cd ${RSUITEDIR} && make -s)
 	@echo "==================="

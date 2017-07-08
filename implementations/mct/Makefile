@@ -6,10 +6,7 @@ SUBDIRS += linked
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 # The project's name
-PROJECT    = rht
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+PROJECT    = rperf
 ROOTDIR    = /home/rocco/${PROJECT}
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/lib
@@ -27,39 +24,6 @@ USRLIBS  += ${RLIBCLIB}
 INCLUDE  += -I${RTESTDIR}
 RTESTLIB  = ${RTESTDIR}/librtest.a
 USRLIBS  += ${RTESTLIB}
-
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
-
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-PROJECT   = rht
-ROOTDIR   = /home/rocco/${PROJECT}
-
-# The project's tree
-ROOTDIR    = /home/rocco/${PROJECT}
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/lib
-
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RUTDIR     = ${ROOTDIR}/rut
-RSUITEDIR  = ${ROOTDIR}/tests/suite
-
-# rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
-
-# rut
-INCLUDE  += -I${RUTDIR}
-RUTLIB    = ${RUTDIR}/librut.a
-USRLIBS  += ${RUTLIB}
-
-# rut
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
-
 
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.subdirs
 PLEASE    = "Do not edit anything below, make creates it."

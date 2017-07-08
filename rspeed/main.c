@@ -32,7 +32,7 @@ typedef enum
   /* Test Suite */
 
   /* List */
-  OPT_LIST_TESTS   = 'l',    /* List Test Suite     */
+  OPT_LIST_TESTS   = 's',    /* List Test Suite     */
 
   /* Finger */
   OPT_ADD_TEST     = 't',    /* Include Test        */
@@ -92,7 +92,7 @@ static struct option lopts [] =
   /* Test Suite */
 
   /* List */
-  { "list-suite",   no_argument,       NULL, OPT_LIST_TESTS   },
+  { "suite",        no_argument,       NULL, OPT_LIST_TESTS   },
 
   /* Finger */
   { "add-test",     required_argument, NULL, OPT_ADD_TEST     },
@@ -341,15 +341,15 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_LIST_TESTS,   "list test suite");
   usage_item (options, n, OPT_ADD_TEST,     "include test (repeatable)");
   usage_item (options, n, OPT_DEL_TEST,     "exclude test (repeatable)");
-  usage_item (options, n, OPT_EXECUTE,      "execute test suite (default all)");
+  usage_item (options, n, OPT_EXECUTE,      "execute test suite (default)");
   printf ("\n");
 
   printf ("  Plugins:\n");
+  usage_item (options, n, OPT_LOAD_UNLOAD,  "load and unload all plugins (useful to check for memory leaks)");
   usage_item (options, n, OPT_GET_DIR,      "show current plugins directory");
   usage_item (options, n, OPT_SET_DIR,      "set plugins directory");
   usage_item (options, n, OPT_LIST_PLUGINS, "list plugins");
-  usage_item (options, n, OPT_LOAD_UNLOAD,  "load and unload all plugins (useful to check for memory leaks)");
-  usage_item (options, n, OPT_SHOW_GENERAL, "all general information (default)");
+  usage_item (options, n, OPT_SHOW_GENERAL, "all general information");
   usage_item (options, n, OPT_SHOW_ID,      "id (library/module names)");
   usage_item (options, n, OPT_ADD_PLUGIN,   "include plugin (repeatable)");
   usage_item (options, n, OPT_DEL_PLUGIN,   "exclude plugin (repeatable)");

@@ -1,18 +1,18 @@
 /* System headers */
 #include <stdio.h>
-#include <stdlib.h>
 #include <libgen.h>
 #include <getopt.h>
 
 /* Project headers */
-#include "rut.h"
 #include "roptions.h"
-#include "args.h"
 #include "varrays.h"
+#include "args.h"
+#include "rtest.h"
 
 
-/* Program version  */
-#define _VERSION_  "0.1.0"
+/* Program version */
+#define _NAME_      "Run Unit Tests over this implementation"
+#define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
 #define OPT_DEFAULT OPT_LIST
@@ -92,13 +92,63 @@ static struct option lopts [] =
 };
 
 
+/* Finger at items to include/exclude */
+static rtest_t ** choose (char * progname, char * included [], char * excluded [])
+{
+  char ** names   = included ? included : excluded;
+  rtest_t ** subset = included ? NULL : runit_all ();
+
+  /* Nothing but these */
+  while (names && * names)
+    {
+      rtest_t * rtest = runit_valid (* names);
+      if (! rtest)
+	{
+	  printf ("%s: [%s] is not a valid id\n", progname, * names);
+	  arrclear (subset, NULL);
+	  return NULL;
+	}
+      else
+	subset = included ? arrmore (subset, rtest, rtest_t) : arrless (subset, rtest, rtest_t, NULL);
+      names ++;
+    }
+
+  return subset;
+}
+
+
+/* Attempt to do what has been required by the user */
+static void doit (char * progname, unsigned choice, rtest_t * argv [],
+		  unsigned items, unsigned runs, bool verbose, bool quiet)
+{
+  if (argv)
+    {
+      switch (choice)
+	{
+	case OPT_LIST:    runit_print_these (argv);      break;
+	case OPT_EXECUTE: runit_run_these (argv, items); break;
+	}
+    }
+  else
+    printf ("%s: no Unit Tests defined\n", progname);
+}
+
+
+/* Display version information */
+static void _version_ (char * progname, char * version)
+{
+  printf ("%s version %s built on %s %s\n", progname, version, __DATE__, __TIME__);
+  fflush (stdout);
+}
+
+
 /* Display the syntax for using this program */
 static void _usage_ (char * progname, char * version, struct option * options)
 {
   /* Get the longest option name for optimal rendering */
   unsigned n = optmax (options);
 
-  printf ("%s %s, Unit Tests\n", progname, version);
+  printf ("%s %s, %s\n", progname, version, _NAME_);
   printf ("\n");
 
   printf ("Usage: %s [options]\n", progname);
@@ -111,12 +161,12 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,        "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations with the Unit Tests:\n");
+  printf ("  Operations on the Unit Tests:\n");
   usage_item (options, n, OPT_LIST,         "list items");
   usage_item (options, n, OPT_EXECUTE,      "execute items");
   printf ("\n");
 
-  printf ("  Select:\n");
+  printf ("  Finger:\n");
   usage_item (options, n, OPT_INCLUDE,      "include item (repeatable)");
   usage_item (options, n, OPT_EXCLUDE,      "exclude item (repeatable)");
   printf ("\n");
@@ -124,7 +174,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   printf ("  Item counters: (default %.0f)\n", INITIALS);
   usage_item (options, n, OPT_ITEMS,        "set the initial number of items per test");
   usage_item (options, n, OPT_ITEMS_0,      "one item                   (1e0)");
-  usage_item (options, n, OPT_ITEMS_1,      "ten items                  (1e1");
+  usage_item (options, n, OPT_ITEMS_1,      "ten items                  (1e1)");
   usage_item (options, n, OPT_ITEMS_2,      "one hundred items          (1e2)");
   usage_item (options, n, OPT_ITEMS_3,      "one thousand items         (1e3)");
   usage_item (options, n, OPT_ITEMS_4,      "ten thousand items         (1e4)");
@@ -140,55 +190,6 @@ static void _usage_ (char * progname, char * version, struct option * options)
 }
 
 
-/* Display version information */
-static void _version_ (char * progname, char * version)
-{
-  printf ("%s version %s built on %s %s\n", progname, version, __DATE__, __TIME__);
-  fflush (stdout);
-}
-
-
-/* Finger at Unit Tests to include/exclude */
-static rut_t ** choose (char * progname, char * included [], char * excluded [])
-{
-  char ** names   = included ? included : excluded;
-  rut_t ** subset = included ? NULL : rut_all ();
-
-  /* Nothing but these */
-  while (names && * names)
-    {
-      rut_t * rut = rut_valid (* names);
-      if (! rut)
-	{
-	  printf ("%s: [%s] is not a valid id\n", progname, * names);
-	  arrclear (subset, NULL);
-	  return NULL;
-	}
-      else
-	subset = included ? arrmore (subset, rut, rut_t) : arrless (subset, rut, rut_t, NULL);
-      names ++;
-    }
-
-  return subset;
-}
-
-
-/* Attempt to do what has been required by the user */
-static void doit (char * progname, unsigned choice, rut_t * rargv [], unsigned items, unsigned runs, bool verbose, bool quiet)
-{
-  if (rargv)
-    {
-      switch (choice)
-	{
-	case OPT_LIST:    rut_print_these (rargv);      break;
-	case OPT_EXECUTE: rut_run_these (rargv, items); break;
-	}
-    }
-  else
-    printf ("%s: no Unit Tests defined\n", progname);
-}
-
-
 /* Display/Select/Execute Unit Tests */
 int main (int argc, char * argv [])
 {
@@ -200,15 +201,15 @@ int main (int argc, char * argv [])
   bool quiet       = false;
 
   /* Unit Tests */
-  rut_t ** all     = rut_all ();
+  rtest_t ** all   = runit_all ();
   char ** included = NULL;
   char ** excluded = NULL;
 
   /* Items counters */
-  unsigned items   = INITIALS;
+  unsigned items   = INITIALS;               /* initial # of items per test */
 
   /* Run counters */
-  unsigned runs    = RUNS;                  /* # of run per test   */
+  unsigned runs    = RUNS;                   /* # of run per test           */
 
   unsigned choice  = OPT_DEFAULT;
   int option;
@@ -217,27 +218,27 @@ int main (int argc, char * argv [])
   setvbuf (stdout, NULL, _IONBF, 0);
 
   /* Parse command-line options */
+  argv [0] = progname;
   while ((option = getopt_long (argc, argv, sopts, lopts, NULL)) != -1)
     {
       switch (option)
 	{
 	default:
-	  printf ("%s: Unknown option -%c\n\n", progname, option);
-	  _usage_ (progname, _VERSION_, lopts);                        return 1;
+	  printf ("Try '%s --help' for more information.\n", progname); return 1;
 
 	  /* Miscellanea */
-	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);   return 0;
-	case OPT_VERSION:      _version_ (progname, _VERSION_);        return 0;
-	case OPT_VERBOSE:      verbose = true;                         break;
-	case OPT_QUIET:        quiet   = true;                         break;
+	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    return 0;
+	case OPT_VERSION:      _version_ (progname, _VERSION_);         return 0;
+	case OPT_VERBOSE:      verbose = true;                          break;
+	case OPT_QUIET:        quiet   = true;                          break;
 
 	  /* Operations */
-	case OPT_LIST:         choice = option;                        break;
-	case OPT_EXECUTE:      choice = option;                        break;
+	case OPT_LIST:         choice = option;                         break;
+	case OPT_EXECUTE:      choice = option;                         break;
 
 	  /* Finger */
-        case OPT_INCLUDE:      included = argsuniq (included, optarg); break;
-        case OPT_EXCLUDE:      excluded = argsuniq (excluded, optarg); break;
+        case OPT_INCLUDE:      included = argsuniq (included, optarg);  break;
+        case OPT_EXCLUDE:      excluded = argsuniq (excluded, optarg);  break;
 
 	  /* Item counters */
 	case OPT_ITEMS:   items = atoi (optarg); break;
@@ -269,21 +270,20 @@ int main (int argc, char * argv [])
   /* Attempt to do what has been required by the user */
   if (included || excluded)
     {
-      rut_t ** subset = choose (progname, included, excluded);
+      /* Build a subset and go! */
+      rtest_t ** subset = choose (progname, included, excluded);
       if (subset)
-	{
-	  doit (progname, choice, subset, items, runs, verbose, quiet);
-	  arrclear (subset, NULL);
-	}
+	doit (progname, choice, subset, items, runs, verbose, quiet);
       else
 	printf ("%s: Empty subset\n", progname);
+      arrclear (subset, NULL);
     }
   else
     doit (progname, choice, all, items, runs, verbose, quiet);
 
   /* Memory cleanup */
-  arrclear (excluded, free);
-  arrclear (included, free);
+  argsclear (excluded);
+  argsclear (included);
   arrclear (all, NULL);
 
   return 0;

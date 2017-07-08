@@ -491,11 +491,15 @@ void rp_print_info (plugin_t * p, unsigned seq, unsigned maxi, unsigned maxl, un
 }
 
 
-/* Unique identifier in terms of Library / Module */
-void rp_print_id (plugin_t * p, unsigned seq, unsigned maxl, unsigned maxm)
+/* Unique identifier in terms of Library / Module / Author */
+void rp_print_id (plugin_t * p, unsigned seq, unsigned maxl, unsigned maxm, unsigned maxa)
 {
   if (rp_hasvars (p))
-    printf ("%3d %-*.*s %-*.*s (%s)\n", seq, maxl, maxl, rp_library (p), maxm, maxm, rp_module (p), basename (p -> path));
+    printf ("%3d %-*.*s %-*.*s %-*.*s (%s)\n", seq,
+	    maxl, maxl, rp_library (p),
+	    maxm, maxm, rp_module (p),
+	    maxa, maxa, rp_author (p),
+	    basename (p -> path));
 }
 
 
@@ -526,12 +530,13 @@ void rp_print_ids (plugin_t * argv [])
 {
   unsigned maxl = rp_maxl (argv);
   unsigned maxm = rp_maxm (argv);
+  unsigned maxa = rp_maxa (argv);
   unsigned seq = 0;
 
   /* Table Header */
   if (argv)
-    printf (" ## %-*.*s %-*.*s %s\n", maxl, maxl, "Library", maxm, maxm, "Module", "Filename");
+    printf (" ## %-*.*s %-*.*s %-*.*s %s\n", maxl, maxl, "Library", maxm, maxm, "Module", maxa, maxa, "Author", "Filename");
 
   while (argv && * argv)
-    rp_print_id (* argv ++, ++ seq, maxl, maxm);
+    rp_print_id (* argv ++, ++ seq, maxl, maxm, maxa);
 }

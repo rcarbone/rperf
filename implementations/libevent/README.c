@@ -3,7 +3,7 @@
 
 /* Plugin declarations */
 const char * variables   = "library module author description url";
-const char * functions   = "boot halt grow hit miss delete";
+const char * functions   = "boot halt grow hit miss delete replace chaos";
 
 /* Plugin definitions */
 const char * library     = "libevent";
