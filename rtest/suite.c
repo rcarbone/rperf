@@ -196,9 +196,9 @@ rtime_t rsuite_chaos (unsigned argc, robj_t * argv [])
 static void rsuite_run_one (rtest_t * rtest, unsigned argc, robj_t * argv [])
 {
   printf ("Running %s ... ", rtest -> name);
-  unsigned n = rtest -> suite (argc, argv);
-  if (n == argc)
-    printf ("Ok\n");
+  rtime_t spent = rtest -> suite (argc, argv);
+  if (spent)
+    printf ("Ok - %s\n", ns2a (spent));
   else
     printf ("No\n");
 }
@@ -322,7 +322,7 @@ rtest_t * rsuite_valid (char * id)
 
 
 /* Run the Test Suite included in argv[] */
-void rsuite_run_these (rtest_t * suite [], unsigned argc, robj_t * argv [])
+void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv [])
 {
   while (suite && * suite)
     rsuite_run_one (* suite ++, argc, argv);

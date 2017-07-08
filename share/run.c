@@ -11,45 +11,47 @@
 
 
 /* Program version */
-#define _NAME_      "Run Unit Tests over this implementation"
+#define _NAME_      "Run Unit Tests and Test Suite over this implementation"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
-#define OPT_DEFAULT OPT_LIST
+#define OPT_DEFAULT OPT_LIST_UNIT
 
 
 /* All the command line long options are here */
 typedef enum
 {
   /* Miscellanea */
-  OPT_HELP         = 'h',
-  OPT_VERSION      = 'v',
-  OPT_VERBOSE      = 'V',
-  OPT_QUIET        = 'q',
+  OPT_HELP       = 'h',
+  OPT_VERSION    = 'v',
+  OPT_VERBOSE    = 'V',
+  OPT_QUIET      = 'q',
 
   /* Operations */
-  OPT_LIST         = 'l',
-  OPT_EXECUTE      = 'x',
+  OPT_LIST_UNIT  = 'u',
+  OPT_LIST_SUITE = 's',
+  OPT_RUN_UNIT   = 'x',
+  OPT_RUN_SUITE  = 'X',
 
   /* Finger */
-  OPT_INCLUDE      = 'i',    /* include item */
-  OPT_EXCLUDE      = 'e',    /* exclude item */
+  OPT_INCLUDE    = 'i',    /* include item */
+  OPT_EXCLUDE    = 'e',    /* exclude item */
 
   /* Item counters */
-  OPT_ITEMS        = 'n',    /* initial # of items */
-  OPT_ITEMS_0      = '0',    /* 10 ^ 0 */
-  OPT_ITEMS_1      = '1',    /* 10 ^ 1 */
-  OPT_ITEMS_2      = '2',    /* 10 ^ 2 */
-  OPT_ITEMS_3      = '3',    /* 10 ^ 3 */
-  OPT_ITEMS_4      = '4',    /* 10 ^ 4 */
-  OPT_ITEMS_5      = '5',    /* 10 ^ 5 */
-  OPT_ITEMS_6      = '6',    /* 10 ^ 6 */
-  OPT_ITEMS_7      = '7',    /* 10 ^ 7 */
-  OPT_ITEMS_8      = '8',    /* 10 ^ 8 */
-  OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
+  OPT_ITEMS      = 'n',    /* initial # of items */
+  OPT_ITEMS_0    = '0',    /* 10 ^ 0 */
+  OPT_ITEMS_1    = '1',    /* 10 ^ 1 */
+  OPT_ITEMS_2    = '2',    /* 10 ^ 2 */
+  OPT_ITEMS_3    = '3',    /* 10 ^ 3 */
+  OPT_ITEMS_4    = '4',    /* 10 ^ 4 */
+  OPT_ITEMS_5    = '5',    /* 10 ^ 5 */
+  OPT_ITEMS_6    = '6',    /* 10 ^ 6 */
+  OPT_ITEMS_7    = '7',    /* 10 ^ 7 */
+  OPT_ITEMS_8    = '8',    /* 10 ^ 8 */
+  OPT_ITEMS_9    = '9',    /* 10 ^ 9 */
 
   /* Run counters */
-  OPT_RUNS         = 'r',
+  OPT_RUNS       = 'r',
 
 } ropt_t;
 
@@ -58,41 +60,43 @@ typedef enum
 static struct option lopts [] =
 {
   /* Miscellanea */
-  { "help",         no_argument,       NULL, OPT_HELP         },
-  { "version",      no_argument,       NULL, OPT_VERSION      },
-  { "verbose",      no_argument,       NULL, OPT_VERBOSE      },
-  { "quiet",        no_argument,       NULL, OPT_QUIET        },
+  { "help",         no_argument,       NULL, OPT_HELP       },
+  { "version",      no_argument,       NULL, OPT_VERSION    },
+  { "verbose",      no_argument,       NULL, OPT_VERBOSE    },
+  { "quiet",        no_argument,       NULL, OPT_QUIET      },
 
   /* Operations */
-  { "list",         no_argument,       NULL, OPT_LIST         },
-  { "execute",      no_argument,       NULL, OPT_EXECUTE      },
+  { "unit-list",    no_argument,       NULL, OPT_LIST_UNIT  },
+  { "suite-list",   no_argument,       NULL, OPT_LIST_SUITE },
+  { "run-unit",     no_argument,       NULL, OPT_RUN_UNIT   },
+  { "run-suite",    no_argument,       NULL, OPT_RUN_SUITE  },
 
   /* Finger */
-  { "include",      required_argument, NULL, OPT_INCLUDE      },
-  { "exclude",      required_argument, NULL, OPT_EXCLUDE      },
+  { "include",      required_argument, NULL, OPT_INCLUDE    },
+  { "exclude",      required_argument, NULL, OPT_EXCLUDE    },
 
   /* Item counters */
-  { "items",        required_argument, NULL, OPT_ITEMS        },
-  { "one",          no_argument,       NULL, OPT_ITEMS_0      },
-  { "ten",          no_argument,       NULL, OPT_ITEMS_1      },
-  { "hundred",      no_argument,       NULL, OPT_ITEMS_2      },
-  { "thousand",     no_argument,       NULL, OPT_ITEMS_3      },
-  { "10-thousand",  no_argument,       NULL, OPT_ITEMS_4      },
-  { "100-thousand", no_argument,       NULL, OPT_ITEMS_5      },
-  { "million",      no_argument,       NULL, OPT_ITEMS_6      },
-  { "10-million",   no_argument,       NULL, OPT_ITEMS_7      },
-  { "100-million",  no_argument,       NULL, OPT_ITEMS_8      },
-  { "billion",      no_argument,       NULL, OPT_ITEMS_9      },
+  { "items",        required_argument, NULL, OPT_ITEMS      },
+  { "one",          no_argument,       NULL, OPT_ITEMS_0    },
+  { "ten",          no_argument,       NULL, OPT_ITEMS_1    },
+  { "hundred",      no_argument,       NULL, OPT_ITEMS_2    },
+  { "thousand",     no_argument,       NULL, OPT_ITEMS_3    },
+  { "10-thousand",  no_argument,       NULL, OPT_ITEMS_4    },
+  { "100-thousand", no_argument,       NULL, OPT_ITEMS_5    },
+  { "million",      no_argument,       NULL, OPT_ITEMS_6    },
+  { "10-million",   no_argument,       NULL, OPT_ITEMS_7    },
+  { "100-million",  no_argument,       NULL, OPT_ITEMS_8    },
+  { "billion",      no_argument,       NULL, OPT_ITEMS_9    },
 
   /* Run counters */
-  { "runs",         required_argument, NULL, OPT_RUNS         },
+  { "runs",         required_argument, NULL, OPT_RUNS       },
 
   /* End of options */
-  { NULL,           0,                 NULL, 0                }
+  { NULL,           0,                 NULL, 0              }
 };
 
 
-/* Finger at items to include/exclude */
+/* Finger at Unit Tests to include/exclude */
 static rtest_t ** choose (char * progname, char * included [], char * excluded [])
 {
   char ** names   = included ? included : excluded;
@@ -101,15 +105,15 @@ static rtest_t ** choose (char * progname, char * included [], char * excluded [
   /* Nothing but these */
   while (names && * names)
     {
-      rtest_t * rtest = runit_valid (* names);
-      if (! rtest)
+      rtest_t * runit = runit_valid (* names);
+      if (! runit)
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
 	  arrclear (subset, NULL);
 	  return NULL;
 	}
       else
-	subset = included ? arrmore (subset, rtest, rtest_t) : arrless (subset, rtest, rtest_t, NULL);
+	subset = included ? arrmore (subset, runit, rtest_t) : arrless (subset, runit, rtest_t, NULL);
       names ++;
     }
 
@@ -123,14 +127,19 @@ static void doit (char * progname, unsigned choice, rtest_t * argv [],
 {
   if (argv)
     {
+      robj_t ** objs;
       switch (choice)
 	{
-	case OPT_LIST:    runit_print_these (argv);      break;
-	case OPT_EXECUTE: runit_run_these (argv, items); break;
+	case OPT_RUN_UNIT: runit_run (argv, items);   break;
+	case OPT_RUN_SUITE:
+	  objs = mkobjs (items);
+	  rsuite_run (argv, items, objs);
+	  rmobjs (objs);
+	  break;
 	}
     }
   else
-    printf ("%s: no Unit Tests defined\n", progname);
+    printf ("%s: no Tests defined\n", progname);
 }
 
 
@@ -161,9 +170,11 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,        "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations on the Unit Tests:\n");
-  usage_item (options, n, OPT_LIST,         "list items");
-  usage_item (options, n, OPT_EXECUTE,      "execute items");
+  printf ("  Operations on the Unit Tests and Suite:\n");
+  usage_item (options, n, OPT_LIST_UNIT,    "list Unit Tests");
+  usage_item (options, n, OPT_LIST_SUITE,   "list Suite");
+  usage_item (options, n, OPT_RUN_UNIT,     "run Unit Tests");
+  usage_item (options, n, OPT_RUN_SUITE,    "run Test Suite");
   printf ("\n");
 
   printf ("  Finger:\n");
@@ -190,7 +201,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
 }
 
 
-/* Display/Select/Execute Unit Tests */
+/* Display/Select/Run Unit Tests or Suite */
 int main (int argc, char * argv [])
 {
   char * progname  = basename (argv [0]);    /* notice program name */
@@ -201,7 +212,7 @@ int main (int argc, char * argv [])
   bool quiet       = false;
 
   /* Unit Tests */
-  rtest_t ** all   = runit_all ();
+  rtest_t ** all   = NULL;
   char ** included = NULL;
   char ** excluded = NULL;
 
@@ -227,18 +238,20 @@ int main (int argc, char * argv [])
 	  printf ("Try '%s --help' for more information.\n", progname); return 1;
 
 	  /* Miscellanea */
-	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    return 0;
-	case OPT_VERSION:      _version_ (progname, _VERSION_);         return 0;
-	case OPT_VERBOSE:      verbose = true;                          break;
-	case OPT_QUIET:        quiet   = true;                          break;
+	case OPT_HELP:       _usage_ (progname, _VERSION_, lopts);    return 0;
+	case OPT_VERSION:    _version_ (progname, _VERSION_);         return 0;
+	case OPT_VERBOSE:    verbose = true;                          break;
+	case OPT_QUIET:      quiet   = true;                          break;
 
 	  /* Operations */
-	case OPT_LIST:         choice = option;                         break;
-	case OPT_EXECUTE:      choice = option;                         break;
+	case OPT_LIST_UNIT:  all = runit_all (); runit_print (all);   break;
+	case OPT_LIST_SUITE: all = rsuite_all (); rsuite_print (all); break;
+	case OPT_RUN_UNIT:   choice = option;                         break;
+	case OPT_RUN_SUITE:  choice = option;                         break;
 
 	  /* Finger */
-        case OPT_INCLUDE:      included = argsuniq (included, optarg);  break;
-        case OPT_EXCLUDE:      excluded = argsuniq (excluded, optarg);  break;
+        case OPT_INCLUDE:    included = argsuniq (included, optarg);  break;
+        case OPT_EXCLUDE:    excluded = argsuniq (excluded, optarg);  break;
 
 	  /* Item counters */
 	case OPT_ITEMS:   items = atoi (optarg); break;
@@ -267,19 +280,27 @@ int main (int argc, char * argv [])
       return 1;
     }
 
-  /* Attempt to do what has been required by the user */
-  if (included || excluded)
+  if (! all)
     {
-      /* Build a subset and go! */
-      rtest_t ** subset = choose (progname, included, excluded);
-      if (subset)
-	doit (progname, choice, subset, items, runs, verbose, quiet);
+      if (choice == OPT_RUN_UNIT)
+	all = runit_all ();
+      else if (choice == OPT_RUN_SUITE)
+	all = rsuite_all ();
+
+      /* Attempt to do what has been required by the user */
+      if (included || excluded)
+	{
+	  /* Build a subset and go! */
+	  rtest_t ** subset = choose (progname, included, excluded);
+	  if (subset)
+	    doit (progname, choice, subset, items, runs, verbose, quiet);
+	  else
+	    printf ("%s: Empty subset\n", progname);
+	  arrclear (subset, NULL);
+	}
       else
-	printf ("%s: Empty subset\n", progname);
-      arrclear (subset, NULL);
+	doit (progname, choice, all, items, runs, verbose, quiet);
     }
-  else
-    doit (progname, choice, all, items, runs, verbose, quiet);
 
   /* Memory cleanup */
   argsclear (excluded);

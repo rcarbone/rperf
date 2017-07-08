@@ -77,10 +77,10 @@ rtest_t ** runit_all_n (unsigned n);
 rtest_t ** runit_all_rnd (void);
 
 rtest_t * runit_valid (char * id);
-void runit_run_these (rtest_t * argv [], unsigned items);
+void runit_run (rtest_t * argv [], unsigned items);
 
 void runit_print_no (void);
-void runit_print_these (rtest_t * argv []);
+void runit_print (rtest_t * argv []);
 void runit_print_all (void);
 
 
@@ -103,10 +103,10 @@ rtest_t ** rsuite_all_n (unsigned n);
 rtest_t ** rsuite_all_rnd (void);
 
 rtest_t * rsuite_valid (char * id);
-void rsuite_run_these (rtest_t * suite [], unsigned argc, robj_t * argv []);
+void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv []);
 
 void rsuite_print_no (void);
-void rsuite_print_these (rtest_t * argv []);
+void rsuite_print (rtest_t * argv []);
 void rsuite_print_all (void);
 
 

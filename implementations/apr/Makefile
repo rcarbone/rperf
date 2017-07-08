@@ -46,8 +46,7 @@ STLIB     = libr-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = rut
-PROGRAMS += rts
+PROGRAMS  = run
 
 # All the targets
 TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -76,7 +75,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c rut.c rts.c load.c ${TARGETS} ${RHASHLIB} ${RUTLIB}
+all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RTESTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -90,11 +89,7 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-rut.c: ${SHAREDIR}/rut.c
-	@echo "=*= making C source $@ =*="
-	@cat $^ > $@
-
-rts.c: ${SHAREDIR}/rts.c
+run.c: ${SHAREDIR}/run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -121,11 +116,7 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
          fi
 
 # Binary programs
-rut: rut.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
-	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
-
-rts: rts.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -133,24 +124,19 @@ load: load.o ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-run: rut
-	@$^ -x
-
 # Cleanup rules
 clean:
 	@rm -f ${TARGETS}
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
-	@rm -f rut.o
-	@rm -f rts.o
+	@rm -f run.o
 	@rm -f load.o
 
 distclean: clean
 	@rm -f ${DEPS}
 	@rm -f plugin.c
-	@rm -f rut.c
-	@rm -f rts.c
+	@rm -f run.c
 	@rm -f load.c
 
 # How to make an object file from a C source
@@ -235,9 +221,9 @@ ${RLIBCLIB}:
 	@(cd ${RLIBCDIR} && make -s)
 	@echo "==================="
 
-# rut
-${RUTLIB}:
+# rtest
+${RTESTLIB}:
 	@echo "==================="
-	@echo "=*= making ${RUTLIB} =*="
-	@(cd ${RUTDIR} && make)
+	@echo "=*= making ${RTESTLIB} =*="
+	@(cd ${RTESTDIR} && make)
 	@echo "==================="

@@ -101,7 +101,7 @@ void runit_print_no (void)
 
 
 /* Print the Unit Tests included in argv[] */
-void runit_print_these (rtest_t * argv [])
+void runit_print (rtest_t * argv [])
 {
   unsigned i = 0;
 
@@ -129,7 +129,7 @@ void rsuite_print_no (void)
 
 
 /* Print the Unit Tests included in argv[] */
-void rsuite_print_these (rtest_t * argv [])
+void rsuite_print (rtest_t * argv [])
 {
   unsigned i = 0;
 

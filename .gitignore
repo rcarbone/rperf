@@ -1,5 +1,14 @@
 rbattle
 rspeed
+implementations/pm/pm
+implementations/*/run
+implementations/*/*/run
+implementations/*/load.c
+implementations/*/*/load.c
+implementations/*/run.c
+implementations/*/*/run.c
+implementations/*/plugin.c
+implementations/*/*/plugin.c
 rtest
 *.so
 *.a

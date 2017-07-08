@@ -375,7 +375,7 @@ rtest_t * runit_valid (char * id)
 
 
 /* Run the Unit Tests included in argv[] */
-void runit_run_these (rtest_t * argv [], unsigned items)
+void runit_run (rtest_t * argv [], unsigned items)
 {
   while (argv && * argv)
     runit_run_one (* argv ++, items);
