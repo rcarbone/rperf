@@ -5,9 +5,8 @@
 #include <stdint.h>
 #include <time.h>
 
-
-/* The type to hold time */
-typedef uint64_t rtime_t;
+/* Project headers */
+#include "rtypes.h"
 
 
 #ifdef __cplusplus

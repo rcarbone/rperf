@@ -6,14 +6,14 @@
 
 
 /* Get the 'module' variable defined in the plugin */
-static char * pmodule (plugin_t * p)
+static char * pmodule (rplugin_t * p)
 {
-  char * m = rp_module (p);
+  char * m = rplugin_module (p);
   return m ? m : "undefined";
 }
 
 
-static rtest_t * mktest (unsigned id, char * name, char * description, call_t * fun)
+static rtest_t * mktest (unsigned id, char * name, char * description, rplugin_f * fun)
 {
   rtest_t * t = calloc (1, sizeof (* t));
 
@@ -74,15 +74,15 @@ unsigned sw_have (sw_t * sw [], char * name)
 
 
 /* Return the pointer to the test with the given id (if any) for the given implementation */
-call_t * sw_func (sw_t * sw, char * name)
+rplugin_f * sw_func (sw_t * sw, char * name)
 {
-  if (sw && sw -> plugin && sw -> plugin -> func)
+  if (sw && sw -> plugin && sw -> plugin -> funs)
     {
-      symbol_t ** f = sw -> plugin -> func;
+      rplugin_symbol_t ** f = sw -> plugin -> funs;
       while (f && * f)
         {
           if (! strcmp (name, (* f) -> name))
-	    return function ((* f) -> name, sw -> plugin -> func);
+	    return rplugin_function ((* f) -> name, sw -> plugin -> funs);
           f ++;
         }
     }
@@ -93,7 +93,7 @@ call_t * sw_func (sw_t * sw, char * name)
 rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose)
 {
   /* Lookup for a function implemented in the shared object having the given name */
-  call_t * fun = sw_func (sw, name);
+  rplugin_f * fun = sw_func (sw, name);
   rtime_t t1;
   rtime_t t2;
   if (fun)
@@ -141,7 +141,7 @@ static sw_t * rmsw (sw_t * sw)
     free (sw -> pathname);
   if (sw -> name)
     free (sw -> name);
-  rmplugin (sw -> plugin);
+  rplugin_rm (sw -> plugin);
   arrclear (sw -> suite, rmtest);
   free (sw);
 
@@ -156,10 +156,10 @@ static sw_t * mksw (char * pathname, bool verbose)
   char * buffer = NULL;
 
   /* Load the shared object in memory */
-  sw -> plugin = mkplugin (pathname, & error, & buffer);
+  sw -> plugin = rplugin_mk (pathname, & error, & buffer);
   if (sw -> plugin)
     {
-      char ** funcs = rp_functions (sw -> plugin);
+      char ** funcs = rplugin_functions (sw -> plugin);
       char ** f = funcs;
       unsigned i = 0;
 

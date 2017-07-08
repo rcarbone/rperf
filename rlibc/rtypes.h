@@ -4,7 +4,6 @@
 /* System headers */
 #include <stdint.h>
 
-
 /* The wall time in nsecs */
 typedef uint64_t rtime_t;
 

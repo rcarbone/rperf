@@ -2,15 +2,15 @@
 #include "rbattle.h"
 
 /* Check if an implementation has defined a function with a given name */
-static char * pname (plugin_t * p)
+static char * pname (rplugin_t * p)
 {
-  if (p && p -> func)
+  if (p && p -> funs)
     {
-      symbol_t ** v = p -> vars;
+      rplugin_symbol_t ** v = p -> vars;
       while (v && * v)
         {
           if (! strcmp ("module", (* v) -> name))
-	    return variable ((* v) -> name, p -> vars);
+	    return rplugin_variable ((* v) -> name, p -> vars);
           v ++;
         }
     }
@@ -18,7 +18,7 @@ static char * pname (plugin_t * p)
 }
 
 
-static test_t * mktest (unsigned id, call_t * fun)
+static test_t * mktest (unsigned id, rplugin_f * fun)
 {
   test_t * t = calloc (1, sizeof (test_t));
 
@@ -78,15 +78,15 @@ unsigned sw_no (sw_t * sw [])
 
 /* Return the pointer to the test with the given id (if any) for the given implementation */
 /* Check if an implementation has defined a function with a given name */
-call_t * sw_func (sw_t * sw, char * name)
+rplugin_f * sw_func (sw_t * sw, char * name)
 {
-  if (sw && sw -> plugin && sw -> plugin -> func)
+  if (sw && sw -> plugin && sw -> plugin -> funs)
     {
-      symbol_t ** f = sw -> plugin -> func;
+      rplugin_symbol_t ** f = sw -> plugin -> funs;
       while (f && * f)
         {
           if (! strcmp (name, (* f) -> name))
-	    return function ((* f) -> name, sw -> plugin -> func);
+	    return rplugin_function ((* f) -> name, sw -> plugin -> funs);
           f ++;
         }
     }
@@ -97,7 +97,7 @@ call_t * sw_func (sw_t * sw, char * name)
 bool sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose)
 {
   /* Lookup for a function implemented in the shared object having the given name */
-  call_t * fun = sw_func (sw, name);
+  rplugin_f * fun = sw_func (sw, name);
   if (fun)
     {
       int argc = 0;
@@ -142,7 +142,7 @@ static sw_t * rmsw (sw_t * sw)
     free (sw -> pathname);
   if (sw -> name)
     free (sw -> name);
-  rmplugin (sw -> plugin);
+  rplugin_rm (sw -> plugin);
   vaclear ((void **) sw -> suite, rmtest);
   free (sw);
 
@@ -157,7 +157,7 @@ static sw_t * mksw (char * pathname, bool verbose)
   char * buffer;
 
   /* Load the shared object in memory */
-  sw -> plugin = mkplugin (pathname, & error, & buffer);
+  sw -> plugin = rplugin_mk (pathname, & error, & buffer);
   if (sw -> plugin)
     {
       unsigned i;
@@ -171,7 +171,7 @@ static sw_t * mksw (char * pathname, bool verbose)
 
       for (i = 0; i < tno (); i ++)
 	{
-	  call_t * fun = sw_func (sw, tname (i));
+	  rplugin_f * fun = sw_func (sw, tname (i));
 	  if (fun)
 	    {
 	      sw -> suite = (test_t **) vamore ((void **) sw -> suite, mktest (i, fun));

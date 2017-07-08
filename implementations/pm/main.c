@@ -18,9 +18,9 @@
 
 /* Default option (if none was specified) */
 #define OPT_DEFAULT OPT_SHOW_ID
-#undef DEFAULT_DIR
-#define DEFAULT_DIR "../../plugins"
-
+#if !defined(RPLUGIN_DEFAULT_DIR)
+#define RPLUGIN_DEFAULT_DIR "../../plugins"
+#endif
 
 /* All the command line long options are here */
 typedef enum
@@ -141,23 +141,17 @@ static struct option lopts [] =
 /* Print plugins names */
 static void print_names (char * progname, unsigned choice, char * dir, char * subset [])
 {
-  plugin_t ** loaded;
-
-  if (subset)
-    loaded = rload_files (subset);
-  else
-    loaded = rload_plugins (dir, false);
-
+  rplugin_t ** loaded = subset ? rplugin_load_files (subset) : rplugin_load_dir (dir, false);
   if (loaded)
     {
       switch (choice)
 	{
-	case OPT_SHOW_GENERAL: rp_print_infos (loaded); break;
-	case OPT_SHOW_ID:      rp_print_ids (loaded);   break;
-	default:                                        break;
+	case OPT_SHOW_GENERAL: rplugin_print_infos (loaded); break;
+	case OPT_SHOW_ID:      rplugin_print_ids (loaded);   break;
+	default:                                             break;
 	}
 
-      runload_plugins (loaded);
+      rplugin_unload (loaded);
     }
   else
     printf ("%s: no plugin found in directory %s\n", progname, dir);
@@ -226,7 +220,7 @@ static char ** choose (char * progname, char * files [], char * included [], cha
 		while (f && * f)
 		  {
 		    char * b = basename (* f);
-		    if (! strncmp (* a, b, strlen (* a)) && strlen (b) == strlen (* a) + SO_SUFFIX_LEN)
+		    if (! strncmp (* a, b, strlen (* a)) && strlen (b) == strlen (* a) + RPLUGIN_SO_SUFFIX_LEN)
 		      {
 			subset = argsuniq (subset, * f);
 			found = true;
@@ -256,17 +250,17 @@ static char ** choose (char * progname, char * files [], char * included [], cha
 
 
 /* Call the functions of plugins */
-static void rp_call (plugin_t * loaded [], char * subset [])
+static void rp_call (rplugin_t * loaded [], char * subset [])
 {
-  plugin_t ** p = loaded;
+  rplugin_t ** p = loaded;
   while (p && * p)
     {
-      symbol_t ** s = (* p) -> func;
+      rplugin_symbol_t ** s = (* p) -> funs;
       while (s && * s)
 	{
 	  if (! subset || argsexists (subset, (* s) -> name))
 	    {
-	      call_t * fun = function ((* s) -> name, (* p) -> func);
+	      rplugin_f * fun = rplugin_function ((* s) -> name, (* p) -> funs);
 	      char * argv [3] = { (* s) -> name, NULL, NULL };
 	      int argc = 1;
 
@@ -287,7 +281,7 @@ static void rp_call (plugin_t * loaded [], char * subset [])
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice, char * dir, char * files [], char * calls [], bool verbose, bool quiet)
 {
-  plugin_t ** loaded = NULL;
+  rplugin_t ** loaded = NULL;
   struct utsname u;
 
   switch (choice)
@@ -307,7 +301,7 @@ static void doit (char * progname, unsigned choice, char * dir, char * files [],
 
     case OPT_LOAD_UNLOAD:
       printf ("Trying to load all plugins in %s ... ", dir);
-      loaded = rload_plugins (dir, verbose);
+      loaded = rplugin_load_dir (dir, verbose);
       if (loaded)
 	{
 	  printf ("Ok! %u loaded\n", arrlen (loaded));
@@ -331,7 +325,7 @@ static void doit (char * progname, unsigned choice, char * dir, char * files [],
       printf ("%s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
       printf ("\n");
 
-      loaded = rload_files (files);
+      loaded = rplugin_load_files (files);
       rp_call (loaded, calls);
       break;
 
@@ -340,7 +334,7 @@ static void doit (char * progname, unsigned choice, char * dir, char * files [],
     }
 
   /* Memory cleanup */
-  runload_plugins (loaded);
+  rplugin_unload (loaded);
 }
 
 
@@ -438,7 +432,7 @@ int main (int argc, char * argv [])
   bool quiet       = false;
 
   /* Plugins */
-  char * dir       = DEFAULT_DIR;            /* directory */
+  char * dir       = RPLUGIN_DEFAULT_DIR;    /* directory */
   char ** files    = NULL;                   /* filenames */
   char ** included = NULL;
   char ** excluded = NULL;
@@ -538,7 +532,7 @@ int main (int argc, char * argv [])
     runs = RUNS;
 
   /* Evaluate the list of available plugins */
-  files = rls_plugins (dir);
+  files = rplugin_ls (dir);
   if (files)
     {
       /* Attempt to do what has been required by the user */

@@ -139,7 +139,7 @@ static void doit (char * progname, unsigned choice, rtest_t * argv [],
 	}
     }
   else
-    printf ("%s: no Tests defined\n", progname);
+    printf ("No tests defined. Try '%s --help' for more information.\n", progname);
 }
 
 

@@ -21,7 +21,7 @@
 typedef struct
 {
   char * pathname;       /* shared object with the implementation           */
-  plugin_t * plugin;     /* where all the functions are implemented         */
+  rplugin_t * plugin;    /* where all the functions are implemented         */
   char * name;           /* name of implementation as defined in the plugin */
   rtest_t ** suite;      /* suite of tests implemented in the shared object */
 
@@ -42,7 +42,7 @@ unsigned sw_maxname (sw_t * sw []);
 unsigned sw_no (sw_t * sw []);
 unsigned sw_have (sw_t * sw [], char * name);
 rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose);
-call_t * sw_func (sw_t * sw, char * name);
+rplugin_f * sw_func (sw_t * sw, char * name);
 sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
 void sw_done (sw_t * implementations [], bool verbose);
 

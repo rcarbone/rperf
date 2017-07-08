@@ -145,18 +145,17 @@ static struct option lopts [] =
 /* Print plugins names */
 static void print_names (char * progname, unsigned choice, char * dir, char * subset [])
 {
-  plugin_t ** loaded = subset ? rload_files (subset) : rload_plugins (dir, false);
-
+  rplugin_t ** loaded = subset ? rplugin_load_files (subset) : rplugin_load_dir (dir, false);
   if (loaded)
     {
       switch (choice)
 	{
-	case OPT_SHOW_GENERAL: rp_print_infos (loaded); break;
-	case OPT_SHOW_ID:      rp_print_ids (loaded);   break;
-	default:                                        break;
+	case OPT_SHOW_GENERAL: rplugin_print_infos (loaded); break;
+	case OPT_SHOW_ID:      rplugin_print_ids (loaded);   break;
+	default:                                             break;
 	}
 
-      runload_plugins (loaded);
+      rplugin_unload (loaded);
     }
   else
     printf ("%s: no plugin found in directory %s\n", progname, dir);
@@ -170,7 +169,7 @@ static int find_by_name (char * name, char * rargv [])
   unsigned i;
   if (name)
     for (i = 0; i < n; i ++)
-      if (! strncmp (name, basename (rargv [i]), RMAX (strlen (name), strlen (basename (rargv [i])) - SO_SUFFIX_LEN)))
+      if (! strncmp (name, basename (rargv [i]), RMAX (strlen (name), strlen (basename (rargv [i])) - RPLUGIN_SO_SUFFIX_LEN)))
 	return i;
   return -1;
 }
@@ -193,7 +192,7 @@ static void doit (char * progname, unsigned choice,
 		  char * suite [], unsigned items, unsigned runs,
 		  bool verbose, bool quiet)
 {
-  plugin_t ** loaded = NULL;
+  rplugin_t ** loaded = NULL;
   struct utsname u;
 
   switch (choice)
@@ -226,7 +225,7 @@ static void doit (char * progname, unsigned choice,
       printf ("Trying to load all plugins in %s ... ", dir);
       if (verbose)
 	printf ("\n");
-      loaded = rload_plugins (dir, verbose);
+      loaded = rplugin_load_dir (dir, verbose);
       if (loaded)
 	{
 	  printf ("Ok! %u loaded\n", arrlen (loaded));
@@ -248,7 +247,7 @@ static void doit (char * progname, unsigned choice,
     }
 
   /* Memory cleanup */
-  runload_plugins (loaded);
+  rplugin_unload (loaded);
 }
 
 
@@ -389,7 +388,7 @@ int main (int argc, char * argv [])
   char ** disabled = NULL;
 
   /* Plugins */
-  char * dir       = DEFAULT_DIR;            /* plugins directory */
+  char * dir       = RPLUGIN_DEFAULT_DIR;    /* plugins directory */
   char ** files    = NULL;                   /* available plugins */
   char ** included = NULL;
   char ** excluded = NULL;
@@ -487,7 +486,7 @@ int main (int argc, char * argv [])
   if (! runs)
     runs = RUNS;
 
-  files = rls_plugins (dir);      /* plugins available in dir */
+  files = rplugin_ls (dir);      /* plugins available in dir */
   if (files)
     {
       /* Build the suite to run */

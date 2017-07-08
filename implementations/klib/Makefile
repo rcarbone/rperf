@@ -123,7 +123,7 @@ run: run.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
 
 load: load.o ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -ldl -o $@
 
 # Cleanup rules
 clean:

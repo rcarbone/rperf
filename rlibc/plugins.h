@@ -1,4 +1,9 @@
-/* The definition to load/unload/query/call plugins */
+/*
+ * The definitions to load/unload/query/call plugins.
+ *
+ * What is a plugin for the goal of the project?
+ *  A plugin is simply a shared object with basic restrictions to distinguish it from other common Unix files:
+ */
 
 #pragma once
 
@@ -7,41 +12,42 @@
 #include <sys/time.h>
 #include <dlfcn.h>
 
+/* Project headers */
+#include "varrays.h"
+
 
 /* Reserved keywords with mandatory names that _must_ be defined in each plugin in a blanks separated variable */
-#define VARS     "variables"
-#define FUNCS    "functions"
+#define RPLUGIN_VARS    "variables"
+#define RPLUGIN_FUNCS   "functions"
 
 
 /* Reserved keywords to initialize and terminate the plugin */
-#define START     "boot"
-#define STOP      "halt"
+#define RPLUGIN_START   "boot"
+#define RPLUGIN_STOP    "halt"
 
 
-/* Reasons load_plugin() could fail */
-#define PLUG_NOTFOUND         100  /* [Warning] - Plugin cannot be found                               */
-#define PLUG_NOMEMORYPLUG     200  /* [Error]   - Not enough memory to allocate plugin                 */
-#define PLUG_MISSINGDECL      300  /* [Warning] - Missing or illegal mandatory plugin declaration      */
-#define PLUG_SYMBOLNOTDEFINED 400  /* [Warning] - Symbol declared but not defined                      */
-#define PLUG_ALREADYLOADED    500  /* [Warning] - Plugin is already loaded                             */
-#define PLUG_NOMEMORYTABLE    600  /* [Error]   - Not enough memory to reallocate the table of plugins */
-#define PLUG_NOSTART          700  /* [Warning] - Plugin cannot be started!                            */
-
+/* Reasons rplugin_load() could fail */
+#define RPLUGIN_NOTFOUND         100  /* [Warning] - Plugin cannot be found                          */
+#define RPLUGIN_MISSINGDECL      200  /* [Warning] - Missing or illegal mandatory plugin declaration */
+#define RPLUGIN_SYMBOLNOTDEFINED 300  /* [Warning] - Symbol declared but not defined                 */
 
 /* Default plugin directory */
-#define DEFAULT_DIR    "../plugins"
+#if !defined(RPLUGIN_DEFAULT_DIR)
+#define RPLUGIN_DEFAULT_DIR   "../plugins"
+#endif
 
-/* Files candidates to be loaded must have the following suffix */
-#define SO_SUFFIX      ".so"
-#define SO_SUFFIX_LEN  3
-
-
-#define addplugin(argv, item) (plugin_t **) vamore ((void **) argv, (void *) item)
-#define freeplugins(argv)     (plugin_t **) vaclear ((void **) argv, rmplugin)
+/* Plugin files candidates to be loaded must have the following suffix */
+#define RPLUGIN_SO_SUFFIX      ".so"
+#define RPLUGIN_SO_SUFFIX_LEN  3
 
 
-/* The prototype for the a generic function that could be implemented by the plugin */
-typedef int call_t (int argc, char * argv [], void * envp []);
+/* Add/Clear plugin items to a table */
+#define rplugin_more(argv, item) (rplugin_t **) vamore ((void **) argv, (void *) item)
+#define rplugin_clear(argv)      (rplugin_t **) vaclear ((void **) argv, rmplugin)
+
+
+/* The prototype for the a generic function that could be implemented in the plugin */
+typedef int rplugin_f (int argc, char * argv [], void * envp []);
 
 
 /* The prototype for the a generic symbol that could be implemented in the plugin */
@@ -50,83 +56,73 @@ typedef struct
   char * name;             /* User printable variable/function name */
   void * sym;              /* Its handle as obtained by dlsym()     */
 
-} symbol_t;
+} rplugin_symbol_t;
 
 
 /* Keeps all information about the plugin implemented in a shared object */
-typedef struct plugin_t
+typedef struct
 {
-  struct timeval uptime;   /* Time it was loaded                 */
+  struct timeval uptime;     /* Time it was loaded                 */
 
-  char      * path;        /* Where the shared object is located */
-  void      * handle;      /* Handle returned by dlopen()        */
-  char      * id;          /* unique id                          */
+  char      * path;          /* Where the shared object is located */
+  void      * handle;        /* Handle returned by dlopen()        */
+  char      * id;            /* unique id                          */
 
-  char     ** declared;    /* Table of plugin declarations       */
+  char     ** declared;      /* Table of plugin declarations       */
 
-  symbol_t ** vars;        /* Table of variables implemented     */
-  symbol_t ** func;        /* Table of functions implemented     */
+  rplugin_symbol_t ** vars;  /* Table of variables implemented     */
+  rplugin_symbol_t ** funs;  /* Table of functions implemented     */
 
   enum
-    { LOADED, STARTED }
-    state;                 /* State of the plugin                */
+    { RPLUGIN_LOADED, RPLUGIN_STARTED }
+    state;                   /* State of the plugin                */
 
-} plugin_t;
-
+} rplugin_t;
 
 
 /* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
 
-#define PLUGIN_OK    0
-#define PLUGIN_FAIL  1
+/* Allocate and free dynamic memory to hold a plugin */
+rplugin_t * rplugin_mk (char * path, int * code, char ** error);
+rplugin_t * rplugin_rm (rplugin_t * plugin);
 
-plugin_t * mkplugin (char * path, int * error, char ** argerror);
-plugin_t * rmplugin (plugin_t * p);
+/* Load/unload in memory plugin(s) passed by filename(s) */
+rplugin_t * rplugin_open (char * file);
+void rplugin_close (rplugin_t * plugin);
+rplugin_t ** rplugin_load_files (char * files []);
+rplugin_t ** rplugin_load_dir (char * dir, bool verbose);
+void rplugin_unload (rplugin_t * argv []);
 
-void * defined (char * name, symbol_t * argv []);
-char * variable (char * name, symbol_t * argv []);
-call_t * function (char * name, symbol_t * argv []);
+/* List/Load plugins in a given directory */
+char ** rplugin_ls (char * dir);
 
-char * pluginname (plugin_t * p);
-plugin_t * pluginbyname (char * name);
-int pluginstate (char * name);
+/* Check is a name has been defined in the table of symbols */
+char * rplugin_variable (char * name, rplugin_symbol_t * argv []);
+rplugin_f * rplugin_function (char * name, rplugin_symbol_t * argv []);
+bool rplugin_defined (char * name, rplugin_symbol_t * argv []);
 
+/* Get functions (single plugin) */
+rplugin_symbol_t ** rplugin_getvars (rplugin_t * plugin);
+bool rplugin_hasvars (rplugin_t * plugin);
 
-/* List plugins in a given directory */
-char ** rls_plugins (char * dir);
+char * rplugin_library (rplugin_t * plugin);
+char * rplugin_module (rplugin_t * plugin);
+char * rplugin_author (rplugin_t * plugin);
 
-/* Load plugins in a given directory */
-plugin_t ** rload_plugins (char * dir, bool verbose);
+char ** rplugin_names (rplugin_t * argv []);
+char ** rplugin_func_names (rplugin_t * argv []);
+char ** rplugin_functions (rplugin_t * plugin);
+bool rplugin_implement (rplugin_t * plugin, char * name);
+bool rplugin_has (rplugin_t * argv [], char * name);
+rplugin_t * rplugin_lookup (char * name, rplugin_t * argv []);
 
-/* Load plugins passed by filenames */
-plugin_t ** rload_files (char * files []);
+unsigned rplugin_maxi (rplugin_t * argv []);
+unsigned rplugin_maxl (rplugin_t * argv []);
+unsigned rplugin_maxm (rplugin_t * argv []);
+unsigned rplugin_maxa (rplugin_t * argv []);
 
-/* Unload plugins */
-void runload_plugins (plugin_t * plugins []);
+void rplugin_print_info (rplugin_t * plugin, unsigned seq, unsigned maxi, unsigned maxl, unsigned maxm, unsigned maxa);
+void rplugin_print_id (rplugin_t * plugin, unsigned seq, unsigned maxl, unsigned maxm, unsigned maxa);
 
-
-/* Get functions */
-symbol_t ** rp_getvars (plugin_t * p);
-bool rp_hasvars (plugin_t * p);
-
-char * rp_library (plugin_t * p);
-char * rp_module (plugin_t * p);
-char * rp_author (plugin_t * p);
-
-char ** rp_names (plugin_t * p []);
-char ** rp_func_names (plugin_t * argv []);
-plugin_t * rp_lookup (char * name, plugin_t * p []);
-char ** rp_functions (plugin_t * p);
-bool rp_implement (plugin_t * p, char * name);
-bool rp_has (plugin_t * argv [], char * name);
-
-unsigned rp_maxi (plugin_t * argv []);
-unsigned rp_maxl (plugin_t * argv []);
-unsigned rp_maxm (plugin_t * argv []);
-unsigned rp_maxa (plugin_t * argv []);
-
-void rp_print_info (plugin_t * p, unsigned seq, unsigned maxi, unsigned maxl, unsigned maxm, unsigned maxa);
-void rp_print_id (plugin_t * p, unsigned seq, unsigned maxl, unsigned maxm, unsigned maxa);
-
-void rp_print_infos (plugin_t * argv []);
-void rp_print_ids (plugin_t * argv []);
+void rplugin_print_infos (rplugin_t * argv []);
+void rplugin_print_ids (rplugin_t * argv []);

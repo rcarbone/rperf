@@ -33,7 +33,7 @@ typedef struct
   unsigned id;           /* unique test id      */
   char * name;           /* unique test name    */
   char * description;    /* test description    */
-  call_t * fun;          /* function to run it  */
+  rplugin_f * fun;       /* function to run it  */
 
   bool enabled;          /* enable/disable flag */
 
@@ -58,7 +58,7 @@ typedef struct
   bool enabled;          /* enable/disable flag     */
 
   char * pathname;       /* shared object with the implementation   */
-  plugin_t * plugin;     /* where all the functions are implemented */
+  rplugin_t * plugin;    /* where all the functions are implemented */
   char * name;           /* name of implementation  */
   test_t ** suite;       /* suite of tests implemented in the shared object */
 
@@ -104,7 +104,7 @@ char * tdescription (unsigned id);
 unsigned sw_maxname (sw_t * sw []);
 unsigned sw_no (sw_t * sw []);
 bool sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose);
-call_t * sw_func (sw_t * sw, char * name);
+rplugin_f * sw_func (sw_t * sw, char * name);
 sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
 void sw_done (sw_t * implementations [], bool verbose);
 test_t * get_test (sw_t * sw, unsigned id);

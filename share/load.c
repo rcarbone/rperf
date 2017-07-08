@@ -37,7 +37,7 @@ int main (int argc, char * argv [])
       char * buffer;
       plugin_t * p;
 
-      p = mkplugin (path, & error, & buffer);
+      p = rplugin_mk (path, & error, & buffer);
       if (p)
 	{
 	  char ** n;
@@ -73,18 +73,18 @@ int main (int argc, char * argv [])
 		printf ("  defined functions\n");
 	      while (s && * s)
 		{
-		  call_t * fun = function ((* s) -> name, p -> func);
+		  rplugin_f * fun = function ((* s) -> name, p -> func);
 		  char * argv [2] = { (* s) -> name, NULL };
 
 		  printf ("    [fun] running %s ... ", (* s) -> name);
-		  if (! fun (2, argv, NULL))
+		  if (! fun (1, argv, NULL))
 		    printf ("Ok\n");
 		  else
 		    printf ("No\n");
 		  s ++;
 		}
 	    }
-	  rmplugin (p);
+	  rplugin_rm (p);
 	}
       else
 	{

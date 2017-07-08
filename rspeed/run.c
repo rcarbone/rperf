@@ -118,7 +118,7 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      /* Select the implementation in random order */
 	      sw_t * sw  = plugins [order [i]];
 
-	      if (rp_implement (sw -> plugin, * names))
+	      if (rplugin_implement (sw -> plugin, * names))
 		{
 		  /* Run this test for this implementation */
 		  rspent_t * result = run_single_test (rtest, sw, items, objs, i + 1, loops, maxn, quiet);
