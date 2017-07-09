@@ -17,85 +17,85 @@ class hashfunc
   unsigned operator () (char * key) const { return rht_python_hash (key); }
 };
 
-typedef mct::closed_hash_map <char *, void *, hashfunc> rhash_t;
-#include "rhash.h"
+typedef mct::closed_hash_map <char *, void *, hashfunc> rht_t;
+#include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  return new rhash_t;
+  return new rht_t;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   delete ht;
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   ht -> clear ();
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return ht -> size ();
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   ht -> insert (std::make_pair (key, val));
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
-  rhash_t::iterator k = ht -> find (key);
+  rht_t::iterator k = ht -> find (key);
   return k != ht -> end () ? k -> second : NULL;
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   ht -> erase (key);
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rhash_t::iterator k;
+  rht_t::iterator k;
   for (k = ht -> begin (); k != ht -> end (); ++ k)
     fn (data);
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = (char **) calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = (char **) calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
-  rhash_t::iterator it;
+  rht_t::iterator it;
   for (it = ht -> begin (); it != ht -> end (); ++ it)
     keys [i ++] = it -> first;
   return keys;
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = (void **) calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = (void **) calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
-  rhash_t::iterator it;
+  rht_t::iterator it;
   for (it = ht -> begin (); it != ht -> end (); ++ it)
     vals [i ++] = it -> second;
   return vals;

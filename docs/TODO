@@ -15,3 +15,11 @@
   -l                             List test cases available in a test executable
   -p TESTPATH                    Only start test cases matching TESTPATH
   -s TESTPATH                    Skip all tests matching TESTPATH
+
+
+========================================
+https://github.com/nfergu/hashtableperf
+
+The results are presented in terms of iterations per second.
+In other words, how many times we can be update an entry in the hash table,
+then retrieve another entry, in one second (higher is better).

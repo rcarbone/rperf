@@ -6,8 +6,8 @@
 #include "hashtable.c"
 
 /* librhash - an abstract C library over real hash tables */
-typedef _Py_hashtable_t rhash_t;
-#include "rhash.h"
+typedef _Py_hashtable_t rht_t;
+#include "rht.h"
 #include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -69,73 +69,73 @@ static int addval (_Py_hashtable_entry_t * obj, void * vals)
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
   return _Py_hashtable_new (PTR_VAL_SIZE, _Py_hashtable_hash_str, _Py_hashtable_compare_string);
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   _Py_hashtable_destroy (ht);
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   _Py_hashtable_clear (ht);
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return _Py_hashtable_count (ht);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   _Py_HASHTABLE_SET (ht, key, val);
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   _Py_hashtable_entry_t * e = _Py_hashtable_get_entry (ht, key);
   return e ? _Py_HASHTABLE_ENTRY_DATA_AS_VOID_P (e) : NULL;
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   _Py_hashtable_delete (ht, key);
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   func_t fun = { .fn = fn, .data = data };
   _Py_hashtable_foreach (ht, myforeach, & fun);
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   _Py_hashtable_foreach (ht, addkey, & keys);
   return keys;
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   _Py_hashtable_foreach (ht, addval, & vals);
   return vals;
 }

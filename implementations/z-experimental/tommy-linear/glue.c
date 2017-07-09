@@ -6,8 +6,8 @@
 #include "tommyhashlin.c"
 
 /* librhash - an abstract C library over real hash tables */
-typedef tommy_hashlin rhash_t;
-#include "rhash.h"
+typedef tommy_hashlin rht_t;
+#include "rht.h"
 #include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -33,7 +33,7 @@ typedef struct
 
 typedef struct
 {
-  rhash_each_f * fn;
+  rht_each_f * fn;
   void * data;
 
 } func_t;
@@ -100,15 +100,15 @@ static bool addval (void * vals, void * obj)
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  rhash_t * ht = calloc (1, sizeof (* ht));
+  rht_t * ht = calloc (1, sizeof (* ht));
   tommy_hashlin_init (ht);
   return ht;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   if (tommy_hashlin_count (ht))
     tommy_hashlin_foreach (ht, rmpair);
@@ -117,27 +117,27 @@ void rhash_free (rhash_t * ht)
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   tommy_hashlin_foreach (ht, rmpair);
   ht -> count = 0;                   /* Bug! */
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return tommy_hashlin_count (ht);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   tobj_t * obj = mkpair (key, val);
   tommy_hashlin_insert (ht, & obj -> tommy, obj, rht_python_hash (key));
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   /* Set input/output parameters to the iterate callback */
   look_t l = { .key = key, .found = NULL };
@@ -146,7 +146,7 @@ void * rhash_get (rhash_t * ht, char * key)
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   /* Set input/output parameters to the iterate callback */
   look_t l = { .key = key, .found = NULL };
@@ -159,20 +159,20 @@ void rhash_del (rhash_t * ht, char * key)
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   func_t fun = { .fn = fn, .data = data };
   tommy_hashlin_foreach_arg (ht, myforeach, & fun);
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
   char ** keys = NULL;
   tommy_hashlin_foreach_arg (ht, addkey, & keys);
@@ -180,7 +180,7 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
   void ** vals = NULL;
   tommy_hashlin_foreach_arg (ht, addval, & vals);

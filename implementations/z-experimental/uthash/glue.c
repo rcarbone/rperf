@@ -5,8 +5,8 @@
 /* The implementation */
 #include "uthash.h"
 
-typedef struct rhash rhash_t;
-#include "rhash.h"
+typedef struct rhash rht_t;
+#include "rht.h"
 #include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -47,20 +47,20 @@ static void rmpair (utobj_t * obj)
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  rhash_t * ht = calloc (1, sizeof (* ht));
+  rht_t * ht = calloc (1, sizeof (* ht));
   ht -> uthash = NULL;                       /* Important! initialize to NULL */
   return ht;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
-  char ** keys = rhash_keys (ht);
+  char ** keys = rht_keys (ht);
   char ** k = keys;
   while (* k)
-    rhash_del (ht, * k ++);
+    rht_del (ht, * k ++);
   if (keys)
     free (keys);
   HASH_CLEAR (hh, ht -> uthash);
@@ -68,12 +68,12 @@ void rhash_free (rhash_t * ht)
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
-  char ** keys = rhash_keys (ht);
+  char ** keys = rht_keys (ht);
   char ** k = keys;
   while (* k)
-    rhash_del (ht, * k ++);
+    rht_del (ht, * k ++);
   if (keys)
     free (keys);
   HASH_CLEAR (hh, ht -> uthash);
@@ -81,20 +81,20 @@ void rhash_clear (rhash_t * ht)
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return HASH_COUNT (ht -> uthash);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   utobj_t * obj = mkpair (key, val);
   HASH_ADD_KEYPTR (hh, ht -> uthash, key, strlen (key), obj);
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   utobj_t * hit;
   HASH_FIND_STR (ht -> uthash, key, hit);
@@ -102,7 +102,7 @@ void * rhash_get (rhash_t * ht, char * key)
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   utobj_t * hit;
   HASH_FIND_STR (ht -> uthash, key, hit);
@@ -114,13 +114,13 @@ void rhash_del (rhash_t * ht, char * key)
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   utobj_t * it;
   for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
@@ -128,9 +128,9 @@ void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   utobj_t * it;
   for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
     keys = (char **) vamore ((void **) keys, it -> hh . key);
@@ -138,12 +138,12 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rhash_count (ht) + 1, sizeof (char *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (char *));
   utobj_t * it;
   for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
-    vals = vamore (vals, rhash_get (ht, it -> hh . key));
+    vals = vamore (vals, rht_get (ht, it -> hh . key));
   return vals;
 }
 

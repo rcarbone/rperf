@@ -37,7 +37,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RTESTLIB}
+all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -65,7 +65,7 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
@@ -78,7 +78,7 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
          fi
 
 # Binary programs
-run: run.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

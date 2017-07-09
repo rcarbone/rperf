@@ -7,9 +7,9 @@ ${RLIBCLIB}:
 	@(cd ${RLIBCDIR} && make -s)
 	@echo "==================="
 
-# rtest
-${RTESTLIB}:
+# rht
+${RHTLIB}:
 	@echo "==================="
-	@echo "=*= making ${RTESTLIB} =*="
-	@(cd ${RTESTDIR} && make)
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
 	@echo "==================="

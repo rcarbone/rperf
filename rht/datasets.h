@@ -1,4 +1,3 @@
-/* librhash - an abstract C library over real hash table implementations */
 
 #pragma once
 

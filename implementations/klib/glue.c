@@ -12,36 +12,36 @@
 KHASH_INIT(rhash, char *, void *, 1, rht_python_hash, kh_str_hash_equal)
 
 /* librhash - an abstract C library over real hash tables */
-typedef khash_t(rhash) rhash_t;
-#include "rhash.h"
+typedef khash_t(rhash) rht_t;
+#include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
   return kh_init (rhash);
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   kh_destroy (rhash, ht);
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   kh_clear (rhash, ht);
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return kh_size (ht);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   int ret;
   khiter_t k = kh_put (rhash, ht, key, & ret);
@@ -49,27 +49,27 @@ void rhash_set (rhash_t * ht, char * key, void * val)
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   khiter_t k = kh_get (rhash, ht, key);
   return k == kh_end (ht) ? NULL : kh_value (ht, k);
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   khiter_t k = kh_get (rhash, ht, key);
   kh_del (rhash, ht, k);
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
   return kh_get (rhash, ht, key) != kh_end (ht);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   khint_t k;
   for (k = kh_begin (ht); k != kh_end (ht); k ++)
@@ -81,9 +81,9 @@ void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
   khiter_t k;
   for (k = kh_begin (ht); k != kh_end (ht); k ++)
@@ -96,9 +96,9 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
   khiter_t k;
   for (k = kh_begin (ht); k < kh_end (ht); k ++)

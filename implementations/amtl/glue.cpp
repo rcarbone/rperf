@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 
-#include "rhash.h"
+#include "rht.h"
 #include "hashfuns.h"
 
 
@@ -45,34 +45,34 @@ struct rhash
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  rhash_t * ht = (rhash_t * ) calloc (1, sizeof (* ht));
+  rht_t * ht = (rht_t * ) calloc (1, sizeof (* ht));
   ht -> some = new some_t;
   return ht;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   delete ht -> some;
   free (ht);
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   ht -> some -> clear ();
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return ht -> some -> elements ();
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   some_t::Insert it = ht -> some -> findForAdd (key);
   if (it . found ())
@@ -80,14 +80,14 @@ void rhash_set (rhash_t * ht, char * key, void * val)
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   some_t::Insert it = ht -> some -> findForAdd (key);
   return it . found () ? it -> key : NULL;
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   some_t::Insert it = ht -> some -> findForAdd (key);
   if (it . found ())
@@ -95,13 +95,13 @@ void rhash_del (rhash_t * ht, char * key)
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   some_t::iterator it = ht -> some -> iter ();
   for (ht -> some -> iter (); ! it . empty (); it . next ())
@@ -109,9 +109,9 @@ void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = (char **) calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = (char **) calloc (rht_count (ht) + 1, sizeof (char *));
   some_t::iterator it = ht -> some -> iter ();
   unsigned i = 0;
   for (ht -> some -> iter (); ! it . empty (); it . next ())
@@ -120,9 +120,9 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = (void **) calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = (void **) calloc (rht_count (ht) + 1, sizeof (void *));
   some_t::iterator it = ht -> some -> iter ();
   unsigned i = 0;
   for (ht -> some -> iter (); ! it . empty (); it . next ())

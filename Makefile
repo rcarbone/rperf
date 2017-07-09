@@ -1,6 +1,6 @@
 # List of subdirectories
 SUBDIRS  = rlibc
-SUBDIRS += rtest
+SUBDIRS += rht
 SUBDIRS += implementations
 SUBDIRS += rspeed
 SUBDIRS += rbattle

@@ -6,8 +6,8 @@
 
 
 /* Project headers */
-typedef struct rhash rhash_t;
-#include "rhash.h"
+typedef struct rhash rht_t;
+#include "rht.h"
 
 #include "varrays.h"
 #include "args.h"
@@ -56,12 +56,12 @@ static rtest_t rsuite_builtins [] =
 /* === Implementation of Test Suite === */
 
 /* Allocate and populate a hash table with n objects */
-static rhash_t * populate (unsigned argc, robj_t * argv [])
+static rht_t * populate (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = rhash_alloc (argc);
+  rht_t * ht = rht_alloc (argc);
   unsigned i;
   for (i = 0; i < argc; i ++)
-    rhash_set (ht, argv [i] -> skey, & argv [i] -> ukey);
+    rht_set (ht, argv [i] -> skey, & argv [i] -> ukey);
   return ht;
 }
 
@@ -69,16 +69,16 @@ static rhash_t * populate (unsigned argc, robj_t * argv [])
 /* Allocate and populate all the objects starting with an empty a hash table */
 rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = rhash_alloc (argc);
+  rht_t * ht = rht_alloc (argc);
   rtime_t t1;
   rtime_t t2;
   unsigned i;
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
-    rhash_set (ht, argv [i] -> skey, & argv [i] -> ukey);
+    rht_set (ht, argv [i] -> skey, & argv [i] -> ukey);
   t2 = nswall ();
-  i = rhash_count (ht);
-  rhash_free (ht);
+  i = rht_count (ht);
+  rht_free (ht);
   return i == argc ? t2 - t1 : 0;
 }
 
@@ -86,7 +86,7 @@ rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
 /* Find and dereference with success all the objects */
 rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned hit = 0;
   rtime_t t1;
   rtime_t t2;
@@ -95,12 +95,12 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     {
-      found = rhash_get (ht, argv [i] -> skey);
+      found = rht_get (ht, argv [i] -> skey);
       if (found && found == & argv [i] -> ukey)
 	hit ++;
     }
   t2 = nswall ();
-  rhash_free (ht);
+  rht_free (ht);
   return hit == argc ? t2 - t1 : 0;
 }
 
@@ -108,17 +108,17 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
 /* Find with failure all the objects */
 rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned missed = 0;
   rtime_t t1;
   rtime_t t2;
   unsigned i;
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
-    if (! rhash_get (ht, argv [i] -> smiss))
+    if (! rht_get (ht, argv [i] -> smiss))
       missed ++;
   t2 = nswall ();
-  rhash_free (ht);
+  rht_free (ht);
   return missed == argc ? t2 - t1 : 0;
 }
 
@@ -126,17 +126,17 @@ rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
 /* Remove and dereference all the objects */
 rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned deleted;
   rtime_t t1;
   rtime_t t2;
   unsigned i;
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
-    rhash_del (ht, argv [i] -> skey);
-  deleted = argc - rhash_count (ht);
+    rht_del (ht, argv [i] -> skey);
+  deleted = argc - rht_count (ht);
   t2 = nswall ();
-  rhash_free (ht);
+  rht_free (ht);
   return deleted == argc ? t2 - t1 : 0;
 }
 
@@ -144,7 +144,7 @@ rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 /* Find, delete and reinsert with a different key all the objects */
 rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned replaced;
   rtime_t t1;
   rtime_t t2;
@@ -153,18 +153,18 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     {
-      found = rhash_get (ht, argv [i] -> skey);
+      found = rht_get (ht, argv [i] -> skey);
       if (found && found == & argv [i] -> ukey)
 	{
-	  rhash_del (ht, argv [i] -> skey);
-	  found = rhash_get (ht, argv [i] -> smiss);
+	  rht_del (ht, argv [i] -> skey);
+	  found = rht_get (ht, argv [i] -> smiss);
 	  if (! found)
-	    rhash_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
+	    rht_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
 	}
     }
   t2 = nswall ();
-  replaced = rhash_count (ht);
-  rhash_free (ht);
+  replaced = rht_count (ht);
+  rht_free (ht);
   return replaced == argc ? t2 - t1 : 0;
 }
 
@@ -172,7 +172,7 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 /* Add if not found, delete otherwise */
 rtime_t rsuite_chaos (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   rtime_t t1;
   rtime_t t2;
   unsigned i;
@@ -180,14 +180,14 @@ rtime_t rsuite_chaos (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     {
-      found = rhash_get (ht, argv [i] -> skey);
+      found = rht_get (ht, argv [i] -> skey);
       if (found && found == & argv [i] -> ukey)
-	rhash_del (ht, argv [i] -> skey);
+	rht_del (ht, argv [i] -> skey);
       else
-	rhash_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
+	rht_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
     }
   t2 = nswall ();
-  rhash_free (ht);
+  rht_free (ht);
   return t2 - t1;
 }
 

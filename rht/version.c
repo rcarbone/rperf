@@ -4,32 +4,32 @@
 #include <sys/utsname.h>
 
 
-/* librhash - an abstract C library over real hash tables */
-typedef struct rhash rhash_t;
-#include "rhash.h"
+/* librht - an abstract C library over real hash tables */
+typedef struct rht rht_t;
+#include "rht.h"
 
 
 /* The name of the game with its version number (major), release number (minor) and patchlevel (lower) */
-static char __pkgname__     [] = "librhash";
-static char __version__     [] = "version "RHASH_VERSION;
+static char __pkgname__     [] = "librht";
+static char __version__     [] = "version "RHT_VERSION;
 static char __title__       [] = "hash tables without a hash table";
-static char __released__    [] = "May 2017";
-static char __description__ [] = "librhash - a C library for virtualization of hash tables";
+static char __released__    [] = "Jul 2017";
+static char __description__ [] = "librht - a C library for virtualization of hash tables";
 static char __author__      [] = "Rocco Carbone <rocco@tecsiel.it>";
 
 
 /* The string version */
-static const char rhash_version_string [] = "librhash version "RHASH_VERSION;
+static const char rht_version_string [] = "librht version "RHT_VERSION;
 
 
-const char * rhash_lib_version (void)
+const char * rht_lib_version (void)
 {
-  return rhash_version_string;
+  return rht_version_string;
 }
 
 
 /* Print software information */
-void rhash_print_version (void)
+void rht_print_version (void)
 {
   struct utsname name;
 

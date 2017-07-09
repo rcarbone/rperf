@@ -22,72 +22,72 @@ class hashfunc
 };
 
 /* librhash - an abstract C library over real hash tables */
-typedef container::hash_map<char *, void *, hashfunc> rhash_t;
-#include "rhash.h"
+typedef container::hash_map<char *, void *, hashfunc> rht_t;
+#include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  return new rhash_t;
+  return new rht_t;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   delete ht;
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   ht -> clear ();
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return ht -> size ();
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   ht -> insert (std::pair <char *, void *> (key, val));
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
-  rhash_t::iterator k = ht -> find (key);
+  rht_t::iterator k = ht -> find (key);
   return k != ht -> end () ? k -> second : NULL;
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   ht -> erase (key);
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rhash_t::iterator it = ht -> begin ();
+  rht_t::iterator it = ht -> begin ();
   for (; it != ht -> end (); ++ it)
     fn (data);
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = (char **) calloc (rhash_count (ht) + 1, sizeof (char *));
-  rhash_t::iterator it = ht -> begin ();
+  char ** keys = (char **) calloc (rht_count (ht) + 1, sizeof (char *));
+  rht_t::iterator it = ht -> begin ();
   unsigned i = 0;
   for (; it != ht -> end (); ++ it)
     keys [i ++] = it -> first;
@@ -95,10 +95,10 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = (void **) calloc (rhash_count (ht) + 1, sizeof (void *));
-  rhash_t::iterator it = ht -> begin ();
+  void ** vals = (void **) calloc (rht_count (ht) + 1, sizeof (void *));
+  rht_t::iterator it = ht -> begin ();
   unsigned i = 0;
   for (; it != ht -> end (); ++ it)
     vals [i ++] = it -> second;

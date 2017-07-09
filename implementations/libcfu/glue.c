@@ -5,8 +5,8 @@
 #include "cfuhash.c"
 
 /* librhash - an abstract C library over real hash tables */
-typedef cfuhash_table_t rhash_t;
-#include "rhash.h"
+typedef cfuhash_table_t rht_t;
+#include "rht.h"
 #include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -49,72 +49,72 @@ static int addval (void * key, size_t key_size, void * data, size_t data_size, v
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
   return cfuhash_new ();
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
   cfuhash_destroy (ht);
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
   cfuhash_clear (ht);
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return cfuhash_num_entries (ht);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   cfuhash_put (ht, key, val);
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   return cfuhash_get (ht, key);
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   cfuhash_delete (ht, key);
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
   return cfuhash_exists (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, rhash_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   func_t fun = { .fn = fn, .data = data };
   cfuhash_foreach (ht, myforeach, & fun);
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   cfuhash_foreach (ht, addkey, & keys);
   return keys;
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   cfuhash_foreach (ht, addval, & vals);
   return vals;
 }

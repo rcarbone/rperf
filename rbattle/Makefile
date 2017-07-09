@@ -28,22 +28,23 @@ PROJECT    = rperf
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's tree
 ROOTDIR    = /home/rocco/${PROJECT}
+
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
+# The project's source tree
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RTESTDIR   = ${ROOTDIR}/rtest
-RSUITEDIR  = ${ROOTDIR}/tests/suite
+RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
 
-# rtest
-INCLUDE  += -I${RTESTDIR}
-RTESTLIB  = ${RTESTDIR}/librtest.a
-USRLIBS  += ${RTESTLIB}
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -102,7 +103,7 @@ ${SHLIB}:
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ${RTESTLIB} ${RUTLIB} ${RLIBCLIB}
+${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

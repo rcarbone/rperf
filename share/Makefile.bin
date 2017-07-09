@@ -55,7 +55,7 @@ ${SHLIB}:
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ${RTESTLIB} ${RUTLIB} ${RLIBCLIB}
+${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

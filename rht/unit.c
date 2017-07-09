@@ -10,8 +10,8 @@
 #include <assert.h>
 
 /* Project headers */
-typedef struct rhash rhash_t;
-#include "rhash.h"
+typedef struct rht rht_t;
+#include "rht.h"
 
 #include "varrays.h"
 #include "datasets.h"
@@ -82,18 +82,18 @@ static void addone (void * x)
 
 
 /* Allocate and populate a hash table with n objects */
-static rhash_t * populate (unsigned argc, robj_t * argv [])
+static rht_t * populate (unsigned argc, robj_t * argv [])
 {
-  rhash_t * ht = rhash_alloc (argc);
+  rht_t * ht = rht_alloc (argc);
   unsigned i;
   assert (ht);
-  assert (rhash_count (ht) == 0);
+  assert (rht_count (ht) == 0);
   for (i = 0; i < argc; i ++)
     {
-      rhash_set (ht, argv [i] -> skey, argv [i]);
-      assert (rhash_count (ht) == i + 1);
+      rht_set (ht, argv [i] -> skey, argv [i]);
+      assert (rht_count (ht) == i + 1);
     }
-  assert (rhash_count (ht) == argc);
+  assert (rht_count (ht) == argc);
   return ht;
 }
 
@@ -102,10 +102,10 @@ static rhash_t * populate (unsigned argc, robj_t * argv [])
 
 static unsigned alloc_free (unsigned argc)
 {
-  rhash_t * ht = rhash_alloc (argc);
+  rht_t * ht = rht_alloc (argc);
   assert (ht);
-  assert (rhash_count (ht) == 0);
-  rhash_free (ht);
+  assert (rht_count (ht) == 0);
+  rht_free (ht);
   return argc;
 }
 
@@ -113,8 +113,8 @@ static unsigned alloc_free (unsigned argc)
 static unsigned alloc_add_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
-  rhash_free (ht);
+  rht_t * ht = populate (argc, argv);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -123,10 +123,10 @@ static unsigned alloc_add_free (unsigned argc)
 static unsigned alloc_add_clear_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
-  rhash_clear (ht);
-  assert (rhash_count (ht) == 0);
-  rhash_free (ht);
+  rht_t * ht = populate (argc, argv);
+  rht_clear (ht);
+  assert (rht_count (ht) == 0);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -135,10 +135,10 @@ static unsigned alloc_add_clear_free (unsigned argc)
 static unsigned alloc_add_count_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
-  unsigned count = rhash_count (ht);
+  rht_t * ht = populate (argc, argv);
+  unsigned count = rht_count (ht);
   assert (count == argc);
-  rhash_free (ht);
+  rht_free (ht);
   rmobjs (argv);
   return count;
 }
@@ -147,15 +147,15 @@ static unsigned alloc_add_count_free (unsigned argc)
 static unsigned alloc_add_found_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
     {
-      robj_t * found = rhash_get (ht, argv [i] -> skey);
+      robj_t * found = rht_get (ht, argv [i] -> skey);
       assert (found);
       assert (found -> ukey == argv [i] -> ukey);          /* Dereference */
     }
-  rhash_free (ht);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -164,11 +164,11 @@ static unsigned alloc_add_found_free (unsigned argc)
 static unsigned alloc_add_notfound_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
-    assert (! rhash_get (ht, argv [i] -> smiss));
-  rhash_free (ht);
+    assert (! rht_get (ht, argv [i] -> smiss));
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -177,15 +177,15 @@ static unsigned alloc_add_notfound_free (unsigned argc)
 static unsigned alloc_add_delete_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
     {
-      rhash_del (ht, argv [i] -> skey);
-      assert (rhash_count (ht) == argc - i - 1);
+      rht_del (ht, argv [i] -> skey);
+      assert (rht_count (ht) == argc - i - 1);
     }
-  assert (rhash_count (ht) == 0);
-  rhash_free (ht);
+  assert (rht_count (ht) == 0);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -195,15 +195,15 @@ static unsigned alloc_add_delete_free (unsigned argc)
 static unsigned alloc_add_missed_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
     {
-      rhash_del (ht, argv [i] -> smiss);
-      assert (rhash_count (ht) == argc);
+      rht_del (ht, argv [i] -> smiss);
+      assert (rht_count (ht) == argc);
     }
-  assert (rhash_count (ht) == argc);
-  rhash_free (ht);
+  assert (rht_count (ht) == argc);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -212,11 +212,11 @@ static unsigned alloc_add_missed_free (unsigned argc)
 static unsigned alloc_add_iterate_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
+  rht_t * ht = populate (argc, argv);
   unsigned count = 0;
-  rhash_foreach (ht, addone, & count);
-  assert (rhash_count (ht) == count);
-  rhash_free (ht);
+  rht_foreach (ht, addone, & count);
+  assert (rht_count (ht) == count);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -225,14 +225,14 @@ static unsigned alloc_add_iterate_free (unsigned argc)
 static unsigned alloc_add_keys_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
-  char ** keys = rhash_keys (ht);
+  rht_t * ht = populate (argc, argv);
+  char ** keys = rht_keys (ht);
   char ** k = keys;
   assert (valen ((void **) keys) == argc);
   while (k && * k)
-    assert (rhash_has (ht, * k ++));
+    assert (rht_has (ht, * k ++));
   vaclear ((void **) keys, NULL);
-  rhash_free (ht);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }
@@ -241,11 +241,11 @@ static unsigned alloc_add_keys_free (unsigned argc)
 static unsigned alloc_add_vals_free (unsigned argc)
 {
   robj_t ** argv = mkobjs (argc);
-  rhash_t * ht = populate (argc, argv);
-  void ** vals = rhash_vals (ht);
+  rht_t * ht = populate (argc, argv);
+  void ** vals = rht_vals (ht);
   assert (valen (vals) == argc);
   vaclear (vals, NULL);
-  rhash_free (ht);
+  rht_free (ht);
   rmobjs (argv);
   return argc;
 }

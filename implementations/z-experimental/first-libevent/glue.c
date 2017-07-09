@@ -7,8 +7,8 @@
 #include "ht-internal.h"
 
 /* librhash - an abstract C library over real hash tables */
-typedef struct leht rhash_t;
-#include "rhash.h"
+typedef struct leht rht_t;
+#include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
@@ -71,24 +71,24 @@ static void rm (leobj_t * obj)
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-rhash_t * rhash_alloc (unsigned size)
+rht_t * rht_alloc (unsigned size)
 {
-  rhash_t * ht = calloc (1, sizeof (rhash_t));
+  rht_t * ht = calloc (1, sizeof (rht_t));
   HT_INIT (leht, ht);
   return ht;
 }
 
 
-void rhash_free (rhash_t * ht)
+void rht_free (rht_t * ht)
 {
-  rhash_clear (ht);
+  rht_clear (ht);
   free (ht);
 }
 
 
-void rhash_clear (rhash_t * ht)
+void rht_clear (rht_t * ht)
 {
-  leobj_t ** objs = calloc (rhash_count (ht) + 1, sizeof (leobj_t *));
+  leobj_t ** objs = calloc (rht_count (ht) + 1, sizeof (leobj_t *));
   unsigned i = 0;
   leobj_t ** k;
 
@@ -105,19 +105,19 @@ void rhash_clear (rhash_t * ht)
 }
 
 
-unsigned rhash_count (rhash_t * ht)
+unsigned rht_count (rht_t * ht)
 {
   return HT_SIZE (ht);
 }
 
 
-void rhash_set (rhash_t * ht, char * key, void * val)
+void rht_set (rht_t * ht, char * key, void * val)
 {
   HT_REPLACE (leht, ht, mk (key, val));
 }
 
 
-void * rhash_get (rhash_t * ht, char * key)
+void * rht_get (rht_t * ht, char * key)
 {
   leobj_t obj = { .key = key };
   leobj_t * hit;
@@ -128,7 +128,7 @@ void * rhash_get (rhash_t * ht, char * key)
 }
 
 
-void rhash_del (rhash_t * ht, char * key)
+void rht_del (rht_t * ht, char * key)
 {
   leobj_t obj = { .key = key };
   leobj_t * hit;
@@ -142,13 +142,13 @@ void rhash_del (rhash_t * ht, char * key)
 }
 
 
-bool rhash_has (rhash_t * ht, char * key)
+bool rht_has (rht_t * ht, char * key)
 {
-  return rhash_get (ht, key);
+  return rht_get (ht, key);
 }
 
 
-void rhash_foreach (rhash_t * ht, void (* fn) (void * x), void * data)
+void rht_foreach (rht_t * ht, void (* fn) (void * x), void * data)
 {
   leobj_t ** k;
   HT_FOREACH (k, leht, ht)
@@ -156,9 +156,9 @@ void rhash_foreach (rhash_t * ht, void (* fn) (void * x), void * data)
 }
 
 
-char ** rhash_keys (rhash_t * ht)
+char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rhash_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
   leobj_t ** k;
   HT_FOREACH (k, leht, ht)
@@ -167,9 +167,9 @@ char ** rhash_keys (rhash_t * ht)
 }
 
 
-void ** rhash_vals (rhash_t * ht)
+void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rhash_count (ht) + 1, sizeof (void *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
   leobj_t ** k;
   HT_FOREACH (k, leht, ht)

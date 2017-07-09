@@ -18,22 +18,23 @@ PROJECT    = rperf
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's tree
 ROOTDIR    = /home/rocco/${PROJECT}
+
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
+# The project's source tree
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RTESTDIR   = ${ROOTDIR}/rtest
-RSUITEDIR  = ${ROOTDIR}/tests/suite
+RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
 
-# rtest
-INCLUDE  += -I${RTESTDIR}
-RTESTLIB  = ${RTESTDIR}/librtest.a
-USRLIBS  += ${RTESTLIB}
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
@@ -74,7 +75,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RTESTLIB}
+all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -102,7 +103,7 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
@@ -115,7 +116,7 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
          fi
 
 # Binary programs
-run: run.o ${RTESTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -220,9 +221,9 @@ ${RLIBCLIB}:
 	@(cd ${RLIBCDIR} && make -s)
 	@echo "==================="
 
-# rtest
-${RTESTLIB}:
+# rht
+${RHTLIB}:
 	@echo "==================="
-	@echo "=*= making ${RTESTLIB} =*="
-	@(cd ${RTESTDIR} && make)
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
 	@echo "==================="

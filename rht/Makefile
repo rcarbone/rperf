@@ -1,14 +1,16 @@
 # The name of the games
-LIB       = rtest
+LIB       = rht
 PROGRAM   = rtest
 
 # C source files
 MAINSRCS  = main.c
 MAINSRCS += stub-api.c
-LIBSRCS   = unit.c
+LIBSRCS   = datasets.c
+LIBSRCS  += unit.c
 LIBSRCS  += suite.c
 LIBSRCS  += spent.c
 LIBSRCS  += print.c
+LIBSRCS  += version.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =
@@ -29,18 +31,17 @@ SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RTESTDIR   = ${ROOTDIR}/rtest
-RSUITEDIR  = ${ROOTDIR}/tests/suite
+RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
 INCLUDE  += -I${RLIBCDIR}
 RLIBCLIB  = ${RLIBCDIR}/librlibc.a
 USRLIBS  += ${RLIBCLIB}
 
-# rtest
-INCLUDE  += -I${RTESTDIR}
-RTESTLIB  = ${RTESTDIR}/librtest.a
-USRLIBS  += ${RTESTLIB}
+# rht
+INCLUDE  += -I${RHTDIR}
+RHTLIB    = ${RHTDIR}/librht.a
+USRLIBS  += ${RHTLIB}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -99,7 +100,7 @@ ${SHLIB}:
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ${RTESTLIB} ${RUTLIB} ${RLIBCLIB}
+${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
