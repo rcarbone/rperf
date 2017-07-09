@@ -1,5 +1,5 @@
-rhash_lib_version   (3) - Get the version information for librhash
-rhash_print_version (3) - Print software information
+rht_alloc         (3) - Allocate a hash table
+rht_free          (3) - Release a hash table
 
-rhash_alloc         (3) - Allocate a hash table
-rhash_free          (3) - Release a hash table
+rht_lib_version   (3) - Get version information
+rht_print_version (3) - Print software information

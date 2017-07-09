@@ -14,9 +14,10 @@ typedef struct rht rht_t;
 #include "rht.h"
 
 #include "varrays.h"
-#include "datasets.h"
 #include "rwall.h"
 #include "rctype.h"
+#include "support.h"
+#include "datasets.h"
 #include "rtest.h"
 
 
@@ -253,18 +254,32 @@ static unsigned alloc_add_vals_free (unsigned argc)
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-static void runit_run_one (rtest_t * runit, unsigned items)
+/* Rendering functions */
+
+/* Max name length */
+static unsigned rsuite_maxn (rtest_t * argv [])
 {
-  if (runit)
+  unsigned n = 0;
+  while (argv && * argv)
     {
-      unsigned n;
-      printf ("Running %s ... ", runit -> name);
-      n = runit -> unit (items);
-      if (n == items)
-	printf ("Ok\n");
-      else
-	printf ("No\n");
+      n = RMAX (n, strlen ((* argv) -> name));
+      argv ++;
     }
+  return n;
+}
+
+
+static void runit_run_one (rtest_t * runit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
+{
+  unsigned t;
+
+  print_dots (runit -> name, "Running", n, seq, maxn);
+
+  t = runit -> unit (items);
+  if (t == items)
+    printf ("Ok\n");
+  else
+    printf ("No\n");
 }
 
 
@@ -377,6 +392,10 @@ rtest_t * runit_valid (char * id)
 /* Run the Unit Tests included in argv[] */
 void runit_run (rtest_t * argv [], unsigned items)
 {
+  unsigned maxn = rsuite_maxn (argv);
+  unsigned n    = digits (arrlen (argv));
+  unsigned seq  = 0;
+
   while (argv && * argv)
-    runit_run_one (* argv ++, items);
+    runit_run_one (* argv ++, items, n, ++ seq, maxn);
 }

@@ -5,7 +5,7 @@
 /* The implementation */
 #include "uthash.h"
 
-typedef struct rhash rht_t;
+typedef struct rht rht_t;
 #include "rht.h"
 #include "varrays.h"
 
@@ -23,7 +23,7 @@ typedef struct utobj
 } utobj_t;
 
 
-struct rhash
+struct rht
 {
   utobj_t * uthash;
 };

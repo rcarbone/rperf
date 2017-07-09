@@ -94,6 +94,31 @@ void runit_all_rnd_print (void)
 #endif /* ROCCO */
 
 
+/* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
+
+void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn)
+{
+  unsigned dots = strlen (name);
+  unsigned i;
+  char fmt [16];
+  char str [160];
+
+  sprintf (fmt, "[%%%uu] %s %%s ", n, label);
+  sprintf (str, fmt, seq, name);
+
+  if (dots < maxn)
+    dots = maxn - dots + 3;
+  else
+    dots = 3;
+
+  printf ("%s", str);
+
+  for (i = 0; i < dots; i ++)
+    printf (".");
+  printf (" ");
+}
+
+
 void runit_print_no (void)
 {
   printf ("Built-in Units Tests : %u\n", runit_no ());
@@ -128,7 +153,7 @@ void rsuite_print_no (void)
 }
 
 
-/* Print the Unit Tests included in argv[] */
+/* Print the Test Suite included in argv[] */
 void rsuite_print (rtest_t * argv [])
 {
   unsigned i = 0;
@@ -139,7 +164,7 @@ void rsuite_print (rtest_t * argv [])
 }
 
 
-/* Print the all the builtin Unit Tests */
+/* Print the all the builtin Test Suite */
 void rsuite_print_all (void)
 {
   unsigned i;

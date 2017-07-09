@@ -6,14 +6,15 @@
 
 
 /* Project headers */
-typedef struct rhash rht_t;
+typedef struct rht rht_t;
 #include "rht.h"
 
 #include "varrays.h"
 #include "args.h"
-#include "datasets.h"
 #include "rwall.h"
 #include "rctype.h"
+#include "support.h"
+#include "datasets.h"
 #include "rtest.h"
 
 
@@ -25,7 +26,7 @@ typedef enum
   RSUITE_MISS    = 0x03,  /* Populate and search for non existing objects         */
   RSUITE_DELETE  = 0x04,  /* Populate and delete all existing objects one-by-one  */
   RSUITE_REPLACE = 0x05,  /* Populate and replace all existing objects one-by-one */
-  RSUITE_CHAOS   = 0x06,  /* Delete if found, add otherwise objects one-by-one    */
+  RSUITE_KBENCH  = 0x06,  /* Delete if found, add otherwise objects one-by-one    */
 
 } rsuite_id_t;
 
@@ -36,7 +37,7 @@ rsuite_f rsuite_hit;
 rsuite_f rsuite_miss;
 rsuite_f rsuite_delete;
 rsuite_f rsuite_replace;
-rsuite_f rsuite_chaos;
+rsuite_f rsuite_kbench;
 
 
 /* All the Test Suite in an array */
@@ -47,11 +48,10 @@ static rtest_t rsuite_builtins [] =
   { RSUITE_MISS,    "miss",    "Search non existing objects",       NULL, rsuite_miss    },
   { RSUITE_DELETE,  "delete",  "Delete existing objects",           NULL, rsuite_delete  },
   { RSUITE_REPLACE, "replace", "Replace existing objects",          NULL, rsuite_replace },
-  { RSUITE_CHAOS,   "chaos",   "Delete if found, add otherwise",    NULL, rsuite_chaos   },
+  { RSUITE_KBENCH,  "kbench",  "Delete if found, add otherwise",    NULL, rsuite_kbench  },
 };
 #define RSUITE_NO (sizeof (rsuite_builtins) / sizeof (* rsuite_builtins))
 
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 /* === Implementation of Test Suite === */
 
@@ -170,7 +170,7 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 
 
 /* Add if not found, delete otherwise */
-rtime_t rsuite_chaos (unsigned argc, robj_t * argv [])
+rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   rtime_t t1;
@@ -191,12 +191,31 @@ rtime_t rsuite_chaos (unsigned argc, robj_t * argv [])
   return t2 - t1;
 }
 
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-static void rsuite_run_one (rtest_t * rtest, unsigned argc, robj_t * argv [])
+/* Rendering functions */
+
+/* Max name length */
+static unsigned rsuite_maxn (rtest_t * argv [])
 {
-  printf ("Running %s ... ", rtest -> name);
-  rtime_t spent = rtest -> suite (argc, argv);
+  unsigned n = 0;
+  while (argv && * argv)
+    {
+      n = RMAX (n, strlen ((* argv) -> name));
+      argv ++;
+    }
+  return n;
+}
+
+
+static void rsuite_run_one (rtest_t * rtest, unsigned argc, robj_t * argv [], unsigned n, unsigned seq, unsigned maxn)
+{
+  rtime_t spent;
+
+  print_dots (rtest -> name, "Running", n, seq, maxn);
+
+  spent = rtest -> suite (argc, argv);
   if (spent)
     printf ("Ok - %s\n", ns2a (spent));
   else
@@ -324,6 +343,10 @@ rtest_t * rsuite_valid (char * id)
 /* Run the Test Suite included in argv[] */
 void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv [])
 {
+  unsigned maxn = rsuite_maxn (suite);
+  unsigned n    = digits (arrlen (suite));
+  unsigned seq  = 0;
+
   while (suite && * suite)
-    rsuite_run_one (* suite ++, argc, argv);
+    rsuite_run_one (* suite ++, argc, argv, n, ++ seq, maxn);
 }

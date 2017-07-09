@@ -2,12 +2,12 @@
 #include <stdlib.h>
 
 
-/* librhash - an abstract C library over real hash table implementations */
-typedef struct rhash rht_t;
+/* librht - an abstract C library over real hash table implementations */
+typedef struct rht rht_t;
 #include "rht.h"
 
 
-typedef struct rhash
+typedef struct rht
 {
   unsigned dummy;
 } rht_t;

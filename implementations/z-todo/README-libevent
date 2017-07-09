@@ -1,0 +1,16 @@
+wrappers for libevent
+
+There are 3 versions in 3 different directories:
+
+ * ../libevent/
+   this version relies on the definition of robj_t in datasets.h
+   (which is included among the header files) and it uses the 'val'
+   field as a pointer to the object itself
+
+ * libevent/
+   this version does not rely on the definition of robj_t in datasets.h
+   and it needs to define its own object type and perform dynamic
+   memory allocation/deallocation foreach object in the hash table
+
+ * first-libevent/
+   this version is now obsolete but it was left here only for reference

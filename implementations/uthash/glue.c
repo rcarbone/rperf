@@ -5,7 +5,7 @@
 /* The implementation */
 #include "uthash.h"
 
-typedef struct rhash rht_t;
+typedef struct rht rht_t;
 #include "rht.h"
 #include "datasets.h"
 #include "varrays.h"
@@ -15,7 +15,7 @@ typedef struct rhash rht_t;
 /* Well-known Object Type required to make it hash-able */
 #define utobj_t robj_t
 
-struct rhash
+struct rht
 {
   utobj_t * uthash;
 };

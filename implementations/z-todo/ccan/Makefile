@@ -1,9 +1,11 @@
 # The name of the game
-NAME      = libevent
+NAME      = ccan
+
 # C source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
-#
+
+# Optional
 INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
@@ -11,31 +13,32 @@ SYSLIBS   =
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-# The project's name
-PROJECT   = rht
 
+# The project's name
+PROJECT    = rperf
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's tree
 ROOTDIR    = /home/rocco/${PROJECT}
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/lib
 
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RUTDIR     = ${ROOTDIR}/rut
-RSUITEDIR  = ${ROOTDIR}/tests/suite
+RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
 
-# rut
-INCLUDE  += -I${RUTDIR}
-RUTLIB    = ${RUTDIR}/librut.a
-USRLIBS  += ${RUTLIB}
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
+# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 PLEASE    = "Do not edit anything below, make creates it."
@@ -45,8 +48,7 @@ STLIB     = libr-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = run-suite
-PROGRAMS += rut
+PROGRAMS  = run
 
 # All the targets
 TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -74,14 +76,8 @@ C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
 LDFLAGS   =
 
-# Static private libraries (order is relevant to link)
-USRLIBS   = ${RUTLIB}
-USRLIBS  += ${RSUITELIB}
-USRLIBS  += ${STLIB}
-USRLIBS  += ${RLIBCLIB}
-
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run-suite.c rut.c ${TARGETS} ${RHASHLIB} ${RUTLIB} ${RSUITELIB}
+all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -95,11 +91,11 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-run-suite.c: ${SHAREDIR}/run-suite.c
+run.c: ${SHAREDIR}/run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-rut.c: ${SHAREDIR}/rut.c
+load.c: ${SHAREDIR}/load.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -109,9 +105,9 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o
+${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making plugin $@ =*="
-	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
+	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
 ${INSTALLDIR}/${SHLIB}: ${SHLIB}
@@ -121,17 +117,14 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
           echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
          fi
 
-# All binary programs
-run-suite: run-suite.o ${USRLIBS}
+# Binary programs
+run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-rut: rut.o ${USRLIBS}
+load: load.o ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
-
-run: rut
-	@$^ -x
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -ldl -o $@
 
 # Cleanup rules
 clean:
@@ -139,9 +132,14 @@ clean:
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
+	@rm -f run.o
+	@rm -f load.o
 
 distclean: clean
 	@rm -f ${DEPS}
+	@rm -f plugin.c
+	@rm -f run.c
+	@rm -f load.c
 
 # How to make an object file from a C source
 %.o: %.c
@@ -216,3 +214,18 @@ help:
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="

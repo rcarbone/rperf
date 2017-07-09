@@ -212,7 +212,8 @@ int main (int argc, char * argv [])
   bool quiet       = false;
 
   /* Unit Tests */
-  rtest_t ** all   = NULL;
+  rtest_t ** units = NULL;
+  rtest_t ** suite = NULL;
   char ** included = NULL;
   char ** excluded = NULL;
 
@@ -238,20 +239,20 @@ int main (int argc, char * argv [])
 	  printf ("Try '%s --help' for more information.\n", progname); return 1;
 
 	  /* Miscellanea */
-	case OPT_HELP:       _usage_ (progname, _VERSION_, lopts);    return 0;
-	case OPT_VERSION:    _version_ (progname, _VERSION_);         return 0;
-	case OPT_VERBOSE:    verbose = true;                          break;
-	case OPT_QUIET:      quiet   = true;                          break;
+	case OPT_HELP:       _usage_ (progname, _VERSION_, lopts); return 0;
+	case OPT_VERSION:    _version_ (progname, _VERSION_);      return 0;
+	case OPT_VERBOSE:    verbose = true;                       break;
+	case OPT_QUIET:      quiet   = true;                       break;
 
 	  /* Operations */
-	case OPT_LIST_UNIT:  all = runit_all (); runit_print (all);   break;
-	case OPT_LIST_SUITE: all = rsuite_all (); rsuite_print (all); break;
-	case OPT_RUN_UNIT:   choice = option;                         break;
-	case OPT_RUN_SUITE:  choice = option;                         break;
+	case OPT_LIST_UNIT:  units = runit_all ();                 break;
+	case OPT_LIST_SUITE: suite = rsuite_all ();                break;
+	case OPT_RUN_UNIT:   choice = option;                      break;
+	case OPT_RUN_SUITE:  choice = option;                      break;
 
 	  /* Finger */
-        case OPT_INCLUDE:    included = argsuniq (included, optarg);  break;
-        case OPT_EXCLUDE:    excluded = argsuniq (excluded, optarg);  break;
+        case OPT_INCLUDE:    included = argsuniq (included, optarg); break;
+        case OPT_EXCLUDE:    excluded = argsuniq (excluded, optarg); break;
 
 	  /* Item counters */
 	case OPT_ITEMS:   items = atoi (optarg); break;
@@ -280,8 +281,13 @@ int main (int argc, char * argv [])
       return 1;
     }
 
-  if (! all)
+  if (units)
+    runit_print (units);
+  else if (suite)
+    rsuite_print (suite);
+  else
     {
+      rtest_t ** all;
       if (choice == OPT_RUN_UNIT)
 	all = runit_all ();
       else if (choice == OPT_RUN_SUITE)
@@ -300,12 +306,14 @@ int main (int argc, char * argv [])
 	}
       else
 	doit (progname, choice, all, items, runs, verbose, quiet);
+      arrclear (all, NULL);
     }
 
   /* Memory cleanup */
   argsclear (excluded);
   argsclear (included);
-  arrclear (all, NULL);
+  arrclear (suite, NULL);
+  arrclear (units, NULL);
 
   return 0;
 }

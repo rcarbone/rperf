@@ -110,6 +110,9 @@ void rsuite_print (rtest_t * argv []);
 void rsuite_print_all (void);
 
 
+void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn);
+
+
 /* Public functions in file spent.c */
 char * ns2a (uint64_t nsecs);
 rspent_t * mkspent (void);

@@ -17,7 +17,7 @@ class hashfunc
   unsigned operator () (char * key) const { return rht_python_hash (key); }
 };
 
-/* librhash - an abstract C library over real hash tables */
+/* librht - an abstract C library over real hash tables */
 typedef ulib::chain_hash_map <char *, void *, hashfunc> rht_t;
 #include "rht.h"
 

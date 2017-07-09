@@ -6,54 +6,55 @@
 /* The implementation */
 #include "ht-internal.h"
 
-/* librhash - an abstract C library over real hash tables */
-typedef struct rhash rht_t;
+/* librht - an abstract C library over real hash tables */
+typedef struct leht rht_t;
 #include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 #define LOAD_LIMIT 0.9
 
-/* Private Object Type required to make it hash-able */
+/* Types (hash table and objects) */
 typedef struct leobj leobj_t;
-struct leobj
-{
-  char    * key;
-  leobj_t * val;
-
-  HT_ENTRY(leobj) _levt_;   /* field required to make the object hash-able */
-
-};
-
 
 /* Forward */
-static unsigned hash_fn (leobj_t * leobj);
-static int cmp_fn (leobj_t * a, leobj_t * b);
-
-/* Hash table naming and definition */
-HT_HEAD(rhash, leobj);
-
-/* Generates prototypes and inline functions */
-HT_PROTOTYPE (rhash, leobj, _levt_, hash_fn, cmp_fn)
-HT_GENERATE (rhash, leobj, _levt_, hash_fn, cmp_fn, LOAD_LIMIT, malloc, realloc, free)
+static unsigned le_hash_f (leobj_t * leobj);
+static int le_cmp_f (leobj_t * a, leobj_t * b);
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* Hash string keys using the internal helper function */
-static unsigned hash_fn (leobj_t * obj)
+/* Object definition */
+struct leobj
 {
-  return rht_python_hash (obj -> key);
+  char * key;
+  leobj_t * val;
+
+  HT_ENTRY(leobj) _reserved_;   /* field required to make the object hash-able */
+};
+
+/* Hash table naming and definition */
+HT_HEAD(leht, leobj);
+
+/* Generates prototypes and inline functions */
+HT_PROTOTYPE (leht, leobj, _reserved_, le_hash_f, le_cmp_f)
+HT_GENERATE (leht, leobj, _reserved_, le_hash_f, le_cmp_f, LOAD_LIMIT, malloc, realloc, free)
+
+
+/* Hash string keys using the internal helper function */
+static unsigned le_hash_f (leobj_t * obj)
+{
+  return ht_string_hash_ (obj -> key);
 }
 
 
 /* Compare 2 string keys for equality */
-static int cmp_fn (leobj_t * a, leobj_t * b)
+static int le_cmp_f (leobj_t * a, leobj_t * b)
 {
   return ! strcmp (a -> key, b -> key);
 }
 
 
-static leobj_t * mkpair (char * key, void * val)
+static leobj_t * mk (char * key, void * val)
 {
   leobj_t * obj = calloc (1, sizeof (* obj));
   obj -> key = strdup (key);
@@ -62,19 +63,18 @@ static leobj_t * mkpair (char * key, void * val)
 }
 
 
-static void rmpair (leobj_t * obj)
+static void rm (leobj_t * obj)
 {
   free (obj -> key);
   free (obj);
 }
-
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 rht_t * rht_alloc (unsigned size)
 {
   rht_t * ht = calloc (1, sizeof (rht_t));
-  HT_INIT (rhash, ht);
+  HT_INIT (leht, ht);
   return ht;
 }
 
@@ -90,18 +90,18 @@ void rht_clear (rht_t * ht)
 {
   leobj_t ** objs = calloc (rht_count (ht) + 1, sizeof (leobj_t *));
   unsigned i = 0;
-  leobj_t ** obj;
+  leobj_t ** k;
 
-  HT_FOREACH (obj, rhash, ht)
-    objs [i ++] = * obj;
+  HT_FOREACH (k, leht, ht)
+    objs [i ++] = * k;
 
-  obj = objs;
-  while (* obj)
-    rmpair (* obj ++);
+  k = objs;
+  while (* k)
+    rm (* k ++);
 
   free (objs);
 
-  HT_CLEAR (rhash, ht);
+  HT_CLEAR (leht, ht);
 }
 
 
@@ -113,7 +113,7 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  HT_REPLACE (rhash, ht, mkpair (key, val));
+  HT_REPLACE (leht, ht, mk (key, val));
 }
 
 
@@ -122,7 +122,7 @@ void * rht_get (rht_t * ht, char * key)
   leobj_t obj = { .key = key };
   leobj_t * hit;
 
-  hit = HT_FIND (rhash, ht, & obj);
+  hit = HT_FIND (leht, ht, & obj);
 
   return hit ? hit -> val : NULL;
 }
@@ -133,11 +133,11 @@ void rht_del (rht_t * ht, char * key)
   leobj_t obj = { .key = key };
   leobj_t * hit;
 
-  hit = HT_FIND (rhash, ht, & obj);
+  hit = HT_FIND (leht, ht, & obj);
   if (hit)
     {
-      HT_REMOVE (rhash, ht, hit);
-      rmpair (hit);
+      HT_REMOVE (leht, ht, hit);
+      rm (hit);
     }
 }
 
@@ -148,10 +148,10 @@ bool rht_has (rht_t * ht, char * key)
 }
 
 
-void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
+void rht_foreach (rht_t * ht, void (* fn) (void * x), void * data)
 {
-  leobj_t ** obj;
-  HT_FOREACH (obj, rhash, ht)
+  leobj_t ** k;
+  HT_FOREACH (k, leht, ht)
     fn (data);
 }
 
@@ -161,7 +161,7 @@ char ** rht_keys (rht_t * ht)
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
   leobj_t ** k;
-  HT_FOREACH (k, rhash, ht)
+  HT_FOREACH (k, leht, ht)
     keys [i ++] = (* k) -> key;
   return keys;
 }
@@ -172,7 +172,7 @@ void ** rht_vals (rht_t * ht)
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
   leobj_t ** k;
-  HT_FOREACH (k, rhash, ht)
+  HT_FOREACH (k, leht, ht)
     vals [i ++] = (* k) -> val;
   return vals;
 }

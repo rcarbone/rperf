@@ -9,29 +9,29 @@
 #include "rht-hashers.h"
 
 /* Generates typedefs for hash table and inline functions */
-KHASH_INIT(rhash, char *, void *, 1, rht_python_hash, kh_str_hash_equal)
+KHASH_INIT(rht, char *, void *, 1, rht_python_hash, kh_str_hash_equal)
 
-/* librhash - an abstract C library over real hash tables */
-typedef khash_t(rhash) rht_t;
+/* librht - an abstract C library over real hash tables */
+typedef khash_t(rht) rht_t;
 #include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 rht_t * rht_alloc (unsigned size)
 {
-  return kh_init (rhash);
+  return kh_init (rht);
 }
 
 
 void rht_free (rht_t * ht)
 {
-  kh_destroy (rhash, ht);
+  kh_destroy (rht, ht);
 }
 
 
 void rht_clear (rht_t * ht)
 {
-  kh_clear (rhash, ht);
+  kh_clear (rht, ht);
 }
 
 
@@ -44,28 +44,28 @@ unsigned rht_count (rht_t * ht)
 void rht_set (rht_t * ht, char * key, void * val)
 {
   int ret;
-  khiter_t k = kh_put (rhash, ht, key, & ret);
+  khiter_t k = kh_put (rht, ht, key, & ret);
   kh_value (ht, k) = val;
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  khiter_t k = kh_get (rhash, ht, key);
+  khiter_t k = kh_get (rht, ht, key);
   return k == kh_end (ht) ? NULL : kh_value (ht, k);
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  khiter_t k = kh_get (rhash, ht, key);
-  kh_del (rhash, ht, k);
+  khiter_t k = kh_get (rht, ht, key);
+  kh_del (rht, ht, k);
 }
 
 
 bool rht_has (rht_t * ht, char * key)
 {
-  return kh_get (rhash, ht, key) != kh_end (ht);
+  return kh_get (rht, ht, key) != kh_end (ht);
 }
 
 

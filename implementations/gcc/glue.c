@@ -4,15 +4,15 @@
 /* The implementation */
 #include "hashtab.c"
 
-/* librhash - an abstract C library over real hash tables */
-typedef struct rhash rht_t;
+/* librht - an abstract C library over real hash tables */
+typedef struct rht rht_t;
 #include "rht.h"
 #include "datasets.h"
 #include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-typedef struct rhash
+typedef struct rht
 {
   htab_t gcc;
 } rht_t;

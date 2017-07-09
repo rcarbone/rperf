@@ -22,29 +22,29 @@ static int eq_str_fn (char * k1, char * k2)
 
 
 /* Generates typedefs for hash table and inline functions */
-DEFINE_OPENHASH (rhash, char *, void *, ULIB_ISMAP, hash_str_fn, eq_str_fn)
+DEFINE_OPENHASH (rht, char *, void *, ULIB_ISMAP, hash_str_fn, eq_str_fn)
 
-/* librhash - an abstract C library over real hash tables */
-typedef openhash_t(rhash) rht_t;
+/* librht - an abstract C library over real hash tables */
+typedef openhash_t(rht) rht_t;
 #include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 rht_t * rht_alloc (unsigned size)
 {
-  return openhash_init (rhash);
+  return openhash_init (rht);
 }
 
 
 void rht_free (rht_t * ht)
 {
-  openhash_destroy (rhash, ht);
+  openhash_destroy (rht, ht);
 }
 
 
 void rht_clear (rht_t * ht)
 {
-  openhash_clear (rhash, ht);
+  openhash_clear (rht, ht);
 }
 
 
@@ -57,28 +57,28 @@ unsigned rht_count (rht_t * ht)
 void rht_set (rht_t * ht, char * key, void * val)
 {
   int ret;
-  oh_iter_t k = openhash_set (rhash, ht, key, & ret);
+  oh_iter_t k = openhash_set (rht, ht, key, & ret);
   openhash_value (ht, k) = val;
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  oh_iter_t k = openhash_get (rhash, ht, key);
+  oh_iter_t k = openhash_get (rht, ht, key);
   return k == openhash_end (ht) ? NULL : openhash_value (ht, k);
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  oh_iter_t k = openhash_get (rhash, ht, key);
-  openhash_del (rhash, ht, k);
+  oh_iter_t k = openhash_get (rht, ht, key);
+  openhash_del (rht, ht, k);
 }
 
 
 bool rht_has (rht_t * ht, char * key)
 {
-  return openhash_get (rhash, ht, key) != openhash_end (ht);
+  return openhash_get (rht, ht, key) != openhash_end (ht);
 }
 
 

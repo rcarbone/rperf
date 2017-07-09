@@ -391,7 +391,7 @@ char * rplugin_author (rplugin_t * p)
 }
 
 
-/* Fill the table of plugins identifiers (module name) */
+/* Fill the table of plugin identifiers (module name) */
 char ** rplugin_names (rplugin_t * argv [])
 {
   char ** names = NULL;

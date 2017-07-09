@@ -6,17 +6,10 @@
 
 /* Project headers */
 #include "rtest.h"
+#include "rsuite.h"
 
 static unsigned nobjs = 0;
 static bool verbose = false;
-
-
-unsigned rsuite_grow (unsigned argc, robj_t * argv []);
-unsigned rsuite_hit (unsigned argc, robj_t * argv []);
-unsigned rsuite_miss (unsigned argc, robj_t * argv []);
-unsigned rsuite_delete (unsigned argc, robj_t * argv []);
-unsigned rsuite_replace (unsigned argc, robj_t * argv []);
-unsigned rsuite_chaos (unsigned argc, robj_t * argv []);
 
 
 /* All the functions implemented share the same options */
@@ -153,7 +146,7 @@ int replace (int argc, char * argv [], void * envp [])
 }
 
 
-int chaos (int argc, char * argv [], void * envp [])
+int kbench (int argc, char * argv [], void * envp [])
 {
   parse_options (argc, argv, envp);
 
@@ -161,7 +154,7 @@ int chaos (int argc, char * argv [], void * envp [])
     printf ("%s/%s: Hello World! My name is %s", library, module, argv [0]);
 
   if (nobjs)
-    rsuite_chaos (nobjs, (robj_t **) envp);
+    rsuite_kbench (nobjs, (robj_t **) envp);
 
   default_vals ();
 
