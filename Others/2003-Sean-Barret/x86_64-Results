@@ -1,0 +1,25 @@
+4-character mixed lower+upper+digits
+symbol(4Mprobes), size      320, bhash: hits= 289000.0ms, miss= 332000.0ms, ins/del= 584000.0ms, rehits: 288000.0ms
+symbol(4Mprobes), size      503, bhash: hits= 291000.0ms, miss= 301000.0ms, ins/del= 792000.0ms, rehits: 291000.0ms
+symbol(4Mprobes), size      790, bhash: hits= 300000.0ms, miss= 288000.0ms, ins/del= 604000.0ms, rehits: 301000.0ms
+symbol(4Mprobes), size     1242, bhash: hits= 312000.0ms, miss= 354000.0ms, ins/del= 536000.0ms, rehits: 312000.0ms
+symbol(4Mprobes), size     1952, bhash: hits= 315000.0ms, miss= 318000.0ms, ins/del= 696000.0ms, rehits: 325000.0ms
+symbol(4Mprobes), size     3066, bhash: hits= 331000.0ms, miss= 294000.0ms, ins/del= 584000.0ms, rehits: 323000.0ms
+symbol(4Mprobes), size     4820, bhash: hits= 342000.0ms, miss= 356000.0ms, ins/del= 868000.0ms, rehits: 351000.0ms
+symbol(4Mprobes), size     7574, bhash: hits= 341000.0ms, miss= 312000.0ms, ins/del= 656000.0ms, rehits: 351000.0ms
+symbol(4Mprobes), size    11898, bhash: hits= 351000.0ms, miss= 295000.0ms, ins/del= 584000.0ms, rehits: 359000.0ms
+symbol(4Mprobes), size    18692, bhash: hits= 358000.0ms, miss= 357000.0ms, ins/del= 820000.0ms, rehits: 392000.0ms
+symbol(4Mprobes), size    29371, bhash: hits= 360000.0ms, miss= 313000.0ms, ins/del= 680000.0ms, rehits: 356000.0ms
+symbol(4Mprobes), size    46133, bhash: hits= 374000.0ms, miss= 299000.0ms, ins/del= 604000.0ms, rehits: 389000.0ms
+symbol(4Mprobes), size    72427, bhash: hits= 385000.0ms, miss= 366000.0ms, ins/del= 840000.0ms, rehits: 416000.0ms
+symbol(4Mprobes), size   113644, bhash: hits= 431000.0ms, miss= 397000.0ms, ins/del= 776000.0ms, rehits: 436000.0ms
+symbol(4Mprobes), size   178217, bhash: hits= 521000.0ms, miss= 449000.0ms, ins/del= 712000.0ms, rehits: 541000.0ms
+symbol(4Mprobes), size   279107, bhash: hits= 534000.0ms, miss= 528000.0ms, ins/del= 952000.0ms, rehits: 660000.0ms
+symbol(4Mprobes), size   436330, bhash: hits= 648000.0ms, miss= 630000.0ms, ins/del= 852000.0ms, rehits: 698000.0ms
+symbol(4Mprobes), size   680037, bhash: hits= 629000.0ms, miss= 825000.0ms, ins/del= 1284000.0ms, rehits: 703000.0ms
+symbol(4Mprobes), size  1054500, bhash: hits= 686000.0ms, miss= 714000.0ms, ins/del= 876000.0ms, rehits: 745000.0ms
+symbol(4Mprobes), size  1623598, bhash: hits= 694000.0ms, miss= 666000.0ms, ins/del= 828000.0ms, rehits: 696000.0ms
+symbol(4Mprobes), size  2471253, bhash: hits= 709000.0ms, miss= 837000.0ms, ins/del= 916000.0ms, rehits: 750000.0ms
+symbol(4Mprobes), size  3697855, bhash: hits= 733000.0ms, miss= 742000.0ms, ins/del= 848000.0ms, rehits: 789000.0ms
+symbol(4Mprobes), size  5389932, bhash: hits= 778000.0ms, miss= 993000.0ms, ins/del= 944000.0ms, rehits: 720000.0ms
+symbol(4Mprobes), size  7568166, bhash: hits= 712000.0ms, miss= 748000.0ms, ins/del= 844000.0ms, rehits: 714000.0ms

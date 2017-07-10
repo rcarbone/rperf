@@ -1,0 +1,44 @@
+======
+Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.88-1 x86_64
+Average over 10000000 iterations
+Current time (GMT): Sun Jul  9 14:12:39 2017
+
+KHASH_MAP:
+map_grow                118.4 ns 
+map_predict/grow        128.8 ns 
+map_replace              47.6 ns 
+map_fetch                70.8 ns 
+map_fetch_empty          41.6 ns 
+map_remove               56.4 ns 
+
+SPARSE_HASH_MAP:
+map_grow               1235.7 ns 
+map_predict/grow        630.4 ns 
+map_replace             372.4 ns 
+map_fetch               598.8 ns 
+map_fetch_empty         324.4 ns 
+map_remove              966.5 ns 
+
+DENSE_HASH_MAP:
+map_grow                552.8 ns 
+map_predict/grow        180.0 ns 
+map_replace             171.2 ns 
+map_fetch               152.0 ns 
+map_fetch_empty          47.2 ns 
+map_remove              332.8 ns 
+
+TR1 UNORDERED_MAP:
+map_grow                266.0 ns 
+map_predict/grow        352.0 ns 
+map_replace              62.0 ns 
+map_fetch                90.8 ns 
+map_fetch_empty          73.6 ns 
+map_remove              132.4 ns 
+
+STANDARD MAP:
+map_grow               1909.3 ns 
+map_predict/grow       1839.7 ns 
+map_replace             959.7 ns 
+map_fetch               776.0 ns 
+map_fetch_empty          52.0 ns 
+map_remove             1298.9 ns 

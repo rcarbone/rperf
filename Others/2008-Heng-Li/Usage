@@ -1,0 +1,5 @@
+Usage:   hash_test [th] [-n 5000000]
+Options: -n INT  size of data [5000000]
+         -c HEX  bitwise codes for evaluation [6f]
+         -S      disable string test
+         -h      help

@@ -1,0 +1,27 @@
+--- generating data... done!
+--- current rss: 221540352 (reset: Y)
+--- khash ---
+--- current rss: 221540352 (reset: Y)
+(user, sys, peak_rss, size, capacity): (1.260, 0.000, 6967296, 625792, 1572869)
+--- current rss: 221839360 (reset: N)
+(user, sys, peak_rss, size, capacity): (2.200, 0.000, 19759104, 625792, 1572869)
+--- GLIB ---
+--- current rss: 228855808 (reset: Y)
+(user, sys, peak_rss, size): (1.190, 0.000, 26218496, 625792)
+--- current rss: 230264832 (reset: N)
+(user, sys, peak_rss, size): (1.390, 0.010, 26275840, 625792)
+--- TR1 ---
+--- current rss: 230264832 (reset: Y)
+(user, sys, peak_rss, size, capacity): (1.630, 0.000, 20541440, 625792, 1056323)
+--- current rss: 221888512 (reset: N)
+(user, sys, peak_rss, size, capacity): (2.720, 0.000, 20545536, 625792, 1056323)
+--- SGI STL ---
+--- current rss: 221896704 (reset: N)
+(user, sys, peak_rss, size, capacity): (1.880, 0.000, 17580032, 625792, 786433)
+--- current rss: 221913088 (reset: N)
+(user, sys, peak_rss, size, capacity): (2.790, 0.000, 17596416, 625792, 786433)
+--- Google sparse hash ---
+--- current rss: 221925376 (reset: N)
+(user, sys, peak_rss, size, capacity): (9.540, 0.010, 18446744073706614784, 625792, 1048576)
+--- current rss: 227328000 (reset: N)
+

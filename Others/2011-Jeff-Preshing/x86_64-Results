@@ -1,0 +1,91 @@
+Generating random dictionary ... done!
+
+Running multiple shots using dictionary in file random-word-list.txt
+Run #1 of 5...
+Completed "std::map            " in 731.595 ms
+Completed "std::map-hash-table " in 513.010 ms
+Completed "Google-dense-hash   " in 147.456 ms
+Completed "Google-sparse-hash  " in 193.585 ms
+Completed "GCC-hash-table      " in 246.440 ms
+Completed "OpenHashTable       " in 129.644 ms
+Completed "ChainedHashTable    " in 120.274 ms
+Completed "StringHashTable     " in 139.679 ms
+Completed "Python-dictionary   " in 437.908 ms
+Completed "JudyL-hash-table    " in 248.889 ms
+Completed "JudySL-Array        " in 246.665 ms
+Run #2 of 5...
+Completed "std::map            " in 762.917 ms
+Completed "std::map-hash-table " in 534.848 ms
+Completed "Google-dense-hash   " in 131.049 ms
+Completed "Google-sparse-hash  " in 202.144 ms
+Completed "GCC-hash-table      " in 207.460 ms
+Completed "OpenHashTable       " in 122.783 ms
+Completed "ChainedHashTable    " in 136.325 ms
+Completed "StringHashTable     " in 135.552 ms
+Completed "Python-dictionary   " in 412.291 ms
+Completed "JudyL-hash-table    " in 241.007 ms
+Completed "JudySL-Array        " in 260.816 ms
+Run #3 of 5...
+Completed "std::map            " in 698.805 ms
+Completed "std::map-hash-table " in 505.068 ms
+Completed "Google-dense-hash   " in 129.087 ms
+Completed "Google-sparse-hash  " in 193.169 ms
+Completed "GCC-hash-table      " in 208.639 ms
+Completed "OpenHashTable       " in 172.170 ms
+Completed "ChainedHashTable    " in 118.936 ms
+Completed "StringHashTable     " in 131.865 ms
+Completed "Python-dictionary   " in 428.317 ms
+Completed "JudyL-hash-table    " in 251.543 ms
+Completed "JudySL-Array        " in 246.304 ms
+Run #4 of 5...
+Completed "std::map            " in 685.421 ms
+Completed "std::map-hash-table " in 617.328 ms
+Completed "Google-dense-hash   " in 159.605 ms
+Completed "Google-sparse-hash  " in 241.015 ms
+Completed "GCC-hash-table      " in 224.463 ms
+Completed "OpenHashTable       " in 128.996 ms
+Completed "ChainedHashTable    " in 132.141 ms
+Completed "StringHashTable     " in 176.331 ms
+Completed "Python-dictionary   " in 458.209 ms
+Completed "JudyL-hash-table    " in 269.892 ms
+Completed "JudySL-Array        " in 284.518 ms
+Run #5 of 5...
+Completed "std::map            " in 744.480 ms
+Completed "std::map-hash-table " in 602.397 ms
+Completed "Google-dense-hash   " in 136.290 ms
+Completed "Google-sparse-hash  " in 199.359 ms
+Completed "GCC-hash-table      " in 244.017 ms
+Completed "OpenHashTable       " in 125.951 ms
+Completed "ChainedHashTable    " in 140.126 ms
+Completed "StringHashTable     " in 174.305 ms
+Completed "Python-dictionary   " in 490.576 ms
+Completed "JudyL-hash-table    " in 266.888 ms
+Completed "JudySL-Array        " in 256.168 ms
+
+Average of 5 runs:
+name                 avg(ms)  stddev(ms)
+std::map             724.644   28680102331.25
+std::map-hash-table  554.530   46459901657.59
+Google-dense-hash    140.697   11406185908.03
+Google-sparse-hash   205.854   17908928618.83
+GCC-hash-table       226.204   16671334353.12
+OpenHashTable        135.909   18293928636.55
+ChainedHashTable     129.561    8522517290.54
+StringHashTable      151.546   19576548007.38
+Python-dictionary    445.460   27015287983.81
+JudyL-hash-table     255.644   11010264152.46
+JudySL-Array         258.894   13969867337.89
+
+Sorted Average of 5 runs:
+name                 avg(ms)  stddev(ms)
+ChainedHashTable     129.561    8522517290.54
+OpenHashTable        135.909   18293928636.55
+Google-dense-hash    140.697   11406185908.03
+StringHashTable      151.546   19576548007.38
+Google-sparse-hash   205.854   17908928618.83
+GCC-hash-table       226.204   16671334353.12
+JudyL-hash-table     255.644   11010264152.46
+JudySL-Array         258.894   13969867337.89
+Python-dictionary    445.460   27015287983.81
+std::map-hash-table  554.530   46459901657.59
+std::map             724.644   28680102331.25

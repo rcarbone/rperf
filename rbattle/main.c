@@ -8,53 +8,54 @@
 /* All the pluings to load at boot time */
 static char * all [] =
 {
-  "/home/rocco/rht/plugins/apr/apr.so",
-  "/home/rocco/rht/plugins/gcc-libiberty/hashtab.so",
-  "/home/rocco/rht/plugins/google-c/dense/c-densehash.so",
-  "/home/rocco/rht/plugins/google-c/sparse/c-sparsehash.so",
-  "/home/rocco/rht/plugins/hashit/chain/hashit-chain.so",
-  "/home/rocco/rht/plugins/hashit/open/hashit-open.so",
-  "/home/rocco/rht/plugins/hashit/overflow/hashit-overflow.so",
-  "/home/rocco/rht/plugins/klib/khash.so",
-  "/home/rocco/rht/plugins/libcfu/libcfu.so",
+  "/home/rocco/rperf/implementations/apr/apr.so",
+  "/home/rocco/rperf/implementations/gcc/boost.so",
+  "/home/rocco/rperf/implementations/google-c/dense/c-densehash.so",
+  "/home/rocco/rperf/implementations/google-c/sparse/c-sparsehash.so",
+  "/home/rocco/rperf/implementations/hashit/chain/hashit-chain.so",
+  "/home/rocco/rperf/implementations/hashit/open/hashit-open.so",
+  "/home/rocco/rperf/implementations/hashit/overflow/hashit-overflow.so",
+  "/home/rocco/rperf/implementations/gcc/hashtab.so",
+  "/home/rocco/rperf/implementations/klib/khash.so",
+  "/home/rocco/rperf/implementations/libcfu/libcfu.so",
 
 #if (0)
   /* need attention because it is not usable here and I do not know why */
-  "/home/rocco/rht/plugins/libevent/libevent.so",
+  "/home/rocco/rperf/implementations/libevent/libevent.so",
 #endif
 
-  "/home/rocco/rht/plugins/mct/closed/closed-hash-map.so",
-  "/home/rocco/rht/plugins/mct/linked/linked-hash-map.so",
-  "/home/rocco/rht/plugins/oddou/oddou.so",
-  "/home/rocco/rht/plugins/python/python.so",
-  "/home/rocco/rht/plugins/rdestl/rdestl.so",
-  "/home/rocco/rht/plugins/rigtorp/rigtorp.so",
-  "/home/rocco/rht/plugins/sys-boost/boost.so",
-  "/home/rocco/rht/plugins/sys-glib/ghash.so",
-  "/home/rocco/rht/plugins/sys-google/dense/densehash.so",
-  "/home/rocco/rht/plugins/sys-google/sparse/sparsehash.so",
-  "/home/rocco/rht/plugins/sys-libstdc++/unordered-map/unordered-map.so",
+  "/home/rocco/rperf/implementations/mct/closed/closed-hash-map.so",
+  "/home/rocco/rperf/implementations/mct/linked/linked-hash-map.so",
+  "/home/rocco/rperf/implementations/oddou/oddou.so",
+  "/home/rocco/rperf/implementations/python/python.so",
+  "/home/rocco/rperf/implementations/rdestl/rdestl.so",
+  "/home/rocco/rperf/implementations/rigtorp/rigtorp.so",
+  "/home/rocco/rperf/implementations/sys-boost/boost.so",
+  "/home/rocco/rperf/implementations/sys-glib/ghash.so",
+  "/home/rocco/rperf/implementations/sys-google/dense/densehash.so",
+  "/home/rocco/rperf/implementations/sys-google/sparse/sparsehash.so",
+  "/home/rocco/rperf/implementations/sys-libstdc++/unordered-map/unordered-map.so",
 
 #if (0)
   /* need attention because these are not usable because of the bad glue implementation of rhash_get() via foreach */
-  "/home/rocco/rht/plugins/tommyds/dynamic/tommy-dyn.so",
-  "/home/rocco/rht/plugins/tommyds/linear/tommy-lin.so",
+  "/home/rocco/rperf/implementations/tommyds/dynamic/tommy-dyn.so",
+  "/home/rocco/rperf/implementations/tommyds/linear/tommy-lin.so",
 #endif
 
-  "/home/rocco/rht/plugins/ulib/chain/ulib-chain.so",
-  "/home/rocco/rht/plugins/ulib/open/ulib-open.so",
+  "/home/rocco/rperf/implementations/ulib/chain/chain-hash.so",
+  "/home/rocco/rperf/implementations/ulib/open/open-hash.so",
 
 #if (0)
   /* need attention because it is not usable here and I do not know why */
-  "/home/rocco/rht/plugins/uthash/uthash.so",
+  "/home/rocco/rperf/implementations/uthash/uthash.so",
 #endif
 
 #if (0)
   /* malloc version */
-  "/home/rocco/rht/plugins/z-experimental/libevent/libevent.so",
-  "/home/rocco/rht/plugins/z-experimental/tommy-dynamic/tommy-dyn.so",
-  "/home/rocco/rht/plugins/z-experimental/tommy-linear/tommy-lin.so",
-  "/home/rocco/rht/plugins/z-experimental/uthash/uthash.so",
+  "/home/rocco/rperf/implementations/z-experimental/libevent/libevent.so",
+  "/home/rocco/rperf/implementations/z-experimental/tommy-dynamic/tommy-dyn.so",
+  "/home/rocco/rperf/implementations/z-experimental/tommy-linear/tommy-lin.so",
+  "/home/rocco/rperf/implementations/z-experimental/uthash/uthash.so",
 #endif
 
   NULL

@@ -1,0 +1,15 @@
+Usage: aatest [options] <aaimpl> <dataset>
+   <aaimpl>:   judy, hash, bhash
+   <dataset>:  rand, rand0688, rand5678, seq, upper, symbol
+   e.g. 'aatest judy rand' or 'aatest hash upper'
+ Options:
+   -hashfull <0-100>   percent full hash table must be before doubling
+   -hashempty <0-50>   percent empty hash table must be before halving
+   -validate           computes a result that shouldn't vary with array type
+   -sort               forces insertions and deletions to be in dictionary order
+   -swap               swap bytes of all keys as if little to big-endian
+   -scale <integer>    for 'seq' dataset, uses multiples of this
+   -build              efficiently measure build times
+   -samples <integer>  number of sizes to measure
+   -jitter <integer>   randomly offset each sample by this much
+   -end <integer>      maximum size to probe
