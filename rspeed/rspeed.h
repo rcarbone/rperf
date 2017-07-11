@@ -52,7 +52,6 @@ sw_t ** run_suite (char * suite [], sw_t * allsw [], unsigned n, unsigned ntry, 
 
 
 /* Public functions in file print.c */
-void print_test_header (unsigned maxn);
 void print_test_info (char * label, char * name, unsigned items, unsigned loops);
 void print_results (rspent_t * results [], char * name, unsigned t, unsigned maxn, unsigned items, unsigned loops);
 void hall_of_fame (char * names [], sw_t * plugins [], unsigned maxn, unsigned items, unsigned loops);

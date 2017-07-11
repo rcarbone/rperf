@@ -129,7 +129,7 @@ void rmspent (void * spent)
 /* Sort test results by avg time spent */
 int sort_by_more_avg (const void * a, const void * b)
 {
-  return (* (rspent_t **) b) -> elapsed - (* (rspent_t **) a) -> elapsed;
+  return (* (rspent_t **) b) -> avg - (* (rspent_t **) a) -> avg;
 }
 
 
@@ -139,15 +139,23 @@ int sort_by_less_avg (const void * a, const void * b)
 }
 
 
+/* Display test header */
+void print_test_header (unsigned maxn)
+{
+  printf ("      %-*.*s -   avg         min         max   ms -   elapsed\n",
+	  maxn, maxn, "Implementation");
+}
+
+
 /* Display timing information for a single test run */
 void show_spent (rspent_t * spent)
 {
   if (spent)
-    printf ("- %12.12s -  %8.3f  / %8.3f  / %8.3f\n",
-	    ns2a (spent -> elapsed),
+    printf (" %8.3f  / %8.3f  / %8.3f    - %12.12s\n",
 	    spent -> avg / 1e6,
 	    spent -> min / 1e6,
-	    spent -> max / 1e6);
+	    spent -> max / 1e6,
+	    ns2a (spent -> elapsed));
 }
 
 

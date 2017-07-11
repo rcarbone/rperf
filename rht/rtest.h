@@ -119,4 +119,5 @@ rspent_t * mkspent (void);
 void rmspent (void * spent);
 int sort_by_more_avg (const void * a, const void * b);
 int sort_by_less_avg (const void * a, const void * b);
+void print_test_header (unsigned maxn);
 void show_spent (rspent_t * spent);

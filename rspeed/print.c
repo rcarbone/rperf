@@ -2,14 +2,6 @@
 #include "rspeed.h"
 
 
-/* Display test header */
-void print_test_header (unsigned maxn)
-{
-  printf ("      %-*.*s -    elapsed   -     avg         min         max   ms\n",
-	  maxn, maxn, "Implementation");
-}
-
-
 /* Display test information */
 void print_test_info (char * label, char * name, unsigned items, unsigned loops)
 {
