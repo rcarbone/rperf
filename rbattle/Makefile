@@ -1,17 +1,16 @@
 # The name of the games
-LIB      = rbattle
-PROGRAM  = rbattle
+LIB       = rbattle
+PROGRAM   = rbattle
 
 # C source files
-MAINSRCS = main.c
-LIBSRCS  = options.c
-LIBSRCS += sw.c
-LIBSRCS += suite.c
-LIBSRCS += support.c
-LIBSRCS += elapsed.c
-LIBSRCS += run.c
-LIBSRCS += results.c
-LIBSRCS += print.c
+MAINSRCS  = main.c
+MAINSRCS += fake-rht.c
+LIBSRCS  += sw.c
+LIBSRCS  += suite.c
+LIBSRCS  += support.c
+LIBSRCS  += run.c
+LIBSRCS  += results.c
+LIBSRCS  += print.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =

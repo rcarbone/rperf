@@ -118,7 +118,7 @@ char * ns2a (uint64_t nsecs);
 /* Public functions in file run.c */
 sw_t ** run_all_tests (sw_t * allsw [], unsigned n,
 		       unsigned ntry, unsigned nslow, unsigned more1, unsigned more2,
-		       bool verbose, bool less, bool show);
+		       bool verbose, bool quiet, bool less, bool show);
 
 
 /* Public functions in file results.c */

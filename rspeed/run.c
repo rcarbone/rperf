@@ -31,7 +31,7 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
   /* The wall time the test was initiated at nsec resolution */
   result -> t1 = nswall ();
 
-  /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg and */
+  /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg */
   for (l = 0; l < loops; l ++)
     {
       /* Run the test and evaluate the time spent for this run in nanoseconds */

@@ -18,13 +18,13 @@ static char * pname (rplugin_t * p)
 }
 
 
-static test_t * mktest (unsigned id, rplugin_f * fun)
+static test_t * mktest (unsigned id, char * name, char * description, rplugin_f * fun)
 {
   test_t * t = calloc (1, sizeof (test_t));
 
   t -> id          = id;
-  t -> name        = strdup (tname (id));
-  t -> description = strdup (tdescription (id));
+  t -> name        = strdup (name);
+  t -> description = strdup (description);
   t -> fun         = fun;
   t -> enabled     = true;
 
@@ -153,14 +153,14 @@ static sw_t * rmsw (sw_t * sw)
 static sw_t * mksw (char * pathname, bool verbose)
 {
   sw_t * sw = calloc (1, sizeof (sw_t));
-  int error;
-  char * buffer;
+  int error = 0;
+  char * buffer = NULL;
 
   /* Load the shared object in memory */
   sw -> plugin = rplugin_mk (pathname, & error, & buffer);
   if (sw -> plugin)
     {
-      unsigned i;
+      unsigned i = 0;
 
       /* Call now its boot() function */
       sw_call (sw, "boot", 0, NULL, verbose);
@@ -174,7 +174,7 @@ static sw_t * mksw (char * pathname, bool verbose)
 	  rplugin_f * fun = sw_func (sw, tname (i));
 	  if (fun)
 	    {
-	      sw -> suite = (test_t **) vamore ((void **) sw -> suite, mktest (i, fun));
+	      sw -> suite = (test_t **) vamore ((void **) sw -> suite, mktest (i, tname (i), tdescription (i), fun));
 	    }
 	}
     }

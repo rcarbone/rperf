@@ -2,17 +2,20 @@
 #include "rbattle.h"
 
 
-/* Run a single test - Iterate to run 'loops' times the same test and evaluate min/avg/max time spent */
+/*
+ * Run a single test.
+ *
+ * Iterate to run 'loops' times the same test and evaluate min/avg/max time spent
+ */
 static void run_single_test (sw_t * sw, test_t * test,
                              unsigned items, robj_t * objs [],
                              unsigned i, unsigned n, unsigned loops,
 			     unsigned maxn, bool verbose)
 {
-  unsigned l;
-
   double min = ULONG_MAX;
   double avg = 0;
   double max = 0;
+  unsigned l;
 
   /* Print the name of the implementation under test */
   if (verbose)
@@ -21,7 +24,7 @@ static void run_single_test (sw_t * sw, test_t * test,
   /* The wall time the test was initiated at nsec resolution */
   test -> t1 = nswall ();
 
-  /* Main loop - iterate to run test */
+  /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg */
   for (l = 0; l < loops; l ++)
     {
       double t1;
@@ -101,7 +104,7 @@ static unsigned eval_torun (sw_t * sw [], unsigned id, unsigned nslow)
 sw_t ** run_all_tests (sw_t * sw [],
 		       unsigned initials, unsigned ntry, unsigned nslow,
 		       unsigned repeat, unsigned more,
-		       bool verbose, bool less, bool show)
+		       bool verbose, bool quiet, bool less, bool show)
 {
   unsigned all;           /* the number of loaded implementations */
   unsigned maxn;

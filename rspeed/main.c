@@ -12,7 +12,7 @@
 #include "rspeed.h"
 
 
-/* Program version */
+/* Program name/version */
 #define _NAME_      "Evaluate and compare Hash Tables Performances"
 #define _VERSION_   "0.1.0"
 
