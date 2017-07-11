@@ -1,0 +1,28 @@
+Initial insert:  469 ns
+Details: hash size 2097152, mask bits 42, perfect 76%
+Initial lookup (match):  157 ns
+Initial lookup (miss):  166 ns
+Initial lookup (random):  271 ns
+Initial delete all:  170 ns
+Details: rehashes 1000000
+Initial re-inserting:  220 ns
+Deleting first half:  86 ns
+Details: rehashes 500000, delete markers 500000
+Adding (a different) half:  86 ns
+Details: delete markers 334025, perfect 70%
+Lookup after half-change (match):  164 ns
+Lookup after half-change (miss):  191 ns
+Details: initial churn
+Churning second time:  462 ns
+Churning third time:  484 ns
+Churning fourth time:  594 ns
+Churning fifth time:  481 ns
+Details: reinserting with spread
+Details: delete markers 248499, perfect 66%
+Details: worst run 60 (9 deleted)
+Lookup after churn & spread (match):  201 ns
+Lookup after churn & spread (miss):  190 ns
+Lookup after churn & spread (random):  276 ns
+Deleting half after churn & spread:  90 ns
+Adding (a different) half after churn & spread:  85 ns
+Details: delete markers 505329, perfect 65%
