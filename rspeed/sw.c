@@ -180,8 +180,6 @@ static sw_t * mksw (char * pathname, bool verbose)
     {
       safefree (buffer);
       sw = rmsw (sw);
-      if (buffer)
-	free (buffer);
     }
 
   return sw;
@@ -236,7 +234,9 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
     }
 
   if (verbose)
-    printf (" %d implementations initialized (of %d defined)\n\n", arrlen (done), arrlen (argv));
+    printf ("\n");
+
+  printf (" %d implementations initialized (of %d defined)\n\n", arrlen (done), arrlen (argv));
 
   return done;
 }

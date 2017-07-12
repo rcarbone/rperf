@@ -1,4 +1,4 @@
-/* Public header */
+/* Projects headers */
 #include "safe.h"
 #include "rtest.h"
 #include "rspeed.h"
