@@ -1,5 +1,126 @@
-/* Public header */
+/* Project headers */
+#include "safe.h"
+#include "rtest.h"
 #include "rbattle.h"
+
+
+static char * ee (unsigned items)
+{
+  static char buf [128];
+
+  if (items % 10)
+    sprintf (buf, "%u", items);
+  else
+    sprintf (buf, "1e%u", digits (items) -1);
+  return buf;  
+}
+
+/* Display test header */
+static void print_test_info (char * name, unsigned swno, unsigned items, unsigned loops, unsigned more)
+{
+  printf ("Running test [%s] - %u implementations - %u initial items %u loops (+%u) ...\n",
+	  name, swno, ee (items), loops, more);
+}
+
+
+static void print_winner (rspent_t * argv [], char * name, unsigned maxn, unsigned items, unsigned loops)
+{
+  rspent_t ** rev = (rspent_t **) varev ((void **) argv);
+  print_results (rev, name, maxn, items, loops);
+  vaclear ((void **) rev, NULL);
+}
+
+
+/* Initialize the table of runners for the test _name_ */
+static rspent_t ** mkrunners (char * name, sw_t * plugins [])
+{
+  rspent_t ** runners = NULL;
+
+  while (plugins && * plugins)
+    {
+      if (rplugin_implement ((* plugins) -> plugin, name))
+	runners = arrmore (runners, mkspent (* plugins), rspent_t);
+      plugins ++;
+    }
+  return runners;
+}
+
+
+/* Check if _name_ is included in the table of loosers _argv_ */
+static bool islooser (char * name, rspent_t * argv [])
+{
+  while (name && argv && * argv)
+    {
+      sw_t * sw = (* argv) -> sw;
+      if (sw && sw -> name && ! strcmp (name, sw -> name))
+	return true;
+      argv ++;
+    }
+  return false;
+}
+
+
+static unsigned getslow (char * name, rspent_t * runners [])
+{
+  while (runners && * runners)
+    {
+      sw_t * sw = (* runners) -> sw;
+      if (sw && sw -> name && ! strcmp (name, sw -> name))
+	return (* runners) -> slow;
+      runners ++;
+    }
+  return 0;
+}
+
+
+/*
+ * Lookup for a too slow implementation (if any) and in the event include it the table of loosers
+ */
+static rspent_t ** update_results (rspent_t * results [], rspent_t * loosers [],
+				   unsigned nslow, rspent_t * runners [])
+{
+  rspent_t * worse;
+  sw_t * sw;
+
+  /* Sort the results by more avg time spent in order to evalute worse implementation for this run */
+  results = arrsort (results, sort_by_more_avg, rspent_t);
+  worse = results [0];
+  sw = worse -> sw;
+
+  /* Update the stop condition for the worse item */
+  worse -> slow ++;
+
+  /* Check now for the stop condition and in the event include the worse in the table of loosers */
+  if (worse -> slow == nslow)
+    {
+      /* In the event include the worse in the table of loosers */
+      loosers = arrmore (loosers, dupspent (worse), rspent_t);
+
+      /* Reset the stop condition for all the runners in order to repeat the suite with a clean environment */
+      while (runners && * runners)
+	(* runners ++) -> slow = 0;
+
+      printf ("%50.50s", " ");
+      printf ("  too slow %s\n", sw -> name);
+    }
+  else
+    {
+      /* Update only the stop condition for worse implementation in the table of runners */
+      while (runners && * runners)
+	{
+	  sw_t * sw1 = (* runners) -> sw;
+	  sw_t * sw2 = worse -> sw;
+	  if (sw1 && sw2 && sw1 -> name && sw2 -> name && ! strcmp (sw1 -> name, sw2 -> name))
+	    {
+	      (* runners) -> slow ++;
+	      break;
+	    }
+	  runners ++;
+	}
+    }
+
+  return loosers;
+}
 
 
 /*
@@ -7,11 +128,13 @@
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time spent
  */
-static void run_single_test (sw_t * sw, test_t * test,
-                             unsigned items, robj_t * objs [],
-                             unsigned i, unsigned n, unsigned loops,
-			     unsigned maxn, bool verbose)
+static rspent_t * run_single_test (char * name, sw_t * sw,
+				   unsigned items, robj_t * objs [],
+				   unsigned serial, unsigned loops, unsigned slow,
+				   unsigned maxn, bool verbose)
 {
+  /* Allocate memory to store the results and bind the sw implementation to it */
+  rspent_t * result = mkspent (sw);
   double min = ULONG_MAX;
   double avg = 0;
   double max = 0;
@@ -19,274 +142,183 @@ static void run_single_test (sw_t * sw, test_t * test,
 
   /* Print the name of the implementation under test */
   if (verbose)
-    printf ("  %2u: %-*.*s ... ", i + 1, maxn, maxn, sw -> name);
+    printf ("  %2u: %-*.*s ", serial, maxn, maxn, sw -> name);
 
   /* The wall time the test was initiated at nsec resolution */
-  test -> t1 = nswall ();
+  result -> t1 = nswall ();
 
   /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg */
   for (l = 0; l < loops; l ++)
     {
-      double t1;
-      double t2;
-      double elapsed;
-
       /* Run the test and evaluate the time spent for this run in nanoseconds */
-      t1 = nswall ();
-      sw_call (sw, test -> name, items, objs, verbose);
-      t2 = nswall ();
-
-      /* Evaluate the time spent for the test */
-      elapsed = t2 - t1;
+      double spent = sw_call (sw, name, items, objs, false);
 
       /* Evaluate min/max/avg time spent for the execution of the test */
-      min = MIN (min, elapsed);
-      max = MAX (max, elapsed);
-      avg += elapsed;
+      min = RMIN (min, spent);
+      max = RMAX (max, spent);
+      avg += spent;
     }
 
   /* The wall time the test was completed at nsec resolution */
-  test -> t2 = nswall ();
+  result -> t2 = nswall ();
 
   /* Evaluate the time spent for the test */
-  test -> elapsed = test -> t2 - test -> t1;
+  result -> elapsed = result -> t2 - result -> t1;
 
   /* Evaluate min/max/avg time spent for the execution of the test */
-  test -> min = min;
-  test -> max = max;
-  test -> avg = avg;
-  test -> avg /= loops;   /* normalize */
+  result -> min = min;
+  result -> max = max;
+  result -> avg = avg;
+  result -> avg /= loops;   /* normalize */
 
   /* Evaluate test rate */
-  test -> rate = test -> elapsed / n / loops;
+  result -> rate = result -> elapsed / items / loops;
 
-  /* Update the number of items used in this test */
-  test -> items = n;
-
-  if (verbose)
-    printf ("Ok! ");
+  /* Update the number of items used and the stop condition */
+  result -> items = items;
+  result -> slow  = slow;
 
   /* Display timing information for this test */
   if (verbose)
-    old_show_info (sw, test, maxn);
+    show_spent (result);
+
+  return result;
 }
 
-
-/* Evaluate the number of implementations not yet considered too slow for a given test */
-static unsigned eval_torun (sw_t * sw [], unsigned id, unsigned nslow)
-{
-  unsigned n = 0;
-  test_t * t;
-  while (sw && * sw)
-    if ((t = get_test (* sw ++, id)) && t -> slow < nslow)
-      n ++;
-  return n;
-}
-
-
-  /*
-   *  tests    sw1  sw2
-   *         +=====+=====+
-   *  grow   |     |     |
-   *         | === | === |
-   *  hit    |     |     |
-   *         | === | === |
-   * ....... |     |     |
-   *         +=====+=====+
-   */
 
 /*
- * Run all the tests
- *
- * 1. iterate over all the known kind of tests (in the same order they were defined in the internal static table of tests)
- *  2. iterate over all loaded software implementations (in a randomized order)
+ *  tests    sw1  sw2
+ *         +=====+=====+
+ *  grow   |     |     |
+ *         | === | === |
+ *  hit    |     |     |
+ *         | === | === |
+ * ....... |     |     |
+ *         +=====+=====+
  */
-sw_t ** run_all_tests (sw_t * sw [],
-		       unsigned initials, unsigned ntry, unsigned nslow,
-		       unsigned repeat, unsigned more,
-		       bool verbose, bool quiet, bool less, bool show)
+
+/*
+ * Run the given test _suite_ over the _plugins_ already loaded.
+ *
+ * 1. iterate over all the suite of tests (in the same order they were specified by the calling function)
+ *  2. iterate over all loaded plugin implementations (in a randomized order) that have the test implemented
+ *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times spent
+ *
+ * The datasets needed to run the suite are initialized at each loop because the number of items is incremented per loop
+ */
+sw_t ** run_suite (char * suite [], sw_t * plugins [],
+		   unsigned initials, unsigned loops,
+		   unsigned nslow, unsigned repeat, unsigned more,
+		   bool verbose, bool quiet, bool less, bool show)
 {
-  unsigned all;           /* the number of loaded implementations */
-  unsigned maxn;
-  result_t ** results;    /* Get memory to store all the results */
-  unsigned t;             /* iterator over the tests */
+  /* Initialize variables needed to run the suite */
+  char ** names   = suite;
+  unsigned loaded = arrlen (plugins);                     /* Number of loaded implementations      */
+  unsigned maxn   = sw_maxname (plugins);                 /* Lenght of longest implementation name */
 
-  if (! sw)
-    return sw;
-
-  all     = sw_no (sw);                /* the number of loaded implementations */
-  maxn    = sw_maxname (sw);
-  results = mkmatrix (tno (), all);    /* Get memory to store all the results */
-
-  printf ("\n");
-
-  /* Iterate over all defined tests in the same order they were defined in the internal static table of tests */
-  for (t = 0; t < tno (); t ++)
+  /*
+   * Main loop
+   *   Iterate over all the names of the given test suite in the same order they were passed
+   */
+  while (plugins && names && * names)
     {
-      unsigned items = initials;                     /* Initial value of items for all tests */
-      unsigned done  = all - 1;
-      unsigned torun = implemented (sw, t);          /* Implementations to run for this test */
+      /* Lookup for the given name in the table of given test suite */
+      rtest_t * rtest     = rsuite_find_by_name (* names); /* Lookup for given name in the table of test suite */
+      unsigned items      = initials;                      /* Initial value of items for all tests             */
+      unsigned torun      = sw_have (plugins, * names);    /* Number of implementations to run for this test   */
+      rspent_t ** runners = mkrunners (* names, plugins);  /* The table of runners for this test               */
+      rspent_t ** loosers = NULL;                          /* The table of loosers for this test               */
+      unsigned rank       = torun;
 
-      /* Run this test if there is at least 2 implementations that have the same test defined */
-      if (torun > 1)
+      /* Display test information */
+      print_test_info (* names, torun, items, loops, more);
+
+      /* Run this test if there is at least 2 implementations that have the test implemented */
+      if (rtest && torun > 1)
 	{
-	  result_t * partial = calloc (all, sizeof (result_t));   /* Get memory to save partial results */
-	  unsigned k;                                             /* Iterator over the implementations  */
-	  unsigned j;
-
-	  /* Display test information */
-	  if (items % 10)
-	    printf ("Running test [%s] - %u initial items (+%u) %u loops ...\n", tname (t), items, more, ntry);
-	  else
-	    printf ("Running test [%s] - 1e%u initial items (+%u) %u loops ...\n", tname (t), digits (items) - 1, more, ntry);
-
-	  /* Main loop to run each single test per implementation until we have a winner */
-	  while (eval_torun (sw, t, nslow) > 1)
+	  /* Initialize the table of runners for this test */
+	  unsigned i;
+	  for (i = 0; i < loaded; i ++)
 	    {
-	      /* Allocate the memory needed by the test suite */
-	      robj_t ** objs   = mkobjs (items);       /* Initialize the memory needed by the test suite */
-	      unsigned * order = rndorder (all);       /* Evaluate a random array to run implementation  */
-	      unsigned tested  = 0;                    /* Counter over implementations tested            */
-	      unsigned i;                              /* Iterator over the implementations              */
+	      sw_t * sw  = plugins [i];
+	      if (rplugin_implement (sw -> plugin, * names))
+		runners = arrmore (runners, mkspent (sw), rspent_t);
+	    }
 
-	      /* Inner loop for all the known implementations */
-	      for (i = 0; i < all; i ++)
+	  /*
+	   * Inner loop:
+	   *   continuosly repeat each single test per implementation until we have a winner.
+	   *
+	   * In order to run a test for an implementation the following conditions must match:
+	   *  1. the implementation must have the test defined
+	   *  2. the implementation must not be already included in the table of loosers
+	   */
+	  while (arrlen (loosers) < torun - 1)
+	    {
+	      robj_t ** objs   = mkobjs (items);          /* Initialize the memory needed by the test suite */
+	      unsigned * order = rndorder (loaded);       /* Evaluate a random array to run implementation  */
+	      unsigned tested  = 0;                       /* Counter over implementations tested            */
+	      rspent_t ** results = NULL;
+	      unsigned i;
+
+	      rank = torun - arrlen (loosers);
+
+	      /*
+	       * Deep loop - iterate over all loaded implementations
+	       *   run a single test and take min/avg/max times spent for its execution
+	       */
+	      for (i = 0; i < loaded; i ++)
 		{
-		  /* Select the implementation in random order and get the test (if any) */
-		  sw_t * which  = sw [order [i]];
-		  test_t * test = get_test (which, t);
+		  /* Select the implementation under test in random order */
+		  sw_t * sw  = plugins [order [i]];
 
-		  if (test && test -> slow < nslow)
+		  /* Check if the current plugin implements the current test and it is not already between the loosers */
+		  if (rplugin_implement (sw -> plugin, * names) && ! islooser (sw -> name, loosers))
 		    {
-		      /* Run the test */
-		      run_single_test (which, test, items, objs, tested + 1, items, ntry, maxn, verbose);
+		      /* Run this test for this implementation with the current number of items */
+		      rspent_t * result = run_single_test (rtest -> name, sw, items, objs,
+							   tested ++, loops, getslow (sw -> name, runners), maxn, quiet);
 
-		      partial [tested] . sw   = which;
-		      partial [tested] . test = test;
+		      printf ("  battle for %2u: %-*.*s ... %s",
+			      rank,
+			      maxn, maxn, sw -> name,
+			      ns2a (result -> avg));
 
-		      tested ++;
+		      if (verbose)
+			printf ("\n");
+		      else
+			printf ("\r");
+
+		      /* Save the results of current run for later evaluation/sort/rendering */
+		      results = arrmore (results, result, rspent_t);
 		    }
 		}
 
-	      /* Free the memory needed by the test suite */
-	      rmobjs (objs);
-	      free (order);
+	      /* Update the table of runners/loosers for this test (table of results is sorted) */
+	      loosers = update_results (results, loosers, nslow, runners);
 
-	      /* Sort the results by less time spent */
-	      qsort (partial, tested, sizeof (result_t), sort_by_less_spent);
-
-	      /* Lookup for a too slow implementation (if any) */
-	      for (i = 0; i < tested; i ++)
-		if (partial [i] . test && partial [i] . test -> slow < nslow)
-		  {
-		    /* Found! Update the slow condition */
-		    partial [i] . test -> slow ++;
-
-		    if (partial [i] . test -> slow == nslow)
-		      {
-			/* Save the results */
-			results [t] [done] . sw   = partial [i] . sw;
-			results [t] [done] . test = partial [i] . test;
-
-			done --;
-
-#if defined(ROCCO)
-			/* In such event increase number of items for the next run */
-			items += (more - repeat);
-#else
-			items = initials;
-#endif /* ROCCO */
-		      }
-		    break;
-		  }
-
-	      /* Reset the slow condition for all the other implementations */
-	      for (j = i + 1; j < tested; j ++)
-		if (partial [j] . test && partial [j] . test -> slow < nslow)
-		  partial [j] . test -> slow = 0;
-
-	      /* Print the partial results */
-	      if (less)
+	      if (arrlen (loosers) == torun - 1)
 		{
-		  /* Implementation - current slow value - average time in ms - items */
-		  printf ("  %2u: %-*.*s [%2u] - %-8u - %-10.10s",
-			  torun,
-			  maxn, maxn, partial [i] . sw -> name,
-			  partial [i] . test -> slow,
-			  partial [i] . test -> items,
-			  ns2a (partial [i] . test -> elapsed));
-
-		  if (partial [i] . test -> slow == nslow)
-		    printf ("  %-*.*s too slow - limit %u reached at %u items\n",
-			    maxn, maxn, partial [i] . sw -> name,
-			    nslow,
-			    partial [i] . test -> items);
-		  else
-		    printf ("\n");
+		  printf ("And the winner is ... %s\n", ((sw_t *) results [1] -> sw) -> name);
+		  loosers = arrmore (loosers, dupspent (results [1]), rspent_t);
 		}
-	      else if (partial [i] . test -> slow == nslow)
-		printf ("             %2u: %-*.*s [%2u] - %-8u - %10.10s  too slow - limit %u reached at %u items\n",
-			torun --,
-			maxn, maxn, partial [i] . sw -> name,
-			partial [i] . test -> slow,
-			partial [i] . test -> items,
-			ns2a (partial [i] . test -> elapsed),
-			nslow,
-			partial [i] . test -> items);
-	      else if (show)
-		printf ("  battle for %2u: %-*.*s [%2u] - %u ... +%u\r",
-			torun,
-			maxn, maxn, partial [i] . sw -> name,
-			partial [i] . test -> slow,
-			partial [i] . test -> items,
-			repeat);
 
-	      /* Increase number of items for the next run */
-	      items += repeat;
-
-	      if (verbose)
-		printf ("\n");
+	      /* Free the memory used by the test suite */
+	      arrclear (results, rmspent);
+	      safefree (order);
+	      rmobjs (objs);
 	    }
 
-	  /* And the winner is ... */
-	  for (k = 0; k < all; k ++)
-	    if (partial [k] . test && partial [k] . test -> slow == 0)
-	      {
-		printf ("             %2u: %-*.*s [%2u] - %-8u - %10.10s  %s  winner\n",
-			torun,
-			maxn, maxn, partial [k] . sw -> name,
-			partial [k] . test -> slow,
-			partial [k] . test -> items,
-			ns2a (partial [k] . test -> elapsed),
-			partial [k] . sw -> name);
-		printf ("\n");
-
-		results [t] [done] . sw = partial [k] . sw;
-		results [t] [done] . test = partial [k] . test;
-
-		done --;
-		break;
-	      }
-
-	  free (partial);
-
-	  /* Show the results */
-	  if (show)
-	    hall_of_fame (t, results, all, maxn, initials, repeat, more);
+	  /* Print the complete table of results for this test (in terms of ranking) */
+	  print_winner (loosers, * names, maxn, items, loops);
 	}
+      arrclear (loosers, rmspent);
+      arrclear (runners, rmspent);
+      names ++;
+
+      if (* names)
+	printf ("\n");
     }
 
-  printf ("\n");
-
-  /* Best implementation per test */
-  printf ("%*.*sH a l l   o f   F a m e\n", 30, 30, " ");
-
-  /* Best implementation per test */
-  for (t = 0; t < tno (); t ++)
-    if (implemented (sw, t) > 1)
-      hall_of_fame (t, results, all, maxn, initials, repeat, more);
-
-  rmmatrix (results, tno ());
-
-  return sw;
+  return plugins;
 }

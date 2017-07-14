@@ -16,7 +16,7 @@
 #define _NAME_      "At the end there is only one"
 #define _VERSION_   "0.1.0"
 
-#define TOOSLOW   10    /* too slow condition limit            */
+#define TOOSLOW   5     /* too slow condition limit            */
 #define REPEAT    100   /* # of items to add for test repetion */
 #define NMORE     500   /* # of items to add at the next run   */
 
@@ -207,8 +207,7 @@ static int rp_valid_id (char * id, char * rargv [])
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  char * dir, char * files [],
-		  char * suite [], unsigned items,
+		  char * dir, char * suite [], char * files [], unsigned items,
 		  unsigned runs, unsigned nslow, unsigned repeat, unsigned nmore,
 		  bool verbose, bool quiet, bool less, bool show)
 {
@@ -225,21 +224,7 @@ static void doit (char * progname, unsigned choice,
       printf ("\n");
 
       /* Initialize/Run/Terminate all the implementations under test */
-#if defined(ROCCO)
-      sw_done (run_suite (suite, sw_init (files, items, verbose), items, runs, verbose, quiet), verbose);
-#else
-      sw_t ** running;
-
-      /* Initialize all the implementations under test */
-      running = sw_init (files, items, verbose);
-
-      /* Run all tests for all the implementations to benchmark */
-      run_all_tests (running, items, runs, nslow, repeat, nmore, verbose, quiet, less, show);
-
-      /* Terminate all the implementations under test */
-      sw_done (running, verbose);
-
-#endif /* ROCCO */
+      sw_done (run_suite (suite, sw_init (files, items, verbose), items, runs, nslow, repeat, nmore, verbose, quiet, less, show), verbose);
       break;
 
     case OPT_GET_DIR:
@@ -549,7 +534,9 @@ int main (int argc, char * argv [])
 	  /* Build the subset of plugins and go! */
 	  char ** subset = choose (progname, files, included, excluded);
 	  if (subset)
-	    doit (progname, choice, dir, subset, suite, items, runs, nslow, repeat, nmore,
+	    doit (progname, choice, dir,
+		  suite, subset,
+		  items, runs, nslow, repeat, nmore,
 		  verbose, quiet, less, show);
 	  else
 	    printf ("%s: Empty subset\n", progname);

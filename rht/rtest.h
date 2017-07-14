@@ -34,14 +34,14 @@ typedef struct
   rtime_t t2;           /* The wall time the test was completed at nsec resolution */
   rtime_t elapsed;      /* The time spent to complete the test at nsec resolution  */
   rtime_t min;          /* Shortest time spent */
-  rtime_t max;          /* Longest time spent  */
   rtime_t avg;          /* Average time spent  */
+  rtime_t max;          /* Longest time spent  */
   unsigned rate;
 
-  unsigned items;
-  unsigned slow;
+  unsigned items;       /* The number of items used to execute the test */
+  unsigned slow;        /* A counter used to evaluate a stop condition  */
 
-  void * sw;            /* The implementation under test */
+  void * sw;            /* The implementation under test                */
 
 } rspent_t;
 
@@ -52,9 +52,11 @@ typedef struct
   unsigned id;           /* unique id                  */
   char * name;           /* unique name                */
   char * description;    /* description                */
+
   runit_f * unit;        /* function to run Unit Test  */
   rsuite_f * suite;      /* function to run Test Suite */
-  rspent_t ** results;   /* results of Test execution  */
+
+  rspent_t ** results;   /* results of test execution  */
 
 } rtest_t;
 
@@ -115,8 +117,9 @@ void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned m
 
 /* Public functions in file spent.c */
 char * ns2a (uint64_t nsecs);
-rspent_t * mkspent (void);
+rspent_t * mkspent (void * sw);
 void rmspent (void * spent);
+rspent_t * dupspent (rspent_t * src);
 int sort_by_more_avg (const void * a, const void * b);
 int sort_by_less_avg (const void * a, const void * b);
 void print_test_header (unsigned maxn);

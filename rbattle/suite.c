@@ -1,4 +1,4 @@
-/* Public header */
+/* Project headers */
 #include "rbattle.h"
 
 

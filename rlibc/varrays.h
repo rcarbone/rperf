@@ -37,6 +37,7 @@ void ** valess (void * argv [], void * item, varm_f rm);
 int vahas (void * argv [], void * item);
 void ** vaclear (void * argv [], varm_f rm);
 void ** vadup (void * argv []);
+void ** varev (void * argv []);
 void ** vacat (void * a [], void * b []);
 void ** vasort (void * argv [], vasort_f cmp);
 

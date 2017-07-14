@@ -13,7 +13,7 @@ void print_test_info (char * label, char * name, unsigned items, unsigned loops)
 
 
 /* Best implementation per test */
-void print_results (rspent_t * results [], char * testname, unsigned t, unsigned maxn, unsigned items, unsigned loops)
+void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned items, unsigned loops)
 {
   unsigned n = 0;
 
@@ -37,8 +37,6 @@ void print_results (rspent_t * results [], char * testname, unsigned t, unsigned
 void hall_of_fame (char * suite [], sw_t * plugins [],
 		   unsigned maxn, unsigned items, unsigned loops)
 {
-  unsigned t = 0;
-
   /* Line separator */
   printf ("\n");
   printf ("%*.*s%s\n", 30, 30, " ", "H a l l   o f   F a m e");
@@ -48,7 +46,7 @@ void hall_of_fame (char * suite [], sw_t * plugins [],
       if (sw_have (plugins, * suite))
 	{
 	  rtest_t * rtest = rsuite_find_by_name (* suite);
-	  print_results (rtest -> results, * suite, t ++, maxn, items, loops);
+	  print_results (rtest -> results, * suite, maxn, items, loops);
 	  arrclear (rtest -> results, rmspent);
 	  if (! * suite)
 	    printf ("\n");

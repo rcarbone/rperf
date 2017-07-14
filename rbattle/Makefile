@@ -5,12 +5,10 @@ PROGRAM   = rbattle
 # C source files
 MAINSRCS  = main.c
 MAINSRCS += fake-rht.c
+LIBSRCS   = run.c
 LIBSRCS  += sw.c
-LIBSRCS  += suite.c
-LIBSRCS  += support.c
-LIBSRCS  += run.c
-LIBSRCS  += results.c
 LIBSRCS  += print.c
+LIBSRCS  += support.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =

@@ -99,6 +99,18 @@ void ** vadup (void * argv [])
 }
 
 
+/* Reverse an array */
+void ** varev (void * argv [])
+{
+  void ** rev = NULL;
+  unsigned argc = valen (argv);
+  if (argv)
+    while (argc)
+      rev = vamore (rev, argv [-- argc]);
+  return rev;
+}
+
+
 /* Concatenate array 'b' to 'a' */
 void ** vacat (void * a [], void * b [])
 {

@@ -5,7 +5,7 @@
 #include <time.h>
 
 
-/* Public header */
+/* Project headers */
 #include "rbattle.h"
 
 

@@ -5,6 +5,10 @@
 #include "rspeed.h"
 
 
+/* Forward */
+static sw_t * rmsw (sw_t * sw);
+
+
 /* Get the 'module' variable defined in the plugin */
 static char * pmodule (rplugin_t * p)
 {
@@ -39,6 +43,61 @@ static void rmtest (void * _t)
 }
 
 
+static sw_t * mksw (char * pathname, bool verbose)
+{
+  sw_t * sw = calloc (1, sizeof (sw_t));
+  int error = 0;
+  char * buffer = NULL;
+
+  /* Load the shared object in memory */
+  sw -> plugin = rplugin_mk (pathname, & error, & buffer);
+  if (sw -> plugin)
+    {
+      char ** funcs = rplugin_functions (sw -> plugin);
+      char ** f = funcs;
+      unsigned i = 0;
+
+      /* Call now its boot() function */
+      sw_call (sw, "boot", 0, NULL, verbose);
+
+      sw -> pathname = strdup (pathname);
+      sw -> name     = strdup (pmodule (sw -> plugin));
+
+      while (f && * f)
+	{
+	  /* ROCCO: settare correttamente anche la description */
+	  sw -> suite = arrmore (sw -> suite, mktest (i ++, * f, "description", sw_func (sw, * f)), rtest_t);
+	  f ++;
+	}
+      argsclear (funcs);
+    }
+  else
+    {
+      safefree (buffer);
+      sw = rmsw (sw);
+    }
+
+  return sw;
+}
+
+
+static sw_t * rmsw (sw_t * sw)
+{
+  if (! sw)
+    return NULL;
+
+  if (sw -> pathname)
+    free (sw -> pathname);
+  if (sw -> name)
+    free (sw -> name);
+  rplugin_rm (sw -> plugin);
+  arrclear (sw -> suite, rmtest);
+  free (sw);
+
+  return NULL;
+}
+
+
 /* Evaluate max length of implementation names under test */
 unsigned sw_maxname (sw_t * sw [])
 {
@@ -48,16 +107,6 @@ unsigned sw_maxname (sw_t * sw [])
       n = RMAX (strlen ((* sw) -> name), n);
       sw ++;
     }
-  return n;
-}
-
-
-/* Evaluate # of implementations under test */
-unsigned sw_no (sw_t * sw [])
-{
-  unsigned n = 0;
-  while (sw && * sw ++)
-    n ++;
   return n;
 }
 
@@ -73,7 +122,7 @@ unsigned sw_have (sw_t * sw [], char * name)
 }
 
 
-/* Return the pointer to the test with the given id (if any) for the given implementation */
+/* Check if an implementation has defined a function with a given name */
 rplugin_f * sw_func (sw_t * sw, char * name)
 {
   if (sw && sw -> plugin && sw -> plugin -> funs)
@@ -92,16 +141,16 @@ rplugin_f * sw_func (sw_t * sw, char * name)
 
 rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose)
 {
-  /* Lookup for a function implemented in the shared object having the given name */
+  /* Lookup by name for a function implemented in the shared object */
   rplugin_f * fun = sw_func (sw, name);
-  rtime_t t1;
-  rtime_t t2;
   if (fun)
     {
       int argc = 0;
       char * argv [5] = { NULL, NULL, NULL, NULL, NULL };
       char aitems [32];
       bool ret;
+      rtime_t t1;
+      rtime_t t2;
 
       sprintf (aitems, "%u", items);
 
@@ -132,60 +181,6 @@ rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool 
 }
 
 
-static sw_t * rmsw (sw_t * sw)
-{
-  if (! sw)
-    return NULL;
-
-  if (sw -> pathname)
-    free (sw -> pathname);
-  if (sw -> name)
-    free (sw -> name);
-  rplugin_rm (sw -> plugin);
-  arrclear (sw -> suite, rmtest);
-  free (sw);
-
-  return NULL;
-}
-
-
-static sw_t * mksw (char * pathname, bool verbose)
-{
-  sw_t * sw = calloc (1, sizeof (sw_t));
-  int error = 0;
-  char * buffer = NULL;
-
-  /* Load the shared object in memory */
-  sw -> plugin = rplugin_mk (pathname, & error, & buffer);
-  if (sw -> plugin)
-    {
-      char ** funcs = rplugin_functions (sw -> plugin);
-      char ** f = funcs;
-      unsigned i = 0;
-
-      /* Call now its boot() function */
-      sw_call (sw, "boot", 0, NULL, verbose);
-
-      sw -> pathname = strdup (pathname);
-      sw -> name     = strdup (pmodule (sw -> plugin));
-
-      while (f && * f)
-	{
-	  sw -> suite = arrmore (sw -> suite, mktest (i ++, * f, * f, sw_func (sw, * f)), rtest_t);
-	  f ++;
-	}
-      argsclear (funcs);
-    }
-  else
-    {
-      safefree (buffer);
-      sw = rmsw (sw);
-    }
-
-  return sw;
-}
-
-
 /* Initialize all the implementations under test
  *   - load the shared object in memory
  *   - call its boot() function
@@ -197,7 +192,7 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
 
   if (verbose)
     {
-      printf ("Initializing ... ");
+      printf ("Initializing ");
       printf ("\n\n");
     }
 
@@ -234,9 +229,7 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
     }
 
   if (verbose)
-    printf ("\n");
-
-  printf (" %d implementations initialized (of %d defined)\n\n", arrlen (done), arrlen (argv));
+    printf (" %d implementations initialized (of %d defined)\n", arrlen (done), arrlen (argv));
 
   return done;
 }
@@ -253,7 +246,7 @@ void sw_done (sw_t * argv [], bool verbose)
 
   if (verbose)
     {
-      printf ("Terminating  ... ");
+      printf ("Terminating  ");
       printf ("\n\n");
     }
 

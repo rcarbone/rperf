@@ -112,10 +112,11 @@ char * ns2a (uint64_t nsecs)
 
 
 /* Memory allocator/deallocator for the rspent_t variables. */
-rspent_t * mkspent (void)
+rspent_t * mkspent (void * sw)
 {
   rspent_t * spent = calloc (1, sizeof (* spent));
   spent -> min = ULONG_MAX;
+  spent -> sw  = sw;
   return spent;
 }
 
@@ -123,6 +124,25 @@ rspent_t * mkspent (void)
 void rmspent (void * spent)
 {
   safefree (spent);
+}
+
+
+rspent_t * dupspent (rspent_t * src)
+{
+  rspent_t * dst = calloc (1, sizeof (* dst));
+
+  dst -> t1      = src -> t1;
+  dst -> t2      = src -> t2;
+  dst -> elapsed = src -> elapsed;
+  dst -> min     = src -> min;
+  dst -> avg     = src -> avg;
+  dst -> max     = src -> max;
+  dst -> rate    = src -> rate;
+  dst -> items   = src -> items;
+  dst -> slow    = src -> slow;
+  dst -> sw      = src -> sw;
+
+  return dst;
 }
 
 

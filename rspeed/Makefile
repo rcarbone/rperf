@@ -5,10 +5,10 @@ PROGRAM   = rspeed
 # C source files
 MAINSRCS  = main.c
 MAINSRCS += fake-rht.c
-LIBSRCS   = sw.c
-LIBSRCS  += support.c
-LIBSRCS  += run.c
+LIBSRCS   = run.c
+LIBSRCS  += sw.c
 LIBSRCS  += print.c
+LIBSRCS  += support.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =
