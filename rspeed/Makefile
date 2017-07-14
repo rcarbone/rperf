@@ -6,7 +6,6 @@ PROGRAM   = rspeed
 MAINSRCS  = main.c
 MAINSRCS += fake-rht.c
 LIBSRCS   = run.c
-LIBSRCS  += sw.c
 LIBSRCS  += print.c
 LIBSRCS  += support.c
 

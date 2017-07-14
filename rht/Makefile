@@ -8,6 +8,7 @@ MAINSRCS += stub-api.c
 LIBSRCS   = datasets.c
 LIBSRCS  += unit.c
 LIBSRCS  += suite.c
+LIBSRCS  += sw.c
 LIBSRCS  += spent.c
 LIBSRCS  += print.c
 LIBSRCS  += version.c

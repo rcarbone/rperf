@@ -15,6 +15,7 @@ static char * ee (unsigned items)
   return buf;  
 }
 
+
 /* Display test header */
 static void print_test_info (char * name, unsigned swno, unsigned items, unsigned loops, unsigned more)
 {
@@ -76,8 +77,7 @@ static unsigned getslow (char * name, rspent_t * runners [])
 /*
  * Lookup for a too slow implementation (if any) and in the event include it the table of loosers
  */
-static rspent_t ** update_results (rspent_t * results [], rspent_t * loosers [],
-				   unsigned nslow, rspent_t * runners [])
+static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [], rspent_t * loosers [], unsigned nslow, unsigned rank)
 {
   rspent_t * worse;
   sw_t * sw;
@@ -100,8 +100,7 @@ static rspent_t ** update_results (rspent_t * results [], rspent_t * loosers [],
       while (runners && * runners)
 	(* runners ++) -> slow = 0;
 
-      printf ("%50.50s", " ");
-      printf ("  too slow %s\n", sw -> name);
+      printf ("  battle for %2u: %s too slow                                    \n", rank, sw -> name);
     }
   else
     {
@@ -295,11 +294,11 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 		}
 
 	      /* Update the table of runners/loosers for this test (table of results is sorted) */
-	      loosers = update_results (results, loosers, nslow, runners);
+	      loosers = update_results (results, runners, loosers, nslow, rank);
 
 	      if (arrlen (loosers) == torun - 1)
 		{
-		  printf ("And the winner is ... %s\n", ((sw_t *) results [1] -> sw) -> name);
+		  printf ("  winner is  %2u: %s\n", 1, ((sw_t *) results [1] -> sw) -> name);
 		  loosers = arrmore (loosers, dupspent (results [1]), rspent_t);
 		}
 

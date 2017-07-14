@@ -7,6 +7,7 @@
 /* Project headers */
 #include "rtypes.h"
 #include "datasets.h"
+#include "plugins.h"
 
 
 /* Useful macros */
@@ -24,7 +25,6 @@
 /* Function definition for Unit Tests and Test Suite */
 typedef unsigned runit_f (unsigned argc);
 typedef rtime_t rsuite_f (unsigned argc, robj_t * argv []);
-
 
 
 /* The structure to hold execution times for a single test run */
@@ -59,6 +59,17 @@ typedef struct
   rspent_t ** results;   /* results of test execution  */
 
 } rtest_t;
+
+
+/* Definition of a software implementation with all defined testing functions */
+typedef struct
+{
+  char * pathname;       /* shared object with the implementation           */
+  rplugin_t * plugin;    /* where all the functions are implemented         */
+  char * name;           /* name of implementation as defined in the plugin */
+  rtest_t ** suite;      /* suite of tests implemented in the shared object */
+
+} sw_t;
 
 
 /* Returns # of defined Unit Tests */
@@ -124,3 +135,15 @@ int sort_by_more_avg (const void * a, const void * b);
 int sort_by_less_avg (const void * a, const void * b);
 void print_test_header (unsigned maxn);
 void show_spent (rspent_t * spent);
+
+
+/* Public functions in file sw.c */
+unsigned sw_maxname (sw_t * sw []);
+unsigned sw_no (sw_t * sw []);
+unsigned sw_have (sw_t * sw [], char * name);
+rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose);
+rplugin_f * sw_func (sw_t * sw, char * name);
+sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
+void sw_done (sw_t * implementations [], bool verbose);
+
+

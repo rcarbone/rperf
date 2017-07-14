@@ -1,8 +1,8 @@
 /* Projects headers */
 #include "safe.h"
 #include "args.h"
+#include "rwall.h"
 #include "rtest.h"
-#include "rspeed.h"
 
 
 /* Forward */
@@ -111,7 +111,7 @@ unsigned sw_maxname (sw_t * sw [])
 }
 
 
-/* Returns number of implementations for the given name */
+/* Returns number of implementations which have a function implemented with the given name */
 unsigned sw_have (sw_t * sw [], char * name)
 {
   unsigned n = 0;
