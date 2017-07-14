@@ -18,7 +18,7 @@ static char * ee (unsigned items)
 /* Display test header */
 static void print_test_info (char * name, unsigned swno, unsigned items, unsigned loops, unsigned more)
 {
-  printf ("Running test [%s] - %u implementations - %u initial items %u loops (+%u) ...\n",
+  printf ("Running test [%s] - %u implementations - %s initial items %u loops (+%u) ...\n",
 	  name, swno, ee (items), loops, more);
 }
 
