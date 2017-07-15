@@ -84,10 +84,6 @@ typedef enum
   OPT_REPEAT       = 'R',
   OPT_MORE         = 'M',
 
-  /* Display */
-  OPT_LESS         = 'l',
-  OPT_SHOW         = 'b',
-
 } ropt_t;
 
 
@@ -152,10 +148,6 @@ static struct option lopts [] =
   { "repeat",       required_argument, NULL, OPT_REPEAT       },
   { "more",         required_argument, NULL, OPT_MORE         },
 
-  /* Booleans */
-  { "less",         no_argument,       NULL, OPT_LESS         },
-  { "show",         no_argument,       NULL, OPT_SHOW         },
-
   /* End of options */
   { NULL,           0,                 NULL, 0                }
 };
@@ -209,7 +201,7 @@ static int rp_valid_id (char * id, char * rargv [])
 static void doit (char * progname, unsigned choice,
 		  char * dir, char * suite [], char * files [], unsigned items,
 		  unsigned runs, unsigned nslow, unsigned repeat, unsigned nmore,
-		  bool verbose, bool quiet, bool less, bool show)
+		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
   struct utsname u;
@@ -224,7 +216,7 @@ static void doit (char * progname, unsigned choice,
       printf ("\n");
 
       /* Initialize/Run/Terminate all the implementations under test */
-      sw_done (run_suite (suite, sw_init (files, items, verbose), items, runs, nslow, repeat, nmore, verbose, quiet, less, show), verbose);
+      sw_done (run_suite (suite, sw_init (files, items, verbose), items, runs, nslow, repeat, nmore, verbose, quiet), verbose);
       break;
 
     case OPT_GET_DIR:
@@ -389,10 +381,6 @@ static void _usage_ (char * progname, char * version, struct option * options)
   printf ("  Run counters: (default %u)\n", RUNS);
   usage_item (options, n, OPT_RUNS,    "Set the number of runs per test");
   usage_item (options, n, OPT_SLOW,    "Set the occurrences to mark an implementation too slow (default 10)");
-  printf ("\n");
-
-  usage_item (options, n, OPT_LESS,    "Enable less mode (do not show each test execution)");
-  usage_item (options, n, OPT_SHOW,    "Enable verbose mode to show each test execution");
 }
 
 
@@ -404,9 +392,7 @@ int main (int argc, char * argv [])
 
   /* Booleans */
   bool verbose     = false;
-  bool less        = false;
   bool quiet       = false;
-  bool show        = true;
 
   /* Test Suite */
   char ** enabled  = NULL;
@@ -498,10 +484,6 @@ int main (int argc, char * argv [])
 	case OPT_SLOW:   nslow  = atoi (optarg); break;
 	case OPT_REPEAT: repeat = atoi (optarg); break;
 	case OPT_MORE:   nmore  = atoi (optarg); break;
-
-	  /* Display */
-	case OPT_LESS: less  = ! less;             break;
-	case OPT_SHOW: show  = ! show;             break;
 	}
     }
 
@@ -537,7 +519,7 @@ int main (int argc, char * argv [])
 	    doit (progname, choice, dir,
 		  suite, subset,
 		  items, runs, nslow, repeat, nmore,
-		  verbose, quiet, less, show);
+		  verbose, quiet);
 	  else
 	    printf ("%s: Empty subset\n", progname);
 	  argsclear (subset);

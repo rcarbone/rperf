@@ -1,0 +1,4 @@
+hits     A hit is a lookup in the associative array of a key that is present.
+miss     A miss is a lookup in the associative array of a key that is not present.
+ins/del  An insertion inserts a key/value pair for a key that wasn't already there. A deletion deletes an already-present key.
+rehits

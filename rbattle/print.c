@@ -31,4 +31,3 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
       show_spent (* results ++);
     }
 }
-

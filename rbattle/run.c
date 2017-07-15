@@ -32,7 +32,7 @@ static void print_winner (rspent_t * argv [], char * name, unsigned maxn, unsign
 }
 
 
-/* Initialize the table of runners for the test _name_ */
+/* Initialize the table of runners for the test [name] */
 static rspent_t ** mkrunners (char * name, sw_t * plugins [])
 {
   rspent_t ** runners = NULL;
@@ -47,7 +47,7 @@ static rspent_t ** mkrunners (char * name, sw_t * plugins [])
 }
 
 
-/* Check if _name_ is included in the table of loosers _argv_ */
+/* Check if _name_ is included in the table of loosers [argv] */
 static bool islooser (char * name, rspent_t * argv [])
 {
   while (name && argv && * argv)
@@ -75,9 +75,10 @@ static unsigned getslow (char * name, rspent_t * runners [])
 
 
 /*
- * Lookup for a too slow implementation (if any) and in the event include it the table of loosers
+ * Lookup for the worse implementation in [results] and in the event it is too sloow include it in the table of loosers
  */
-static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [], rspent_t * loosers [], unsigned nslow, unsigned rank)
+static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [], rspent_t * loosers [],
+				   unsigned nslow, unsigned rank)
 {
   rspent_t * worse;
   sw_t * sw;
@@ -186,18 +187,7 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
 
 
 /*
- *  tests    sw1  sw2
- *         +=====+=====+
- *  grow   |     |     |
- *         | === | === |
- *  hit    |     |     |
- *         | === | === |
- * ....... |     |     |
- *         +=====+=====+
- */
-
-/*
- * Run the given test _suite_ over the _plugins_ already loaded.
+ * Run the given test [suite] over the [plugins] already loaded.
  *
  * 1. iterate over all the suite of tests (in the same order they were specified by the calling function)
  *  2. iterate over all loaded plugin implementations (in a randomized order) that have the test implemented
@@ -208,7 +198,7 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
 sw_t ** run_suite (char * suite [], sw_t * plugins [],
 		   unsigned initials, unsigned loops,
 		   unsigned nslow, unsigned repeat, unsigned more,
-		   bool verbose, bool quiet, bool less, bool show)
+		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
   char ** names   = suite;
@@ -216,8 +206,8 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
   unsigned maxn   = sw_maxname (plugins);                 /* Lenght of longest implementation name */
 
   /*
-   * Main loop
-   *   Iterate over all the names of the given test suite in the same order they were passed
+   * Main loop:
+   *   iterate over all the names of the given test suite in the same order they were passed
    */
   while (plugins && names && * names)
     {
@@ -227,10 +217,12 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
       unsigned torun      = sw_have (plugins, * names);    /* Number of implementations to run for this test   */
       rspent_t ** runners = mkrunners (* names, plugins);  /* The table of runners for this test               */
       rspent_t ** loosers = NULL;                          /* The table of loosers for this test               */
-      unsigned rank       = torun;
 
       /* Display test information */
-      print_test_info (* names, torun, items, loops, more);
+      if (! quiet)
+	print_test_info (* names, torun, items, loops, more);
+      else
+	printf ("Running test [%s]. Please wait ...\n", * names);
 
       /* Run this test if there is at least 2 implementations that have the test implemented */
       if (rtest && torun > 1)
@@ -247,46 +239,45 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	  /*
 	   * Inner loop:
 	   *   continuosly repeat each single test per implementation until we have a winner.
-	   *
-	   * In order to run a test for an implementation the following conditions must match:
-	   *  1. the implementation must have the test defined
-	   *  2. the implementation must not be already included in the table of loosers
 	   */
 	  while (arrlen (loosers) < torun - 1)
 	    {
-	      robj_t ** objs   = mkobjs (items);          /* Initialize the memory needed by the test suite */
-	      unsigned * order = rndorder (loaded);       /* Evaluate a random array to run implementation  */
-	      unsigned tested  = 0;                       /* Counter over implementations tested            */
+	      robj_t ** objs      = mkobjs (items);           /* Initialize the memory needed by the test suite */
+	      unsigned * order    = rndorder (loaded);        /* Evaluate a random array to run implementation  */
 	      rspent_t ** results = NULL;
+	      unsigned rank       = torun - arrlen (loosers);
+	      unsigned tested     = 0;                        /* Counter over implementations tested            */
 	      unsigned i;
 
-	      rank = torun - arrlen (loosers);
-
 	      /*
-	       * Deep loop - iterate over all loaded implementations
-	       *   run a single test and take min/avg/max times spent for its execution
+	       * Deep loop:
+	       *   iterate over all loaded implementations 
+	       *     run a single test in order and evaluate min/avg/max times spent for its execution
 	       */
 	      for (i = 0; i < loaded; i ++)
 		{
 		  /* Select the implementation under test in random order */
 		  sw_t * sw  = plugins [order [i]];
 
-		  /* Check if the current plugin implements the current test and it is not already between the loosers */
+		  /*
+		   * In order to run a test for an implementation the following conditions must meet:
+		   *  1. the implementation must have the test defined
+		   *  2. the implementation must not be already included in the table of loosers
+		   */
 		  if (rplugin_implement (sw -> plugin, * names) && ! islooser (sw -> name, loosers))
 		    {
 		      /* Run this test for this implementation with the current number of items */
 		      rspent_t * result = run_single_test (rtest -> name, sw, items, objs,
-							   tested ++, loops, getslow (sw -> name, runners), maxn, quiet);
+							   ++ tested, loops, getslow (sw -> name, runners), maxn, verbose);
+		      if (! quiet)
+			{
+			  printf ("  battle for %2u: %-*.*s ... %s", rank, maxn, maxn, sw -> name, ns2a (result -> avg));
 
-		      printf ("  battle for %2u: %-*.*s ... %s",
-			      rank,
-			      maxn, maxn, sw -> name,
-			      ns2a (result -> avg));
-
-		      if (verbose)
-			printf ("\n");
-		      else
-			printf ("\r");
+			  if (verbose)
+			    printf ("\n");
+			  else
+			    printf ("\r");
+			}
 
 		      /* Save the results of current run for later evaluation/sort/rendering */
 		      results = arrmore (results, result, rspent_t);
@@ -296,6 +287,7 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      /* Update the table of runners/loosers for this test (table of results is sorted) */
 	      loosers = update_results (results, runners, loosers, nslow, rank);
 
+	      /* Check for winner */
 	      if (arrlen (loosers) == torun - 1)
 		{
 		  printf ("  winner is  %2u: %s\n", 1, ((sw_t *) results [1] -> sw) -> name);
@@ -308,13 +300,15 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      rmobjs (objs);
 	    }
 
-	  /* Print the complete table of results for this test (in terms of ranking) */
+	  /* Print the complete table of results for this test (in terms of ranking because times are less important) */
 	  print_winner (loosers, * names, maxn, items, loops);
 	}
+
+      /* Free the memory used by the test suite */
       arrclear (loosers, rmspent);
       arrclear (runners, rmspent);
-      names ++;
 
+      names ++;
       if (* names)
 	printf ("\n");
     }

@@ -30,7 +30,7 @@ unsigned * rndorder (unsigned n);
 sw_t ** run_suite (char * suite [], sw_t * allsw [],
 		   unsigned initials,
 		   unsigned loops, unsigned nslow, unsigned repeat, unsigned more,
-		   bool verbose, bool quiet, bool less, bool show);
+		   bool verbose, bool quiet);
 
 
 /* Public functions in file print.c */

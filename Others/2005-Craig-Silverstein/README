@@ -1,0 +1,22 @@
+// Time various hash map implementations
+//
+// Below, times are per-call.  "Memory use" is "bytes in use by
+// application" as reported by tcmalloc, compared before and after the
+// function call.  This does not really report fragmentation, which is
+// not bad for the sparse* routines but bad for the dense* ones.
+//
+// The tests generally yield best-case performance because the
+// code uses sequential keys; on the other hand, "map_fetch_random" does
+// lookups in a pseudorandom order.  Also, "stresshashfunction" is
+// a stress test of sorts.  It uses keys from an arithmetic sequence, which,
+// if combined with a quick-and-dirty hash function, will yield worse
+// performance than the otherwise similar "map_predict/grow."
+//
+// Consider doing the following to get good numbers:
+//
+// 1. Run the tests on a machine with no X service. Make sure no other
+//    processes are running.
+// 2. Minimize compiled-code differences. Compare results from the same
+//    binary, if possible, instead of comparing results from two different
+//    binaries.
+//

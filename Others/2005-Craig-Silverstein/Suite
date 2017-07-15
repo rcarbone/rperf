@@ -1,0 +1,9 @@
+grow
+predict/grow
+replace
+fetch_random
+fetch_sequential
+fetch_empty
+remove
+toggle
+iterate
