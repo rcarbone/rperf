@@ -3,7 +3,9 @@
 #include <stdlib.h>
 
 /* The implementation */
-#define __USE_LARGEFILE64
+#if !defined(__off64_t_defined)
+typedef __off64_t off64_t;
+#endif
 #include <apr-1.0/apr_hash.h>
 
 /* librht - an abstract C library over real hash tables */
