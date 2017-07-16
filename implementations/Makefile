@@ -1,6 +1,6 @@
 # List of subdirectories
 SUBDIRS  = pm
-# SUBDIRS += amtl
+SUBDIRS += amtl
 SUBDIRS += apr
 # SUBDIRS += ccan
 # SUBDIRS  = eastl
@@ -15,6 +15,7 @@ SUBDIRS += oddou
 SUBDIRS += python
 SUBDIRS += rdestl
 SUBDIRS += rigtorp
+SUBDIRS += sys-apr
 SUBDIRS += sys-boost
 SUBDIRS += sys-glib
 SUBDIRS += sys-google

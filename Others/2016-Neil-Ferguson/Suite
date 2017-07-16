@@ -1,0 +1,4 @@
+Each test repeatedly generates numbers between zero and 9999 and puts these into a hash table.
+Another random number is then retrieved from the hash table.
+This is repeated for one billion iterations.
+There is a warm-up period of one hundred million iterations before the main test.

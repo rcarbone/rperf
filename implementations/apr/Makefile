@@ -1,7 +1,7 @@
 # The name of the game
 NAME      = apr
 
-# C source files
+# C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
 

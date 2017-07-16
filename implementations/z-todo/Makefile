@@ -1,6 +1,9 @@
 # List of subdirectories
-SUBDIRS  = libevent
-SUBDIRS += first-libevent
+SUBDIRS += ccan
+SUBDIRS += eastl
+SUBDIRS += libevent-1
+SUBDIRS += libevent-2
+SUBDIRS += sys-qt
 SUBDIRS += tommy-dynamic
 SUBDIRS += tommy-linear
 SUBDIRS += uthash

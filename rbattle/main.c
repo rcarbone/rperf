@@ -52,7 +52,7 @@ typedef enum
   OPT_SET_DIR      = 'd',
 
   /* List */
-  OPT_LIST_PLUGINS = 'L',    /* List                */
+  OPT_LIST_PLUGINS = 'l',    /* List                */
 
   /* Load/Unload */
   OPT_LOAD_UNLOAD  = 'k',    /* Check Load/Unload   */

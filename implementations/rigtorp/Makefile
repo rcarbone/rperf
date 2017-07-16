@@ -1,9 +1,11 @@
 # The name of the game
 NAME      = rigtorp
-# C source files
+
+# C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
-#
+
+# Optional
 INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
