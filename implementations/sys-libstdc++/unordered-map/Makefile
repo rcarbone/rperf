@@ -104,7 +104,7 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB}
+${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 

@@ -42,9 +42,17 @@ C++
  5. rdestl               done!   yes   C++ template
  6. rigtorp              done!   yes   C++ template
  7. boost/unordered-map  done!   yes   C++ template
- 8. amtl
+ 8. amtl                 done!   yes   C++ template
  9. eastl
 10. emilib
 11. mct                  done!   yes   C++ template
 12. Qt
 13. khash++
+14. etl
+15. llvm
+16. sgi
+17. ustl
+18. uSTL
+19. ustl_hashmap
+20. dlib
+

@@ -35,13 +35,13 @@ int main (int argc, char * argv [])
       char * path = argv [++ i];
       int error;
       char * buffer;
-      plugin_t * p;
+      rplugin_t * p;
 
       p = rplugin_mk (path, & error, & buffer);
       if (p)
 	{
 	  char ** n;
-	  symbol_t ** s;
+	  rplugin_symbol_t ** s;
 
 	  printf ("plugin %s: loaded!\n", path);
 
@@ -61,19 +61,19 @@ int main (int argc, char * argv [])
 		printf ("  defined variables\n");
 	      while (s && * s)
 		{
-		  printf ("    [var] %s - %s\n", (* s) -> name, variable ((* s) -> name, p -> vars));
+		  printf ("    [var] %s - %s\n", (* s) -> name, rplugin_variable ((* s) -> name, p -> vars));
 		  s ++;
 		}
 	    }
 
 	  if (show_functions)
 	    {
-	      s = p -> func;
+	      s = p -> funs;
 	      if (s)
 		printf ("  defined functions\n");
 	      while (s && * s)
 		{
-		  rplugin_f * fun = function ((* s) -> name, p -> func);
+		  rplugin_f * fun = rplugin_function ((* s) -> name, p -> funs);
 		  char * argv [2] = { (* s) -> name, NULL };
 
 		  printf ("    [fun] running %s ... ", (* s) -> name);
