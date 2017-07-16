@@ -31,7 +31,7 @@ typedef enum
 } rsuite_id_t;
 
 
-/* Forward */
+/* The implementation elsewhere defined */
 rsuite_f rsuite_grow;
 rsuite_f rsuite_hit;
 rsuite_f rsuite_miss;

@@ -1,5 +1,5 @@
 # The name of the game
-NAME      = sys-apr
+NAME      = apr
 
 # C/C++ source files
 LIBSRCS   = glue.c
@@ -44,14 +44,14 @@ TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plug
 PLEASE    = "Do not edit anything below, make creates it."
 
 # Static and dynamic libraries
-STLIB     = librht-${NAME}.a
+# STLIB     = librht-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
 PROGRAMS  = run
 
 # All the targets
-TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Object and depend files
 LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
@@ -105,7 +105,7 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
@@ -118,7 +118,7 @@ ${INSTALLDIR}/${SHLIB}: ${SHLIB}
          fi
 
 # Binary programs
-run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

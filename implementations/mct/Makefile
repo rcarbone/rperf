@@ -34,11 +34,14 @@ TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.subd
 PLEASE    = "Do not edit anything below, make creates it."
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
+#
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+#
 all: Makefile
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \
              echo "Making $$dir ..." ; \
-             (cd $$dir && make -s --no-print-directory) ; \
+             (make -C $$dir -s --no-print-directory) ; \
            else \
              echo "Warning: missing sub-directory $$dir" ; \
            fi \
@@ -49,7 +52,17 @@ clean distclean:
 	@rm -f *~
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \
-             (cd $$dir && make -s --no-print-directory $@) ; \
+             (make -C $$dir -s --no-print-directory $@) ; \
+           fi \
+         done
+
+# The targets that are eventually handled by recursive makefile
+%:
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo $$dir; \
+             (make -C $$dir -s --no-print-directory $@) ; \
+             echo ; \
            fi \
          done
 
@@ -66,5 +79,11 @@ tar:
 	@(cd ${ROOTDIR} && make -s distclean && cd .. && tar cfz ${PROJECT}.tar.gz ${PROJECT} && mv ${PROJECT}.tar.gz ${PROJECT}/)
 	@echo "Done"
 
-# Fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# The fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 .PHONY: all clean distclean ${SUBDIRS}
+
+# In the event of unknown rules
+.DEFAULT:
+	@true

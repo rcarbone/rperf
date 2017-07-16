@@ -7,7 +7,7 @@ const char * functions   = "boot halt grow hit miss delete replace kbench";
 
 /* Plugin definitions */
 const char * library     = "Apache apr";
-const char * module      = "rht-apr/hashtable";
+const char * module      = "my-apr/hashtable";
 const char * author      = "Apache Software Foundation (ASF)";
 const char * description = "Apache Portable Runtime Library";
 const char * url         = "http://apache.panu.it/apr/apr-1.5.2.tar.gz";

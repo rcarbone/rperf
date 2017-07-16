@@ -7,7 +7,9 @@ MAINSRCS  = main.c
 MAINSRCS += stub-api.c
 LIBSRCS   = datasets.c
 LIBSRCS  += unit.c
+LIBSRCS  += unit-code.c
 LIBSRCS  += suite.c
+LIBSRCS  += suite-code.c
 LIBSRCS  += sw.c
 LIBSRCS  += spent.c
 LIBSRCS  += print.c
@@ -28,21 +30,23 @@ PROJECT    = rperf
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's tree
 ROOTDIR    = /home/rocco/${PROJECT}
+
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
+# The project's source tree
 RLIBCDIR   = ${ROOTDIR}/rlibc
 RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
 
 # rht
-INCLUDE  += -I${RHTDIR}
-RHTLIB    = ${RHTDIR}/librht.a
-USRLIBS  += ${RHTLIB}
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
@@ -170,3 +174,7 @@ vleak-%: %
 	@valgrind ${VFLAGS} $^
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# Everything else
+.DEFAULT:
+	@true
