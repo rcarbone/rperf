@@ -201,7 +201,7 @@ leak-%: %
 vleak-%: %
 	@echo "  $^ ${RUNFLAG} "
 	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
-	@valgrind ${VFLAGS} $^
+	@valgrind ${VFLAGS} $^ ${RUNFLAG}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
