@@ -2,6 +2,7 @@
 SUBDIRS  = pm
 SUBDIRS += amtl
 SUBDIRS += apr
+SUBDIRS += c-algorithms
 # SUBDIRS += ccan
 # SUBDIRS  = eastl
 SUBDIRS += gcc
