@@ -1,13 +1,15 @@
 # The name of the game
-NAME      = open-hash++
-# C source files
+NAME      = libCDS
+
+# C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
-#
+
+# Optional
 INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
-SYSLIBS   = -lstdc++
+SYSLIBS   =
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

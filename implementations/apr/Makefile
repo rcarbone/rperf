@@ -1,5 +1,5 @@
 # The name of the game
-NAME      = my-apr
+NAME      = apr-2
 
 # C/C++ source files
 LIBSRCS   = glue.c
@@ -18,7 +18,7 @@ SYSLIBS   =
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share

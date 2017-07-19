@@ -16,7 +16,7 @@ SYSLIBS   = -lstdc++ -lm
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share

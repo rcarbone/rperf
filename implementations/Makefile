@@ -9,6 +9,7 @@ SUBDIRS += gcc
 SUBDIRS += google-c
 SUBDIRS += hashit
 SUBDIRS += klib
+SUBDIRS += libCDS
 SUBDIRS += libcfu
 # SUBDIRS += libevent
 SUBDIRS += mct

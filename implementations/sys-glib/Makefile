@@ -16,7 +16,7 @@ SYSLIBS   = `pkg-config --libs glib-2.0`
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share

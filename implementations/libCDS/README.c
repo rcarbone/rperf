@@ -6,10 +6,10 @@ const char * variables   = "library module author description url";
 const char * functions   = "boot halt grow hit miss delete replace kbench";
 
 /* Plugin definitions */
-const char * library     = "Apache apr";
-const char * module      = "apr-no-pool/hashtable";
-const char * author      = "Apache Software Foundation (ASF)";
-const char * description = "Apache Portable Runtime Library";
-const char * url         = "http://apache.panu.it/apr/apr-1.5.2.tar.gz";
+const char * library     = "LibCDS";
+const char * module      = "libCDS/HashMap";
+const char * author      = "ZongXian Shen (andy.zsshen@gmail.com)";
+const char * description = "a set of uniform C APIs for data structure manipulation";
+const char * url         = "http://github.com/ZSShen/C-Common-Data-Structures";
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
