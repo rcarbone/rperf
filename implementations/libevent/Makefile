@@ -6,7 +6,7 @@ LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
 
 # Optional
-INCLUDE   = -I../3rdparty
+INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   =
@@ -18,7 +18,7 @@ SYSLIBS   =
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share
@@ -44,14 +44,14 @@ TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plug
 PLEASE    = "Do not edit anything below, make creates it."
 
 # Static and dynamic libraries
-STLIB     = librht-${NAME}.a
+# STLIB     = librht-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
 PROGRAMS  = run
 
 # All the targets
-TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Object and depend files
 LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
@@ -77,7 +77,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
+all: Makefile plugin.c run.c load.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -105,20 +105,25 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
 ${INSTALLDIR}/${SHLIB}: ${SHLIB}
-	@if [ -d ${INSTALLDIR} ]; then \
-          (rm -f $@; cp $^ $@) ; \
+	@if [ -d ${INSTALLDIR} ] ; then \
+          (rm -f $@ ; cp $^ $@) ; \
          else \
-          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
+         fi
+
+${INSTALLDIR}:
+	@if [ ! -d ${INSTALLDIR} ] ; then \
+           mkdir ${INSTALLDIR} ; \
          fi
 
 # Binary programs
-run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -195,13 +200,13 @@ vleaks: ${PROGRAMS}
 leak-%: %
 	@echo -n "  $^ ${RUNFLAG} "
 	@valgrind -q ${VFLAGS} $^ ${RUNFLAG} 1> /dev/null 2>& 1
-	@if [ $? ]; then echo -n "Ok"; fi
+	@if [ $? ] ; then echo -n "Ok" ; fi
 	@echo
 
 vleak-%: %
 	@echo "  $^ ${RUNFLAG} "
 	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
-	@valgrind ${VFLAGS} $^
+	@valgrind ${VFLAGS} $^ ${RUNFLAG}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 

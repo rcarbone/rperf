@@ -54,7 +54,7 @@ rht_t * rht_alloc (unsigned size)
 
 void rht_free (rht_t * ht)
 {
-  rht_clear (ht);
+  HT_CLEAR (rht, ht);
   free (ht);
 }
 
@@ -74,7 +74,7 @@ unsigned rht_count (rht_t * ht)
 void rht_set (rht_t * ht, char * key, void * val)
 {
   robj_t * obj = val;
-  HT_REPLACE (rht, ht, obj);
+  HT_INSERT (rht, ht, obj);
 }
 
 

@@ -61,7 +61,7 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
   rht_t * ht = rht_alloc (argc);
   unsigned i;
   for (i = 0; i < argc; i ++)
-    rht_set (ht, argv [i] -> skey, & argv [i] -> ukey);
+    rht_set (ht, argv [i] -> skey, argv [i] -> pval);
   return ht;
 }
 
@@ -75,7 +75,7 @@ rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
   unsigned i;
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
-    rht_set (ht, argv [i] -> skey, & argv [i] -> ukey);
+    rht_set (ht, argv [i] -> skey, argv [i] -> pval);
   t2 = nswall ();
   i = rht_count (ht);
   rht_free (ht);
@@ -96,7 +96,7 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rht_get (ht, argv [i] -> skey);
-      if (found && found == & argv [i] -> ukey)
+      if (found && found == argv [i] -> pval)
 	hit ++;
     }
   t2 = nswall ();
@@ -154,12 +154,12 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rht_get (ht, argv [i] -> skey);
-      if (found && found == & argv [i] -> ukey)
+      if (found && found == argv [i] -> pval)
 	{
 	  rht_del (ht, argv [i] -> skey);
 	  found = rht_get (ht, argv [i] -> smiss);
 	  if (! found)
-	    rht_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
+	    rht_set (ht, argv [i] -> smiss, argv [i] -> pval);
 	}
     }
   t2 = nswall ();
@@ -181,10 +181,10 @@ rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rht_get (ht, argv [i] -> skey);
-      if (found && found == & argv [i] -> ukey)
+      if (found && found == argv [i] -> pval)
 	rht_del (ht, argv [i] -> skey);
       else
-	rht_set (ht, argv [i] -> smiss, & argv [i] -> ukey);
+	rht_set (ht, argv [i] -> smiss, argv [i] -> pval);
     }
   t2 = nswall ();
   rht_free (ht);

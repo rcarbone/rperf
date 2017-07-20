@@ -18,7 +18,7 @@ SYSLIBS   =
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share
@@ -44,14 +44,14 @@ TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plug
 PLEASE    = "Do not edit anything below, make creates it."
 
 # Static and dynamic libraries
-STLIB     = libr-${NAME}.a
+# STLIB     = librht-${NAME}.a
 SHLIB     = ${NAME}.so
 
 # All the binary programs
 PROGRAMS  = run
 
 # All the targets
-TARGETS   = ${STLIB} ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Object and depend files
 LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
@@ -77,7 +77,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
+all: Makefile plugin.c run.c load.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -105,26 +105,37 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
 ${INSTALLDIR}/${SHLIB}: ${SHLIB}
-	@if [ -d ${INSTALLDIR} ]; then \
-          (rm -f $@; cp $^ $@) ; \
+	@if [ -d ${INSTALLDIR} ] ; then \
+          (rm -f $@ ; cp $^ $@) ; \
          else \
-          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
+         fi
+
+${INSTALLDIR}:
+	@if [ ! -d ${INSTALLDIR} ] ; then \
+           mkdir ${INSTALLDIR} ; \
          fi
 
 # Binary programs
-run: run.o ${RHTLIB} ${RLIBCLIB} ${STLIB}
+run: run.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
 load: load.o ${RLIBCLIB} ${STLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -ldl -o $@
+
+unit: run
+	@run -x
+
+suite: run
+	@run -X
 
 # Cleanup rules
 clean:
@@ -171,6 +182,7 @@ VFLAGS   += --error-exitcode=1
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no
+RUNFLAG   = -x
 
 # Run valgrind to check for errors and memory leaks
 leaks: ${PROGRAMS}
@@ -186,29 +198,31 @@ vleaks: ${PROGRAMS}
          done
 
 leak-%: %
-	@echo -n "  $^ "
-	@valgrind -q ${VFLAGS} $^ 1> /dev/null 2>& 1
-	@if [ $? ]; then echo -n "Ok"; fi
+	@echo -n "  $^ ${RUNFLAG} "
+	@valgrind -q ${VFLAGS} $^ ${RUNFLAG} 1> /dev/null 2>& 1
+	@if [ $? ] ; then echo -n "Ok" ; fi
 	@echo
 
 vleak-%: %
-	@echo "  $^ "
-	@echo "valgrind ${VFLAGS} $^"
-	@valgrind ${VFLAGS} $^
+	@echo "  $^ ${RUNFLAG} "
+	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
+	@valgrind ${VFLAGS} $^ ${RUNFLAG}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 help:
 	@echo "Usage:"
 	@echo
-	@echo "[all]"     | awk '{ printf "  make %-15.15s  --> Compile all the defined targets\n", $$1 }'
-	@echo ${LIB}      | awk '{ printf "  make %-15.15s  --> Compile the static library\n", $$1 }'
-	@echo ${SHLIB}    | awk '{ printf "  make %-15.15s  --> Compile the shared library\n", $$1 }'
-	@echo ${PROGRAM}  | awk '{ printf "  make %-15.15s  --> Compile the binary program\n", $$1 }'
+	@echo "[all]"     | awk '{ printf "  make %-15.15s  --> Compile all the defined targets (default)\n", $$1 }'
+	@echo ${STLIB}    | awk '{ printf "  make %-15.15s  --> Compile the static library\n", $$1 }'
+#	@echo ${SHLIB}    | awk '{ printf "  make %-15.15s  --> Compile the shared library\n", $$1 }'
+	@echo ${PROGRAMS} | awk '{ printf "  make %-15.15s  --> Compile the binary program\n", $$1 }'
 	@echo
 	@echo "clean"     | awk '{ printf "  make %-15.15s  --> Clean all generated files\n", $$1 }'
 	@echo "distclean" | awk '{ printf "  make %-15.15s  --> Clean all generated files (included temporary)\n", $$1 }'
-	@echo "run"       | awk '{ printf "  make %-15.15s  --> Run the binary program\n", $$1 }'
+	@echo
+	@echo "unit"      | awk '{ printf "  make %-15.15s  --> Run all the unit tests\n", $$1 }'
+	@echo "suite"     | awk '{ printf "  make %-15.15s  --> Run the test suite\n", $$1 }'
 	@echo "leaks"     | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks\n", $$1 }'
 	@echo "vleaks"    | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks (verbose mode)\n", $$1 }'
 
