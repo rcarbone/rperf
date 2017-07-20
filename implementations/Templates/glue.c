@@ -13,7 +13,7 @@ typedef xxx_t rht_t;
 #include "rht-hashers.h"
 
 
-static unsigned int hashfunc (char * key)
+static unsigned hashfunc (char * key)
 {
   return rht_python_hash (key);
 }
@@ -69,20 +69,30 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  for (;;)
+  unsigned n = rht_count (ht);
+  unsigned i;
+  for (i = 0; i < n; i ++)
     fn (data);
 }
 
 
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
+  unsigned n = rht_count (ht);
+  char ** keys = calloc (n + 1, sizeof (char *));
+  unsigned i;
+  for (i = 0; i < ht -> n; i ++)
+    keys [i ++] = xxx;
   return keys;
 }
 
 
 void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
+  unsigned n = rht_count (ht);
+  char ** vals = calloc (n + 1, sizeof (char *));
+  unsigned i;
+  for (i = 0; i < ht -> n; i ++)
+    vals [i ++] = xxx;
   return vals;
 }

@@ -1,9 +1,11 @@
 # The name of the game
 NAME      = XXX
-# C source files
+
+# C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
-#
+
+# Optional
 INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
@@ -12,25 +14,44 @@ SYSLIBS   =
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
-ROOTDIR   = /home/rocco/rbench
-SHAREDIR  = ${ROOTDIR}/share
-RHASHDIR  = ${ROOTDIR}
-RSUITEDIR = ${ROOTDIR}/tests/suite
+# The project's name
+PROJECT    = rperf
 
-TEMPLATE  = ${SHAREDIR}/Makefile.plugins
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# The project's source tree
+ROOTDIR    = /home/rocco/${PROJECT}
 
-LIB       = libr-${NAME}.a
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
+
+# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
+PLEASE    = "Do not edit anything below, make creates it."
+
+# Static and dynamic libraries
+# STLIB     = librht-${NAME}.a
 SHLIB     = ${NAME}.so
-PROGRAM   = run-testsuite
-PROGRAMS  = ${PROGRAM}
-TARGETS   = ${LIB} ${SHLIB} ${PROGRAMS}
 
-# librhash - an abstract C library over real hash table implementations 
+# All the binary programs
+PROGRAMS  = run
 
-RHASHINC  = ${RHASHDIR}/include
-RHASHLIB  = ${RHASHDIR}/lib/librhash.a
-RSUITEINC = ${RSUITEDIR}/include
-RSUITELIB = ${RSUITEDIR}/lib/librhash-suite.a
+# All the targets
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Object and depend files
 LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
@@ -39,15 +60,15 @@ DEPS      = $(patsubst %.c,%.M, ${LIBSRCS} ${MAINSRCS})
 OBJS      = ${LIBOBJS} ${MAINOBJS}
 
 # C compiler and flags
-INCLUDES  = ${INCLUDE}
-INCLUDES += -I${RHASHINC}
-INCLUDES += -I${RSUITEINC}
-INCLUDES += -I${RSUITEDIR}/lib
+INCLUDES  = -I./
+INCLUDES += ${INCLUDE}
 CC        = gcc
 C++       = g++
 AR        = ar
 LD        = gcc
+# OPTIMIZE  = -O3
 CFLAGS   += -g -Wall
+# CFLAGS   += ${OPTIMIZE}
 CFLAGS   += ${INCLUDES}
 CFLAGS   += -fPIC
 CFLAGS   += -fno-diagnostics-color
@@ -55,17 +76,10 @@ C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
 LDFLAGS   =
 
-# Static private libraries
-USRLIBS   = ${RSUITELIB}
-USRLIBS  += ${RHASHLIB}
-USRLIBS  += ${LIB}
-
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run-suite.c ${RHASHLIB} ${RSUITELIB} ${TARGETS}
+all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
 
-PLEASE = "Do not edit anything below, make creates it."
-
-Makefile: ${TEMPLATE}
+Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
 	@cat $@ | head -`grep -n ${PLEASE} $@ | head -1 | cut -d ':' -f 1` > $@.tmp
 	@echo "# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#" >> $@.tmp
@@ -77,40 +91,46 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-run-suite.c: ${SHAREDIR}/run-suite.c
+run.c: ${SHAREDIR}/run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-# Required library
-${RHASHLIB}:
-	@echo "==================="
-	@echo "=*= making ${RHASHLIB} =*="
-	@(cd ${RHASHDIR} && make -s)
-	@echo "==================="
-
-${RSUITELIB}:
-	@echo "==================="
-	@echo "=*= making ${RSUITELIB} =*="
-	@(cd ${RSUITEDIR} && make -s)
-	@echo "==================="
+load.c: ${SHAREDIR}/load.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
 
 # Static Library
-${LIB}: ${LIBOBJS}
+${STLIB}: ${LIBOBJS}
 	@echo "=*= making static library $@ =*="
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
-# Shared Object
-${SHLIB}: plugin.o
+# Dynamic Library
+${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
-	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
+	@${CC} -shared $^ ${SYSLIBS} -o $@
 
-# Binary program
-${PROGRAM}: ${MAINOBJS} ${USRLIBS}
+# Shared Library
+${INSTALLDIR}/${SHLIB}: ${SHLIB}
+	@if [ -d ${INSTALLDIR} ]; then \
+          (rm -f $@; cp $^ $@) ; \
+         else \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
+         fi
+
+# Binary programs
+run: run.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-run: ${PROGRAM}
-	@${PROGRAM}
+load: load.o ${RLIBCLIB} ${STLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -ldl -o $@
+
+unit: run
+	@run -x
+
+suite: run
+	@run -X
 
 # Cleanup rules
 clean:
@@ -118,9 +138,14 @@ clean:
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
+	@rm -f run.o
+	@rm -f load.o
 
 distclean: clean
 	@rm -f ${DEPS}
+	@rm -f plugin.c
+	@rm -f run.c
+	@rm -f load.c
 
 # How to make an object file from a C source
 %.o: %.c
@@ -140,9 +165,11 @@ distclean: clean
 %.M: %.cpp
 	@-${C++} -MM ${INCLUDES} $< -o $@
 
+-include ${DEPS}
+
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-# Memory leaks
+# Check for errors and memory leaks
 
 VFLAGS    = --show-leak-kinds=all
 VFLAGS   += --leak-check=full
@@ -150,8 +177,9 @@ VFLAGS   += --error-exitcode=1
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no
+RUNFLAG   = -x
 
-# Run valgrind to check for all errors and memory leaks
+# Run valgrind to check for errors and memory leaks
 leaks: ${PROGRAMS}
 	@echo "=*= ckecking programs for errors with valgrind =*="
 	@for bin in ${PROGRAMS} ; do \
@@ -165,32 +193,48 @@ vleaks: ${PROGRAMS}
          done
 
 leak-%: %
-	@echo -n "  $^ "
-	@valgrind -q ${VFLAGS} $^ 1> /dev/null 2>& 1
+	@echo -n "  $^ ${RUNFLAG} "
+	@valgrind -q ${VFLAGS} $^ ${RUNFLAG} 1> /dev/null 2>& 1
 	@if [ $? ]; then echo -n "Ok"; fi
 	@echo
 
 vleak-%: %
-	@echo "  $^ "
-	@echo "valgrind ${VFLAGS} $^"
-	@valgrind ${VFLAGS} $^
+	@echo "  $^ ${RUNFLAG} "
+	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
+	@valgrind ${VFLAGS} $^ ${RUNFLAG}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 help:
 	@echo "Usage:"
 	@echo
-	@echo "[all]"     | awk '{ printf "  make %-15.15s  --> Compile all the defined targets\n", $$1 }'
-	@echo ${LIB}      | awk '{ printf "  make %-15.15s  --> Compile the static library\n", $$1 }'
-	@echo ${SHLIB}    | awk '{ printf "  make %-15.15s  --> Compile the shared library\n", $$1 }'
-	@echo ${PROGRAM}  | awk '{ printf "  make %-15.15s  --> Compile the binary program\n", $$1 }'
+	@echo "[all]"     | awk '{ printf "  make %-15.15s  --> Compile all the defined targets (default)\n", $$1 }'
+	@echo ${STLIB}    | awk '{ printf "  make %-15.15s  --> Compile the static library\n", $$1 }'
+#	@echo ${SHLIB}    | awk '{ printf "  make %-15.15s  --> Compile the shared library\n", $$1 }'
+	@echo ${PROGRAMS} | awk '{ printf "  make %-15.15s  --> Compile the binary program\n", $$1 }'
 	@echo
 	@echo "clean"     | awk '{ printf "  make %-15.15s  --> Clean all generated files\n", $$1 }'
 	@echo "distclean" | awk '{ printf "  make %-15.15s  --> Clean all generated files (included temporary)\n", $$1 }'
-	@echo "run"       | awk '{ printf "  make %-15.15s  --> Run the binary program\n", $$1 }'
+	@echo
+	@echo "unit"      | awk '{ printf "  make %-15.15s  --> Run all the unit tests\n", $$1 }'
+	@echo "suite"     | awk '{ printf "  make %-15.15s  --> Run the test suite\n", $$1 }'
 	@echo "leaks"     | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks\n", $$1 }'
 	@echo "vleaks"    | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks (verbose mode)\n", $$1 }'
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
--include ${DEPS}
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="

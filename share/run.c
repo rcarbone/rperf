@@ -287,7 +287,7 @@ int main (int argc, char * argv [])
     rsuite_print (suite);
   else
     {
-      rtest_t ** all;
+      rtest_t ** all = NULL;
       if (choice == OPT_RUN_UNIT)
 	all = runit_all ();
       else if (choice == OPT_RUN_SUITE)
