@@ -112,15 +112,16 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = NULL;
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   struct entry ** table = ht -> table;
+  unsigned k = 0;
   unsigned i;
   for (i = 0; i < ht -> tablelength; i ++)
     {
       struct entry * e = table [i];
       while (e)
 	{
-	  keys = (char **) arrmore (keys, e -> k, char *);
+	  keys [k ++] = e -> k;
 	  e = e -> next;
 	}
     }
@@ -132,13 +133,14 @@ void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   struct entry ** table = ht -> table;
+  unsigned v = 0;
   unsigned i;
   for (i = 0; i < ht -> tablelength; i ++)
     {
       struct entry * e = table [i];
       while (e)
 	{
-	  vals = arrmore (vals, e -> v, void);
+	  vals [v ++] = e -> v;
 	  e = e -> next;
 	}
     }

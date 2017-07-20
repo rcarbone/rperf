@@ -76,7 +76,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${TARGETS} ${RHASHLIB} ${RHTLIB}
+all: Makefile plugin.c run.c load.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -110,10 +110,15 @@ ${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
 
 # Shared Library
 ${INSTALLDIR}/${SHLIB}: ${SHLIB}
-	@if [ -d ${INSTALLDIR} ]; then \
-          (rm -f $@; cp $^ $@) ; \
+	@if [ -d ${INSTALLDIR} ] ; then \
+          (rm -f $@ ; cp $^ $@) ; \
          else \
-          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}"; \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
+         fi
+
+${INSTALLDIR}:
+	@if [ ! -d ${INSTALLDIR} ] ; then \
+           mkdir ${INSTALLDIR} ; \
          fi
 
 # Binary programs
@@ -194,7 +199,7 @@ vleaks: ${PROGRAMS}
 leak-%: %
 	@echo -n "  $^ ${RUNFLAG} "
 	@valgrind -q ${VFLAGS} $^ ${RUNFLAG} 1> /dev/null 2>& 1
-	@if [ $? ]; then echo -n "Ok"; fi
+	@if [ $? ] ; then echo -n "Ok" ; fi
 	@echo
 
 vleak-%: %
