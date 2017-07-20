@@ -4,10 +4,12 @@
 run=1
 
 pkgs="libstdc++-6-dev"
+pkgs="$pkgs gcc-6"
+pkgs="$pkgs g++-6"
 pkgs="$pkgs libglib2.0-dev"
 pkgs="$pkgs libapr1-dev"
 pkgs="$pkgs libsparsehash-dev"
-pkgs="$pkgs libboost1.61-dev"
+pkgs="$pkgs libboost1.62-dev"
 
 echo "Checking software requirements for rperf ..."
 echo
