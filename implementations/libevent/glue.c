@@ -46,7 +46,7 @@ static int cmp_fn (robj_t * a, robj_t * b)
 
 rht_t * rht_alloc (unsigned size)
 {
-  rht_t * ht = calloc (1, sizeof (rht_t));
+  rht_t * ht = calloc (1, sizeof (* ht));
   HT_INIT (rht, ht);
   return ht;
 }

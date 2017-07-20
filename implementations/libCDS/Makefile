@@ -43,8 +43,7 @@ USRLIBS   += ${RHTLIB}
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 PLEASE    = "Do not edit anything below, make creates it."
 
-# Static and dynamic libraries
-# STLIB     = librht-${NAME}.a
+# Plugin (dynamic library)
 SHLIB     = ${NAME}.so
 
 # All the binary programs

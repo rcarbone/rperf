@@ -26,8 +26,8 @@ SUBDIRS += sys-libstdc++
 # SUBDIRS += sys-qt
 # SUBDIRS += tommyds
 SUBDIRS += ulib
-# SUBDIRS += uthash
-# SUBDIRS += z-experimental
+SUBDIRS += uthash
+# SUBDIRS += z-todo
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

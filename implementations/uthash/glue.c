@@ -1,23 +1,20 @@
 /* System headers */
 #include <stdio.h>
-#include <stdlib.h>
 
 /* The implementation */
 #include "uthash.h"
 
+/* librht - an abstract C library over real hash tables */
 typedef struct rht rht_t;
 #include "rht.h"
 #include "datasets.h"
-#include "varrays.h"
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* Well-known Object Type required to make it hash-able */
-#define utobj_t robj_t
-
 struct rht
 {
-  utobj_t * uthash;
+  robj_t * uthash;
 };
 
 
@@ -53,13 +50,13 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  HASH_ADD_KEYPTR (hh, ht -> uthash, key, strlen (key), (utobj_t *) val);
+  HASH_ADD_KEYPTR (hh, ht -> uthash, key, strlen (key), (robj_t *) val);
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  utobj_t * hit;
+  robj_t * hit;
   HASH_FIND_STR (ht -> uthash, key, hit);
   return hit;
 }
@@ -67,7 +64,7 @@ void * rht_get (rht_t * ht, char * key)
 
 void rht_del (rht_t * ht, char * key)
 {
-  utobj_t * hit;
+  robj_t * hit;
   HASH_FIND_STR (ht -> uthash, key, hit);
   if (hit)
     HASH_DEL (ht -> uthash, hit);
@@ -82,8 +79,8 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  utobj_t * it;
-  for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
+  robj_t * it;
+  for (it = ht -> uthash; it; it = (robj_t *) (it -> hh . next))
     fn (data);
 }
 
@@ -91,9 +88,10 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 char ** rht_keys (rht_t * ht)
 {
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
-  utobj_t * it;
-  for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
-    keys = (char **) vamore ((void **) keys, it -> hh . key);
+  unsigned i = 0;
+  robj_t * it;
+  for (it = ht -> uthash; it; it = (robj_t *) (it -> hh . next))
+    keys [i ++] = it -> hh . key;
   return keys;
 }
 
@@ -101,9 +99,9 @@ char ** rht_keys (rht_t * ht)
 void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (char *));
-  utobj_t * it;
-  for (it = ht -> uthash; it; it = (utobj_t *) (it -> hh . next))
-    vals = vamore (vals, rht_get (ht, it -> hh . key));
+  unsigned i = 0;
+  robj_t * it;
+  for (it = ht -> uthash; it; it = (robj_t *) (it -> hh . next))
+    vals [i ++] = rht_get (ht, it -> hh . key);
   return vals;
 }
-

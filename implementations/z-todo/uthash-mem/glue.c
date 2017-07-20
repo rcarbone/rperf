@@ -146,4 +146,3 @@ void ** rht_vals (rht_t * ht)
     vals = vamore (vals, rht_get (ht, it -> hh . key));
   return vals;
 }
-

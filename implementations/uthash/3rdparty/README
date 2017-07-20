@@ -1,5 +1,5 @@
 Rocco Carbone (rocco@tecsiel.it)
-Pisa, May 2017
+Pisa, Jul 2017
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 Name         uthash
@@ -7,7 +7,7 @@ Module       hash table
 Author       Troy D. Hanson ()
 Description  C macros for hash tables and more
 Download     http://github.com/troydhanson/uthash
-Date         2003, 2016
+Date         2003, 2017
 Language     C macro
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
