@@ -8,24 +8,28 @@
 typedef tommy_hashdyn rht_t;
 #include "rht.h"
 #include "datasets.h"
-#include "varrays.c"
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-typedef struct
-{
-  char * key;
-  robj_t * found;
 
-} look_t;
-
-
+/* Typedef used in the foreach callback */
 typedef struct
 {
   rht_each_f * fn;
   void * data;
 
 } func_t;
+
+
+/* Typedef used in the keys/vals callbacks */
+typedef struct
+{
+  char ** keys;
+  void ** vals;
+  unsigned i;
+
+} kvcb_t;
 
 
 /* The callback comparison function to look up for matching keys */
@@ -36,20 +40,7 @@ static int cmp_str (const void * key, const void * obj)
 
 
 /* Callback to iterate over the hash table to search for a key */
-static bool searchkey (void * arg, void * obj)
-{
-  look_t * l = arg;
-  if (l && l -> key && ! strcmp (l -> key, ((robj_t *) obj) -> skey))
-    {
-      l -> found = obj;
-      return true;
-    }
-  return false;
-}
-
-
-/* Callback to iterate over the hash table to search for a key */
-static bool myforeach (void * arg, void * obj)
+static bool foreach_cb (void * arg, void * obj)
 {
   func_t * func = arg;
   if (func)
@@ -59,21 +50,26 @@ static bool myforeach (void * arg, void * obj)
 
 
 /* Callback to iterate over the hash table to add a key */
-static bool addkey (void * keys, void * obj)
+static bool addkey_cb (void * arg, void * data)
 {
-  char ** k = * (char ***) keys;
-  k = (char **) vamore ((void **) k, ((robj_t *) obj) -> skey);
-  * (char ***) keys = k;
+  kvcb_t * kv = arg;
+  tommy_hashdyn_node * node = data;
+#if defined(ROCCO)
+  // kv -> keys [kv -> i ++] = node -> key;
+#else
+  kv -> keys [kv -> i ++] = "rocco";
+  // printf ("i = %u - key = [%p]\n", kv -> i, ((tommy_hashdyn_node *) data) -> key);
+#endif /* ROCCO */
   return false;
 }
 
 
 /* Callback to iterate over the hash table to add a val */
-static bool addval (void * vals, void * obj)
+static bool addval_cb (void * arg, void * data)
 {
-  void ** v = * (void ***) vals;
-  v = vamore (v, ((robj_t *) obj) -> pval);
-  * (void ***) vals = v;
+  kvcb_t * kv = arg;
+  tommy_hashdyn_node * node = data;
+  kv -> vals [kv -> i ++] = node -> data;
   return false;
 }
 
@@ -118,10 +114,8 @@ void rht_set (rht_t * ht, char * key, void * val)
 
 void * rht_get (rht_t * ht, char * key)
 {
-  /* Set input/output parameters to the iterate callback */
-  look_t l = { .key = key, .found = NULL };
-  tommy_hashdyn_foreach_arg (ht, searchkey, & l);
-  return l . found;
+  robj_t item;
+  return tommy_hashdyn_search (ht, cmp_str, & item, rht_python_hash (key));
 }
 
 
@@ -142,21 +136,23 @@ bool rht_has (rht_t * ht, char * key)
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
   func_t fun = { .fn = fn, .data = data };
-  tommy_hashdyn_foreach_arg (ht, myforeach, & fun);
+  tommy_hashdyn_foreach_arg (ht, foreach_cb, & fun);
 }
 
 
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = NULL;
-  tommy_hashdyn_foreach_arg (ht, addkey, & keys);
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
+  kvcb_t kv = { keys, NULL, 0 };
+  tommy_hashdyn_foreach_arg (ht, addkey_cb, & kv);
   return keys;
 }
 
 
 void ** rht_vals (rht_t * ht)
 {
-  void ** vals = NULL;
-  tommy_hashdyn_foreach_arg (ht, addval, & vals);
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
+  kvcb_t kv = { NULL, vals, 0 };
+  tommy_hashdyn_foreach_arg (ht, addval_cb, & kv);
   return vals;
 }
