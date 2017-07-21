@@ -8,17 +8,29 @@
 /* librhash - an abstract C library over real hash tables */
 typedef _Py_hashtable_t rht_t;
 #include "rht.h"
-#include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 #define PTR_VAL_SIZE sizeof (void *)
 
+
+/* Typedef used in the foreach callback */
 typedef struct
 {
   void (* fn) (void *);
   void * data;
 
 } func_t;
+
+
+/* Typedef used in the keys/vals callbacks */
+typedef struct
+{
+  char ** keys;
+  void ** vals;
+  unsigned i;
+
+} kvcb_t;
+
 
 
 static unsigned _Py_hashtable_count (_Py_hashtable_t * ht)
@@ -49,23 +61,22 @@ static int myforeach (_Py_hashtable_entry_t * obj, void * arg)
 
 
 /* Callback to iterate over the hash table to add a key */
-static int addkey (_Py_hashtable_entry_t * obj, void * keys)
+static int addkey (_Py_hashtable_entry_t * obj, void * arg)
 {
-  char ** k = * (char ***) keys;
-  k = (char **) vamore ((void **) k, (char *) obj -> key);
-  * (char ***) keys = k;
+  kvcb_t * kv = arg;
+  kv -> keys [kv -> i ++] = (char *) obj -> key;
   return 0;
 }
 
 
 /* Callback to iterate over the hash table to add a val */
-static int addval (_Py_hashtable_entry_t * obj, void * vals)
+static int addval (_Py_hashtable_entry_t * obj, void * arg)
 {
-  void ** v = * (void ***) vals;
-  v = vamore (v, _Py_HASHTABLE_ENTRY_DATA_AS_VOID_P (obj));
-  * (void ***) vals = v;
+  kvcb_t * vals = arg;
+  vals -> vals [vals -> i ++] = _Py_HASHTABLE_ENTRY_DATA_AS_VOID_P (obj);
   return 0;
 }
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
@@ -128,7 +139,8 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 char ** rht_keys (rht_t * ht)
 {
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
-  _Py_hashtable_foreach (ht, addkey, & keys);
+  kvcb_t kv = { keys, NULL, 0 };
+  _Py_hashtable_foreach (ht, addkey, & kv);
   return keys;
 }
 
@@ -136,6 +148,7 @@ char ** rht_keys (rht_t * ht)
 void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
-  _Py_hashtable_foreach (ht, addval, & vals);
+  kvcb_t kv = { NULL, vals, 0 };
+  _Py_hashtable_foreach (ht, addval, & kv);
   return vals;
 }

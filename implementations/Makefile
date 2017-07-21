@@ -24,7 +24,7 @@ SUBDIRS += sys-glib
 SUBDIRS += sys-google
 SUBDIRS += sys-libstdc++
 # SUBDIRS += sys-qt
-# SUBDIRS += tommyds
+SUBDIRS += tommyds
 SUBDIRS += ulib
 SUBDIRS += uthash
 # SUBDIRS += z-todo
@@ -36,7 +36,7 @@ SUBDIRS += uthash
 PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share
@@ -101,16 +101,11 @@ Makefile: ${TEMPLATES}
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 
-tar:
-	@echo -n "Making distribution/backup file ${PROJECT}.tar.gz ..."
-	@(cd ${ROOTDIR} && make -s distclean && cd .. && tar cfz ${PROJECT}.tar.gz ${PROJECT} && mv ${PROJECT}.tar.gz ${PROJECT}/)
-	@echo "Done"
-
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The fake targets
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 .PHONY: all clean distclean ${SUBDIRS}
 
-# In the event of unknown rules
+# In the event an unknown rule has been used
 .DEFAULT:
 	@true

@@ -6,70 +6,42 @@ SUBDIRS += linear
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 
 # The project's name
-PROJECT    = rht
+PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's tree
+# The project's source tree
 ROOTDIR    = /home/rocco/${PROJECT}
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/lib
 
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RUTDIR     = ${ROOTDIR}/rut
-RSUITEDIR  = ${ROOTDIR}/tests/suite
+RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
 
-# rut
-INCLUDE  += -I${RUTDIR}
-RUTLIB    = ${RUTDIR}/librut.a
-USRLIBS  += ${RUTLIB}
-
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-PROJECT   = rht
-ROOTDIR   = /home/rocco/${PROJECT}
-
-# The project's tree
-ROOTDIR    = /home/rocco/${PROJECT}
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/lib
-
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RUTDIR     = ${ROOTDIR}/rut
-RSUITEDIR  = ${ROOTDIR}/tests/suite
-
-# rlibc
-INCLUDE  += -I${RLIBCDIR}
-RLIBCLIB  = ${RLIBCDIR}/librlibc.a
-USRLIBS  += ${RLIBCLIB}
-
-# rut
-INCLUDE  += -I${RUTDIR}
-RUTLIB    = ${RUTDIR}/librut.a
-USRLIBS  += ${RUTLIB}
-
-# rut
-INCLUDE  += -I${RSUITEDIR}/lib
-RSUITELIB = ${RSUITEDIR}/lib/librhash-ut.a
-USRLIBS  += ${RUTLIB}
-
-
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.subdirs
 PLEASE    = "Do not edit anything below, make creates it."
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
+#
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+#
 all: Makefile
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \
              echo "Making $$dir ..." ; \
-             (cd $$dir && make -s --no-print-directory) ; \
+             (make -C $$dir -s --no-print-directory) ; \
            else \
              echo "Warning: missing sub-directory $$dir" ; \
            fi \
@@ -80,7 +52,17 @@ clean distclean:
 	@rm -f *~
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \
-             (cd $$dir && make -s --no-print-directory $@) ; \
+             (make -C $$dir -s --no-print-directory $@) ; \
+           fi \
+         done
+
+# The targets that are eventually handled by recursive makefile
+%:
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo $$dir; \
+             (make -C $$dir -s --no-print-directory $@) ; \
+             echo ; \
            fi \
          done
 
@@ -92,10 +74,11 @@ Makefile: ${TEMPLATES}
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 
-tar:
-	@echo -n "Making distribution/backup file ${PROJECT}.tar.gz ..."
-	@(cd ${ROOTDIR} && make -s distclean && cd .. && tar cfz ${PROJECT}.tar.gz ${PROJECT} && mv ${PROJECT}.tar.gz ${PROJECT}/)
-	@echo "Done"
-
-# Fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# The fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 .PHONY: all clean distclean ${SUBDIRS}
+
+# In the event an unknown rule has been used
+.DEFAULT:
+	@true

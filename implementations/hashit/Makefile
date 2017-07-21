@@ -75,16 +75,11 @@ Makefile: ${TEMPLATES}
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 
-tar:
-	@echo -n "Making distribution/backup file ${PROJECT}.tar.gz ..."
-	@(cd ${ROOTDIR} && make -s distclean && cd .. && tar cfz ${PROJECT}.tar.gz ${PROJECT} && mv ${PROJECT}.tar.gz ${PROJECT}/)
-	@echo "Done"
-
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The fake targets
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 .PHONY: all clean distclean ${SUBDIRS}
 
-# In the event of unknown rules
+# In the event an unknown rule has been used
 .DEFAULT:
 	@true

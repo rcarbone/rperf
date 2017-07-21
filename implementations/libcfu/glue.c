@@ -7,16 +7,26 @@
 /* librhash - an abstract C library over real hash tables */
 typedef cfuhash_table_t rht_t;
 #include "rht.h"
-#include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+/* Typedef used in the foreach callback */
 typedef struct
 {
   void (* fn) (void *);
   void * data;
 
 } func_t;
+
+
+/* Typedef used in the keys/vals callbacks */
+typedef struct
+{
+  char ** keys;
+  void ** vals;
+  unsigned i;
+
+} kvcb_t;
 
 
 static int myforeach (void * key, size_t key_size, void * data, size_t data_size, void * arg)
@@ -29,21 +39,19 @@ static int myforeach (void * key, size_t key_size, void * data, size_t data_size
 
 
 /* Callback to iterate over the hash table to add a key */
-static int addkey (void * key, size_t key_size, void * data, size_t data_size, void * keys)
+static int addkey (void * key, size_t key_size, void * data, size_t data_size, void * arg)
 {
-  char ** k = * (char ***) keys;
-  k = (char **) vamore ((void **) k, (char *) key);
-  * (char ***) keys = k;
+  kvcb_t * kv = arg;
+  kv -> keys [kv -> i ++] = (char *) key;
   return 0;
 }
 
 
 /* Callback to iterate over the hash table to add a val */
-static int addval (void * key, size_t key_size, void * data, size_t data_size, void * vals)
+static int addval (void * key, size_t key_size, void * data, size_t data_size, void * arg)
 {
-  void ** v = * (void ***) vals;
-  v = vamore (v, data);
-  * (void ***) vals = v;
+  kvcb_t * kv = arg;
+  kv -> vals [kv -> i ++] = data;
   return 0;
 }
 
@@ -107,7 +115,8 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 char ** rht_keys (rht_t * ht)
 {
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
-  cfuhash_foreach (ht, addkey, & keys);
+  kvcb_t kv = { keys, NULL, 0 };
+  cfuhash_foreach (ht, addkey, & kv);
   return keys;
 }
 
@@ -115,6 +124,7 @@ char ** rht_keys (rht_t * ht)
 void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
-  cfuhash_foreach (ht, addval, & vals);
+  kvcb_t kv = { NULL, vals, 0 };
+  cfuhash_foreach (ht, addval, & kv);
   return vals;
 }

@@ -8,22 +8,33 @@
 typedef struct rht rht_t;
 #include "rht.h"
 #include "datasets.h"
-#include "varrays.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 typedef struct rht
 {
   htab_t gcc;
+
 } rht_t;
 
 
+/* Typedef used in the foreach callback */
 typedef struct
 {
   void (* f) (void *);
   void * data;
 
 } func_t;
+
+
+/* Typedef used in the keys/vals callbacks */
+typedef struct
+{
+  char ** keys;
+  void ** vals;
+  unsigned i;
+
+} kvcb_t;
 
 
 static hashval_t hash_str_fn (const void * key)
@@ -50,27 +61,22 @@ static int foreach (void ** slot, void * arg)
 
 
 /* Callback to iterate over the hash table to add a key */
-static int addkey (void ** slot, void * _keys)
+static int addkey (void ** slot, void * arg)
 {
-  char ** keys = * (char ***) _keys;
-
-  keys = (char **) vamore ((void **) keys, (* (robj_t **) slot) -> skey);
-  * (char ***) _keys = keys;
-
+  kvcb_t * kv = arg;
+  kv -> keys [kv -> i ++] = (* (robj_t **) slot) -> skey;
   return 1;
 }
 
 
 /* Callback to iterate over the hash table to add a val */
-static int addval (void ** slot, void * _vals)
+static int addval (void ** slot, void * arg)
 {
-  void ** vals = * (void ***) _vals;
-
-  vals = vamore (vals, (* (robj_t **) slot) -> pval);
-  * (void ***) _vals = vals;
-
+  kvcb_t * kv = arg;
+  kv -> vals [kv -> i ++] = (* (robj_t **) slot) -> pval;
   return 1;
 }
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
@@ -137,15 +143,17 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = NULL;
-  htab_traverse_noresize (ht -> gcc, addkey, & keys);
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
+  kvcb_t kv = { keys, NULL, 0 };
+  htab_traverse_noresize (ht -> gcc, addkey, & kv);
   return keys;
 }
 
 
 void ** rht_vals (rht_t * ht)
 {
-  void ** vals = NULL;
-  htab_traverse_noresize (ht -> gcc, addval, & vals);
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
+  kvcb_t kv = { NULL, vals, 0 };
+  htab_traverse_noresize (ht -> gcc, addval, & kv);
   return vals;
 }
