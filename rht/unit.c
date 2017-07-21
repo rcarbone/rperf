@@ -14,6 +14,7 @@ typedef struct rht rht_t;
 #include "rht.h"
 
 #include "varrays.h"
+#include "args.h"
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"
@@ -164,6 +165,17 @@ rtest_t * runit_find_by_name (char * name)
     if (! strcmp (runit_builtins [i] . name, name))
       return & runit_builtins [i];
   return NULL;
+}
+
+
+/* Return all the Unit Test names in an array in the same order they were defined */
+char ** runit_names (void)
+{
+  unsigned i;
+  char ** all = NULL;
+  for (i = 0; i < RUNIT_NO; i ++)
+    all = argsmore (all, runit_builtins [i] . name);
+  return all;
 }
 
 

@@ -36,9 +36,6 @@
 /* types */
 
 #include <stddef.h>
-#if !defined(ROCCO)
-#include <stdbool.h>
-#endif /* ROCCO */
 
 #if defined(_MSC_VER)
 typedef unsigned tommy_uint32_t; /**< Generic uint32_t type. */
@@ -289,22 +286,14 @@ typedef int tommy_search_func(const void* arg, const void* obj);
  * tommy_list_foreach(&list, (tommy_foreach_func*)free);
  * \endcode
  */
-#if defined(ROCCO)
 typedef void tommy_foreach_func(void* obj);
-#else
-typedef bool tommy_foreach_func(void* obj);
-#endif /* ROCCO */
 
 /**
  * Foreach function with an argument.
  * \param arg Pointer to a generic argument.
  * \param obj Pointer to the object to iterate.
  */
-#if defined(ROCCO)
 typedef void tommy_foreach_arg_func(void* arg, void* obj);
-#else
-typedef bool tommy_foreach_arg_func(void* arg, void* obj);
-#endif /* ROCCO */
 
 /******************************************************************************/
 /* bit hacks */

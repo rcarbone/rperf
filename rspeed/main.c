@@ -178,7 +178,7 @@ static int find_by_name (char * name, char * rargv [])
 /*
  * A valid plugin id is:
  *  * if numeric in the range [1-n] where n is the number of found plugins
- *  * match a filename
+ *  * match a filename (without the .so suffix)
  */
 static int rp_valid_id (char * id, char * rargv [])
 {
@@ -188,9 +188,8 @@ static int rp_valid_id (char * id, char * rargv [])
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  char * dir, char * files [],
-		  char * suite [], unsigned items, unsigned runs,
-		  bool verbose, bool quiet)
+		  char * dir, char * files [], char * suite [],
+		  unsigned items, unsigned runs, bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
   struct utsname u;
@@ -290,7 +289,7 @@ static char ** choose (char * progname, char * files [], char * included [], cha
   char ** names  = included ? included : excluded;       /* User-included items have priority over user-excluded */
   char ** subset = included ? NULL : argsdup (files);    /* Nothing or everything but these */
 
-  /* Loop over plugin names to define the subset of user selected */
+  /* Loop over given names to define the subset of user selected */
   while (names && * names)
     {
       int i = rp_valid_id (* names, files);
@@ -393,10 +392,10 @@ int main (int argc, char * argv [])
   char ** included = NULL;
   char ** excluded = NULL;
 
-  /* Items counters */
+  /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */
 
-  /* Run counters */
+  /* Run counter */
   unsigned runs    = RUNS;                   /* # of run per test           */
 
   unsigned choice  = OPT_DEFAULT;
@@ -452,7 +451,7 @@ int main (int argc, char * argv [])
         case OPT_ADD_PLUGIN:   included = argsuniq (included, optarg);  break;
         case OPT_DEL_PLUGIN:   excluded = argsuniq (excluded, optarg);  break;
 
-	  /* Item counters */
+	  /* Item counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;

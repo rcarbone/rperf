@@ -40,37 +40,28 @@ static int cmp_str (const void * key, const void * obj)
 
 
 /* Callback to iterate over the hash table to search for a key */
-static bool foreach_cb (void * arg, void * obj)
+static void foreach_cb (void * arg, void * obj)
 {
   func_t * func = arg;
   if (func)
     func -> fn (func -> data);
-  return false;
 }
 
 
 /* Callback to iterate over the hash table to add a key */
-static bool addkey_cb (void * arg, void * data)
+static void addkey_cb (void * arg, void * data)
 {
   kvcb_t * kv = arg;
-  tommy_hashdyn_node * node = data;
-#if defined(ROCCO)
-  // kv -> keys [kv -> i ++] = node -> key;
-#else
-  kv -> keys [kv -> i ++] = "rocco";
-  // printf ("i = %u - key = [%p]\n", kv -> i, ((tommy_hashdyn_node *) data) -> key);
-#endif /* ROCCO */
-  return false;
+  robj_t * obj = data;
+  kv -> keys [kv -> i ++] = obj -> skey;
 }
 
 
 /* Callback to iterate over the hash table to add a val */
-static bool addval_cb (void * arg, void * data)
+static void addval_cb (void * arg, void * data)
 {
   kvcb_t * kv = arg;
-  tommy_hashdyn_node * node = data;
-  kv -> vals [kv -> i ++] = node -> data;
-  return false;
+  kv -> vals [kv -> i ++] = data;
 }
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -85,16 +76,13 @@ rht_t * rht_alloc (unsigned size)
 
 void rht_free (rht_t * ht)
 {
-  if (tommy_hashdyn_count (ht))
-    tommy_hashdyn_done (ht);
+  tommy_hashdyn_done (ht);
   free (ht);
 }
 
 
 void rht_clear (rht_t * ht)
 {
-  if (tommy_hashdyn_count (ht))
-    tommy_hashdyn_done (ht);
   ht -> count = 0;                   /* Bug! */
 }
 
@@ -114,7 +102,7 @@ void rht_set (rht_t * ht, char * key, void * val)
 
 void * rht_get (rht_t * ht, char * key)
 {
-  robj_t item;
+  robj_t item = { .skey = key };
   return tommy_hashdyn_search (ht, cmp_str, & item, rht_python_hash (key));
 }
 

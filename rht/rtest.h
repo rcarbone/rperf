@@ -85,6 +85,7 @@ rtest_t * runit_find_at (unsigned i);
 rtest_t * runit_find_by_id (unsigned id);
 rtest_t * runit_find_by_name (char * name);
 
+char ** runit_names (void);
 rtest_t ** runit_all (void);
 rtest_t ** runit_all_n (unsigned n);
 rtest_t ** runit_all_rnd (void);

@@ -81,9 +81,6 @@ void tommy_hashlin_done(tommy_hashlin* hashlin)
 		tommy_hashlin_node** segment = hashlin->bucket[i];
 		tommy_free(&segment[((tommy_ptrdiff_t)1) << i]);
 	}
-#if !defined(ROCCO)
-	hashlin->count = 0;
-#endif /* ROCCO */
 }
 
 /**
@@ -305,12 +302,7 @@ void tommy_hashlin_foreach(tommy_hashlin* hashlin, tommy_foreach_func* func)
 		while (node) {
 			void* data = node->data;
 			node = node->next;
-#if defined(ROCCO)
 			func(data);
-#else
-			if (func(data))
-			  return;
-#endif /* ROCCO */
 		}
 	}
 }
@@ -329,12 +321,7 @@ void tommy_hashlin_foreach_arg(tommy_hashlin* hashlin, tommy_foreach_arg_func* f
 		while (node) {
 			void* data = node->data;
 			node = node->next;
-#if defined(ROCCO)
 			func(arg, data);
-#else
-			if (func(arg, data))
-			  return;
-#endif /* ROCCO */
 		}
 	}
 }

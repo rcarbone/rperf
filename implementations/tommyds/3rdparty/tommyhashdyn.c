@@ -45,9 +45,6 @@ void tommy_hashdyn_init(tommy_hashdyn* hashdyn)
 void tommy_hashdyn_done(tommy_hashdyn* hashdyn)
 {
 	tommy_free(hashdyn->bucket);
-#if !defined(ROCCO)
-	hashdyn->count = 0;
-#endif /* ROCCO */
 }
 
 /**
@@ -197,12 +194,7 @@ void tommy_hashdyn_foreach(tommy_hashdyn* hashdyn, tommy_foreach_func* func)
 		while (node) {
 			void* data = node->data;
 			node = node->next;
-#if defined(ROCCO)
 			func(data);
-#else
-			if (func(data))
-			  return;
-#endif /* ROCCO */
 		}
 	}
 }
@@ -219,12 +211,7 @@ void tommy_hashdyn_foreach_arg(tommy_hashdyn* hashdyn, tommy_foreach_arg_func* f
 		while (node) {
 			void* data = node->data;
 			node = node->next;
-#if defined(ROCCO)
 			func(arg, data);
-#else
-			if (func(arg, data))
-			  return;
-#endif /* ROCCO */
 		}
 	}
 }
