@@ -5,3 +5,12 @@
 * copiare il file API.txt in ogni plugin
 
 * implementare differenti datasets
+
+* Implementazioni C++
+  * sparsehash-C11
+  * tbb (concurrent hash map)
+  * folly (AtomicHashMap)
+  * eastl
+
+* Implementazioni C
+   Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils

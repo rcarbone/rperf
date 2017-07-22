@@ -4,7 +4,8 @@ NAME      = unordered-map
 # C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
-#
+
+# Optional
 INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
@@ -159,11 +160,11 @@ distclean: clean
 
 # How to make a depend file from a C source
 %.M: %.c
-	@-${CC} -MM ${INCLUDES} $< -o $@
+	@-${CC} -MM ${CFLAGS} $< -o $@
 
 # How to make a depend file from a C++ source
 %.M: %.cpp
-	@-${C++} -MM ${INCLUDES} $< -o $@
+	@-${C++} -MM ${C++FLAGS} $< -o $@
 
 -include ${DEPS}
 

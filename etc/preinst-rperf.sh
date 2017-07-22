@@ -10,6 +10,7 @@ pkgs="$pkgs libglib2.0-dev"
 pkgs="$pkgs libapr1-dev"
 pkgs="$pkgs libsparsehash-dev"
 pkgs="$pkgs libboost1.62-dev"
+pkgs="$pkgs libqt5core5a"
 
 echo "Checking software requirements for rperf ..."
 echo

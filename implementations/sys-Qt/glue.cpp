@@ -3,21 +3,18 @@
 #include <stdlib.h>
 
 /* The implementation */
+#undef QT_BOOTSTRAPPED
 #include <QtCore/QHash>
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-#include "rhashfuncs.h"
+/* librhash - an abstract C library over real hash tables */
+#include "rht-hashers.h"
 
 /* Our own specialized hashing function in order to avoid the performance depends on the hash implementation used */
-class hashfunc
-{
- public:
-  unsigned operator () (char * key) const { return python_hash (key); }
-};
+// static quint32 qHash (const char * & key) { return rht_python_hash (key); }
 
-/* librhash - an abstract C library over real hash tables */
-typedef QHash <char *, void *, hashfunc> rht_t;
+typedef QHash <char *, void *> rht_t;
 #include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -49,22 +46,20 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  //  rht_t::const_iterator it;
-  // it = ht -> find (key);
   ht -> insert (key, val);
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  rht_t::iterator k = ht -> find (key);
-  return k != ht -> end () ? k -> second : NULL;
+  rht_t::iterator it = ht -> find (key);
+  return it != ht -> end () ? it . value () : NULL;
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  ht -> erase (key);
+  ht -> remove (key);
 }
 
 
@@ -76,8 +71,8 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rht_t::iterator k;
-  for (k = ht -> begin (); k != ht -> end (); k ++)
+  rht_t::iterator it;
+  for (it = ht -> begin (); it != ht -> end (); it ++)
     fn (data);
 }
 
@@ -86,9 +81,9 @@ char ** rht_keys (rht_t * ht)
 {
   char ** keys = (char **) calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
-  rht_t::iterator k;
-  for (k = ht -> begin (); k != ht -> end (); k ++)
-    keys [i ++] = k -> first;
+  rht_t::iterator it;
+  for (it = ht -> begin (); it != ht -> end (); it ++)
+    keys [i ++] = (char *) it . key ();
   return keys;
 }
 
@@ -97,8 +92,8 @@ void ** rht_vals (rht_t * ht)
 {
   void ** vals = (void **) calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
-  rht_t::iterator k;
-  for (k = ht -> begin (); k != ht -> end (); k ++)
-    vals [i ++] = k -> second;
+  rht_t::iterator it;
+  for (it = ht -> begin (); it != ht -> end (); it ++)
+    vals [i ++] = it . value ();
   return vals;
 }
