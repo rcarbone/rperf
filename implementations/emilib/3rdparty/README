@@ -1,0 +1,21 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, Jul 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         emilib
+Module       HashMap
+Author       Emil Ernerfeldt (emil.ernerfeldt@gmail.com)
+Description  Loose collection of misc C++ libs
+Download     https://github.com/emilk/emilib
+Date         2014-2017
+Language     C++
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+The following sources files were locally copied from latest git version:
+  - hash_map.hpp
+  - loguru.hpp
+
+
+No modification was needed.

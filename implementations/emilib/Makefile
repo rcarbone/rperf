@@ -1,15 +1,15 @@
 # The name of the game
-NAME      = z-tommy-dyn
+NAME      = emilib
 
-# C source files
+# C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  = run-suite.c
 
 # Optional
-INCLUDE   = -I../3rdparty
+INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
-SYSLIBS   =
+SYSLIBS   = -lstdc++ -lpthread -ldl
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -43,12 +43,11 @@ USRLIBS   += ${RHTLIB}
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 PLEASE    = "Do not edit anything below, make creates it."
 
-# Static and dynamic libraries
-# STLIB     = librht-${NAME}.a
+# Plugin (dynamic library)
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = run
+PROGRAMS  = tryme
 
 # All the targets
 TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -77,7 +76,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c run.c load.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
+all: Makefile plugin.c tryme.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -91,11 +90,7 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-run.c: ${SHAREDIR}/run.c
-	@echo "=*= making C source $@ =*="
-	@cat $^ > $@
-
-load.c: ${SHAREDIR}/load.c
+tryme.c: ${SHAREDIR}/tryme.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -123,19 +118,22 @@ ${INSTALLDIR}:
          fi
 
 # Binary programs
-run: run.o glue.o ${RHTLIB} ${RLIBCLIB}
+tryme: tryme.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-load: load.o ${RLIBCLIB} ${STLIB}
-	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -ldl -o $@
+run: tryme
+	@echo "=*= running unit tests =*="
+	@./$^ -x
+	@echo
+	@echo "=*= running test suite =*="
+	@./$^ -X
 
-unit: run
-	@run -x
+unit: tryme
+	@./$^ -x
 
-suite: run
-	@run -X
+suite: tryme
+	@./$^ -X
 
 # Cleanup rules
 clean:
@@ -143,14 +141,12 @@ clean:
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
-	@rm -f run.o
-	@rm -f load.o
+	@rm -f tryme.o
 
 distclean: clean
 	@rm -f ${DEPS}
 	@rm -f plugin.c
-	@rm -f run.c
-	@rm -f load.c
+	@rm -f tryme.c
 
 # How to make an object file from a C source
 %.o: %.c
@@ -164,11 +160,11 @@ distclean: clean
 
 # How to make a depend file from a C source
 %.M: %.c
-	@-${CC} -MM ${INCLUDES} $< -o $@
+	@-${CC} -MM ${CFLAGS} $< -o $@
 
 # How to make a depend file from a C++ source
 %.M: %.cpp
-	@-${C++} -MM ${INCLUDES} $< -o $@
+	@-${C++} -MM ${C++FLAGS} $< -o $@
 
 -include ${DEPS}
 

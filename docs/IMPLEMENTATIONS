@@ -14,7 +14,7 @@
 12. libcfu              done!   yes       C inline
 13. gthhash
 14. generic-c-hashmap
-15. CDS
+15. libCDS              done!   yes       C inline
 16. c-hashtable
 17. tcl
 18. c-algoritms
@@ -35,18 +35,18 @@
 
 C++
 ===
- 1. g++/unordered-map    done!   yes   C++ template
- 2. g++/map              done!   na    C++ template
- 3. sparsehash           done!   yes   C++ template
- 4. densehash            done!   yes   C++ template
- 5. rdestl               done!   yes   C++ template
- 6. rigtorp              done!   yes   C++ template
- 7. boost/unordered-map  done!   yes   C++ template
- 8. amtl                 done!   yes   C++ template
+ 1. g++/unordered-map    done!   yes      C++ template
+ 2. g++/map              done!   na       C++ template
+ 3. sparsehash           done!   yes      C++ template
+ 4. densehash            done!   yes      C++ template
+ 5. rdestl               done!   yes      C++ template
+ 6. rigtorp              done!   yes      C++ template
+ 7. boost/unordered-map  done!   yes      C++ template
+ 8. amtl                 done!   yes      C++ template
  9. eastl
-10. emilib
-11. mct                  done!   yes   C++ template
-12. Qt
+10. emilib               done!   yes      C++ template
+11. mct                  done!   yes      C++ template
+12. Qt                   done!   No       C macro         - use of private hash function must be implemented
 13. khash++
 14. etl
 15. llvm

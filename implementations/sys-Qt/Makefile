@@ -1,5 +1,5 @@
 # The name of the game
-NAME      = qt
+NAME      = Qt-QHash
 
 # C/C++ source files
 LIBSRCS   = glue.c
@@ -8,7 +8,7 @@ MAINSRCS  = run-suite.c
 # Optional
 INCLUDE   = `pkg-config --cflags Qt5Core`
 CFLAGS    =
-C++FLAGS  = -UQT_BOOTSTRAPPED
+C++FLAGS  =
 SYSLIBS   = `pkg-config --libs Qt5Core`
 SYSLIBS  += -lstdc++
 

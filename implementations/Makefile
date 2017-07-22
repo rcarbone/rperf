@@ -6,6 +6,7 @@ SUBDIRS += c-algorithms
 SUBDIRS += clark
 # SUBDIRS += ccan
 # SUBDIRS  = eastl
+SUBDIRS += emilib
 SUBDIRS += gcc
 SUBDIRS += google-c
 SUBDIRS += hashit

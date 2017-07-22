@@ -3,9 +3,7 @@ SUBDIRS += ccan
 SUBDIRS += eastl
 SUBDIRS += libevent-1
 SUBDIRS += libevent-2
-SUBDIRS += tommy-dynamic
-SUBDIRS += tommy-linear
-SUBDIRS += uthash
+SUBDIRS += uthash-mem
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
