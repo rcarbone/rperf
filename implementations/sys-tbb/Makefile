@@ -1,5 +1,5 @@
 # The name of the game
-NAME      = boost
+NAME      = tbb
 
 # C/C++ source files
 LIBSRCS   = glue.c
@@ -10,7 +10,7 @@ INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   = -lstdc++
-SYSLIBS  += -lm
+SYSLIBS  += -lm -ltbb
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

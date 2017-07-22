@@ -25,6 +25,7 @@ SUBDIRS += sys-glib
 SUBDIRS += sys-google
 SUBDIRS += sys-libstdc++
 SUBDIRS += sys-Qt
+SUBDIRS += sys-tbb
 SUBDIRS += tommyds
 SUBDIRS += ulib
 SUBDIRS += uthash
