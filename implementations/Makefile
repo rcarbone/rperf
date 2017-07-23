@@ -20,6 +20,7 @@ SUBDIRS += oddou
 SUBDIRS += python
 SUBDIRS += rdestl
 SUBDIRS += rigtorp
+SUBDIRS += st
 SUBDIRS += stb
 SUBDIRS += sys-apr
 SUBDIRS += sys-boost

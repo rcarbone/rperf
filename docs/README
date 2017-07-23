@@ -268,46 +268,48 @@ Results of test [kbench] - 1e5 items (5 loops per test)
 
 Currently supported implementations
 ===================================
- ## Id                             Library/Module                Author
-  1 Qt Toolkit                     Qt::QHash                     The Qt Company Ltd.
-  2 amtl                           amtl::hashmap                 David Anderson and AlliedModders LLC
-  3 Apache apr                     apr-no-pool/hashtable         Apache Software Foundation (ASF)
-  4 Apache apr                     apr/hashtable                 Apache Software Foundation (ASF)
-  5 Boost C++ Libraries            boost::unordered_map          Jeremy B. Maitin-Shepard and Daniel James
-  6 Google libcash                 google/c-dense                Craig Silverstein
-  7 Google libcash                 google/c-sparse               Craig Silverstein
-  8 C Algorithms                   calg/hashtable                Simon Howard (fraggle@gmail.com)
-  9 ccan                           ccan/htable                   Rusty Russell (rusty@rustcorp.com.au)
- 10 ulib                           ulib::chain-hash++            Zilong Tan (eric.zltan@gmail.com)
- 11 ulib                           ulib/chain-hash               Zilong Tan (eric.zltan@gmail.com)
- 12 cwc22                          clark/hashtable               Christopher Clark (christopher.clark@cl.cam.ac.uk)
- 13 mct                            mct::closed_hash_map          Paul Pogonyshev (pogonyshev@gmail.net)
- 14 Google Hash-Map                google::densehash             Google Inc.
- 15 eastl                          eastl/hashmap                 Electronic Arts Inc.
- 16 emilib                         emilib::HashMap               Emil Ernerfeldt (emil.ernerfeldt@gmail.com)
- 17 glib                           glib/ghash                    Peter Mattis, Spencer Kimball and Josh MacDonald
- 18 libghthash                     libghthash/hashtable          Simon Kagstrom (ska@bth.se)
- 19 hashit                         hashit/chain                  David Gomez (david@pleyades.net)
- 20 hashit                         hashit/open                   David Gomez (david@pleyades.net)
- 21 hashit                         hashit/overflow               David Gomez (david@pleyades.net)
- 22 GNU libiberty                  gcc/hashtab                   Vladimir Makarov (vmakarov@cygnus.com)
- 23 klib                           klib/khash                    Heng Li (lh3@me.com)
- 24 LibCDS                         libCDS/HashMap                ZongXian Shen (andy.zsshen@gmail.com)
- 25 libcfu                         libcfu/hashtable              Don Owens (don@owensnet.com)
- 26 libevent                       libevent/ht                   Niels Provos (provos@umich.edu)
- 27 mct                            mct::linked_hash_map          Paul Pogonyshev (pogonyshev@gmail.net)
- 28 oddou                          oddou::hashmap                Vivien Oddou <x@x.x>
- 29 ulib                           ulib::open-hash++             Zilong Tan (eric.zltan@gmail.com)
- 30 ulib                           ulib/open-hash                Zilong Tan (eric.zltan@gmail.com)
- 31 Python                         python/hashtable              Don Owens (don@owensnet.com)
- 32 rdestl                         rdestl::hash_map              Maciej Sinilo
- 33 rigtorp                        rigtorp::hashmap              Erik Rigtorp <erik@rigtorp.se>
- 34 Google Hash-Map                google::sparsehash            Google Inc.
- 35 Intel Threading Building Block tbb::concurrent_unordered_map Intel Corporation
- 36 tommyds                        tommyds/dynamic               Andrea Mazzoleni (amadvance@gmail.com)
- 37 tommyds                        tommyds/linear                Andrea Mazzoleni (amadvance@gmail.com)
- 38 GNU C++ Library                std::unordered_map            Silicon Graphics Computer Systems, Inc.
- 39 uthash                         uthash/hashtable              Troy D. Hanson
+ ## Id                             Library/Module        Author
+  1 Qt Toolkit                     Qt::QHash             The Qt Company Ltd.                               
+  2 amtl                           amtl::hashmap         David Anderson and AlliedModders LLC              
+  3 Apache apr                     apr-no-pool/hashtable Apache Software Foundation (ASF)                  
+  4 Apache apr                     apr/hashtable         Apache Software Foundation (ASF)                  
+  5 Boost C++ Libraries            boost::unordered_map  Jeremy B. Maitin-Shepard and Daniel James         
+  6 Google libcash                 google/c-dense        Craig Silverstein                                 
+  7 Google libcash                 google/c-sparse       Craig Silverstein                                 
+  8 C Algorithms                   calg/hashtable        Simon Howard (fraggle@gmail.com)                  
+  9 ccan                           ccan/htable           Rusty Russell (rusty@rustcorp.com.au)             
+ 10 ulib                           ulib::chain-hash++    Zilong Tan (eric.zltan@gmail.com)                 
+ 11 ulib                           ulib/chain-hash       Zilong Tan (eric.zltan@gmail.com)                 
+ 12 cwc22                          clark/hashtable       Christopher Clark (christopher.clark@cl.cam.ac.uk)
+ 13 mct                            mct::closed_hash_map  Paul Pogonyshev (pogonyshev@gmail.net)            
+ 14 Google Hash-Map                google::densehash     Google Inc.                                       
+ 15 eastl                          eastl/hashmap         Electronic Arts Inc.                              
+ 16 emilib                         emilib::HashMap       Emil Ernerfeldt (emil.ernerfeldt@gmail.com)       
+ 17 glib                           glib/ghash            Peter Mattis, Spencer Kimball and Josh MacDonald  
+ 18 libghthash                     libghthash/hashtable  Simon Kagstrom (ska@bth.se)                       
+ 19 hashit                         hashit/chain          David Gomez (david@pleyades.net)                  
+ 20 hashit                         hashit/open           David Gomez (david@pleyades.net)                  
+ 21 hashit                         hashit/overflow       David Gomez (david@pleyades.net)                  
+ 22 GNU libiberty                  gcc/hashtab           Vladimir Makarov (vmakarov@cygnus.com)            
+ 23 klib                           klib/khash            Heng Li (lh3@me.com)                              
+ 24 LibCDS                         libCDS/HashMap        ZongXian Shen (andy.zsshen@gmail.com)             
+ 25 libcfu                         libcfu/hashtable      Don Owens (don@owensnet.com)                      
+ 26 libevent                       libevent/ht           Niels Provos (provos@umich.edu)                   
+ 27 mct                            mct::linked_hash_map  Paul Pogonyshev (pogonyshev@gmail.net)            
+ 28 oddou                          oddou::hashmap        Vivien Oddou <x@x.x>                              
+ 29 ulib                           ulib::open-hash++     Zilong Tan (eric.zltan@gmail.com)                 
+ 30 ulib                           ulib/open-hash        Zilong Tan (eric.zltan@gmail.com)                 
+ 31 Python                         python/hashtable      Don Owens (don@owensnet.com)                      
+ 32 rdestl                         rdestl::hash_map      Maciej Sinilo                                     
+ 33 rigtorp                        rigtorp::hashmap      Erik Rigtorp <erik@rigtorp.se>                    
+ 34 Google Hash-Map                google::sparsehash    Google Inc.                                       
+ 35 st                             PMoore/st             Peter Moore @ UCB                                 
+ 36 stb                            stb/sdict             Sean T. Barrett (sean@nothings.org)               
+ 37 Intel Threading Building Block tbb::unordered_map    Intel Corporation                                 
+ 38 tommyds                        tommyds/dynamic       Andrea Mazzoleni (amadvance@gmail.com)            
+ 39 tommyds                        tommyds/linear        Andrea Mazzoleni (amadvance@gmail.com)            
+ 40 GNU C++ Library                std::unordered_map    Silicon Graphics Computer Systems, Inc.           
+ 41 uthash                         uthash/hashtable      Troy D. Hanson                                    
 
 
 [rperf] so includes:
@@ -324,7 +326,7 @@ Currently supported implementations
   * rbattle - a benchmark tool to evaluate relative ranking in test execution
               (it needs some code cleanup but it is full functional).
 
-              Up to 39 C/C++ implementations are currently available for testing.
+              Up to 41 C/C++ implementations are currently available for testing.
               Each implementation is simply a plugin (shared object that can be
               dynamically loaded/unloaded for the purpose of the tests).
 

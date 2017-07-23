@@ -14,7 +14,6 @@
 /* uthash - Troy D. Hanson */
 #include "uthash.h"
 
-
 /* Object definition */
 typedef struct robj robj_t;
 typedef struct robj
@@ -51,7 +50,7 @@ typedef struct robj
   HT_ENTRY(robj) _levt_;
 
   /* required by tommyds implementation to make the structure hash-able */
-  tommy_node tommy;
+  tommy_node _tommy_;
 
   /* required by uthash implementation to make the structure hash-able */
   UT_hash_handle hh;           /* field must be named 'hh' in order to use the convenience macros */

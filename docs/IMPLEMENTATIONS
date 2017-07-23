@@ -1,14 +1,14 @@
                                custom
 ##  ##################  #####  ######     #######
  1. ulib                done!   yes       C macro
- 2. libevent            done!   yes       C macro         - need memory allocation/deallocation
+ 2. libevent            done!   yes       C macro
  3. khash               done!   yes       C macro
- 4. ccan                done!   yes       C inline        - rhash_get() too slow implemented by mean of foreach()
- 5. hashit              done!             C inline
+ 4. ccan                done!   yes       C inline
+ 5. hashit              done!   ???       C inline
  6. apr                 done!   yes       C inline
  7. glib                done!   yes       C library
  8. gcc-libiberty       done!   yes       C inline        - bug in htab_find() if the initial size is set to a value too lower
- 9. uthash              done!   No        C macro         - use of private hash function must be implemented
+ 9. uthash              done!   no        C macro         - use of private hash function must be implemented
 10. tommy               done!   yes       C inline        - rhash_get() too slow implemented by mean of tommy_foreach()
 11. python              done!   yes       C inline
 12. libcfu              done!   yes       C inline
@@ -20,9 +20,9 @@
 18. c-algoritms         done!   yes       C inline
 19. ruby-st
 20. judy
-21. stb
-22. st
-23. google-c            done!   no        C inline
+21. stb                 done!   no        C inline        - use of private hash function must be implemented
+22. st                  done!   no        C inline        - use of private hash function must be implemented
+23. google-c            done!   no        C inline        - use of private hash function must be implemented
 24. lua-table
 25. hhash
 26. htable
@@ -46,7 +46,7 @@ C++
  9. eastl                done!   yes      C++ template    - some error/leak in alloc/free
 10. emilib               done!   yes      C++ template
 11. mct                  done!   yes      C++ template
-12. Qt                   done!   No       C++ template    - use of private hash function must be implemented
+12. Qt                   done!   no       C++ template    - use of private hash function must be implemented
 13. khash++
 14. etl
 15. llvm

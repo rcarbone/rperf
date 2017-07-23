@@ -3,7 +3,6 @@
 
 /* The implementation */
 #define STB_DEFINE
-// #include "stb.h.ROCCO"
 #include "stb.h"
 
 

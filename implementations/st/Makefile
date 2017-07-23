@@ -1,16 +1,15 @@
 # The name of the game
-NAME      = boost
+NAME      = st
 
 # C/C++ source files
 LIBSRCS   = glue.c
 MAINSRCS  =
 
 # Optional
-INCLUDE   =
+INCLUDE   = -I./3rdparty
 CFLAGS    =
 C++FLAGS  =
-SYSLIBS   = -lstdc++
-SYSLIBS  += -lm
+SYSLIBS   =
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

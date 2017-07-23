@@ -11,7 +11,6 @@
   * htable
   * libdynamic
   * sglib
-  * st
   * Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils
 
 * Implementazioni C++

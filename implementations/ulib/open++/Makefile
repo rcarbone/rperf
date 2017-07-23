@@ -176,7 +176,7 @@ VFLAGS   += --error-exitcode=1
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no
-RUNFLAG   = -x
+RUNFLAG   = -X
 
 # Run valgrind to check for errors and memory leaks
 leaks: ${PROGRAMS}

@@ -96,7 +96,7 @@ unsigned rht_count (rht_t * ht)
 void rht_set (rht_t * ht, char * key, void * val)
 {
   robj_t * obj = val;
-  tommy_hashdyn_insert (ht, & obj -> tommy, obj, rht_python_hash (key));
+  tommy_hashdyn_insert (ht, & obj -> _tommy_, obj, rht_python_hash (key));
 }
 
 
