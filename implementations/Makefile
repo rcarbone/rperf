@@ -14,6 +14,7 @@ SUBDIRS += klib
 SUBDIRS += libCDS
 SUBDIRS += libcfu
 SUBDIRS += libevent
+SUBDIRS += libghthash
 SUBDIRS += mct
 SUBDIRS += oddou
 SUBDIRS += python
