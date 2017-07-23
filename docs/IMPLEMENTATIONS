@@ -12,12 +12,12 @@
 10. tommy               done!   yes       C inline        - rhash_get() too slow implemented by mean of tommy_foreach()
 11. python              done!   yes       C inline
 12. libcfu              done!   yes       C inline
-13. gthhash
+13. gthhash             done!   yes       C inline
 14. generic-c-hashmap
 15. libCDS              done!   yes       C inline
-16. c-hashtable
+16. clark-hashtable     done!   yes       C inline
 17. tcl
-18. c-algoritms
+18. c-algoritms         done!   yes       C inline
 19. ruby-st
 20. judy
 21. stb
@@ -43,10 +43,10 @@ C++
  6. rigtorp              done!   yes      C++ template
  7. boost/unordered-map  done!   yes      C++ template
  8. amtl                 done!   yes      C++ template
- 9. eastl
+ 9. eastl                done!   yes      C++ template    - some error/leak in alloc/free
 10. emilib               done!   yes      C++ template
 11. mct                  done!   yes      C++ template
-12. Qt                   done!   No       C macro         - use of private hash function must be implemented
+12. Qt                   done!   No       C++ template    - use of private hash function must be implemented
 13. khash++
 14. etl
 15. llvm

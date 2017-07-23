@@ -1,6 +1,4 @@
 # List of subdirectories
-SUBDIRS += ccan
-SUBDIRS += eastl
 SUBDIRS += libevent-1
 SUBDIRS += libevent-2
 SUBDIRS += uthash-mem

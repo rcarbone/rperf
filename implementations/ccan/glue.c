@@ -36,7 +36,7 @@ static bool cmp_key (const void * val, void * key)
 
 rht_t * rht_alloc (unsigned size)
 {
-  rht_t * ht = calloc (1, sizeof (rht_t));
+  rht_t * ht = calloc (1, sizeof (* ht));
   htable_init_sized (ht, my_rehash, NULL, size);
   return ht;
 }

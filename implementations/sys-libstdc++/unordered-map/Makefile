@@ -3,7 +3,7 @@ NAME      = unordered-map
 
 # C/C++ source files
 LIBSRCS   = glue.c
-MAINSRCS  = run-suite.c
+MAINSRCS  =
 
 # Optional
 INCLUDE   =

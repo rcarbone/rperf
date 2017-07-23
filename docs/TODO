@@ -1,5 +1,3 @@
-* implementare il plugin con il template C++ khash
-
 * rivedere tutti i Makefile dei vari plugins per il nome glue.cpp
 
 * copiare il file API.txt in ogni plugin
@@ -9,8 +7,8 @@
 * Implementazioni C++
   * sparsehash-C11
   * folly (AtomicHashMap)
-  * eastl
   * llvm
+  * khash++
 
 * Implementazioni C
    Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils

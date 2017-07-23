@@ -3,7 +3,29 @@
 #include <stdlib.h>
 
 /* The implementation */
-#include <unordered_map>
+#include "EASTL/hash_map.h"
+#include "hashtable.cpp"
+using namespace eastl;
+
+/* operator new required by EASTL */
+#define THROW_SPEC_0    // Throw 0 arguments
+#define THROW_SPEC_1(x) // Throw 1 argument
+
+/* Stolen from doc/SampleNewAndDelete.cpp */
+void * operator new [] (size_t size, const char* /*name*/, int /*flags*/, 
+			unsigned /*debugFlags*/, const char* /*file*/, int /*line*/) THROW_SPEC_1(std::bad_alloc)
+{
+  return calloc (1, size);
+}
+
+
+void * operator new [] (size_t size, size_t alignment, size_t alignmentOffset, const char* /*name*/, 
+			int flags, unsigned /*debugFlags*/, const char* /*file*/, int /*line*/) THROW_SPEC_1(std::bad_alloc)
+{
+  // Substitute your aligned malloc. 
+#define malloc_aligned(x, y, z) calloc(1, x)
+  return malloc_aligned(size, alignment, alignmentOffset);
+}
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -18,8 +40,9 @@ class hashfunc
   unsigned operator () (char * key) const { return rht_python_hash (key); }
 };
 
-typedef std::unordered_map <char *, void *, hashfunc> rht_t;
+typedef eastl::hash_map<char *, void *, hashfunc> rht_t;
 #include "rht.h"
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
@@ -49,14 +72,14 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  ht -> insert (std::make_pair (key, val));
+  ht -> insert (rht_t::value_type (key, val));
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  rht_t::iterator k = ht -> find (key);
-  return k != ht -> end () ? k -> second : NULL;
+  rht_t::iterator hit = ht -> find (key);
+  return hit != ht -> end () ? hit -> second : NULL;
 }
 
 
