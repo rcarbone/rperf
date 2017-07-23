@@ -4,11 +4,18 @@
 
 * implementare differenti datasets
 
+* Implementazioni C
+  * fast_hash
+  * generic-c-hashmap
+  * hhash
+  * htable
+  * libdynamic
+  * sglib
+  * st
+  * Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils
+
 * Implementazioni C++
   * sparsehash-C11
   * folly (AtomicHashMap)
   * llvm
   * khash++
-
-* Implementazioni C
-   Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils

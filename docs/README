@@ -8,27 +8,6 @@
  defined functional unit tests are included to be part of the game.
 
 
-[rperf] so includes:
-  * librht  - an abstract C library to be mapped over real hash table implementations which is used
-              as development enviroment to execuye both preliminary functional and non-funtional unit tests
-              over impelementations candidates to the battle.
-
-              Defined and supported Keys/Values pairs:
-                only (char * keys, void * vals) at the time
-
-  * rspeed  - a performance tool to evaluate/compare/sort time spent in execution
-              of test suites.
-
-  * rbattle - a benchmark tool to evaluate relative ranking in test execution
-              (it needs some code cleanup but it is full functional).
-
-              Up to 39 C/C++ implementations are currently available for testing.
-              Each implementation is simply a plugin (shared object that can be
-              dynamically loaded/unloaded for the purpose of the tests).
-
-              Up to 6 different test suites can be run.
-
-
 # Results for the impatients
 Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.81-1 x86_64 GNU/Linux
 Sun Jul 23 14:39:43 CEST 2017
@@ -330,6 +309,26 @@ Currently supported implementations
  38 GNU C++ Library                std::unordered_map            Silicon Graphics Computer Systems, Inc.
  39 uthash                         uthash/hashtable              Troy D. Hanson
 
+
+[rperf] so includes:
+  * librht  - an abstract C library to be mapped over real hash table implementations which is used
+              as development enviroment to execuye both preliminary functional and non-funtional unit tests
+              over implementations candidates to the battle.
+
+              Defined and supported Keys/Values pairs:
+                only (char * keys, void * vals) at the time
+
+  * rspeed  - a performance tool to evaluate/compare/sort time spent in execution
+              of test suites.
+
+  * rbattle - a benchmark tool to evaluate relative ranking in test execution
+              (it needs some code cleanup but it is full functional).
+
+              Up to 39 C/C++ implementations are currently available for testing.
+              Each implementation is simply a plugin (shared object that can be
+              dynamically loaded/unloaded for the purpose of the tests).
+
+              Up to 6 different test suites can be run.
 
 
           +========+                                +=========+
