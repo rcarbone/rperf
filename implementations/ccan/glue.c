@@ -11,6 +11,12 @@ typedef struct htable rht_t;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+/* For simplicity's sake, say hash value is contents of elem */
+static size_t my_rehash (const void * elem, void * unused)
+{
+  return * (size_t *) elem;
+}
+
 
 /* Hash string keys using an external helper function */
 static size_t hash_str (const void * key, void * unused)
@@ -20,9 +26,9 @@ static size_t hash_str (const void * key, void * unused)
 
 
 /* Compare 2 string keys for equality */
-static bool cmp_key (const void * obj, void * key)
+static bool cmp_key (const void * val, void * key)
 {
-  return ! strcmp (((robj_t *) obj) -> skey, key);
+  return ! strcmp (((robj_t *) val) -> skey, key);
 }
 
 
@@ -31,7 +37,7 @@ static bool cmp_key (const void * obj, void * key)
 rht_t * rht_alloc (unsigned size)
 {
   rht_t * ht = calloc (1, sizeof (rht_t));
-  htable_init (ht, hash_str, NULL);
+  htable_init_sized (ht, my_rehash, NULL, size);
   return ht;
 }
 
@@ -57,29 +63,21 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  htable_add (ht, rht_python_hash (key), val);
+  htable_add (ht, hash_str (key, NULL), val);
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  struct htable_iter it;
-  void * v;
-
-  for (v = htable_first (ht, & it); v; v = htable_next (ht, & it))
-    if (cmp_key (v, key))
-      return v;
-  return NULL;
+  return htable_get (ht, hash_str (key, NULL), cmp_key, key);
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  struct htable_iter it;
-  void * obj;
-  for (obj = htable_first (ht, & it); obj; obj = htable_next (ht, & it))
-    if (cmp_key (obj, key))
-      htable_delval (ht, & it);
+  void * val = htable_get (ht, hash_str (key, NULL), cmp_key, key);
+  if (val)
+    htable_del (ht, hash_str (key, NULL), val);
 }
 
 

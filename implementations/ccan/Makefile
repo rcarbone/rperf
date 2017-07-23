@@ -3,7 +3,7 @@ NAME      = ccan
 
 # C source files
 LIBSRCS   = glue.c
-MAINSRCS  = run-suite.c
+MAINSRCS  =
 
 # Optional
 INCLUDE   = -I./3rdparty

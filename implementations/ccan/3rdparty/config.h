@@ -1,12 +1,11 @@
 /*
  * R. Carbone on Sun Jul 24 06:18:52 CEST 2016
- *
  */
 
 #include <endian.h>
 
 
-/* Mandatory define (in order to compile htable.c) */
+/* Mandatory #define (in order to compile htable.c) */
 #if defined(__GNUC__)
 #define COLD __attribute__((__cold__))
 #endif
