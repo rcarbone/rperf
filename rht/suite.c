@@ -194,21 +194,6 @@ rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* Rendering functions */
-
-/* Max name length */
-static unsigned rsuite_maxn (rtest_t * argv [])
-{
-  unsigned n = 0;
-  while (argv && * argv)
-    {
-      n = RMAX (n, strlen ((* argv) -> name));
-      argv ++;
-    }
-  return n;
-}
-
-
 static void rsuite_run_one (rtest_t * rtest, unsigned argc, robj_t * argv [], unsigned n, unsigned seq, unsigned maxn)
 {
   rtime_t spent;

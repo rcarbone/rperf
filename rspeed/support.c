@@ -6,7 +6,7 @@
 
 
 /* Public header */
-#include "support.h"
+#include "rwall.h"
 #include "rspeed.h"
 
 

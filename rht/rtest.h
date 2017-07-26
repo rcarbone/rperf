@@ -19,7 +19,7 @@
 #else
 #define INITIALS  1e5   /* initial # of items */
 #endif /* i386 */
-#define RUNS      5     /* default # of runs per test */
+#define RUNS      10    /* default # of loops per test */
 
 
 /* Function definition for Unit Tests and Test Suite */
@@ -123,6 +123,8 @@ void rsuite_print_no (void);
 void rsuite_print (rtest_t * argv []);
 void rsuite_print_all (void);
 
+unsigned rsuite_maxn (rtest_t * argv []);
+unsigned rsuite_maxd (rtest_t * argv []);
 
 void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn);
 

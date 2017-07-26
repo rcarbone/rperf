@@ -34,5 +34,3 @@ unsigned digits (unsigned n)
 {
   return n < 10 ? 1 : 1 + digits (n / 10);
 }
-
-

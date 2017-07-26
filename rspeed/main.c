@@ -482,10 +482,12 @@ int main (int argc, char * argv [])
   if (! items)
     items = INITIALS;
 
+  /* Avoid to run with 0 iteractions */
   if (! runs)
     runs = RUNS;
 
-  files = rplugin_ls (dir);      /* plugins available in dir */
+  /* Get the list of plugins available in dir */
+  files = rplugin_ls (dir);
   if (files)
     {
       /* Build the suite to run */

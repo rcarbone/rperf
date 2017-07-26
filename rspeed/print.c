@@ -2,27 +2,27 @@
 #include "rspeed.h"
 
 
-/* Display test information */
-void print_test_info (char * label, char * name, unsigned items, unsigned loops)
+/* Display general test information */
+void print_test_info (char * label, char * name, unsigned items, unsigned loops, unsigned maxn)
 {
   if (items % 10)
     printf ("%s test [%s] - %u items (%u loops per test)\n", label, name, items, loops);
   else
     printf ("%s test [%s] - 1e%u items (%u loops per test)\n", label, name, digits (items) - 1, loops);
+
+  /* Display test header */
+  print_test_header (maxn);
 }
 
 
-/* Best implementation per test */
+/* Display times information spent in test execution */
 void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned items, unsigned loops)
 {
   unsigned n = 0;
 
   /* Display test information */
   printf ("\n");
-  print_test_info ("Results of", testname, items, loops);
-
-  /* Display test header */
-  print_test_header (maxn);
+  print_test_info ("Results of", testname, items, loops, maxn);
 
   while (results && * results)
     {
@@ -33,7 +33,7 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
 }
 
 
-/* Display the best implementation per test */
+/* Display information about all the test executed sorted by best implementation per test */
 void hall_of_fame (char * suite [], sw_t * plugins [],
 		   unsigned maxn, unsigned items, unsigned loops)
 {

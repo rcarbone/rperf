@@ -1,5 +1,7 @@
 /* Project headers */
 #include "safe.h"
+#include "args.h"
+#include "rwall.h"
 #include "rtest.h"
 #include "rspeed.h"
 
@@ -73,43 +75,67 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *  2. iterate over all loaded software implementations (in a randomized order) that have the test implemented
  *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times spent
  *
- * The datasets needed to run the suite are initialized just one time because the number of items is not incremented
+ * The datasets needed to run the suite are initialized just one time because the number of items is not incremented each loop.
  */
 sw_t ** run_suite (char * suite [], sw_t * plugins [],
 		   unsigned initials, unsigned loops,
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  char ** names   = suite;
-  robj_t ** objs  = mkobjs (initials);         /* Initialize datasets needed by the suite */
-  unsigned loaded = arrlen (plugins);          /* Number of loaded implementations        */
-  unsigned maxn   = sw_maxname (plugins);      /* Lenght of longest implementation name   */
-  unsigned t      = 0;                         /* Iterator over all the tests executed    */
+  robj_t ** objs   = mkobjs (initials);         /* Initialize datasets needed by the suite */
+  unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
+  unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
+  rtest_t ** tests = NULL;                      /* The table of tests to run               */
+  unsigned n       = rsuite_maxn (tests);
+  unsigned t;                                   /* Counter for tests to run                */
+  rtest_t ** test;                              /* Iterator over the table of tests to run */
+  char ** names;
+
+  /* Lookup for the given names in the table of given test suite to run */
+  names = suite;
+  while (names && * names)
+    tests = arrmore (tests, rsuite_find_by_name (* names ++), rtest_t);
+
+  if (! suite || ! plugins || ! tests)
+    return plugins;
+
+  printf ("Evaluate average wall-time spent repeating %u times the same test with %u elements per test\n", loops, initials);
+  printf ("\n");
+
+  n = rsuite_maxn (tests);
+
+  {
+    unsigned d = rsuite_maxd (tests);
+
+    printf ("Tests to run: %u using %u loaded implementations\n", arrlen (tests), arrlen (plugins));
+    t = 0;
+    test = tests;
+    while (test && * test)
+      {
+	printf ("  %u: %-*.*s (%-*.*s)\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description);
+	test ++;
+      }
+    printf ("\n");
+  }
 
   /* Main loop - Iterate over all the names of the given test suite in the same order they were passed */
-  while (plugins && names && * names)
+  t = 0;
+  test = tests;
+  while (test && * test)
     {
-      /* Lookup for the given name in the table of given test suite */
-      rtest_t * rtest = rsuite_find_by_name (* names);       /* Lookup for the given name in the table of given test suite */
-      unsigned torun = sw_have (plugins, * names);           /* Implementations to run for this test */
+      unsigned torun = sw_have (plugins, (* test) -> name);          /* Implementations to run for this test */
 
       /* Run this test if there is at least 1 implementation that have the test implemented */
-      if (rtest && torun)
+      if (torun)
 	{
 	  unsigned * order = rndorder (loaded);      /* Evaluate a random array to run implementations */
 	  unsigned i;                                /* Iterator over the implementations              */
 
 	  /* Display test information */
 	  if (verbose)
-	    {
-	      /* Display test info */
-	      print_test_info ("Running", * names, initials, loops);
-
-	      /* Display test header */
-	      print_test_header (maxn);
-	    }
+	    print_test_info ("Running", (* test) -> name, initials, loops, maxn);
 	  else
-	    printf ("Running test [%s]. Please wait ... ", * names);
+	    print_dots ((* test) -> name, "Running", 1, ++ t, n);
 
 	  /*
 	   * Inner loop over all the loaded implementations:
@@ -121,13 +147,13 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      sw_t * sw = plugins [order [i]];
 
 	      /* Check if the current plugin implements the current test */
-	      if (rplugin_implement (sw -> plugin, * names))
+	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		{
 		  /* Run this test for this implementation using the same constant numer of items */
-		  rspent_t * result = run_single_test (rtest, sw, initials, objs, i + 1, loops, maxn, quiet);
+		  rspent_t * result = run_single_test (* test, sw, initials, objs, i + 1, loops, maxn, quiet);
 
 		  /* Save the results for later sorting/rendering */
-		  rtest -> results = arrmore (rtest -> results, result, rspent_t);
+		  (* test) -> results = arrmore ((* test) -> results, result, rspent_t);
 		}
 	    }
 
@@ -135,21 +161,21 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	  safefree (order);
 
 	  /* Sort the results by less avg time spent */
-	  rtest -> results = arrsort (rtest -> results, sort_by_less_avg, rspent_t);
+	  (* test) -> results = arrsort ((* test) -> results, sort_by_less_avg, rspent_t);
 
 	  /* Show the results */
 	  if (verbose)
-	    print_results (rtest -> results, * names, maxn, initials, loops);
+	    print_results ((* test) -> results, (* test) -> name, maxn, initials, loops);
 	  else
 	    printf ("Done\n");
-
-	  t ++;
 	}
-      names ++;
+      test ++;
     }
 
   /* Display the results sorted by more performant application */
   hall_of_fame (suite, plugins, maxn, initials, loops);
+
+  arrclear (tests, NULL);
 
   /* Free the datasets used by the test suite */
   rmobjs (objs);
