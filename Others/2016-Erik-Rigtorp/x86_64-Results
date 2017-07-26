@@ -1,0 +1,3 @@
+HashMap            305 ns/iter
+std::unordered_map 510 ns/iter
+google::dense      3183 ns/iter

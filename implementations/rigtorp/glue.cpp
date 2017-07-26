@@ -63,8 +63,8 @@ void rht_set (rht_t * ht, char * key, void * val)
 
 void * rht_get (rht_t * ht, char * key)
 {
-  rht_t::iterator k = ht -> find (key);
-  return k != ht -> end () ? k -> second : NULL;
+  rht_t::iterator it = ht -> find (key);
+  return it != ht -> end () ? it -> second : NULL;
 }
 
 

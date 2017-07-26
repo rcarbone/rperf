@@ -55,8 +55,8 @@ void rht_set (rht_t * ht, char * key, void * val)
 
 void * rht_get (rht_t * ht, char * key)
 {
-  rht_t::iterator k = ht -> find (key);
-  return k != ht -> end () ? k -> second : NULL;
+  rht_t::iterator it = ht -> find (key);
+  return it != ht -> end () ? it -> second : NULL;
 }
 
 
@@ -74,8 +74,8 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rht_t::iterator k;
-  for (k = ht -> begin (); k != ht -> end (); ++ k)
+  rht_t::iterator it;
+  for (it = ht -> begin (); it != ht -> end (); ++ it)
     fn (data);
 }
 

@@ -69,8 +69,8 @@ void rht_set (rht_t * ht, char * key, void * val)
 
 void * rht_get (rht_t * ht, char * key)
 {
-  rht_t::iterator k = ht -> find (key);
-  return k != ht -> end () ? k -> second : NULL;
+  rht_t::iterator it = ht -> find (key);
+  return it != ht -> end () ? it -> second : NULL;
 }
 
 
@@ -88,8 +88,8 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rht_t::iterator k = ht -> begin ();
-  for (; k != ht -> end (); k ++)
+  rht_t::iterator it = ht -> begin ();
+  for (; it != ht -> end (); it ++)
     fn (data);
 }
 
@@ -97,10 +97,10 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 char ** rht_keys (rht_t * ht)
 {
   char ** keys = (char **) calloc (rht_count (ht) + 1, sizeof (char *));
-  rht_t::iterator k = ht -> begin ();
+  rht_t::iterator it = ht -> begin ();
   unsigned i = 0;
-  for (; k != ht -> end (); k ++)
-    keys [i ++] = k -> first;
+  for (; it != ht -> end (); it ++)
+    keys [i ++] = it -> first;
   return keys;
 }
 
@@ -108,9 +108,9 @@ char ** rht_keys (rht_t * ht)
 void ** rht_vals (rht_t * ht)
 {
   void ** vals = (void **) calloc (rht_count (ht) + 1, sizeof (void *));
-  rht_t::iterator k = ht -> begin ();
+  rht_t::iterator it = ht -> begin ();
   unsigned i = 0;
-  for (; k != ht -> end (); k ++)
-    vals [i ++] = k -> second;
+  for (; it != ht -> end (); it ++)
+    vals [i ++] = it -> second;
   return vals;
 }
