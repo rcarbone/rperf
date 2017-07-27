@@ -2,8 +2,8 @@
 NAME      = tbb
 
 # C/C++ source files
-LIBSRCS   = glue.c
-MAINSRCS  =
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
 
 # Optional
 INCLUDE   =
@@ -11,33 +11,6 @@ CFLAGS    =
 C++FLAGS  =
 SYSLIBS   = -lstdc++
 SYSLIBS  += -lm -ltbb
-
-# Do not edit anything below, make creates it.
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-# The project's name
-PROJECT    = rperf
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's source tree
-ROOTDIR    = /home/rocco/${PROJECT}
-
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/plugins
-
-# The project's source tree
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/rht
-
-# rlibc
-INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
-USRLIBS   += ${RLIBCLIB}
-
-# rht
-INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
-USRLIBS   += ${RHTLIB}
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -186,15 +159,15 @@ distclean: clean
 	@rm -f ut.c
 	@rm -f suite.c
 
+# How to make an object file from a C++ source
+%.o: %.cpp
+	@echo "=*= making object $@ =*="
+	@${C++} -c ${C++FLAGS} $<
+
 # How to make an object file from a C source
 %.o: %.c
 	@echo "=*= making object $@ =*="
 	@${CC} -c ${CFLAGS} $<
-
-# How to make an object file from a C++ source
-glue.o: glue.cpp
-	@echo "=*= making object $@ =*="
-	@${C++} -c ${C++FLAGS} $<
 
 # How to make a depend file from a C source
 %.M: %.c
@@ -309,18 +282,4 @@ o: ${ALLO}
            done ; \
            echo "" ; \
          done
-# Project libraries
 
-# rlibc
-${RLIBCLIB}:
-	@echo "==================="
-	@echo "=*= making ${RLIBCLIB} =*="
-	@(cd ${RLIBCDIR} && make -s)
-	@echo "==================="
-
-# rht
-${RHTLIB}:
-	@echo "==================="
-	@echo "=*= making ${RHTLIB} =*="
-	@(cd ${RHTDIR} && make)
-	@echo "==================="

@@ -2,8 +2,8 @@
 NAME      = amtl
 
 # C/C++ source files
-LIBSRCS   = glue.c
-MAINSRCS  = run-suite.c
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
 
 # Optional
 INCLUDE   = -I./3rdparty
@@ -185,15 +185,15 @@ distclean: clean
 	@rm -f ut.c
 	@rm -f suite.c
 
+# How to make an object file from a C++ source
+%.o: %.cpp
+	@echo "=*= making object $@ =*="
+	@${C++} -c ${C++FLAGS} $<
+
 # How to make an object file from a C source
 %.o: %.c
 	@echo "=*= making object $@ =*="
 	@${CC} -c ${CFLAGS} $<
-
-# How to make an object file from a C++ source
-glue.o: glue.cpp
-	@echo "=*= making object $@ =*="
-	@${C++} -c ${C++FLAGS} $<
 
 # How to make a depend file from a C source
 %.M: %.c
@@ -308,6 +308,7 @@ o: ${ALLO}
            done ; \
            echo "" ; \
          done
+
 # Project libraries
 
 # rlibc
