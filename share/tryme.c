@@ -50,8 +50,8 @@ typedef enum
   OPT_ITEMS_8      = '8',    /* 10 ^ 8 */
   OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
 
-  /* Run counters */
-  OPT_RUNS         = 'r',
+  /* Run counter */
+  OPT_LOOPS        = 'r',
 
 } ropt_t;
 
@@ -88,8 +88,8 @@ static struct option lopts [] =
   { "100-million",  no_argument,       NULL, OPT_ITEMS_8      },
   { "billion",      no_argument,       NULL, OPT_ITEMS_9      },
 
-  /* Run counters */
-  { "runs",         required_argument, NULL, OPT_RUNS         },
+  /* Run counter */
+  { "loops",        required_argument, NULL, OPT_LOOPS        },
 
   /* End of options */
   { NULL,           0,                 NULL, 0                }
@@ -189,7 +189,8 @@ static char ** choose (char * progname, char * included [], char * excluded [])
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice, char * names [],
-		  unsigned items, unsigned runs, bool verbose, bool quiet)
+		  unsigned loops, unsigned items,
+		  bool verbose, bool quiet)
 {
   rtest_t ** tests = NULL;
   if (names)
@@ -270,8 +271,8 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9,      "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Run counters: (default %u)\n", RUNS);
-  usage_item (options, n, OPT_RUNS,    "Set the number of runs per test");
+  printf ("  Loop counter: (default %u)\n", LOOPS);
+  usage_item (options, n, OPT_LOOPS,        "Set the number of loops per test");
 }
 
 
@@ -295,8 +296,8 @@ int main (int argc, char * argv [])
   /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */
 
-  /* Run counter */
-  unsigned runs    = RUNS;                   /* # of run per test           */
+  /* Loop counter */
+  unsigned loops   = LOOPS;                  /* # of loops per test         */
 
   unsigned choice  = OPT_DEFAULT;
   int option;
@@ -342,8 +343,8 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_8: items = 1e8;           break;
 	case OPT_ITEMS_9: items = 1e9;           break;
 
-	  /* Run counters */
-	case OPT_RUNS:    runs  = atoi (optarg); break;
+	  /* Loop counter */
+	case OPT_LOOPS:   loops = atoi (optarg); break;
 	}
     }
 
@@ -360,8 +361,8 @@ int main (int argc, char * argv [])
   if (! items)
     items = INITIALS;
 
-  if (! runs)
-    runs = RUNS;
+  if (! loops)
+    loops = LOOPS;
 
   /* Build a subset and go! */
   if (choice == OPT_RUN_UNIT)
@@ -374,10 +375,10 @@ int main (int argc, char * argv [])
       /* Attempt to do what has been required by the user */
       if (included || excluded)
 	{
-	  doit (progname, choice, names, items, runs, verbose, quiet);
+	  doit (progname, choice, names, loops, items, verbose, quiet);
 	}
       else
-	doit (progname, choice, names, items, runs, verbose, quiet);
+	doit (progname, choice, names, loops, items, verbose, quiet);
     }
   else
     printf ("%s: no test to run\n", progname);

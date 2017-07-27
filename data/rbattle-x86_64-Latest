@@ -180,3 +180,6 @@ Running test [miss]. Please wait ...
   battle for 39: tbb::unordered_map too slow                                    
   battle for 38: google::densehash too slow                                    
   battle for 37: rigtorp::hashmap too slow                                    
+  battle for 36: boost::unordered_map too slow                                    
+  battle for 35: mct::linked_hash_map too slow                                    
+  battle for 34: mct::closed_hash_map too slow                                    
