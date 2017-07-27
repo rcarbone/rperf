@@ -1,13 +1,43 @@
 # The name of the game
-NAME      = densehash
-# C source files
+NAME      = boost
+
+# C/C++ source files
 LIBSRCS   = glue.c
-MAINSRCS  = run-suite.c
-#
+MAINSRCS  =
+
+# Optional
 INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   = -lstdc++
+SYSLIBS  += -lm
+
+# Do not edit anything below, make creates it.
+# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+
+# The project's name
+PROJECT    = rperf
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# The project's source tree
+ROOTDIR    = /home/rocco/${PROJECT}
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
@@ -45,7 +75,7 @@ PLEASE    = "Do not edit anything below, make creates it."
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = tryme
+PROGRAMS  = ut suite
 
 # All the targets
 TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -74,7 +104,7 @@ ARFLAGS   = rv
 LDFLAGS   =
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c tryme.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
+all: Makefile plugin.c ut.c suite.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -88,7 +118,11 @@ plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-tryme.c: ${SHAREDIR}/tryme.c
+ut.c: ${SHAREDIR}/ut.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
+
+suite.c: ${SHAREDIR}/suite.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -116,22 +150,26 @@ ${INSTALLDIR}:
          fi
 
 # Binary programs
-tryme: tryme.o glue.o ${RHTLIB} ${RLIBCLIB}
+ut: ut.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-run: tryme
-	@echo "=*= running unit tests =*="
+suite: suite.o glue.o ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+unit: ut
 	@./$^ -x
+
+run: suite
+	@./$^ -x
+
+x:
+	@echo "=*= running unit tests =*="
+	@./ut -x
 	@echo
 	@echo "=*= running test suite =*="
-	@./$^ -X
-
-unit: tryme
-	@./$^ -x
-
-suite: tryme
-	@./$^ -X
+	@./suite -x
 
 # Cleanup rules
 clean:
@@ -139,12 +177,14 @@ clean:
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
-	@rm -f tryme.o
+	@rm -f ut.o
+	@rm -f suite.o
 
 distclean: clean
 	@rm -f ${DEPS}
 	@rm -f plugin.c
-	@rm -f tryme.c
+	@rm -f ut.c
+	@rm -f suite.c
 
 # How to make an object file from a C source
 %.o: %.c
@@ -152,7 +192,7 @@ distclean: clean
 	@${CC} -c ${CFLAGS} $<
 
 # How to make an object file from a C++ source
-%.o: %.cpp
+glue.o: glue.cpp
 	@echo "=*= making object $@ =*="
 	@${C++} -c ${C++FLAGS} $<
 
@@ -222,6 +262,53 @@ help:
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+.PHONY: all clean distclean
+
+suite-gcc-O0: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@gcc ${INCLUDES} -O0 $^ -o $@
+
+suite-gcc-O1: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@gcc ${INCLUDES} -O1 $^ -o $@
+
+suite-gcc-O2: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@gcc ${INCLUDES} -O2 $^ -o $@
+
+suite-gcc-O3: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@gcc ${INCLUDES} -O3 $^ -o $@
+
+suite-clang-O0: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O0 $^ -o $@
+
+suite-clang-O1: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O1 $^ -o $@
+
+suite-clang-O2: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O2 $^ -o $@
+
+suite-clang-O3: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O3 $^ -o $@
+
+
+GCCALL   = suite-gcc-O0 suite-gcc-O1 suite-gcc-O2 suite-gcc-O3
+CLANGALL = suite-clang-O0 suite-clang-O1 suite-clang-O2 suite-clang-O3
+ALLO     = suite-gcc-O0 suite-clang-O0 suite-gcc-O1 suite-clang-O1 suite-gcc-O2 suite-clang-O2 suite-gcc-O3 suite-clang-O3
+o: ${ALLO}
+	@for t in `seq 1 6` ; do \
+           echo "Running test $$t" ; \
+           for o in ${ALLO} ; do \
+             echo -n "`echo $$o | cut -d '-' -f2-3`" | awk '{ printf "%-8.8s ", $$1 }' ; \
+             ./$$o -x -n 200000 -i $$t ; \
+           done ; \
+           echo "" ; \
+         done
 # Project libraries
 
 # rlibc

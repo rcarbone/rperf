@@ -1,31 +1,11 @@
 # List of subdirectories
-SUBDIRS += amtl
 SUBDIRS += apr
-SUBDIRS += c-algorithms
-SUBDIRS += clark
-SUBDIRS += ccan
-SUBDIRS += eastl
-SUBDIRS += emilib
-SUBDIRS += gcc
-SUBDIRS += google-c
-SUBDIRS += hashit
-SUBDIRS += klib
-SUBDIRS += libCDS
-SUBDIRS += libcfu
-SUBDIRS += libevent
-SUBDIRS += libghthash
-SUBDIRS += mct
-SUBDIRS += oddou
-SUBDIRS += python
-SUBDIRS += rdestl
-SUBDIRS += rigtorp
-SUBDIRS += st
-SUBDIRS += stb
-SUBDIRS += sys
-SUBDIRS += tommyds
-SUBDIRS += ulib
-SUBDIRS += uthash
-# SUBDIRS += z-todo
+SUBDIRS += boost
+SUBDIRS += glib
+SUBDIRS += google
+SUBDIRS += libstdc++
+SUBDIRS += Qt
+SUBDIRS += tbb
 
 # Do not edit anything below, make creates it.
 # -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#

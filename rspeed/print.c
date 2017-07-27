@@ -34,7 +34,7 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
 
 
 /* Display information about all the test executed sorted by best implementation per test */
-void hall_of_fame (char * suite [], sw_t * plugins [],
+void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
 		   unsigned maxn, unsigned loops, unsigned items)
 {
   /* Line separator */
@@ -43,11 +43,10 @@ void hall_of_fame (char * suite [], sw_t * plugins [],
 
   while (suite && * suite)
     {
-      if (sw_have (plugins, * suite))
+      if (sw_have (plugins, (* suite) -> name))
 	{
-	  rtest_t * rtest = rsuite_find_by_name (* suite);
-	  print_results (rtest -> results, * suite, maxn, loops, items);
-	  arrclear (rtest -> results, rmspent);
+	  print_results ((* suite) -> results, (* suite) -> name, maxn, loops, items);
+	  arrclear ((* suite) -> results, rmspent);
 	  if (! * suite)
 	    printf ("\n");
 	}

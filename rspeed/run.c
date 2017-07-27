@@ -78,7 +78,7 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *
  * The datasets needed to run the suite are initialized just one time because the number of items is not incremented each loop.
  */
-sw_t ** run_suite (char * suite [], sw_t * plugins [],
+sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		   unsigned loops, unsigned items,
 		   bool verbose, bool quiet)
 {
@@ -86,32 +86,26 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
   robj_t ** objs   = mkobjs (items);         /* Initialize datasets needed by the suite */
   unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
   unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
-  rtest_t ** tests = NULL;                      /* The table of tests to run               */
   unsigned t;                                   /* Counter for tests to run                */
   rtest_t ** test;                              /* Iterator over the table of tests to run */
-  char ** names;
   unsigned n;
   unsigned d;
   unsigned tno;
 
   /* Lookup for the given names in the table of given test suite to run */
-  names = suite;
-  while (names && * names)
-    tests = arrmore (tests, rsuite_find_by_name (* names ++), rtest_t);
-
-  if (! suite || ! plugins || ! tests)
+  if (! suite || ! plugins)
     return plugins;
 
   printf ("Evaluate average wall-time elapsed repeating %u times the same test with %u elements per test\n", loops, items);
   printf ("\n");
 
-  n = rsuite_maxn (tests);
-  d = rsuite_maxd (tests);
-  tno = arrlen (tests);
+  n = rsuite_maxn (suite);
+  d = rsuite_maxd (suite);
+  tno = arrlen (suite);
 
-  printf ("Tests to run: %u over %u implementations\n", arrlen (tests), arrlen (plugins));
+  printf ("Tests to run: %u over %u implementations\n", tno, arrlen (plugins));
   t = 0;
-  test = tests;
+  test = suite;
   while (test && * test)
     {
       printf ("  %u: %-*.*s (%-*.*s)\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description);
@@ -122,10 +116,10 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 
   /* Main loop - Iterate over all the names of the given test suite in the same order they were passed */
   t = 0;
-  test = tests;
+  test = suite;
   while (test && * test)
     {
-      unsigned torun = sw_have (plugins, (* test) -> name);          /* Implementations to run for this test */
+      unsigned torun = sw_have (plugins, (* test) -> name);          /* # of implementations to run for this test */
 
       /* Run this test if there is at least 1 implementation that have the test implemented */
       if (torun)
@@ -180,8 +174,6 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 
   /* Display the results sorted by more performant application */
   hall_of_fame (suite, plugins, maxn, loops, items);
-
-  arrclear (tests, NULL);
 
   /* Free the datasets used by the test suite */
   rmobjs (objs);

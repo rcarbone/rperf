@@ -186,10 +186,37 @@ static int rp_valid_id (char * id, char * rargv [])
 }
 
 
+/* Build the tests to run */
+static rtest_t ** build_suite (char * progname, char * included [], char * excluded [])
+{
+  char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded        */
+  rtest_t ** suite = included ? NULL : rsuite_all ();      /* The suite of tests to run (nothing or everything but these) */
+
+  /* Loop over all defined tests to build the subset of user selected */
+  while (names && * names)
+    {
+      /* Add/Delete the given test to/from the table of given suite to run */
+      rtest_t * t = rsuite_valid (* names);
+      if (t)
+	suite = included ? arrmore (suite, t, rtest_t) : arrless (suite, t, rtest_t, NULL);
+      else
+	{
+	  printf ("%s: [%s] is not a valid id\n", progname, * names);
+	  arrclear (suite, NULL);
+	  return NULL;
+	}
+      names ++;
+    }
+  return suite;
+}
+
+
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  char * dir, char * files [], char * suite [],
-		  unsigned loops, unsigned items, bool verbose, bool quiet)
+		  char * dir, char * files [],
+		  rtest_t * suite [],
+		  unsigned loops, unsigned items,
+		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
   struct utsname u;
@@ -251,38 +278,10 @@ static void doit (char * progname, unsigned choice,
 
 
 /*
- * Build the suite of tests to run.
- */
-static char ** build_suite (char * progname, char * included [], char * excluded [])
-{
-  char ** names  = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  char ** subset = included ? NULL : rsuite_names ();    /* Nothing or everything but these */
-
-  /* Loop over plugin names to define the subset of user selected */
-  while (names && * names)
-    {
-      rtest_t * t = rsuite_valid (* names);
-      if (t)
-	subset = included ? argsuniq (subset, t -> name) : argsless (subset, t -> name);
-      else
-	{
-	  printf ("%s: [%s] is not a valid id\n", progname, * names);
-	  argsclear (subset);
-	  return NULL;
-	}
-      names ++;
-    }
-
-  return subset;
-}
-
-
-/*
  * Build the list of plugins to include/exclude.
  *
  * The items included by the user have higher priority and they assume the meaning of "nothing but these".
  * The items excluded by the user have lower priority and they assume the meaning of "everything but these".
- *
  */
 static char ** choose (char * progname, char * files [], char * included [], char * excluded [])
 {
@@ -303,7 +302,6 @@ static char ** choose (char * progname, char * files [], char * included [], cha
 	}
       names ++;
     }
-
   return subset;
 }
 
@@ -382,7 +380,7 @@ int main (int argc, char * argv [])
   bool verbose     = false;
   bool quiet       = false;
 
-  /* Test Suite */
+  /* Tests to run */
   char ** enabled  = NULL;
   char ** disabled = NULL;
 
@@ -414,15 +412,15 @@ int main (int argc, char * argv [])
 	  printf ("Try '%s --help' for more information.\n", progname); return 1;
 
 	  /* Miscellanea */
-	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    return 0;
-	case OPT_VERSION:      _version_ (progname, _VERSION_);         return 0;
+	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    goto bye;
+	case OPT_VERSION:      _version_ (progname, _VERSION_);         goto bye;
 	case OPT_VERBOSE:      verbose = true;                          break;
 	case OPT_QUIET:        quiet   = true;                          break;
 
 	  /* Test Suite */
 
 	  /* List */
-        case OPT_LIST_TESTS:   rsuite_print_all ();                     return 0;
+        case OPT_LIST_TESTS:   rsuite_print_all ();                     goto bye;
 
 	  /* Finger */
         case OPT_ADD_TEST:     enabled  = argsuniq (enabled, optarg);   break;
@@ -491,7 +489,7 @@ int main (int argc, char * argv [])
   if (files)
     {
       /* Build the suite to run */
-      char ** suite = build_suite (progname, enabled, disabled);
+      rtest_t ** suite = build_suite (progname, enabled, disabled);
       if (suite)
 	{
 	  /* Build the subset of plugins and go! */
@@ -504,10 +502,12 @@ int main (int argc, char * argv [])
 	}
       else
 	printf ("%s: no test to run\n", progname);
-      argsclear (suite);
+      arrclear (suite, NULL);
     }
   else
     printf ("%s: no plugin found in directory %s\n", progname, dir);
+
+ bye:
 
   /* Memory cleanup */
   argsclear (disabled);
