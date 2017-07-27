@@ -7,7 +7,6 @@ MAINSRCS  = main.c
 MAINSRCS += fake-rht.c
 LIBSRCS   = run.c
 LIBSRCS  += print.c
-LIBSRCS  += support.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =

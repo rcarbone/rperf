@@ -9,11 +9,12 @@
 /*
  * Run a single test.
  *
- * Iterate to run 'loops' times the same test and evaluate min/avg/max time spent
+ * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
 static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
+				   unsigned loops,
 				   unsigned items, robj_t * objs [],
-				   unsigned serial, unsigned loops,
+				   unsigned serial,
 				   unsigned maxn, bool verbose)
 {
   /* Allocate memory to store the results and bind the sw implementation to it */
@@ -33,22 +34,22 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
   /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg */
   for (l = 0; l < loops; l ++)
     {
-      /* Run the test and evaluate the time spent for this run in nanoseconds */
-      double spent = sw_call (sw, rtest -> name, items, objs, false);
+      /* Run the test and evaluate the time elapsed for this run in nanoseconds */
+      double elapsed = sw_call (sw, rtest -> name, items, objs, false);
 
-      /* Evaluate min/max/avg time spent for the execution of the test */
-      min = RMIN (min, spent);
-      max = RMAX (max, spent);
-      avg += spent;
+      /* Evaluate min/max/avg time elapsed for the execution of the test */
+      min = RMIN (min, elapsed);
+      max = RMAX (max, elapsed);
+      avg += elapsed;
     }
 
   /* The wall time the test was completed at nsec resolution */
   result -> t2 = nswall ();
 
-  /* Evaluate the time spent for the test */
+  /* Evaluate the time elapsed for the test */
   result -> elapsed = result -> t2 - result -> t1;
 
-  /* Evaluate min/max/avg time spent for the execution of the test */
+  /* Evaluate min/max/avg time elapsed for the execution of the test */
   result -> min = min;
   result -> max = max;
   result -> avg = avg;
@@ -73,23 +74,25 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *
  * 1. iterate over all the suite of tests (in the same order they were specified by the calling function)
  *  2. iterate over all loaded software implementations (in a randomized order) that have the test implemented
- *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times spent
+ *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times elapsed
  *
  * The datasets needed to run the suite are initialized just one time because the number of items is not incremented each loop.
  */
 sw_t ** run_suite (char * suite [], sw_t * plugins [],
-		   unsigned initials, unsigned loops,
+		   unsigned loops, unsigned items,
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  robj_t ** objs   = mkobjs (initials);         /* Initialize datasets needed by the suite */
+  robj_t ** objs   = mkobjs (items);         /* Initialize datasets needed by the suite */
   unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
   unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
   rtest_t ** tests = NULL;                      /* The table of tests to run               */
-  unsigned n       = rsuite_maxn (tests);
   unsigned t;                                   /* Counter for tests to run                */
   rtest_t ** test;                              /* Iterator over the table of tests to run */
   char ** names;
+  unsigned n;
+  unsigned d;
+  unsigned tno;
 
   /* Lookup for the given names in the table of given test suite to run */
   names = suite;
@@ -99,24 +102,23 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
   if (! suite || ! plugins || ! tests)
     return plugins;
 
-  printf ("Evaluate average wall-time spent repeating %u times the same test with %u elements per test\n", loops, initials);
+  printf ("Evaluate average wall-time elapsed repeating %u times the same test with %u elements per test\n", loops, items);
   printf ("\n");
 
   n = rsuite_maxn (tests);
+  d = rsuite_maxd (tests);
+  tno = arrlen (tests);
 
-  {
-    unsigned d = rsuite_maxd (tests);
-
-    printf ("Tests to run: %u using %u loaded implementations\n", arrlen (tests), arrlen (plugins));
-    t = 0;
-    test = tests;
-    while (test && * test)
-      {
-	printf ("  %u: %-*.*s (%-*.*s)\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description);
-	test ++;
-      }
-    printf ("\n");
-  }
+  printf ("Tests to run: %u over %u implementations\n", arrlen (tests), arrlen (plugins));
+  t = 0;
+  test = tests;
+  while (test && * test)
+    {
+      printf ("  %u: %-*.*s (%-*.*s)\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description);
+      test ++;
+    }
+  printf ("\n");
+  printf ("To run #%u times each with #%u items\n", loops, items);
 
   /* Main loop - Iterate over all the names of the given test suite in the same order they were passed */
   t = 0;
@@ -130,17 +132,20 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	{
 	  unsigned * order = rndorder (loaded);      /* Evaluate a random array to run implementations */
 	  unsigned i;                                /* Iterator over the implementations              */
+	  rtime_t t1;
+	  rtime_t t2;
 
 	  /* Display test information */
 	  if (verbose)
-	    print_test_info ("Running", (* test) -> name, initials, loops, maxn);
+	    print_test_info ("Running", (* test) -> name, loops, items, maxn);
 	  else
-	    print_dots ((* test) -> name, "Running", 1, ++ t, n);
+	    print_dots ((* test) -> name, "Running", digits (tno), ++ t, n);
 
 	  /*
 	   * Inner loop over all the loaded implementations:
-	   *  * run a single test for the given numer of times and take min/avg/max times spent for its execution
+	   *  * run a single test for the given numer of times and take min/avg/max times elapsed for its execution
 	   */
+	  t1 = nswall ();
 	  for (i = 0; i < loaded; i ++)
 	    {
 	      /* Select the implementation in random order */
@@ -150,30 +155,31 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		{
 		  /* Run this test for this implementation using the same constant numer of items */
-		  rspent_t * result = run_single_test (* test, sw, initials, objs, i + 1, loops, maxn, quiet);
+		  rspent_t * result = run_single_test (* test, sw, loops, items, objs, i + 1, maxn, quiet);
 
 		  /* Save the results for later sorting/rendering */
 		  (* test) -> results = arrmore ((* test) -> results, result, rspent_t);
 		}
 	    }
+	  t2 = nswall ();
 
 	  /* Free the memory used by the test suite */
 	  safefree (order);
 
-	  /* Sort the results by less avg time spent */
+	  /* Sort the results by less avg time */
 	  (* test) -> results = arrsort ((* test) -> results, sort_by_less_avg, rspent_t);
 
 	  /* Show the results */
 	  if (verbose)
-	    print_results ((* test) -> results, (* test) -> name, maxn, initials, loops);
+	    print_results ((* test) -> results, (* test) -> name, maxn, loops, items);
 	  else
-	    printf ("Done\n");
+	    printf ("Done! over #%u implementations - Elapsed %s\n", arrlen ((* test) -> results), ns2a (t2 - t1));
 	}
       test ++;
     }
 
   /* Display the results sorted by more performant application */
-  hall_of_fame (suite, plugins, maxn, initials, loops);
+  hall_of_fame (suite, plugins, maxn, loops, items);
 
   arrclear (tests, NULL);
 

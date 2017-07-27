@@ -99,7 +99,7 @@ char * ns2a (uint64_t nsecs)
   else if (nsecs < 1e9)
     sprintf (elapsed, "%3ju.%1ju ms",  n2ms (nsecs), ntrunc (nsecs, 1000000));
   else if (nsecs < 60 * 1e9)
-    sprintf (elapsed, "%3ju.%1ju s ",  n2ss (nsecs), ntrunc (nsecs, 1000000000));
+    sprintf (elapsed, "%3ju.%1ju  s",  n2ss (nsecs), ntrunc (nsecs, 1000000000));
   else if (nsecs < 60 * 60 * 1e9)
     sprintf (elapsed, "%3ju:%02u mm",  n2mm (nsecs), ssinn (nsecs));
   else if (nsecs < 24 * 60 * 60 * 1e9)

@@ -14,8 +14,13 @@ extern "C" {
 #endif
 
 
+/* Evaluate n integers in random order */
+unsigned * rndorder (unsigned n);
+
 /* sprintf() replacement */
 void itoa (int c, char * ret);
+
+/* Evaluate the number of digits in n */
 unsigned digits (unsigned n);
 
 

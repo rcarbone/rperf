@@ -19,7 +19,7 @@
 #else
 #define INITIALS  1e5   /* initial # of items */
 #endif /* i386 */
-#define RUNS      10    /* default # of loops per test */
+#define LOOPS     10    /* default # of loops per test */
 
 
 /* Function definition for Unit Tests and Test Suite */
@@ -30,12 +30,12 @@ typedef rtime_t rsuite_f (unsigned argc, robj_t * argv []);
 /* The structure to hold execution times for a single test run */
 typedef struct
 {
-  rtime_t t1;           /* The wall time the test was initiated at nsec resolution */
-  rtime_t t2;           /* The wall time the test was completed at nsec resolution */
-  rtime_t elapsed;      /* The time spent to complete the test at nsec resolution  */
-  rtime_t min;          /* Shortest time spent */
-  rtime_t avg;          /* Average time spent  */
-  rtime_t max;          /* Longest time spent  */
+  rtime_t t1;           /* The wall time the test was initiated at nsec resolution  */
+  rtime_t t2;           /* The wall time the test was completed at nsec resolution  */
+  rtime_t elapsed;      /* The time elapsed to complete the test at nsec resolution */
+  rtime_t min;          /* Shortest time elapsed */
+  rtime_t avg;          /* Average time elapsed  */
+  rtime_t max;          /* Longest time elapsed  */
   unsigned rate;
 
   unsigned items;       /* The number of items used to execute the test */

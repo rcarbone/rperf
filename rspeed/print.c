@@ -3,7 +3,7 @@
 
 
 /* Display general test information */
-void print_test_info (char * label, char * name, unsigned items, unsigned loops, unsigned maxn)
+void print_test_info (char * label, char * name, unsigned loops, unsigned items, unsigned maxn)
 {
   if (items % 10)
     printf ("%s test [%s] - %u items (%u loops per test)\n", label, name, items, loops);
@@ -16,7 +16,7 @@ void print_test_info (char * label, char * name, unsigned items, unsigned loops,
 
 
 /* Display times information spent in test execution */
-void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned items, unsigned loops)
+void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned loops, unsigned items)
 {
   unsigned n = 0;
 
@@ -35,7 +35,7 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
 
 /* Display information about all the test executed sorted by best implementation per test */
 void hall_of_fame (char * suite [], sw_t * plugins [],
-		   unsigned maxn, unsigned items, unsigned loops)
+		   unsigned maxn, unsigned loops, unsigned items)
 {
   /* Line separator */
   printf ("\n");
@@ -46,7 +46,7 @@ void hall_of_fame (char * suite [], sw_t * plugins [],
       if (sw_have (plugins, * suite))
 	{
 	  rtest_t * rtest = rsuite_find_by_name (* suite);
-	  print_results (rtest -> results, * suite, maxn, items, loops);
+	  print_results (rtest -> results, * suite, maxn, loops, items);
 	  arrclear (rtest -> results, rmspent);
 	  if (! * suite)
 	    printf ("\n");

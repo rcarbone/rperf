@@ -79,7 +79,7 @@ typedef enum
   OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
 
   /* Run counters */
-  OPT_RUNS         = 'r',
+  OPT_LOOPS        = 'r',
   OPT_SLOW         = 'S',
   OPT_REPEAT       = 'R',
   OPT_MORE         = 'M',
@@ -142,7 +142,7 @@ static struct option lopts [] =
   { "billion",      no_argument,       NULL, OPT_ITEMS_9      },
 
   /* Run counters */
-  { "runs",         required_argument, NULL, OPT_RUNS         },
+  { "loops",        required_argument, NULL, OPT_LOOPS        },
 
   { "tooslow",      required_argument, NULL, OPT_SLOW         },
   { "repeat",       required_argument, NULL, OPT_REPEAT       },
@@ -200,7 +200,7 @@ static int rp_valid_id (char * id, char * rargv [])
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
 		  char * dir, char * suite [], char * files [], unsigned items,
-		  unsigned runs, unsigned nslow, unsigned repeat, unsigned nmore,
+		  unsigned loops, unsigned nslow, unsigned repeat, unsigned nmore,
 		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
@@ -216,7 +216,7 @@ static void doit (char * progname, unsigned choice,
       printf ("\n");
 
       /* Initialize/Run/Terminate all the implementations under test */
-      sw_done (run_suite (suite, sw_init (files, items, verbose), items, runs, nslow, repeat, nmore, verbose, quiet), verbose);
+      sw_done (run_suite (suite, sw_init (files, items, verbose), loops, items, nslow, repeat, nmore, verbose, quiet), verbose);
       break;
 
     case OPT_GET_DIR:
@@ -378,8 +378,8 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9,      "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Run counters: (default %u)\n", RUNS);
-  usage_item (options, n, OPT_RUNS,    "Set the number of runs per test");
+  printf ("  Run counters: (default %u)\n", LOOPS);
+  usage_item (options, n, OPT_LOOPS,   "Set the number of loops per test");
   usage_item (options, n, OPT_SLOW,    "Set the occurrences to mark an implementation too slow (default 10)");
 }
 
@@ -408,7 +408,7 @@ int main (int argc, char * argv [])
   unsigned items   = INITIALS;               /* initial # of items per test */
 
   /* Run counters */
-  unsigned runs    = RUNS;                   /* # of run per test           */
+  unsigned loops   = LOOPS;                  /* # of loops per test              */
   unsigned nslow   = TOOSLOW;                /* too slow limit per test          */
   unsigned repeat  = REPEAT;                 /* add # items (repetition)         */
   unsigned nmore   = NMORE;                  /* # of items to increment per test */
@@ -480,7 +480,7 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_9: items = 1e9;           break;
 
 	  /* Run counters */
-	case OPT_RUNS:   runs   = atoi (optarg); break;
+	case OPT_LOOPS:  loops  = atoi (optarg); break;
 	case OPT_SLOW:   nslow  = atoi (optarg); break;
 	case OPT_REPEAT: repeat = atoi (optarg); break;
 	case OPT_MORE:   nmore  = atoi (optarg); break;
@@ -500,8 +500,8 @@ int main (int argc, char * argv [])
   if (! items)
     items = INITIALS;
 
-  if (! runs)
-    runs = RUNS;
+  if (! loops)
+    loops = LOOPS;
 
   if (! nslow)
     nslow = TOOSLOW;
@@ -518,7 +518,7 @@ int main (int argc, char * argv [])
 	  if (subset)
 	    doit (progname, choice, dir,
 		  suite, subset,
-		  items, runs, nslow, repeat, nmore,
+		  items, loops, nslow, repeat, nmore,
 		  verbose, quiet);
 	  else
 	    printf ("%s: Empty subset\n", progname);

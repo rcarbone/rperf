@@ -58,14 +58,14 @@ runit_f alloc_add_vals_free;
 static rtest_t runit_builtins [] =
 {
   { RUNIT_MAKE,    "make",    "Allocate and free an empty container", alloc_free,              NULL },
-  { RUNIT_FILL,    "fill",    "Add objects to an empty container",    alloc_add_free,          NULL },
-  { RUNIT_CLEAR,   "clear",   "Add objects and clear",                alloc_add_clear_free,    NULL },
-  { RUNIT_COUNT,   "count",   "Add objects and count",                alloc_add_count_free,    NULL },
-  { RUNIT_FOUND,   "found",   "Find existing objects",                alloc_add_found_free,    NULL },
-  { RUNIT_MISS,    "miss",    "Search non existing objects",          alloc_add_notfound_free, NULL },
-  { RUNIT_DELETE,  "delete",  "Delete existing objects",              alloc_add_delete_free,   NULL },
-  { RUNIT_MISSED,  "missed",  "Delete non existing objects",          alloc_add_missed_free,   NULL },
-  { RUNIT_FOREACH, "foreach", "Iterate existing objects",             alloc_add_iterate_free,  NULL },
+  { RUNIT_FILL,    "fill",    "Add items to an empty container",      alloc_add_free,          NULL },
+  { RUNIT_CLEAR,   "clear",   "Add items and clear",                  alloc_add_clear_free,    NULL },
+  { RUNIT_COUNT,   "count",   "Add items and count",                  alloc_add_count_free,    NULL },
+  { RUNIT_FOUND,   "found",   "Find existing items",                  alloc_add_found_free,    NULL },
+  { RUNIT_MISS,    "miss",    "Search non existing items",            alloc_add_notfound_free, NULL },
+  { RUNIT_DELETE,  "delete",  "Delete existing items",                alloc_add_delete_free,   NULL },
+  { RUNIT_MISSED,  "missed",  "Delete non existing items",            alloc_add_missed_free,   NULL },
+  { RUNIT_FOREACH, "foreach", "Iterate existing items",               alloc_add_iterate_free,  NULL },
   { RUNIT_KEYS,    "keys",    "Get all the keys",                     alloc_add_keys_free,     NULL },
   { RUNIT_VALS,    "vals",    "Get all the values",                   alloc_add_vals_free,     NULL },
 };

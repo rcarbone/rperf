@@ -21,12 +21,12 @@ typedef struct rht rht_t;
 /* The local identifiers for the Test Suite to run (indexed by keys) */
 typedef enum
 {
-  RSUITE_GROW    = 0x01,  /* Populate an empty container                          */
-  RSUITE_HIT     = 0x02,  /* Populate and find all existing objects one-by-one    */
-  RSUITE_MISS    = 0x03,  /* Populate and search for non existing objects         */
-  RSUITE_DELETE  = 0x04,  /* Populate and delete all existing objects one-by-one  */
-  RSUITE_REPLACE = 0x05,  /* Populate and replace all existing objects one-by-one */
-  RSUITE_KBENCH  = 0x06,  /* Delete if found, add otherwise objects one-by-one    */
+  RSUITE_GROW    = 0x01,  /* Populate an empty container                        */
+  RSUITE_HIT     = 0x02,  /* Populate and search all existing items one-by-one  */
+  RSUITE_MISS    = 0x03,  /* Populate and search for non existing items         */
+  RSUITE_DELETE  = 0x04,  /* Populate and delete all existing items one-by-one  */
+  RSUITE_REPLACE = 0x05,  /* Populate and replace all existing items one-by-one */
+  RSUITE_KBENCH  = 0x06,  /* Delete if found, add otherwise items one-by-one    */
 
 } rsuite_id_t;
 
@@ -43,19 +43,19 @@ rsuite_f rsuite_kbench;
 /* All the Test Suite in an array */
 static rtest_t rsuite_builtins [] =
 {
-  { RSUITE_GROW,    "grow",    "Add objects to an empty container", NULL, rsuite_grow    },
-  { RSUITE_HIT,     "hit",     "Find existing objects",             NULL, rsuite_hit     },
-  { RSUITE_MISS,    "miss",    "Search non existing objects",       NULL, rsuite_miss    },
-  { RSUITE_DELETE,  "delete",  "Delete existing objects",           NULL, rsuite_delete  },
-  { RSUITE_REPLACE, "replace", "Replace existing objects",          NULL, rsuite_replace },
-  { RSUITE_KBENCH,  "kbench",  "Delete if found, add otherwise",    NULL, rsuite_kbench  },
+  { RSUITE_GROW,    "grow",    "Add items to an empty container", NULL, rsuite_grow    },
+  { RSUITE_HIT,     "hit",     "Find existing items",             NULL, rsuite_hit     },
+  { RSUITE_MISS,    "miss",    "Search non existing items",       NULL, rsuite_miss    },
+  { RSUITE_DELETE,  "delete",  "Delete existing items",           NULL, rsuite_delete  },
+  { RSUITE_REPLACE, "replace", "Replace existing items",          NULL, rsuite_replace },
+  { RSUITE_KBENCH,  "kbench",  "Delete if found, add otherwise",  NULL, rsuite_kbench  },
 };
 #define RSUITE_NO (sizeof (rsuite_builtins) / sizeof (* rsuite_builtins))
 
 
 /* === Implementation of Test Suite === */
 
-/* Allocate and populate a hash table with n objects */
+/* Allocate and populate a hash table with n items */
 static rht_t * populate (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);
@@ -66,7 +66,7 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
 }
 
 
-/* Allocate and populate all the objects starting with an empty a hash table */
+/* Allocate and populate all the items starting with an empty a hash table */
 rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);
@@ -83,7 +83,7 @@ rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
 }
 
 
-/* Find and dereference with success all the objects */
+/* Find and dereference with success all the items */
 rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
@@ -105,7 +105,7 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
 }
 
 
-/* Find with failure all the objects */
+/* Find with failure all the items */
 rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
@@ -123,7 +123,7 @@ rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
 }
 
 
-/* Remove and dereference all the objects */
+/* Remove and dereference all the items */
 rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
@@ -141,7 +141,7 @@ rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 }
 
 
-/* Find, delete and reinsert with a different key all the objects */
+/* Find, delete and reinsert with a different key all the items */
 rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);

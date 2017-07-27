@@ -22,14 +22,10 @@ extern "C" {
 #endif
 
 
-/* Public functions in file support.c */
-unsigned * rndorder (unsigned n);
-
-
 /* Public functions in file run.c */
-sw_t ** run_suite (char * suite [], sw_t * allsw [],
-		   unsigned initials,
-		   unsigned loops, unsigned nslow, unsigned repeat, unsigned more,
+sw_t ** run_suite (char * suite [], sw_t * sw [],
+		   unsigned loops, unsigned initials,
+		   unsigned nslow, unsigned repeat, unsigned more,
 		   bool verbose, bool quiet);
 
 

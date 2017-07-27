@@ -1,5 +1,6 @@
 /* Project headers */
 #include "safe.h"
+#include "rwall.h"
 #include "rtest.h"
 #include "rbattle.h"
 
@@ -196,7 +197,7 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
  * The datasets needed to run the suite are initialized at each loop because the number of items is incremented per loop
  */
 sw_t ** run_suite (char * suite [], sw_t * plugins [],
-		   unsigned initials, unsigned loops,
+		   unsigned loops, unsigned initials,
 		   unsigned nslow, unsigned repeat, unsigned more,
 		   bool verbose, bool quiet)
 {

@@ -50,8 +50,8 @@ typedef enum
   OPT_ITEMS_8    = '8',    /* 10 ^ 8 */
   OPT_ITEMS_9    = '9',    /* 10 ^ 9 */
 
-  /* Run counters */
-  OPT_RUNS       = 'r',
+  /* Loop counter */
+  OPT_LOOPS      = 'r',
 
 } ropt_t;
 
@@ -89,7 +89,7 @@ static struct option lopts [] =
   { "billion",      no_argument,       NULL, OPT_ITEMS_9    },
 
   /* Run counters */
-  { "runs",         required_argument, NULL, OPT_RUNS       },
+  { "loops",        required_argument, NULL, OPT_LOOPS      },
 
   /* End of options */
   { NULL,           0,                 NULL, 0              }
@@ -123,17 +123,20 @@ static rtest_t ** choose (char * progname, char * included [], char * excluded [
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice, rtest_t * argv [],
-		  unsigned items, unsigned runs, bool verbose, bool quiet)
+		  unsigned loops, unsigned items,
+		  bool verbose, bool quiet)
 {
   if (argv)
     {
       robj_t ** objs;
+      unsigned l;
       switch (choice)
 	{
 	case OPT_RUN_UNIT: runit_run (argv, items);   break;
 	case OPT_RUN_SUITE:
 	  objs = mkobjs (items);
-	  rsuite_run (argv, items, objs);
+	  for (l = 0; l < loops; l ++)
+	    rsuite_run (argv, items, objs);
 	  rmobjs (objs);
 	  break;
 	}
@@ -196,8 +199,8 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9,      "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Run counters: (default %u)\n", RUNS);
-  usage_item (options, n, OPT_RUNS,    "Set the number of runs per test");
+  printf ("  Run counter: (default %u)\n", LOOPS);
+  usage_item (options, n, OPT_LOOPS,        "Set the number of loops per test");
 }
 
 
@@ -220,7 +223,7 @@ int main (int argc, char * argv [])
   unsigned items   = INITIALS;               /* initial # of items per test */
 
   /* Run counters */
-  unsigned runs    = RUNS;                   /* # of run per test           */
+  unsigned loops   = LOOPS;                  /* # of loops per test         */
 
   unsigned choice  = OPT_DEFAULT;
   int option;
@@ -267,7 +270,7 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_9: items = 1e9;           break;
 
 	  /* Run counters */
-	case OPT_RUNS:    runs  = atoi (optarg); break;
+	case OPT_LOOPS:   loops = atoi (optarg); break;
 	}
     }
 
@@ -293,13 +296,13 @@ int main (int argc, char * argv [])
 	  /* Build a subset and go! */
 	  rtest_t ** subset = choose (progname, included, excluded);
 	  if (subset)
-	    doit (progname, choice, subset, items, runs, verbose, quiet);
+	    doit (progname, choice, subset, loops, items, verbose, quiet);
 	  else
 	    printf ("%s: Empty subset\n", progname);
 	  arrclear (subset, NULL);
 	}
       else
-	doit (progname, choice, all, items, runs, verbose, quiet);
+	doit (progname, choice, all, loops, items, verbose, quiet);
     }
 
   /* Memory cleanup */
