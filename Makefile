@@ -13,7 +13,7 @@ PROJECT    = rperf
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's source tree
-ROOTDIR    = /home/rocco/${PROJECT}
+ROOTDIR    = $(shell pwd)
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins

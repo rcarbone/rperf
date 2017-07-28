@@ -22,7 +22,7 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
 
   /* Display test information */
   printf ("\n");
-  print_test_info ("Results of", testname, items, loops, maxn);
+  print_test_info ("Results of", testname, loops, items, maxn);
 
   while (results && * results)
     {
