@@ -9,6 +9,7 @@
 #pragma once
 
 /* System headers */
+#include <stdio.h>
 #include <stdbool.h>
 
 /* Project headers */

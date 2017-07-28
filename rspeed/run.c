@@ -96,7 +96,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   if (! suite || ! plugins)
     return plugins;
 
-  printf ("Evaluate average wall-time elapsed repeating %u times the same test with %u elements per test\n", loops, items);
+  printf ("Evaluate average wall-time elapsed repeating %u times the same test with %u items per test\n", loops, items);
   printf ("\n");
 
   n = rsuite_maxn (suite);
@@ -119,9 +119,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   test = suite;
   while (test && * test)
     {
-      unsigned torun = sw_have (plugins, (* test) -> name);          /* # of implementations to run for this test */
-
       /* Run this test if there is at least 1 implementation that have the test implemented */
+      unsigned torun = sw_have (plugins, (* test) -> name);          /* # of implementations to run for this test */
       if (torun)
 	{
 	  unsigned * order = rndorder (loaded);      /* Evaluate a random array to run implementations */

@@ -47,9 +47,9 @@ char ** argsmore (char * argv [], char * s)
 /* Remove an item from an array */
 char ** argsless (char * argv [], char * s)
 {
+  int argc = 0;
   int i;
   int j;
-  int argc;
 
   if ((i = argsmember (argv, s)) != -1)
     {

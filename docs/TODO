@@ -1,5 +1,3 @@
-* rivedere tutti i Makefile dei vari plugins per il nome glue.cpp
-
 * copiare il file API.txt in ogni plugin
 
 * implementare differenti datasets

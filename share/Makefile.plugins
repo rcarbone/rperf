@@ -39,10 +39,11 @@ PROGRAMS  = ut suite
 # All the targets
 TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
-# Object and depend files
-LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
-MAINOBJS  = $(patsubst %.c,%.o, ${MAINSRCS})
-DEPS      = $(patsubst %.c,%.M, ${LIBSRCS} ${MAINSRCS})
+# Source, Object and depend files
+CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
+LIBOBJS   = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
+MAINOBJS  = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
+DEPS      = $(LIBCSRCS:%.c=%.M) $(LIBC++SRCS:%.cpp=%.M)
 OBJS      = ${LIBOBJS} ${MAINOBJS}
 
 # C compiler and flags
@@ -52,9 +53,9 @@ CC        = gcc
 C++       = g++
 AR        = ar
 LD        = gcc
-# OPTIMIZE  = -O3
+OPTIMIZE  = -O3
 CFLAGS   += -g -Wall
-# CFLAGS   += ${OPTIMIZE}
+CFLAGS   += ${OPTIMIZE}
 CFLAGS   += ${INCLUDES}
 CFLAGS   += -fPIC
 CFLAGS   += -fno-diagnostics-color
@@ -145,15 +146,15 @@ distclean: clean
 	@rm -f ut.c
 	@rm -f suite.c
 
-# How to make an object file from a C++ source
-%.o: %.cpp
-	@echo "=*= making object $@ =*="
-	@${C++} -c ${C++FLAGS} $<
-
 # How to make an object file from a C source
 %.o: %.c
 	@echo "=*= making object $@ =*="
 	@${CC} -c ${CFLAGS} $<
+
+# How to make an object file from a C++ source
+%.o: %.cpp
+	@echo "=*= making object $@ =*="
+	@${C++} -c ${C++FLAGS} $<
 
 # How to make a depend file from a C source
 %.M: %.c
@@ -223,48 +224,68 @@ help:
 
 .PHONY: all clean distclean
 
-suite-gcc-O0: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
-	@echo "=*= making program $@ =*="
-	@gcc ${INCLUDES} -O0 $^ -o $@
+SRCS = ${LIBCSRCS} ${LIBC++SRCS}
 
-suite-gcc-O1: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
-	@echo "=*= making program $@ =*="
-	@gcc ${INCLUDES} -O1 $^ -o $@
+glue-gcc.o: glue.cpp
+	@echo "=*= making object $@ =*="
+	@g++ -c ${C++FLAGS} $< -o $@
 
-suite-gcc-O2: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
-	@echo "=*= making program $@ =*="
-	@gcc ${INCLUDES} -O2 $^ -o $@
+glue-clang.o: glue.cpp
+	@echo "=*= making object $@ =*="
+	@clang++ -c ${C++FLAGS} -std=c++11 $< -o $@
 
-suite-gcc-O3: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O0: suite.c glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
-	@gcc ${INCLUDES} -O3 $^ -o $@
+	@gcc ${INCLUDES} $^ ${SYSLIBS} -o $@
 
-suite-clang-O0: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O1: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
-	@clang ${INCLUDES} -O0 $^ -o $@
+	@gcc ${INCLUDES} -O1 $^ ${SYSLIBS} -o $@
 
-suite-clang-O1: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O2: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
-	@clang ${INCLUDES} -O1 $^ -o $@
+	@gcc ${INCLUDES} -O2 $^ ${SYSLIBS} -o $@
 
-suite-clang-O2: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O3: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
-	@clang ${INCLUDES} -O2 $^ -o $@
+	@gcc ${INCLUDES} -O3 $^ ${SYSLIBS} -o $@
 
-suite-clang-O3: suite.c glue.c ${RHTLIB} ${RLIBCLIB}
+suite-clang-O0: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
-	@clang ${INCLUDES} -O3 $^ -o $@
+	@clang ${INCLUDES} $^ ${SYSLIBS} -o $@
 
+suite-clang-O1: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O1 $^ ${SYSLIBS} -o $@
+
+suite-clang-O2: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O2 $^ ${SYSLIBS} -o $@
+
+suite-clang-O3: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@clang ${INCLUDES} -O3 $^ ${SYSLIBS} -o $@
 
 GCCALL   = suite-gcc-O0 suite-gcc-O1 suite-gcc-O2 suite-gcc-O3
 CLANGALL = suite-clang-O0 suite-clang-O1 suite-clang-O2 suite-clang-O3
 ALLO     = suite-gcc-O0 suite-clang-O0 suite-gcc-O1 suite-clang-O1 suite-gcc-O2 suite-clang-O2 suite-gcc-O3 suite-clang-O3
-o: ${ALLO}
+
+o: glue-gcc.o glue-clang.o ${ALLO}
 	@for t in `seq 1 6` ; do \
            echo "Running test $$t" ; \
            for o in ${ALLO} ; do \
              echo -n "`echo $$o | cut -d '-' -f2-3`" | awk '{ printf "%-8.8s ", $$1 }' ; \
-             ./$$o -x -n 200000 -i $$t ; \
+             ./$$o -x -6 -i $$t ; \
+           done ; \
+           echo "" ; \
+         done
+
+a: glue-gcc.o glue-clang.o ${ALLO}
+	@for t in `seq 1 6` ; do \
+           echo "Running test $$t" ; \
+           for o in ${GCCALL} ${CLANGALL} ; do \
+             echo -n "`echo $$o | cut -d '-' -f2-3`" | awk '{ printf "%-8.8s ", $$1 }' ; \
+             ./$$o -x -6 -i $$t ; \
            done ; \
            echo "" ; \
          done

@@ -98,10 +98,10 @@ void runit_all_rnd_print (void)
 
 void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn)
 {
-  unsigned dots = strlen (name);
+  unsigned dots = name ? strlen (name) : 0;
   unsigned i;
-  char fmt [16];
-  char str [160];
+  char fmt [1024];
+  char str [1014];
 
   sprintf (fmt, "[%%%uu] %s %%s ", n, label);
   sprintf (str, fmt, seq, name);
