@@ -1,9 +1,13 @@
 #!/bin/sh
-
 #
-# This script will attempt to build a development tree
-# for [rperf] by creating the Makefiles in each directory.
+# This script will attempt to fix the development rperf's source tree
+# until a robust and safe build system will be in effect
 #
 
 rootdir=`pwd`
-find . -name Makefile -exec sed -i -e 's|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|' {} \;
+
+find . -name Makefile -exec sed -i -e "s|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|" {} \;
+
+sed -i -e "s|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|" share/FileSystem
+
+find . -name Makefile.tmp -exec rm -f {} \;
