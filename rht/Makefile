@@ -47,6 +47,8 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 

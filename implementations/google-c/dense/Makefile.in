@@ -1,0 +1,18 @@
+# The name of the games
+NAME       = c-densehash
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I../3rdparty
+CFLAGS     = -Wno-address
+CFLAGS    += -Wno-parentheses
+CFLAGS    += -Wno-unused-function
+CFLAGS    += -Wno-strict-aliasing
+C++FLAGS   =
+SYSLIBS    =
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

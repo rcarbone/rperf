@@ -1,0 +1,19 @@
+# The name of the games
+NAME       = eastl
+
+# C/C++ source files
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./3rdparty
+INCLUDE   += -I./3rdparty/EASTL
+INCLUDE   += -I./3rdparty/EASTL/internal
+CFLAGS     = 
+C++FLAGS   = -Wno-pragmas
+SYSLIBS    = -lstdc++
+SYSLIBS    += -lm
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+

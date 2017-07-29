@@ -1,0 +1,16 @@
+# The name of the games
+NAME       = Qt-QHash
+
+# C/C++ source files
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = `pkg-config --cflags Qt5Core`
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    = `pkg-config --libs Qt5Core`
+SYSLIBS   += -lstdc++
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

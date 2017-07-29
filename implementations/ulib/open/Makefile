@@ -1,19 +1,46 @@
-# The name of the game
-NAME      = open-hash
-# C source files
-LIBSRCS   = glue.c
-MAINSRCS  = run-suite.c
-#
-INCLUDE   = -I./3rdparty
-CFLAGS    =
-C++FLAGS  =
-SYSLIBS   =
+# The name of the games
+NAME       = open-hash
 
-# Do not edit anything below, make creates it.
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./3rdparty
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    =
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's name
 PROJECT    = rperf
+
+# The project's source tree
+PROJECT    = rperf
+ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# Do not edit anything below, make creates it.
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 # The project's source tree
 ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
@@ -35,37 +62,7 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
-# Do not edit anything below, make creates it.
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-# The project's name
-PROJECT    = rperf
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# The project's source tree
-ROOTDIR    = /home/rocco/${PROJECT}
-
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/plugins
-
-# The project's source tree
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/rht
-
-# rlibc
-INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
-USRLIBS   += ${RLIBCLIB}
-
-# rht
-INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
-USRLIBS   += ${RHTLIB}
-
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
-PLEASE    = "Do not edit anything below, make creates it."
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
@@ -76,7 +73,7 @@ PROGRAMS  = ut suite
 # All the targets
 TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
-# Source, Object and depend files
+# Source, object and depend files
 CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
 LIBOBJS   = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
 MAINOBJS  = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
@@ -103,11 +100,8 @@ LDFLAGS   =
 # The main target is responsible to make all the targets
 all: Makefile plugin.c ut.c suite.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
-Makefile: ${TEMPLATES}
+Makefile: Makefile.in ${TEMPLATES}
 	@echo "=*= making $@ =*="
-	@cat $@ | head -`grep -n ${PLEASE} $@ | head -1 | cut -d ':' -f 1` > $@.tmp
-	@echo "# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#" >> $@.tmp
-	@echo >> $@.tmp
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 

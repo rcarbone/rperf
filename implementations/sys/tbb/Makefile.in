@@ -1,0 +1,16 @@
+# The name of the games
+NAME       = tbb
+
+# C/C++ source files
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
+
+# Compiler flags and System libraries (optional)
+INCLUDE    =
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    = -lstdc++
+SYSLIBS   += -lm -ltbb
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

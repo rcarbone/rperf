@@ -1,18 +1,20 @@
-# The name of the game
-NAME      = amtl
+# The name of the games
+NAME       = amtl
 
 # C/C++ source files
 LIBCSRCS   =
 LIBC++SRCS = glue.cpp
 
-# Optional
-INCLUDE   = -I./3rdparty
-CFLAGS    =
-C++FLAGS  =
-SYSLIBS   = -lstdc++
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./3rdparty
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    = -lstdc++
 
-# Do not edit anything below, make creates it.
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# The project's name
+PROJECT    = rperf
 
 # The project's source tree
 PROJECT    = rperf
@@ -35,7 +37,30 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+# Do not edit anything below, make creates it.
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# The project's source tree
+ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
 
 TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 
@@ -296,3 +321,18 @@ a: glue-gcc.o glue-clang.o ${ALLO}
            echo "" ; \
          done
 
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="

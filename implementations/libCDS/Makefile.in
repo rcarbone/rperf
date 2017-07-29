@@ -1,0 +1,15 @@
+# The name of the games
+NAME       = libCDS
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE   = -I./3rdparty
+CFLAGS    =
+C++FLAGS  =
+SYSLIBS   =
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

@@ -1,0 +1,20 @@
+# The name of the games
+NAME       = stb
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./3rdparty
+CFLAGS     = -Wno-unused-value
+CFLAGS    += -Wno-unused-function
+CFLAGS    += -Wno-pointer-to-int-cast
+CFLAGS    += -Wno-unused-but-set-variable
+CFLAGS    += -Wno-strict-aliasing
+CFLAGS    += -Wno-maybe-uninitialized
+C++FLAGS   =
+SYSLIBS    = -lm
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
