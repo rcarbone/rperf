@@ -1,5 +1,6 @@
-rbattle
-rspeed
+rht/rtest
+rspeed/rspeed
+rbattle/rbattle
 ut
 suite
 implementations/*/plugin.c
@@ -11,7 +12,6 @@ implementations/*/*/*/ut.c
 implementations/*/suite.c
 implementations/*/*/suite.c
 implementations/*/*/*/suite.c
-rht/rtest
 *.so
 *.a
 *.o

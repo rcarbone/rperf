@@ -10,7 +10,6 @@ SUBDIRS += open++
 # The project's name
 PROJECT    = rperf
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's source tree
 ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
 
@@ -31,10 +30,11 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.subdirs
-PLEASE    = "Do not edit anything below, make creates it."
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.node
+
+#
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
 #
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
@@ -68,11 +68,8 @@ clean distclean:
            fi \
          done
 
-Makefile: ${TEMPLATES}
+Makefile: Makefile.in ${TEMPLATES}
 	@echo "=*= making $@ =*="
-	@cat $@ | head -`grep -n ${PLEASE} $@ | head -1 | cut -d ':' -f 1` > $@.tmp
-	@echo "# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#" >> $@.tmp
-	@echo >> $@.tmp
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 

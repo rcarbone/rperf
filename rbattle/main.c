@@ -78,8 +78,9 @@ typedef enum
   OPT_ITEMS_8      = '8',    /* 10 ^ 8 */
   OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
 
-  /* Run counters */
+  /* Loop counter */
   OPT_LOOPS        = 'r',
+
   OPT_SLOW         = 'S',
   OPT_REPEAT       = 'R',
   OPT_MORE         = 'M',
@@ -141,7 +142,7 @@ static struct option lopts [] =
   { "100-million",  no_argument,       NULL, OPT_ITEMS_8      },
   { "billion",      no_argument,       NULL, OPT_ITEMS_9      },
 
-  /* Run counters */
+  /* Loop counter */
   { "loops",        required_argument, NULL, OPT_LOOPS        },
 
   { "tooslow",      required_argument, NULL, OPT_SLOW         },
@@ -189,7 +190,7 @@ static int find_by_name (char * name, char * rargv [])
 /*
  * A valid plugin id is:
  *  * if numeric in the range [1-n] where n is the number of found plugins
- *  * match a filename
+ *  * match a filename (without the .so suffix)
  */
 static int rp_valid_id (char * id, char * rargv [])
 {
@@ -197,10 +198,37 @@ static int rp_valid_id (char * id, char * rargv [])
 }
 
 
+/* Build the tests to run */
+static rtest_t ** build_suite (char * progname, char * included [], char * excluded [])
+{
+  char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded        */
+  rtest_t ** suite = included ? NULL : rsuite_all ();      /* The suite of tests to run (nothing or everything but these) */
+
+  /* Loop over all defined tests to build the subset of user selected */
+  while (names && * names)
+    {
+      /* Add/Delete the given test to/from the table of given suite to run */
+      rtest_t * t = rsuite_valid (* names);
+      if (t)
+	suite = included ? arrmore (suite, t, rtest_t) : arrless (suite, t, rtest_t, NULL);
+      else
+	{
+	  printf ("%s: [%s] is not a valid id\n", progname, * names);
+	  arrclear (suite, NULL);
+	  return NULL;
+	}
+      names ++;
+    }
+  return suite;
+}
+
+
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  char * dir, char * suite [], char * files [], unsigned items,
-		  unsigned loops, unsigned nslow, unsigned repeat, unsigned nmore,
+		  char * dir, char * files [],
+		  rtest_t * suite [],
+		  unsigned loops, unsigned items,
+		  unsigned nslow, unsigned repeat, unsigned nmore,
 		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
@@ -263,45 +291,17 @@ static void doit (char * progname, unsigned choice,
 
 
 /*
- * Build the suite of tests to run.
- */
-static char ** build_suite (char * progname, char * included [], char * excluded [])
-{
-  char ** names  = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  char ** subset = included ? NULL : rsuite_names ();    /* Nothing or everything but these */
-
-  /* Loop over plugin names to define the subset of user selected */
-  while (names && * names)
-    {
-      rtest_t * t = rsuite_valid (* names);
-      if (t)
-	subset = included ? argsuniq (subset, t -> name) : argsless (subset, t -> name);
-      else
-	{
-	  printf ("%s: [%s] is not a valid id\n", progname, * names);
-	  argsclear (subset);
-	  return NULL;
-	}
-      names ++;
-    }
-
-  return subset;
-}
-
-
-/*
  * Build the list of plugins to include/exclude.
  *
  * The items included by the user have higher priority and they assume the meaning of "nothing but these".
  * The items excluded by the user have lower priority and they assume the meaning of "everything but these".
- *
  */
 static char ** choose (char * progname, char * files [], char * included [], char * excluded [])
 {
   char ** names  = included ? included : excluded;       /* User-included items have priority over user-excluded */
   char ** subset = included ? NULL : argsdup (files);    /* Nothing or everything but these */
 
-  /* Loop over plugin names to define the subset of user selected */
+  /* Loop over given names to define the subset of user selected */
   while (names && * names)
     {
       int i = rp_valid_id (* names, files);
@@ -315,9 +315,9 @@ static char ** choose (char * progname, char * files [], char * included [], cha
 	}
       names ++;
     }
-
   return subset;
 }
+
 
 /* Display version information */
 static void _version_ (char * progname, char * version)
@@ -378,13 +378,13 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9,      "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Run counters: (default %u)\n", LOOPS);
-  usage_item (options, n, OPT_LOOPS,   "Set the number of loops per test");
-  usage_item (options, n, OPT_SLOW,    "Set the occurrences to mark an implementation too slow (default 10)");
+  printf ("  Loop counter: (default %u)\n", LOOPS);
+  usage_item (options, n, OPT_LOOPS,        "Set the number of loops per test");
+  usage_item (options, n, OPT_SLOW,         "Set the occurrences to mark an implementation too slow (default 10)");
 }
 
 
-/* Run benchmarks */
+/* Run tests to evaluate ranking */
 int main (int argc, char * argv [])
 {
   char * progname  = basename (argv [0]);    /* notice program name */
@@ -394,7 +394,7 @@ int main (int argc, char * argv [])
   bool verbose     = false;
   bool quiet       = false;
 
-  /* Test Suite */
+  /* Tests to run */
   char ** enabled  = NULL;
   char ** disabled = NULL;
 
@@ -404,14 +404,14 @@ int main (int argc, char * argv [])
   char ** included = NULL;
   char ** excluded = NULL;
 
-  /* Items counters */
+  /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */
 
-  /* Run counters */
-  unsigned loops   = LOOPS;                  /* # of loops per test              */
-  unsigned nslow   = TOOSLOW;                /* too slow limit per test          */
-  unsigned repeat  = REPEAT;                 /* add # items (repetition)         */
-  unsigned nmore   = NMORE;                  /* # of items to increment per test */
+  /* Loop counter */
+  unsigned loops   = LOOPS;                  /* # of loops per test         */
+  unsigned nslow   = TOOSLOW;                /* too slow limit per test     */
+  unsigned repeat  = REPEAT;                 /* add # items (repetition)    */
+  unsigned nmore   = NMORE;                  /* # of items to increment     */
 
   unsigned choice  = OPT_DEFAULT;
   int option;
@@ -429,15 +429,15 @@ int main (int argc, char * argv [])
 	  printf ("Try '%s --help' for more information.\n", progname); return 1;
 
 	  /* Miscellanea */
-	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    return 0;
-	case OPT_VERSION:      _version_ (progname, _VERSION_);         return 0;
+	case OPT_HELP:         _usage_ (progname, _VERSION_, lopts);    goto bye;
+	case OPT_VERSION:      _version_ (progname, _VERSION_);         goto bye;
 	case OPT_VERBOSE:      verbose = true;                          break;
 	case OPT_QUIET:        quiet   = true;                          break;
 
 	  /* Test Suite */
 
 	  /* List */
-        case OPT_LIST_TESTS:   rsuite_print_all ();                     return 0;
+        case OPT_LIST_TESTS:   rsuite_print_all ();                     goto bye;
 
 	  /* Finger */
         case OPT_ADD_TEST:     enabled  = argsuniq (enabled, optarg);   break;
@@ -466,7 +466,7 @@ int main (int argc, char * argv [])
         case OPT_ADD_PLUGIN:   included = argsuniq (included, optarg);  break;
         case OPT_DEL_PLUGIN:   excluded = argsuniq (excluded, optarg);  break;
 
-	  /* Item counters */
+	  /* Item counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;
@@ -479,11 +479,11 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_8: items = 1e8;           break;
 	case OPT_ITEMS_9: items = 1e9;           break;
 
-	  /* Run counters */
-	case OPT_LOOPS:  loops  = atoi (optarg); break;
-	case OPT_SLOW:   nslow  = atoi (optarg); break;
-	case OPT_REPEAT: repeat = atoi (optarg); break;
-	case OPT_MORE:   nmore  = atoi (optarg); break;
+	  /* Loop counter */
+	case OPT_LOOPS:   loops  = atoi (optarg); break;
+	case OPT_SLOW:    nslow  = atoi (optarg); break;
+	case OPT_REPEAT:  repeat = atoi (optarg); break;
+	case OPT_MORE:    nmore  = atoi (optarg); break;
 	}
     }
 
@@ -500,44 +500,43 @@ int main (int argc, char * argv [])
   if (! items)
     items = INITIALS;
 
+  /* Avoid to run with 0 loops */
   if (! loops)
     loops = LOOPS;
 
   if (! nslow)
     nslow = TOOSLOW;
 
-  files = rplugin_ls (dir);      /* plugins available in dir */
+  /* Get the list of plugins available in dir */
+  files = rplugin_ls (dir);
   if (files)
     {
       /* Build the suite to run */
-      char ** suite = build_suite (progname, enabled, disabled);
+      rtest_t ** suite = build_suite (progname, enabled, disabled);
       if (suite)
 	{
 	  /* Build the subset of plugins and go! */
 	  char ** subset = choose (progname, files, included, excluded);
 	  if (subset)
-	    doit (progname, choice, dir,
-		  suite, subset,
-		  items, loops, nslow, repeat, nmore,
-		  verbose, quiet);
+	    doit (progname, choice, dir, subset, suite, loops, items, nslow, repeat, nmore, verbose, quiet);
 	  else
 	    printf ("%s: Empty subset\n", progname);
 	  argsclear (subset);
 	}
       else
 	printf ("%s: no test to run\n", progname);
-      argsclear (suite);
+      arrclear (suite, NULL);
     }
   else
     printf ("%s: no plugin found in directory %s\n", progname, dir);
 
   /* Memory cleanup */
+ bye:
   argsclear (disabled);
   argsclear (enabled);
   argsclear (excluded);
   argsclear (included);
   argsclear (files);
-
 
   return 0;
 }

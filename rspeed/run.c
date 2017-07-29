@@ -83,7 +83,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  robj_t ** objs   = mkobjs (items);         /* Initialize datasets needed by the suite */
+  robj_t ** objs   = mkobjs (items);            /* Initialize datasets needed by the suite */
   unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
   unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
   unsigned t;                                   /* Counter for tests to run                */
@@ -92,7 +92,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   unsigned d;
   unsigned tno;
 
-  /* Lookup for the given names in the table of given test suite to run */
+  /* Nothing to do if no test or no plugins */
   if (! suite || ! plugins)
     return plugins;
 
@@ -114,7 +114,10 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   printf ("\n");
   printf ("To run #%u times each with #%u items\n", loops, items);
 
-  /* Main loop - Iterate over all the names of the given test suite in the same order they were passed */
+  /*
+   * Main loop:
+   *   iterate over all the names of the given test suite in the same order they were passed
+   */
   t = 0;
   test = suite;
   while (test && * test)

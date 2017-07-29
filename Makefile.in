@@ -1,0 +1,7 @@
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+SUBDIRS  = rlibc
+SUBDIRS += rht
+SUBDIRS += rspeed
+SUBDIRS += rbattle
+SUBDIRS += implementations
+

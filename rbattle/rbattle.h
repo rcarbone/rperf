@@ -23,7 +23,7 @@ extern "C" {
 
 
 /* Public functions in file run.c */
-sw_t ** run_suite (char * suite [], sw_t * sw [],
+sw_t ** run_suite (rtest_t * suite [], sw_t * sw [],
 		   unsigned loops, unsigned initials,
 		   unsigned nslow, unsigned repeat, unsigned more,
 		   bool verbose, bool quiet);

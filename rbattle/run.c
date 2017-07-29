@@ -1,5 +1,6 @@
 /* Project headers */
 #include "safe.h"
+#include "args.h"
 #include "rwall.h"
 #include "rtest.h"
 #include "rbattle.h"
@@ -127,11 +128,13 @@ static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [],
 /*
  * Run a single test.
  *
- * Iterate to run 'loops' times the same test and evaluate min/avg/max time spent
+ * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static rspent_t * run_single_test (char * name, sw_t * sw,
+static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
+				   unsigned loops,
 				   unsigned items, robj_t * objs [],
-				   unsigned serial, unsigned loops, unsigned slow,
+				   unsigned serial,
+				   unsigned slow,
 				   unsigned maxn, bool verbose)
 {
   /* Allocate memory to store the results and bind the sw implementation to it */
@@ -151,22 +154,22 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
   /* Main loop - iterate to run test 'loops' times and evaluate min/max/avg */
   for (l = 0; l < loops; l ++)
     {
-      /* Run the test and evaluate the time spent for this run in nanoseconds */
-      double spent = sw_call (sw, name, items, objs, false);
+      /* Run the test and evaluate the time elapsed for this run in nanoseconds */
+      double elapsed = sw_call (sw, rtest -> name, items, objs, false);
 
-      /* Evaluate min/max/avg time spent for the execution of the test */
-      min = RMIN (min, spent);
-      max = RMAX (max, spent);
-      avg += spent;
+      /* Evaluate min/max/avg time elapsed for the execution of the test */
+      min = RMIN (min, elapsed);
+      max = RMAX (max, elapsed);
+      avg += elapsed;
     }
 
   /* The wall time the test was completed at nsec resolution */
   result -> t2 = nswall ();
 
-  /* Evaluate the time spent for the test */
+  /* Evaluate the time elapsed for the test */
   result -> elapsed = result -> t2 - result -> t1;
 
-  /* Evaluate min/max/avg time spent for the execution of the test */
+  /* Evaluate min/max/avg time elapsed for the execution of the test */
   result -> min = min;
   result -> max = max;
   result -> avg = avg;
@@ -175,8 +178,10 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
   /* Evaluate test rate */
   result -> rate = result -> elapsed / items / loops;
 
-  /* Update the number of items used and the stop condition */
+  /* Update the number of items used in this test */
   result -> items = items;
+
+  /* Update the stop condition */
   result -> slow  = slow;
 
   /* Display timing information for this test */
@@ -188,52 +193,55 @@ static rspent_t * run_single_test (char * name, sw_t * sw,
 
 
 /*
- * Run the given test [suite] over the [plugins] already loaded.
+ * Run the given test _suite_ over the _plugins_ already loaded.
  *
  * 1. iterate over all the suite of tests (in the same order they were specified by the calling function)
- *  2. iterate over all loaded plugin implementations (in a randomized order) that have the test implemented
- *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times spent
+ *  2. iterate over all loaded software implementations (in a randomized order) that have the test implemented
+ *   3. iterate for the given number of _loops_ in order to repeat the same test and take the min/avg/max times elapsed
  *
- * The datasets needed to run the suite are initialized at each loop because the number of items is incremented per loop
+ * The datasets needed to run the suite are initialized at each loop because the number of items is incremented each loop.
  */
-sw_t ** run_suite (char * suite [], sw_t * plugins [],
+sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		   unsigned loops, unsigned initials,
 		   unsigned nslow, unsigned repeat, unsigned more,
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  char ** names   = suite;
-  unsigned loaded = arrlen (plugins);                     /* Number of loaded implementations      */
-  unsigned maxn   = sw_maxname (plugins);                 /* Lenght of longest implementation name */
+  unsigned loaded = arrlen (plugins);           /* Number of loaded implementations        */
+  unsigned maxn   = sw_maxname (plugins);       /* Lenght of longest implementation name   */
+  rtest_t ** test;                              /* Iterator over the table of tests to run */
+
+  /* Nothing to do if no test or no plugins */
+  if (! suite || ! plugins)
+    return plugins;
 
   /*
    * Main loop:
    *   iterate over all the names of the given test suite in the same order they were passed
    */
-  while (plugins && names && * names)
+  test = suite;
+  while (test && * test)
     {
-      /* Lookup for the given name in the table of given test suite */
-      rtest_t * rtest     = rsuite_find_by_name (* names); /* Lookup for given name in the table of test suite */
-      unsigned items      = initials;                      /* Initial value of items for all tests             */
-      unsigned torun      = sw_have (plugins, * names);    /* Number of implementations to run for this test   */
-      rspent_t ** runners = mkrunners (* names, plugins);  /* The table of runners for this test               */
-      rspent_t ** loosers = NULL;                          /* The table of loosers for this test               */
+      unsigned items      = initials;                              /* Initial value of items for all tests             */
+      unsigned torun      = sw_have (plugins, (* test) -> name);   /* Number of implementations to run for this test   */
+      rspent_t ** runners = mkrunners ((* test) -> name, plugins); /* The table of runners for this test               */
+      rspent_t ** loosers = NULL;                                  /* The table of loosers for this test               */
 
       /* Display test information */
       if (! quiet)
-	print_test_info (* names, torun, items, loops, more);
+	print_test_info ((* test) -> name, torun, items, loops, more);
       else
-	printf ("Running test [%s]. Please wait ...\n", * names);
+	printf ("Running test [%s]. Please wait ...\n", (* test) -> name);
 
       /* Run this test if there is at least 2 implementations that have the test implemented */
-      if (rtest && torun > 1)
+      if (torun > 1)
 	{
 	  /* Initialize the table of runners for this test */
 	  unsigned i;
 	  for (i = 0; i < loaded; i ++)
 	    {
 	      sw_t * sw  = plugins [i];
-	      if (rplugin_implement (sw -> plugin, * names))
+	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		runners = arrmore (runners, mkspent (sw), rspent_t);
 	    }
 
@@ -253,7 +261,7 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	      /*
 	       * Deep loop:
 	       *   iterate over all loaded implementations 
-	       *     run a single test in order and evaluate min/avg/max times spent for its execution
+	       *     run a single test in order and evaluate min/avg/max times elapsed for its execution
 	       */
 	      for (i = 0; i < loaded; i ++)
 		{
@@ -265,11 +273,11 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 		   *  1. the implementation must have the test defined
 		   *  2. the implementation must not be already included in the table of loosers
 		   */
-		  if (rplugin_implement (sw -> plugin, * names) && ! islooser (sw -> name, loosers))
+		  if (rplugin_implement (sw -> plugin, (* test) -> name) && ! islooser (sw -> name, loosers))
 		    {
 		      /* Run this test for this implementation with the current number of items */
-		      rspent_t * result = run_single_test (rtest -> name, sw, items, objs,
-							   ++ tested, loops, getslow (sw -> name, runners), maxn, verbose);
+		      rspent_t * result = run_single_test (* test, sw, loops, items, objs,
+							   ++ tested, getslow (sw -> name, runners), maxn, verbose);
 		      if (! quiet)
 			{
 			  printf ("  battle for %2u: %-*.*s ... %s", rank, maxn, maxn, sw -> name, ns2a (result -> avg));
@@ -302,15 +310,15 @@ sw_t ** run_suite (char * suite [], sw_t * plugins [],
 	    }
 
 	  /* Print the complete table of results for this test (in terms of ranking because times are less important) */
-	  print_winner (loosers, * names, maxn, items, loops);
+	  print_winner (loosers, (* test) -> name, maxn, items, loops);
 	}
 
       /* Free the memory used by the test suite */
       arrclear (loosers, rmspent);
       arrclear (runners, rmspent);
 
-      names ++;
-      if (* names)
+      test ++;
+      if ((* test) -> name)
 	printf ("\n");
     }
 

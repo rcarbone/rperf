@@ -3,7 +3,7 @@ LIB       = rlibc
 PROGRAM   =
 
 # C source files
-LIBSRCS   = varrays.c
+LIBSRCS  += varrays.c
 LIBSRCS  += args.c
 LIBSRCS  += plugins.c
 LIBSRCS  += rwall.c
@@ -18,14 +18,13 @@ CFLAGS    =
 C++FLAGS  =
 SYSLIBS   =
 
-# Do not edit anything below, make creates it.
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's name
 PROJECT    = rperf
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The project's source tree
+PROJECT    = rperf
 ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
 
 SHAREDIR   = ${ROOTDIR}/share
@@ -45,19 +44,18 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Do not edit anything below, make creates it.
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.bin
-PLEASE    = "Do not edit anything below, make creates it."
+TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.leaf
 
-# Static and dynamic libraries
+# Static library
 STLIB     = lib${LIB}.a
-# SHLIB     = lib${LIB}.so
 
 # All the targets
-TARGETS   = ${STLIB} ${SHLIB} ${PROGRAM}
+TARGETS   = ${STLIB} ${PROGRAM}
 
-# Object and depend files
+# Source, object and depend files
 LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
 MAINOBJS  = $(patsubst %.c,%.o, ${MAINSRCS})
 DEPS      = $(patsubst %.c,%.M, ${LIBSRCS} ${MAINSRCS})
@@ -83,11 +81,8 @@ LDFLAGS   =
 # The main target is responsible to make all the targets
 all: Makefile ${TARGETS}
 
-Makefile: ${TEMPLATES}
+Makefile: Makefile.in ${TEMPLATES}
 	@echo "=*= making $@ =*="
-	@cat $@ | head -`grep -n ${PLEASE} $@ | head -1 | cut -d ':' -f 1` > $@.tmp
-	@echo "# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#" >> $@.tmp
-	@echo >> $@.tmp
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 

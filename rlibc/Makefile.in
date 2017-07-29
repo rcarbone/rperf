@@ -1,0 +1,22 @@
+# The name of the games
+LIB       = rlibc
+PROGRAM   =
+
+# C source files
+LIBSRCS  += varrays.c
+LIBSRCS  += args.c
+LIBSRCS  += plugins.c
+LIBSRCS  += rwall.c
+LIBSRCS  += safe.c
+LIBSRCS  += support.c
+LIBSRCS  += rctype.c
+LIBSRCS  += roptions.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   =
+CFLAGS    =
+C++FLAGS  =
+SYSLIBS   =
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

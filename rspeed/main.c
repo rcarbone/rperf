@@ -135,7 +135,7 @@ static struct option lopts [] =
   { "billion",      no_argument,       NULL, OPT_ITEMS_9      },
 
   /* Loop counter */
-  { "loops",         required_argument, NULL, OPT_LOOPS       },
+  { "loops",        required_argument, NULL, OPT_LOOPS        },
 
   /* End of options */
   { NULL,           0,                 NULL, 0                }
@@ -507,9 +507,8 @@ int main (int argc, char * argv [])
   else
     printf ("%s: no plugin found in directory %s\n", progname, dir);
 
- bye:
-
   /* Memory cleanup */
+ bye:
   argsclear (disabled);
   argsclear (enabled);
   argsclear (excluded);
