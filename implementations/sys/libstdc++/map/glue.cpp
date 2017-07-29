@@ -6,9 +6,11 @@
 /* The implementation */
 #include <map>
 
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-#include "rhashfuncs.h"
+/* librhash - an abstract C library over real hash tables */
+#include "rht-hashers.h"
 
 /* Our own specialized hashing function in order to avoid the performance depends on the hash implementation used */
 class hashfunc

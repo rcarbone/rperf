@@ -6,8 +6,8 @@
 
 rootdir=`pwd`
 
-find . -name Makefile -exec sed -i -e "s|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|" {} \;
+find . -name Makefile -exec sed -i -e "s|^ROOTDIR = .*|ROOTDIR    = $rootdir|" {} \;
 
-sed -i -e "s|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|" share/FileSystem
+# sed -i -e "s|^ROOTDIR[^=]*= .*|ROOTDIR = $rootdir|" share/FileSystem
 
 find . -name Makefile.tmp -exec rm -f {} \;
