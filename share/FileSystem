@@ -1,6 +1,7 @@
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 # The project's source tree
-PROJECT    = rperf
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins

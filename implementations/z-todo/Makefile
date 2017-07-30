@@ -1,17 +1,12 @@
-# List of subdirectories
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
 SUBDIRS += libevent-1
 SUBDIRS += libevent-2
 SUBDIRS += uthash-mem
 
-# Do not edit anything below, make creates it.
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-
-# The project's name
-PROJECT    = rperf
-
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 # The project's source tree
-ROOTDIR = /home/rocco/git/rcarbone/rperf
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
@@ -30,14 +25,13 @@ INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
 
-# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.subdirs
-PLEASE    = "Do not edit anything below, make creates it."
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.node
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
-#
-# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
-#
 all: Makefile
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \
@@ -67,24 +61,16 @@ clean distclean:
            fi \
          done
 
-Makefile: ${TEMPLATES}
+Makefile: Makefile.in ${TEMPLATES}
 	@echo "=*= making $@ =*="
-	@cat $@ | head -`grep -n ${PLEASE} $@ | head -1 | cut -d ':' -f 1` > $@.tmp
-	@echo "# -#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#" >> $@.tmp
-	@echo >> $@.tmp
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
-
-tar:
-	@echo -n "Making distribution/backup file ${PROJECT}.tar.gz ..."
-	@(cd ${ROOTDIR} && make -s distclean && cd .. && tar cfz ${PROJECT}.tar.gz ${PROJECT} && mv ${PROJECT}.tar.gz ${PROJECT}/)
-	@echo "Done"
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 # The fake targets
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 .PHONY: all clean distclean ${SUBDIRS}
 
-# In the event of unknown rules
+# In the event an unknown rule has been used
 .DEFAULT:
 	@true

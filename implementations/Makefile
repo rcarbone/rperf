@@ -2,13 +2,14 @@
 SUBDIRS += amtl
 SUBDIRS += apr
 SUBDIRS += c-algorithms
-SUBDIRS += ccan
 SUBDIRS += clark
+SUBDIRS += ccan
 SUBDIRS += eastl
 SUBDIRS += emilib
 SUBDIRS += gcc
 SUBDIRS += google-c
 SUBDIRS += hashit
+SUBDIRS += judy
 SUBDIRS += klib
 SUBDIRS += libCDS
 SUBDIRS += libcfu
@@ -27,12 +28,10 @@ SUBDIRS += ulib
 SUBDIRS += uthash
 # SUBDIRS += z-todo
 
-# The project's name
-PROJECT    = rperf
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's source tree
-PROJECT    = rperf
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
@@ -53,13 +52,11 @@ USRLIBS   += ${RHTLIB}
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.node
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-#
+TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.node
+
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
-#
-# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
-#
 all: Makefile
 	@for dir in ${SUBDIRS} ; do \
            if [ -d $$dir ] ; then \

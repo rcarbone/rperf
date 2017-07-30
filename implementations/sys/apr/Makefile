@@ -13,12 +13,10 @@ SYSLIBS    = -lapr-1 -lpthread
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-# The project's name
-PROJECT    = rperf
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's source tree
-PROJECT    = rperf
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
@@ -42,27 +40,7 @@ USRLIBS   += ${RHTLIB}
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-# The project's source tree
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
-
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/plugins
-
-# The project's source tree
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/rht
-
-# rlibc
-INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
-USRLIBS   += ${RLIBCLIB}
-
-# rht
-INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
-USRLIBS   += ${RHTLIB}
-
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
+TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
@@ -75,9 +53,8 @@ TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Source, object and depend files
 CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
-LIBOBJS   = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
-MAINOBJS  = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
-DEPS      = $(LIBCSRCS:%.c=%.M) $(LIBC++SRCS:%.cpp=%.M)
+LIBOBJS   = ${LIBCSRCS:%.c=%.o} ${LIBC++SRCS:%.cpp=%.o}
+DEPS      = ${LIBCSRCS:%.c=%.M} ${LIBC++SRCS:%.cpp=%.M}
 OBJS      = ${LIBOBJS} ${MAINOBJS}
 
 # C compiler and flags
@@ -207,7 +184,7 @@ VFLAGS   += --error-exitcode=1
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no
-RUNFLAG   = -X
+RUNFLAG   = -x
 
 # Run valgrind to check for errors and memory leaks
 leaks: ${PROGRAMS}

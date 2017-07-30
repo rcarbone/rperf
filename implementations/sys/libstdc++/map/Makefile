@@ -13,12 +13,30 @@ SYSLIBS    = -lstdc++
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-# The project's name
-PROJECT    = rperf
+# The project's source tree
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
 
 # The project's source tree
-PROJECT    = rperf
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# The project's source tree
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
@@ -42,27 +60,7 @@ USRLIBS   += ${RHTLIB}
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-# The project's source tree
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
-
-SHAREDIR   = ${ROOTDIR}/share
-INSTALLDIR = ${ROOTDIR}/plugins
-
-# The project's source tree
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/rht
-
-# rlibc
-INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
-USRLIBS   += ${RLIBCLIB}
-
-# rht
-INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
-USRLIBS   += ${RHTLIB}
-
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
+TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so

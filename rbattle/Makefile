@@ -16,12 +16,10 @@ SYSLIBS   = -ldl
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-# The project's name
-PROJECT    = rperf
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's source tree
-PROJECT    = rperf
-ROOTDIR    = /home/rocco/git/rcarbone/${PROJECT}
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
 
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
@@ -45,7 +43,7 @@ USRLIBS   += ${RHTLIB}
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-TEMPLATES = ${SHAREDIR}/PROJECT ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.leaf
+TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.leaf
 
 # Static library
 STLIB     = lib${LIB}.a
@@ -54,9 +52,9 @@ STLIB     = lib${LIB}.a
 TARGETS   = ${STLIB} ${PROGRAM}
 
 # Source, object and depend files
-LIBOBJS   = $(patsubst %.c,%.o, ${LIBSRCS})
-MAINOBJS  = $(patsubst %.c,%.o, ${MAINSRCS})
-DEPS      = $(patsubst %.c,%.M, ${LIBSRCS} ${MAINSRCS})
+LIBOBJS   = ${LIBSRCS:%.c=%.o}
+MAINOBJS  = ${MAINSRCS:%.c=%.o}
+DEPS      = ${LIBSRCS:%.c=%.M} ${MAINSRCS:%.c=%.M}
 OBJS      = ${LIBOBJS} ${MAINOBJS}
 
 # C compiler and flags

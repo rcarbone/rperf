@@ -13,6 +13,7 @@ pkgs="$pkgs libboost1.62-dev"
 pkgs="$pkgs qtbase5-dev"
 pkgs="$pkgs libqt5core5a"
 pkgs="$pkgs libtbb-dev"
+pkgs="$pkgs libjudy-dev"
 
 echo "Checking software requirements for rperf ..."
 echo
