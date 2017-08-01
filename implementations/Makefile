@@ -13,6 +13,7 @@ SUBDIRS += judy
 SUBDIRS += klib
 SUBDIRS += libCDS
 SUBDIRS += libcfu
+SUBDIRS += libdynamic
 SUBDIRS += libevent
 SUBDIRS += libghthash
 SUBDIRS += mct

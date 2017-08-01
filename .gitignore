@@ -1,8 +1,15 @@
+# Executables
 rht/rtest
 rspeed/rspeed
 rbattle/rbattle
-ut
-suite
+implementations/*/ut
+implementations/*/*/ut
+implementations/*/*/*/ut
+implementations/*/suite
+implementations/*/*/suite
+implementations/*/*/*/suite
+
+# Automatically generated C sources
 implementations/*/plugin.c
 implementations/*/*/plugin.c
 implementations/*/*/*/plugin.c
@@ -12,8 +19,18 @@ implementations/*/*/*/ut.c
 implementations/*/suite.c
 implementations/*/*/suite.c
 implementations/*/*/*/suite.c
-*.so
+
+# Libraries
 *.a
+
+# Shared objects
+*.so
+
+# Object files
 *.o
+
+# Dependency files
 *.M
+
+# Backup files
 *~

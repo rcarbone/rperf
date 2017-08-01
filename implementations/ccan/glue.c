@@ -1,13 +1,16 @@
 /* System headers */
 #include <stdio.h>
 
+
 /* The implementation */
-#include "3rdparty/htable.c"
+#include "htable.c"
+
 
 /* librhash - an abstract C library over real hash tables */
 typedef struct htable rht_t;
 #include "rht.h"
 #include "datasets.h"
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

@@ -1,0 +1,23 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, Aug 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         libdynamic
+Module       map
+Author       Fredrik Widlund <fredrik.widlund@gmail.com>
+Description  C library for various dynamic container types
+Download     http://github.com/fredrikwidlund/libdynamic
+Date         2017
+Language     C
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+The following sources files were copied official github version at:
+  http://github.com/fredrikwidlund/libdynamic
+
+  - map.h
+  - map.c
+
+
+The following modifications were needed to compile the files as a standalone module:
+  - map.c  =>  avoid inclusion of buffer.h and vector.h
