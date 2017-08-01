@@ -14,8 +14,9 @@ typedef map rht_t;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* An empty object */
-static robj_t empty = { .skey = NULL };
+
+/* The empty object */
+static robj_t empty = { .skey = NULL, .pval = NULL };
 
 
 /*
@@ -55,7 +56,7 @@ static int equal_cb (map * ht, void * o1, void * o2)
 rht_t * rht_alloc (unsigned size)
 {
   map * ht = calloc (1, sizeof (* ht));
-  map_construct (ht, sizeof (robj_t), & empty, set_cb);   /* use an empty object */
+  map_construct (ht, sizeof (robj_t), & empty, set_cb);   /* use the empty object */
   return ht;
 }
 
@@ -132,11 +133,12 @@ char ** rht_keys (rht_t * ht)
 void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
-#if defined(ROCCO)
   unsigned i = 0;
-  apr_hash_index_t * k;
-  for (k = apr_hash_first (NULL, ht); k; k = apr_hash_next (k))
-    vals [i ++] = (void *) apr_hash_this_val (k);
-#endif /* ROCCO */
+  for (i = 0; i < ht -> elements_capacity; i ++)
+    {
+      robj_t * obj = map_element (ht, i);
+      if (! equal_cb (ht, obj, ht -> element_empty))
+	vals [i ++] = obj -> pval;
+    }
   return vals;
 }
