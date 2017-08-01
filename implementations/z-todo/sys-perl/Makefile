@@ -1,3 +1,42 @@
+# The name of the games
+NAME       = perl
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = `perl -MExtUtils::Embed -e ccopts`
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    = `perl -MExtUtils::Embed -e ldopts`
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# The project's source tree
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -14,8 +53,9 @@ TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Source, object and depend files
 CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
-LIBOBJS   = ${LIBCSRCS:%.c=%.o} ${LIBC++SRCS:%.cpp=%.o}
-DEPS      = ${LIBCSRCS:%.c=%.M} ${LIBC++SRCS:%.cpp=%.M}
+LIBOBJS   = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
+MAINOBJS  = $(LIBCSRCS:%.c=%.o) $(LIBC++SRCS:%.cpp=%.o)
+DEPS      = $(LIBCSRCS:%.c=%.M) $(LIBC++SRCS:%.cpp=%.M)
 OBJS      = ${LIBOBJS} ${MAINOBJS}
 
 # C compiler and flags
@@ -145,7 +185,7 @@ VFLAGS   += --error-exitcode=1
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no
-RUNFLAG   = -x
+RUNFLAG   = -X
 
 # Run valgrind to check for errors and memory leaks
 leaks: ${PROGRAMS}
@@ -185,7 +225,7 @@ help:
 	@echo "distclean" | awk '{ printf "  make %-15.15s  --> Clean all generated files (included temporary)\n", $$1 }'
 	@echo
 	@echo "unit"      | awk '{ printf "  make %-15.15s  --> Run all the unit tests\n", $$1 }'
-	@echo "run"       | awk '{ printf "  make %-15.15s  --> Run the test suite\n", $$1 }'
+	@echo "suite"     | awk '{ printf "  make %-15.15s  --> Run the test suite\n", $$1 }'
 	@echo "leaks"     | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks\n", $$1 }'
 	@echo "vleaks"    | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks (verbose mode)\n", $$1 }'
 
@@ -259,3 +299,18 @@ a: glue-gcc.o glue-clang.o ${ALLO}
            echo "" ; \
          done
 
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="

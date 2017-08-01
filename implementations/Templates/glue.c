@@ -4,7 +4,7 @@
 /* The implementation */
 #include "xxx.c"
 
-/* librhash - an abstract C library over real hash tables */
+/* librht - an abstract C library over real hash tables */
 typedef xxx_t rht_t;
 #include "rht.h"
 

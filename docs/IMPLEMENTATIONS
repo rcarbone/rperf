@@ -5,7 +5,7 @@
  3. khash               done!   yes       C macro
  4. ccan                done!   yes       C inline
  5. hashit              done!   ???       C inline
- 6. apr                 done!   yes       C inline
+ 6. apr                 done!   yes       C library/inline
  7. glib                done!   yes       C library
  8. gcc-libiberty       done!   yes       C inline        - bug in htab_find() if the initial size is set to a value too lower
  9. uthash              done!   no        C macro         - use of private hash function must be implemented
@@ -19,7 +19,7 @@
 17. tcl
 18. c-algoritms         done!   yes       C inline
 19. ruby-st
-20. judy
+20. judy                done!   yes       C library       - strange bug in count() and need to duplicate the keys in foreach
 21. stb                 done!   no        C inline        - use of private hash function must be implemented
 22. st                  done!   no        C inline        - use of private hash function must be implemented
 23. google-c            done!   no        C inline        - use of private hash function must be implemented
@@ -55,4 +55,3 @@ C++
 18. uSTL
 19. ustl_hashmap
 20. dlib
-

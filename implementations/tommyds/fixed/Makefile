@@ -1,3 +1,42 @@
+# The name of the games
+NAME       = tommy-dyn
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I../3rdparty
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    =
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+# The project's source tree
+ROOTDIR    = /home/rocco/git/rcarbone/rperf
+
+SHAREDIR   = ${ROOTDIR}/share
+INSTALLDIR = ${ROOTDIR}/plugins
+
+# The project's source tree
+RLIBCDIR   = ${ROOTDIR}/rlibc
+RHTDIR     = ${ROOTDIR}/rht
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+USRLIBS   += ${RLIBCLIB}
+
+# rht
+INCLUDE   += -I${RHTDIR}
+RHTLIB     = ${RHTDIR}/librht.a
+USRLIBS   += ${RHTLIB}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
 # Do not edit anything below, make creates it.
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -259,3 +298,18 @@ a: glue-gcc.o glue-clang.o ${ALLO}
            echo "" ; \
          done
 
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="
