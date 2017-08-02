@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 /* The implementation */
-#include "ulib/hash_chain.h"
+#include "ulib/hash_align.h"
 using namespace ulib;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -18,7 +18,7 @@ class hashfunc
 };
 
 /* librht - an abstract C library over real hash tables */
-typedef ulib::chain_hash_map <char *, void *, hashfunc> rht_t;
+typedef ulib::align_hash_map <char *, void *, hashfunc> rht_t;
 #include "rht.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -26,7 +26,7 @@ typedef ulib::chain_hash_map <char *, void *, hashfunc> rht_t;
 
 rht_t * rht_alloc (unsigned size)
 {
-  return new rht_t (size);
+  return new rht_t;
 }
 
 

@@ -1,12 +1,12 @@
 # The name of the games
-NAME       = chain-hash++
+NAME       = ulib-chain++
 
 # C/C++ source files
 LIBCSRCS   =
 LIBC++SRCS = glue.cpp
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = -I./3rdparty
+INCLUDE    = -I../3rdparty
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    = -lstdc++

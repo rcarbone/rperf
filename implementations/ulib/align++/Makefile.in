@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = ulib-open++
+NAME       = ulib-align++
 
 # C/C++ source files
 LIBCSRCS   =

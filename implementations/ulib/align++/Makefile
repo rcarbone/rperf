@@ -1,15 +1,15 @@
 # The name of the games
-NAME       = ghash
+NAME       = ulib-align++
 
 # C/C++ source files
-LIBCSRCS   = glue.c
-LIBC++SRCS =
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = `pkg-config --cflags glib-2.0`
+INCLUDE    = -I../3rdparty
 CFLAGS     =
 C++FLAGS   =
-SYSLIBS    = `pkg-config --libs glib-2.0`
+SYSLIBS    = -lstdc++
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 

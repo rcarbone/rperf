@@ -75,8 +75,8 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  rht_t::iterator k;
-  for (k = ht -> begin (); k != ht -> end (); k ++)
+  rht_t::iterator it;
+  for (it = ht -> begin (); it != ht -> end (); it ++)
     fn (data);
 }
 

@@ -1,21 +1,30 @@
 Rocco Carbone (rocco@tecsiel.it)
-Pisa, May 2017
+Pisa, Jul 2017
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 Name         ulib
-Module       hash-open
+Module       chain-hash
 Author       Zilong Tan (eric.zltan@gmail.com)
 Description  The ULIB is an efficient algorithm library for C and C++ (based on khash)
 Download     http://github.com/ZilongTan/Coding/ulib
 Date         2011, 2013
-Language     C++ template
+Language     C macro / C++ templates
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
 The following sources files were locally copied from latest git version:
 
-  - ulib/hash_open.h
+  - ulib/hash_chain_prot.h
+  - ulib/hash_chain.h
   - ulib/hash_open_prot.h
-  - ulib/util_algo.h
+  - ulib/hash_open.h
   - ulib/util_class.h
+  - ulib/util_algo.h
+
+Originally the project was hosted at https://code.google.com/archive/p/ulib/
+From this version I copied here the align hash implementation
+(should be a different version of open hash but I am not sure)
+
+  - ulib/hash_align_prot.h
+  - ulib/hash_align.h

@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 /* The implementation */
-#include "hash_chain_prot.h"
+#include "ulib/hash_chain_prot.h"
 #define ULIB_ISMAP  1
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */

@@ -1,12 +1,12 @@
 # The name of the games
-NAME       = open-hash
+NAME       = ulib-open
 
 # C/C++ source files
 LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = -I./3rdparty
+INCLUDE    = -I../3rdparty
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    =

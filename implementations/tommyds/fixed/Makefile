@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = tommy-dyn
+NAME       = tommy-fix
 
 # C/C++ source files
 LIBCSRCS   = glue.c

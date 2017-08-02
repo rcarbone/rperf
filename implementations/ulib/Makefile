@@ -1,4 +1,6 @@
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+SUBDIRS += align
+SUBDIRS += align++
 SUBDIRS += chain
 SUBDIRS += chain++
 SUBDIRS += open
