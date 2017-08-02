@@ -11,12 +11,20 @@ typedef map rht_t;
 #include "rht.h"
 #include "datasets.h"
 
+/* Items to put in the hash table */
+typedef struct
+{
+  char * key;
+  robj_t * val;
+
+} dynobj_t;
+
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 /* The empty object */
-static robj_t empty = { .skey = NULL, .pval = NULL };
+static dynobj_t empty = { .key = NULL, .val = NULL };
 
 
 /*
@@ -25,8 +33,8 @@ static robj_t empty = { .skey = NULL, .pval = NULL };
  */
 static void set_cb (map * map, void * d, void * s)
 {
-  robj_t * dst = d;
-  robj_t * src = s;
+  dynobj_t * dst = d;
+  dynobj_t * src = s;
   * dst = * src;
 }
 
@@ -34,7 +42,7 @@ static void set_cb (map * map, void * d, void * s)
 /* The hash callback is called with a pointer to a map element and should return a hash value of the key of the element */
 static size_t hash_cb (map * ht, void * obj)
 {
-  return rht_python_hash (((robj_t *) obj) -> skey);
+  return rht_python_hash (((dynobj_t *) obj) -> key);
 }
 
 
@@ -44,10 +52,10 @@ static size_t hash_cb (map * ht, void * obj)
  */
 static int equal_cb (map * ht, void * o1, void * o2)
 {
-  robj_t * obj1 = o1;
-  robj_t * obj2 = o2;
+  dynobj_t * obj1 = o1;
+  dynobj_t * obj2 = o2;
 
-  return obj1 -> skey == obj2 -> skey || (obj1 -> skey && obj2 -> skey && ! strcmp (obj1 -> skey, obj2 -> skey));
+  return obj1 -> key == obj2 -> key || (obj1 -> key && obj2 -> key && ! strcmp (obj1 -> key, obj2 -> key));
 }
 
 
@@ -56,7 +64,7 @@ static int equal_cb (map * ht, void * o1, void * o2)
 rht_t * rht_alloc (unsigned size)
 {
   map * ht = calloc (1, sizeof (* ht));
-  map_construct (ht, sizeof (robj_t), & empty, set_cb);   /* use the empty object */
+  map_construct (ht, sizeof (dynobj_t), & empty, set_cb);   /* use the empty object */
   return ht;
 }
 
@@ -82,21 +90,21 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  robj_t obj [] = { { .skey = key, .pval = val } };
+  dynobj_t obj [] = { { .key = key, .val = val } };
   map_insert (ht, obj, hash_cb, equal_cb, set_cb, NULL);
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  robj_t obj [] = { { .skey = key } };
-  return ((robj_t *) map_at (ht, obj, hash_cb, equal_cb)) -> pval;
+  dynobj_t obj [] = { { .key = key } };
+  return ((dynobj_t *) map_at (ht, obj, hash_cb, equal_cb)) -> val;
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  robj_t obj [] = { { .skey = key } };
+  dynobj_t obj [] = { { .key = key } };
   map_erase (ht, obj, hash_cb, equal_cb, set_cb, NULL);
 }
 
@@ -122,9 +130,9 @@ char ** rht_keys (rht_t * ht)
   unsigned i = 0;
   for (i = 0; i < ht -> elements_capacity; i ++)
     {
-      robj_t * obj = map_element (ht, i);
+      dynobj_t * obj = map_element (ht, i);
       if (! equal_cb (ht, obj, ht -> element_empty))
-	keys [i ++] = obj -> skey;
+	keys [i ++] = obj -> key;
     }
   return keys;
 }
@@ -136,9 +144,9 @@ void ** rht_vals (rht_t * ht)
   unsigned i = 0;
   for (i = 0; i < ht -> elements_capacity; i ++)
     {
-      robj_t * obj = map_element (ht, i);
+      dynobj_t * obj = map_element (ht, i);
       if (! equal_cb (ht, obj, ht -> element_empty))
-	vals [i ++] = obj -> pval;
+	vals [i ++] = obj -> val;
     }
   return vals;
 }
