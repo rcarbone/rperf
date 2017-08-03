@@ -1,5 +1,5 @@
 Rocco Carbone (rocco@tecsiel.it)
-Pisa, May 2017
+Pisa, Aug 2017
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 Name         klib
@@ -13,5 +13,14 @@ Language     C macro
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 
-The following sources files were copied from latest git version without modifications:
+The following sources files were copied from latest git version without any modifications:
   - khash.h
+
+  - khash.hh
+    is a free C++ template library for hash tables that can be found here:
+      http://attractivechaos.awardspace.com/khash.hh
+
+    It is a C++ template library wrote before the author have shifted his focus on C macro library
+    and the template library is not actively maintained.
+
+    I made a fix to avoid a compiler warning and it is included here only for convenience.

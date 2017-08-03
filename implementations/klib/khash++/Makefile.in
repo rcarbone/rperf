@@ -1,0 +1,15 @@
+# The name of the games
+NAME       = khash++
+
+# C/C++ source files
+LIBCSRCS   =
+LIBC++SRCS = glue.cpp
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I../3rdparty
+CFLAGS     =
+C++FLAGS   = -fpermissive
+SYSLIBS    = -lstdc++
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+

@@ -8,10 +8,12 @@
   * hhash
   * htable
   * sglib
-  * Andrioid https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils
+  * Android https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils
 
 * Implementazioni C++
   * sparsehash-C11
   * folly (AtomicHashMap)
   * llvm
-  * khash++
+  * SieveHash
+  * AdaptiveHash
+

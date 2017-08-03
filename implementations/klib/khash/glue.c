@@ -44,22 +44,22 @@ unsigned rht_count (rht_t * ht)
 void rht_set (rht_t * ht, char * key, void * val)
 {
   int ret;
-  khiter_t k = kh_put (rht, ht, key, & ret);
-  kh_value (ht, k) = val;
+  khiter_t it = kh_put (rht, ht, key, & ret);
+  kh_value (ht, it) = val;
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  khiter_t k = kh_get (rht, ht, key);
-  return k == kh_end (ht) ? NULL : kh_value (ht, k);
+  khiter_t it = kh_get (rht, ht, key);
+  return it == kh_end (ht) ? NULL : kh_value (ht, it);
 }
 
 
 void rht_del (rht_t * ht, char * key)
 {
-  khiter_t k = kh_get (rht, ht, key);
-  kh_del (rht, ht, k);
+  khiter_t it = kh_get (rht, ht, key);
+  kh_del (rht, ht, it);
 }
 
 
@@ -71,10 +71,10 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-  khint_t k;
-  for (k = kh_begin (ht); k != kh_end (ht); k ++)
+  khint_t it;
+  for (it = kh_begin (ht); it != kh_end (ht); it ++)
     {
-      if (! kh_exist (ht, k))
+      if (! kh_exist (ht, it))
 	continue;
       fn (data);
     }
@@ -85,12 +85,12 @@ char ** rht_keys (rht_t * ht)
 {
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
-  khiter_t k;
-  for (k = kh_begin (ht); k != kh_end (ht); k ++)
+  khiter_t it;
+  for (it = kh_begin (ht); it != kh_end (ht); it ++)
     {
-      if (! kh_exist (ht, k))
+      if (! kh_exist (ht, it))
 	continue;
-      keys [i ++] = (char *) kh_key (ht, k);
+      keys [i ++] = (char *) kh_key (ht, it);
     }
   return keys;
 }
@@ -100,12 +100,12 @@ void ** rht_vals (rht_t * ht)
 {
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
-  khiter_t k;
-  for (k = kh_begin (ht); k < kh_end (ht); k ++)
+  khiter_t it;
+  for (it = kh_begin (ht); it != kh_end (ht); it ++)
     {
-      if (! kh_exist (ht, k))
+      if (! kh_exist (ht, it))
 	continue;
-      vals [i ++] = (void *) kh_value (ht, k);
+      vals [i ++] = (void *) kh_value (ht, it);
     }
   return vals;
 }

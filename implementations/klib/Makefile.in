@@ -1,15 +1,3 @@
-# The name of the games
-NAME       = khash
-
-# C/C++ source files
-LIBCSRCS   = glue.c
-LIBC++SRCS =
-
-# Compiler flags and System libraries (optional)
-INCLUDE    = -I./3rdparty
-CFLAGS     =
-C++FLAGS   =
-SYSLIBS    =
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+SUBDIRS += khash
+SUBDIRS += khash++

@@ -9,13 +9,13 @@
 /* librht - an abstract C library over real hash tables */
 typedef map rht_t;
 #include "rht.h"
-#include "datasets.h"
+
 
 /* Items to put in the hash table */
 typedef struct
 {
   char * key;
-  robj_t * val;
+  void * val;
 
 } dynobj_t;
 
@@ -123,15 +123,14 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
       fn (data);
 }
 
-
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) * 2 + 1, sizeof (char *));
   unsigned i = 0;
   for (i = 0; i < ht -> elements_capacity; i ++)
     {
       dynobj_t * obj = map_element (ht, i);
-      if (! equal_cb (ht, obj, ht -> element_empty))
+      if (obj && ! equal_cb (ht, map_element (ht, i), ht -> element_empty))
 	keys [i ++] = obj -> key;
     }
   return keys;
@@ -145,7 +144,7 @@ void ** rht_vals (rht_t * ht)
   for (i = 0; i < ht -> elements_capacity; i ++)
     {
       dynobj_t * obj = map_element (ht, i);
-      if (! equal_cb (ht, obj, ht -> element_empty))
+      if (obj && ! equal_cb (ht, obj, ht -> element_empty))
 	vals [i ++] = obj -> val;
     }
   return vals;
