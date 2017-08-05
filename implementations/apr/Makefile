@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = apr-2
+NAME       = apr-rev
 
 # C/C++ source files
 LIBCSRCS   = glue.c

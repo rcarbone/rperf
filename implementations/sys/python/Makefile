@@ -1,15 +1,17 @@
 # The name of the games
-NAME       = perl
+NAME      = python
 
 # C/C++ source files
 LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = `perl -MExtUtils::Embed -e ccopts`
+INCLUDE    = `pkg-config --cflags python`
 CFLAGS     =
 C++FLAGS   =
-SYSLIBS    = `perl -MExtUtils::Embed -e ldopts`
+SYSLIBS    = `pkg-config --libs python`
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 

@@ -4,6 +4,7 @@ SUBDIRS += boost
 SUBDIRS += glib
 SUBDIRS += google
 SUBDIRS += libstdc++
+SUBDIRS += python
 SUBDIRS += Qt
 SUBDIRS += tbb
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-

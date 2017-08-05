@@ -14,6 +14,5 @@
   * sparsehash-C11
   * folly (AtomicHashMap)
   * llvm
-  * SieveHash
-  * AdaptiveHash
+  * SieveHash/AdaptiveHash/SmartHash by Ben Reeves
 

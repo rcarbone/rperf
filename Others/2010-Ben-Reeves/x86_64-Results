@@ -1,0 +1,57 @@
+*** Starting String Test: STL TR1
+- Insert Took: 2.665621
+- Lookup Took: 2.574827
+} Test Took: 6.585102
+*** Starting String Test: SieveHash
+- Insert Took: 3.155707
+- Lookup Took: 2.493719
+} Test Took: 7.034946
+*** Starting String Test: KHash CPP
+- Insert Took: 1.987247
+- Lookup Took: 1.881655
+} Test Took: 5.207931
+*** Starting String Test: Google Dense Hash Test
+- Insert Took: 4.033818
+- Lookup Took: 3.861222
+} Test Took: 9.248032
+*** Starting Word Test: STL TR1
+- Insert Took: 0.182757
+- Lookup Took: 0.063647
+} Test Took: 0.246474
+*** Starting Word Test: SieveHash
+- Insert Took: 0.370029
+- Lookup Took: 0.077481
+Load: 0.610801
+ -- Count: 235886
+Capacities:
+Table 0 capacity: 160045
+Table 1 capacity: 106690
+Table 2 capacity: 47407
+Table 3 capacity: 31598
+Table 4 capacity: 21059
+Table 5 capacity: 9349
+Table 6 capacity: 4144
+Table 7 capacity: 2756
+Table 8 capacity: 1214
+Table 9 capacity: 803
+Table 10 capacity: 529
+Table 11 capacity: 224
+Table 12 capacity: 143
+Table 13 capacity: 89
+Table 14 capacity: 53
+Table 15 capacity: 29
+Table 16 capacity: 29
+Table 17 capacity: 13
+Table 18 capacity: 13
+Table 19 capacity: 2
+Table 20 capacity: 2
+Total: 386191-- Percent Full: 61.080139
+} Test Took: 0.447764
+*** Starting Word Test: KHash CPP
+- Insert Took: 0.174107
+- Lookup Took: 0.074292
+} Test Took: 0.248869
+*** Starting Word Test: Google Dense Hash Test
+- Insert Took: 0.250834
+- Lookup Took: 0.081131
+} Test Took: 0.332022

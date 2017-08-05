@@ -59,17 +59,13 @@ void rht_set (rht_t * ht, char * key, void * val)
 void * rht_get (rht_t * ht, char * key)
 {
   SV ** pval = hv_fetch (ht, key, strlen (key), rht_python_hash (key));
-  void * val = NULL;
-
   if (pval)
     {
-      printf ("ROCCO\n");
-      // val = SvPV (* pval, sizeof (void *));
-      // val = SvPV (* pval, 8);
-      SVPV (* pval, 8);
+      // val = SvPV (* hit, sizeof (void *));
+      // return SvPV (pval, sizeof (void *));
     }
 
-  return val;
+  return pval;
 }
 
 
