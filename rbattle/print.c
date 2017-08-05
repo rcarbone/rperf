@@ -13,7 +13,7 @@ void print_test_info (char * label, char * name, unsigned items, unsigned loops)
 
 
 /* Best implementation per test */
-void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned items, unsigned loops)
+void print_results (relapsed_t * results [], char * testname, unsigned maxn, unsigned items, unsigned loops)
 {
   unsigned n = 0;
 
@@ -28,6 +28,6 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
     {
       sw_t * sw = (* results) -> sw;
       printf ("  %2d: %-*.*s ", ++ n, maxn, maxn, sw -> name);
-      show_spent (* results ++);
+      show_elapsed (* results ++);
     }
 }

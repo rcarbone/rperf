@@ -162,9 +162,9 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations on the tests:\n");
-  usage_item (options, n, OPT_LIST,    "list tests");
-  usage_item (options, n, OPT_RUN,     "run tests");
+  printf ("  Operations on the Unit Tests:\n");
+  usage_item (options, n, OPT_LIST,    "list");
+  usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
 
   printf ("  Finger:\n");

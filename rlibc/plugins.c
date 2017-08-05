@@ -7,6 +7,8 @@
 #include "plugins.h"
 #include "safe.h"
 
+#define RMAX(a, b)  (((a) > (b)) ? (a) : (b))
+
 
 /* The table of mandatory names that __must__ be defined in the plugin */
 static char * mandatory [] = { RPLUGIN_VARS, RPLUGIN_FUNCS, NULL };

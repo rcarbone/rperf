@@ -11,8 +11,8 @@
 
 
 /* Useful macros */
-#define RMIN(a,b) (a < b ? a : b)
-#define RMAX(a,b) (a > b ? a : b)
+#define RMIN(a, b) (((a) < (b)) ? (a) : (b))
+#define RMAX(a, b) (((a) > (b)) ? (a) : (b))
 
 #if defined(i386)
 #define INITIALS  1e4   /* initial # of items */
@@ -43,7 +43,7 @@ typedef struct
 
   void * sw;            /* The implementation under test                */
 
-} rspent_t;
+} relapsed_t;
 
 
 /* The structure to hold both Unit Tests and Test Suite */
@@ -56,7 +56,7 @@ typedef struct
   runit_f * unit;        /* function to run Unit Test  */
   rsuite_f * suite;      /* function to run Test Suite */
 
-  rspent_t ** results;   /* results of test execution  */
+  relapsed_t ** results;   /* results of test execution  */
 
 } rtest_t;
 
@@ -93,10 +93,6 @@ rtest_t ** runit_all_rnd (void);
 rtest_t * runit_valid (char * id);
 void runit_run (rtest_t * argv [], unsigned items);
 
-void runit_print_no (void);
-void runit_print (rtest_t * argv []);
-void runit_print_all (void);
-
 
 /* Returns # of defined Test Suite */
 unsigned rsuite_no (void);
@@ -119,25 +115,19 @@ rtest_t ** rsuite_all_rnd (void);
 rtest_t * rsuite_valid (char * id);
 void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv []);
 
-void rsuite_print_no (void);
-void rsuite_print (rtest_t * argv []);
-void rsuite_print_all (void);
-
 unsigned rsuite_maxn (rtest_t * argv []);
 unsigned rsuite_maxd (rtest_t * argv []);
 
-void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn);
 
-
-/* Public functions in file spent.c */
+/* Public functions in file elapsed.c */
 char * ns2a (uint64_t nsecs);
-rspent_t * mkspent (void * sw);
-void rmspent (void * spent);
-rspent_t * dupspent (rspent_t * src);
+relapsed_t * mkelapsed (void * sw);
+void rmelapsed (void * elapsed);
+relapsed_t * dupelapsed (relapsed_t * src);
 int sort_by_more_avg (const void * a, const void * b);
 int sort_by_less_avg (const void * a, const void * b);
 void print_test_header (unsigned maxn);
-void show_spent (rspent_t * spent);
+void show_elapsed (relapsed_t * elapsed);
 
 
 /* Public functions in file sw.c */
@@ -150,3 +140,13 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
 void sw_done (sw_t * implementations [], bool verbose);
 
 
+/* Public functions in file print.c */
+void runit_print_no (void);
+void runit_print (rtest_t * argv []);
+void runit_print_all (void);
+
+void rsuite_print_no (void);
+void rsuite_print (rtest_t * argv []);
+void rsuite_print_all (void);
+
+void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn);

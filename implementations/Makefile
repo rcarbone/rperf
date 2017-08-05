@@ -20,6 +20,7 @@ SUBDIRS += mct
 SUBDIRS += oddou
 SUBDIRS += python
 SUBDIRS += rdestl
+SUBDIRS += redis
 SUBDIRS += rigtorp
 SUBDIRS += st
 SUBDIRS += stb

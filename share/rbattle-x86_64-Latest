@@ -1,523 +1,619 @@
-Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.88-1 x86_64
+Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.89-2 x86_64
 
 Running test [grow]. Please wait ...
-  battle for 41: libcfu/hashtable too slow                                    
-  battle for 40: oddou::hashmap too slow                                    
-  battle for 39: google::sparsehash too slow                                    
-  battle for 38: google/c-sparse too slow                                    
-  battle for 37: tbb::unordered_map too slow                                    
-  battle for 36: ulib::open-hash++ too slow                                    
-  battle for 35: stb/sdict too slow                                    
-  battle for 34: boost::unordered_map too slow                                    
-  battle for 33: ulib::chain-hash++ too slow                                    
-  battle for 32: clark/hashtable too slow                                    
-  battle for 31: apr-no-pool/hashtable too slow                                    
-  battle for 30: rigtorp::hashmap too slow                                    
+  battle for 49: libcfu/hashtable too slow                                    
+  battle for 48: python/dict too slow                                    
+  battle for 47: google::sparsehash too slow                                    
+  battle for 46: oddou::hashmap too slow                                    
+  battle for 45: tbb::unordered_map too slow                                    
+  battle for 44: google/c-sparse too slow                                    
+  battle for 43: ulib/align-hash too slow                                    
+  battle for 42: libdynamic/map too slow                                    
+  battle for 41: stb/sdict too slow                                    
+  battle for 40: boost::unordered_map too slow                                    
+  battle for 39: klib::khash++ too slow                                    
+  battle for 38: rigtorp::hashmap too slow                                    
+  battle for 37: apr-no-pool/hashtable too slow                                    
+  battle for 36: clark/hashtable too slow                                    
+  battle for 35: mct::closed_hash_map too slow                                    
+  battle for 34: calg/hashtable too slow                                    
+  battle for 33: PeterMoore/st too slow                                    
+  battle for 32: std::unordered_map too slow                                    
+  battle for 31: ulib/open-hash too slow                                    
+  battle for 30: hashit/chain too slow                                    
   battle for 29: mct::linked_hash_map too slow                                    
-  battle for 28: mct::closed_hash_map too slow                                    
-  battle for 27: std::unordered_map too slow                                    
-  battle for 26: calg/hashtable too slow                                    
-  battle for 25: eastl::hashmap too slow                                    
-  battle for 24: ulib/open-hash too slow                                    
-  battle for 23: hashit/chain too slow                                    
-  battle for 22: uthash/hashtable too slow                                    
-  battle for 21: PeterMoore/st too slow                                    
-  battle for 20: python/hashtable too slow                                    
-  battle for 19: libCDS/HashMap too slow                                    
-  battle for 18: Qt::QHash too slow                                    
-  battle for 17: apr/hashtable too slow                                    
-  battle for 16: klib/khash too slow                                    
-  battle for 15: libghthash/hashtable too slow                                    
-  battle for 14: google/c-dense too slow                                    
-  battle for 13: emilib::HashMap too slow                                    
-  battle for 12: google::densehash too slow                                    
-  battle for 11: amtl::hashmap too slow                                    
-  battle for 10: ulib/chain-hash too slow                                    
-  battle for  9: rdestl::hash_map too slow                                    
-  battle for  8: hashit/open too slow                                    
-  battle for  7: libevent/ht too slow                                    
-  battle for  6: hashit/overflow too slow                                    
-  battle for  5: tommyds/linear too slow                                    
-  battle for  4: tommyds/dynamic too slow                                    
-  battle for  3: glib/ghash too slow                                    
-  battle for  2: gcc/hashtab too slow                                    
-  winner is   1: ccan/htable
+  battle for 28: python/hashtable too slow                                    
+  battle for 27: uthash/hashtable too slow                                    
+  battle for 26: eastl::hashmap too slow                                    
+  battle for 25: libCDS/HashMap too slow                                    
+  battle for 24: judy/JSL too slow                                    
+  battle for 23: Qt::QHash too slow                                    
+  battle for 22: ulib::chain-hash++ too slow                                    
+  battle for 21: Tcl/hashtable too slow                                    
+  battle for 20: klib/khash too slow                                    
+  battle for 19: apr/hashtable too slow                                    
+  battle for 18: ulib::open-hash++ too slow                                    
+  battle for 17: libghthash/hashtable too slow                                    
+  battle for 16: google::densehash too slow                                    
+  battle for 15: emilib::HashMap too slow                                    
+  battle for 14: ulib::align-hash++ too slow                                    
+  battle for 13: google/c-dense too slow                                    
+  battle for 12: ulib/chain-hash too slow                                    
+  battle for 11: hashit/open too slow                                    
+  battle for 10: tommyds/linear too slow                                    
+  battle for  9: amtl::hashmap too slow                                    
+  battle for  8: libevent/ht too slow                                    
+  battle for  7: hashit/overflow too slow                                    
+  battle for  6: rdestl::hash_map too slow                                    
+  battle for  5: tommyds/dynamic too slow                                    
+  battle for  4: glib/ghash too slow                                    
+  battle for  3: gcc/hashtab too slow                                    
+  battle for  2: ccan/htable too slow                                    
+  winner is   1: tommyds/fixed
 
 Results of test [grow] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable               6.090  /    6.045  /    6.181    -      60.9 ms
-   2: gcc/hashtab               7.328  /    7.283  /    7.474    -      73.2 ms
-   3: glib/ghash                8.954  /    8.911  /    9.004    -      89.5 ms
-   4: tommyds/dynamic          10.564  /   10.455  /   11.096    -     105.6 ms
-   5: tommyds/linear           10.755  /   10.704  /   10.837    -     107.5 ms
-   6: hashit/overflow          10.373  /   10.332  /   10.426    -     103.7 ms
-   7: libevent/ht              11.211  /   11.132  /   11.479    -     112.1 ms
-   8: hashit/open              12.404  /   12.329  /   12.716    -     124.0 ms
-   9: rdestl::hash_map         13.260  /   12.800  /   13.529    -     132.6 ms
-  10: ulib/chain-hash          13.382  /   13.302  /   13.452    -     133.8 ms
-  11: amtl::hashmap            14.203  /   13.783  /   14.774    -     142.0 ms
-  12: google::densehash        14.771  /   14.550  /   16.134    -     147.7 ms
-  13: emilib::HashMap          15.023  /   14.790  /   16.453    -     150.2 ms
-  14: google/c-dense           15.270  /   15.223  /   15.341    -     152.7 ms
-  15: libghthash/hashtable     17.652  /   17.550  /   18.036    -     176.5 ms
-  16: klib/khash               20.568  /   19.794  /   23.503    -     205.7 ms
-  17: apr/hashtable            20.049  /   19.950  /   20.142    -     200.5 ms
-  18: Qt::QHash                21.128  /   20.858  /   22.658    -     211.3 ms
-  19: libCDS/HashMap           23.014  /   22.631  /   25.069    -     230.1 ms
-  20: python/hashtable         22.781  /   22.622  /   23.239    -     227.8 ms
-  21: PeterMoore/st            22.693  /   22.548  /   22.932    -     226.9 ms
-  22: uthash/hashtable         23.337  /   23.175  /   23.618    -     233.3 ms
-  23: hashit/chain             23.384  /   21.781  /   24.257    -     233.8 ms
-  24: ulib/open-hash           23.302  /   22.980  /   24.104    -     233.0 ms
-  25: eastl::hashmap           24.110  /   22.592  /   29.517    -     241.1 ms
-  26: calg/hashtable           23.773  /   23.675  /   24.216    -     237.7 ms
-  27: std::unordered_map       24.746  /   23.978  /   29.786    -     247.4 ms
-  28: mct::closed_hash_map     25.530  /   25.408  /   25.776    -     255.3 ms
-  29: mct::linked_hash_map     25.329  /   24.482  /   25.667    -     253.3 ms
-  30: rigtorp::hashmap         25.389  /   25.280  /   25.698    -     253.9 ms
-  31: apr-no-pool/hashtable    26.144  /   25.871  /   27.955    -     261.4 ms
-  32: clark/hashtable          26.367  /   26.182  /   26.950    -     263.6 ms
-  33: ulib::chain-hash++       32.123  /   31.703  /   33.467    -     321.2 ms
-  34: boost::unordered_map     34.235  /   33.702  /   34.599    -     342.3 ms
-  35: stb/sdict                30.397  /   30.148  /   31.208    -     303.9 ms
-  36: ulib::open-hash++        30.661  /   30.363  /   31.132    -     306.6 ms
-  37: tbb::unordered_map       39.031  /   38.800  /   39.577    -     390.3 ms
-  38: google/c-sparse          41.169  /   41.032  /   41.361    -     411.7 ms
-  39: google::sparsehash       54.966  /   51.821  /   63.496    -     549.6 ms
-  40: oddou::hashmap           52.723  /   52.366  /   53.321    -     527.2 ms
-  41: libcfu/hashtable         78.036  /   66.107  /   98.471    -     780.4 ms
+   1: tommyds/fixed             6.199  /    5.936  /    6.377    -      62.0 ms
+   2: ccan/htable               7.662  /    6.621  /   10.249    -      76.6 ms
+   3: gcc/hashtab               8.982  /    8.874  /    9.067    -      89.8 ms
+   4: glib/ghash                9.248  /    9.220  /    9.297    -      92.5 ms
+   5: tommyds/dynamic          14.015  /   12.883  /   16.514    -     140.1 ms
+   6: rdestl::hash_map         15.416  /   14.940  /   15.856    -     154.2 ms
+   7: hashit/overflow          17.543  /   14.357  /   19.096    -     175.4 ms
+   8: libevent/ht              13.495  /   13.242  /   13.630    -     134.9 ms
+   9: amtl::hashmap            17.762  /   14.336  /   25.904    -     177.6 ms
+  10: tommyds/linear           15.708  /   11.946  /   19.644    -     157.1 ms
+  11: hashit/open              12.526  /   12.192  /   13.489    -     125.2 ms
+  12: ulib/chain-hash          14.001  /   13.582  /   15.414    -     140.0 ms
+  13: google/c-dense           15.039  /   14.879  /   15.287    -     150.4 ms
+  14: ulib::align-hash++       16.452  /   16.296  /   16.746    -     164.5 ms
+  15: emilib::HashMap          16.211  /   15.716  /   18.104    -     162.1 ms
+  16: google::densehash        16.912  /   16.713  /   17.188    -     169.1 ms
+  17: libghthash/hashtable     18.130  /   17.975  /   18.456    -     181.3 ms
+  18: ulib::open-hash++        19.578  /   19.539  /   19.720    -     195.8 ms
+  19: apr/hashtable            20.615  /   20.262  /   21.145    -     206.1 ms
+  20: klib/khash               21.117  /   20.647  /   23.320    -     211.1 ms
+  21: Tcl/hashtable            21.559  /   21.278  /   22.356    -     215.6 ms
+  22: ulib::chain-hash++       22.098  /   22.020  /   22.334    -     220.9 ms
+  23: Qt::QHash                27.221  /   23.070  /   37.897    -     272.2 ms
+  24: judy/JSL                 23.491  /   23.433  /   23.655    -     234.9 ms
+  25: libCDS/HashMap           23.974  /   23.781  /   24.269    -     239.7 ms
+  26: eastl::hashmap           29.496  /   25.761  /   45.499    -     295.0 ms
+  27: uthash/hashtable         27.079  /   26.746  /   27.369    -     270.8 ms
+  28: python/hashtable         27.047  /   26.487  /   27.303    -     270.5 ms
+  29: mct::linked_hash_map     28.006  /   27.496  /   28.216    -     280.1 ms
+  30: hashit/chain             27.953  /   27.313  /   28.834    -     279.5 ms
+  31: ulib/open-hash           44.003  /   28.058  /   52.573    -     440.0 ms
+  32: std::unordered_map       27.856  /   27.180  /   29.669    -     278.5 ms
+  33: PeterMoore/st            27.705  /   27.149  /   28.369    -     277.0 ms
+  34: calg/hashtable           28.396  /   28.188  /   28.854    -     283.9 ms
+  35: mct::closed_hash_map     30.613  /   29.732  /   31.033    -     306.1 ms
+  36: clark/hashtable          32.402  /   30.687  /   35.911    -     324.0 ms
+  37: apr-no-pool/hashtable    36.103  /   29.856  /   42.276    -     361.0 ms
+  38: rigtorp::hashmap         43.460  /   36.468  /   47.879    -     434.6 ms
+  39: klib::khash++            27.239  /   27.158  /   27.408    -     272.4 ms
+  40: boost::unordered_map     29.776  /   29.717  /   29.871    -     297.7 ms
+  41: stb/sdict                30.526  /   30.328  /   31.095    -     305.2 ms
+  42: libdynamic/map           30.703  /   30.620  /   30.904    -     307.0 ms
+  43: ulib/align-hash          37.878  /   37.233  /   42.685    -     378.8 ms
+  44: google/c-sparse          38.484  /   38.333  /   38.733    -     384.8 ms
+  45: tbb::unordered_map       40.345  /   40.129  /   40.834    -     403.4 ms
+  46: oddou::hashmap           52.509  /   52.024  /   53.130    -     525.1 ms
+  47: google::sparsehash       57.168  /   53.504  /   61.762    -     571.7 ms
+  48: python/dict              97.607  /   95.843  /  100.641    -     976.1 ms
+  49: libcfu/hashtable         86.619  /   71.461  /  100.800    -     866.2 ms
 
 Running test [hit]. Please wait ...
-  battle for 41: ulib::chain-hash++ too slow                                    
-  battle for 40: libcfu/hashtable too slow                                    
-  battle for 39: google::sparsehash too slow                                    
-  battle for 38: tbb::unordered_map too slow                                    
-  battle for 37: oddou::hashmap too slow                                    
-  battle for 36: google/c-sparse too slow                                    
-  battle for 35: ulib::open-hash++ too slow                                    
-  battle for 34: boost::unordered_map too slow                                    
-  battle for 33: stb/sdict too slow                                    
-  battle for 32: hashit/chain too slow                                    
-  battle for 31: rigtorp::hashmap too slow                                    
-  battle for 30: clark/hashtable too slow                                    
-  battle for 29: uthash/hashtable too slow                                    
-  battle for 28: mct::linked_hash_map too slow                                    
-  battle for 27: mct::closed_hash_map too slow                                    
-  battle for 26: klib/khash too slow                                    
-  battle for 25: apr-no-pool/hashtable too slow                                    
-  battle for 24: std::unordered_map too slow                                    
-  battle for 23: ulib/open-hash too slow                                    
-  battle for 22: calg/hashtable too slow                                    
-  battle for 21: PeterMoore/st too slow                                    
-  battle for 20: hashit/open too slow                                    
-  battle for 19: python/hashtable too slow                                    
-  battle for 18: eastl::hashmap too slow                                    
-  battle for 17: libCDS/HashMap too slow                                    
-  battle for 16: Qt::QHash too slow                                    
-  battle for 15: apr/hashtable too slow                                    
+  battle for 49: python/dict too slow                                    
+  battle for 48: libcfu/hashtable too slow                                    
+  battle for 47: google::sparsehash too slow                                    
+  battle for 46: ulib/align-hash too slow                                    
+  battle for 45: tbb::unordered_map too slow                                    
+  battle for 44: oddou::hashmap too slow                                    
+  battle for 43: ulib::chain-hash++ too slow                                    
+  battle for 42: google/c-sparse too slow                                    
+  battle for 41: stb/sdict too slow                                    
+  battle for 40: libdynamic/map too slow                                    
+  battle for 39: boost::unordered_map too slow                                    
+  battle for 38: rigtorp::hashmap too slow                                    
+  battle for 37: klib::khash++ too slow                                    
+  battle for 36: clark/hashtable too slow                                    
+  battle for 35: hashit/chain too slow                                    
+  battle for 34: uthash/hashtable too slow                                    
+  battle for 33: std::unordered_map too slow                                    
+  battle for 32: klib/khash too slow                                    
+  battle for 31: mct::closed_hash_map too slow                                    
+  battle for 30: apr-no-pool/hashtable too slow                                    
+  battle for 29: Tcl/hashtable too slow                                    
+  battle for 28: ulib/open-hash too slow                                    
+  battle for 27: PeterMoore/st too slow                                    
+  battle for 26: mct::linked_hash_map too slow                                    
+  battle for 25: calg/hashtable too slow                                    
+  battle for 24: eastl::hashmap too slow                                    
+  battle for 23: Qt::QHash too slow                                    
+  battle for 22: judy/JSL too slow                                    
+  battle for 21: libCDS/HashMap too slow                                    
+  battle for 20: python/hashtable too slow                                    
+  battle for 19: ulib::open-hash++ too slow                                    
+  battle for 18: hashit/open too slow                                    
+  battle for 17: apr/hashtable too slow                                    
+  battle for 16: ulib::align-hash++ too slow                                    
+  battle for 15: libghthash/hashtable too slow                                    
   battle for 14: google/c-dense too slow                                    
-  battle for 13: libghthash/hashtable too slow                                    
-  battle for 12: hashit/overflow too slow                                    
-  battle for 11: amtl::hashmap too slow                                    
-  battle for 10: emilib::HashMap too slow                                    
-  battle for  9: tommyds/linear too slow                                    
-  battle for  8: google::densehash too slow                                    
-  battle for  7: tommyds/dynamic too slow                                    
-  battle for  6: ulib/chain-hash too slow                                    
-  battle for  5: rdestl::hash_map too slow                                    
-  battle for  4: libevent/ht too slow                                    
-  battle for  3: gcc/hashtab too slow                                    
+  battle for 13: hashit/overflow too slow                                    
+  battle for 12: google::densehash too slow                                    
+  battle for 11: emilib::HashMap too slow                                    
+  battle for 10: tommyds/linear too slow                                    
+  battle for  9: ulib/chain-hash too slow                                    
+  battle for  8: amtl::hashmap too slow                                    
+  battle for  7: libevent/ht too slow                                    
+  battle for  6: tommyds/dynamic too slow                                    
+  battle for  5: gcc/hashtab too slow                                    
+  battle for  4: rdestl::hash_map too slow                                    
+  battle for  3: tommyds/fixed too slow                                    
   battle for  2: glib/ghash too slow                                    
   winner is   1: ccan/htable
 
 Results of test [hit] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable              11.751  /   11.685  /   11.968    -     117.5 ms
-   2: glib/ghash               14.561  /   14.501  /   14.783    -     145.6 ms
-   3: gcc/hashtab              18.353  /   18.072  /   18.697    -     183.5 ms
-   4: libevent/ht              18.618  /   18.371  /   18.813    -     186.2 ms
-   5: rdestl::hash_map         19.112  /   18.495  /   19.303    -     191.1 ms
-   6: ulib/chain-hash          20.071  /   19.896  /   20.880    -     200.7 ms
-   7: tommyds/dynamic          19.947  /   19.791  /   20.101    -     199.4 ms
-   8: google::densehash        20.577  /   20.364  /   21.660    -     205.7 ms
-   9: tommyds/linear           22.600  /   22.253  /   22.949    -     226.0 ms
-  10: emilib::HashMap          20.395  /   20.104  /   22.297    -     203.9 ms
-  11: amtl::hashmap            23.270  /   23.037  /   23.672    -     232.7 ms
-  12: hashit/overflow          25.161  /   24.776  /   26.050    -     251.6 ms
-  13: libghthash/hashtable     25.945  /   25.581  /   27.900    -     259.4 ms
-  14: google/c-dense           26.082  /   25.979  /   26.204    -     260.8 ms
-  15: apr/hashtable            28.556  /   28.005  /   29.202    -     285.5 ms
-  16: Qt::QHash                29.335  /   28.908  /   30.313    -     293.3 ms
-  17: libCDS/HashMap           30.011  /   29.579  /   30.505    -     300.1 ms
-  18: eastl::hashmap           30.104  /   29.817  /   30.503    -     301.0 ms
-  19: python/hashtable         30.205  /   29.878  /   30.755    -     302.0 ms
-  20: hashit/open              30.305  /   30.059  /   31.044    -     303.0 ms
-  21: PeterMoore/st            30.252  /   29.648  /   30.804    -     302.5 ms
-  22: calg/hashtable           31.081  /   30.876  /   31.253    -     310.8 ms
-  23: ulib/open-hash           32.363  /   32.067  /   32.660    -     323.6 ms
-  24: std::unordered_map       34.133  /   33.737  /   35.301    -     341.3 ms
-  25: apr-no-pool/hashtable    34.901  /   34.670  /   35.100    -     349.0 ms
-  26: klib/khash               42.664  /   36.307  /   57.155    -     426.6 ms
-  27: mct::closed_hash_map     35.989  /   34.721  /   36.617    -     359.9 ms
-  28: mct::linked_hash_map     37.124  /   36.310  /   37.939    -     371.2 ms
-  29: uthash/hashtable         39.945  /   39.454  /   41.902    -     399.4 ms
-  30: clark/hashtable          65.510  /   50.392  /   87.103    -     655.1 ms
-  31: rigtorp::hashmap         55.273  /   39.880  /   71.248    -     552.7 ms
-  32: hashit/chain             55.258  /   40.694  /   66.441    -     552.6 ms
-  33: stb/sdict                45.054  /   44.457  /   45.406    -     450.5 ms
-  34: boost::unordered_map     45.667  /   44.928  /   47.721    -     456.6 ms
-  35: ulib::open-hash++        52.357  /   47.042  /   68.254    -     523.6 ms
-  36: google/c-sparse          47.103  /   46.525  /   48.469    -     471.0 ms
-  37: oddou::hashmap           60.130  /   59.882  /   60.822    -     601.3 ms
-  38: tbb::unordered_map       60.975  /   60.608  /   61.479    -     609.7 ms
-  39: google::sparsehash       71.424  /   71.218  /   71.961    -     714.2 ms
-  40: libcfu/hashtable         74.158  /   73.827  /   75.534    -     741.6 ms
-  41: ulib::chain-hash++      156.693  /  154.845  /  161.020    -       1.5  s
+   1: ccan/htable              12.517  /   12.303  /   12.845    -     125.1 ms
+   2: glib/ghash               15.205  /   15.143  /   15.320    -     152.0 ms
+   3: tommyds/fixed            15.790  /   15.620  /   15.995    -     157.9 ms
+   4: rdestl::hash_map         17.036  /   16.965  /   17.085    -     170.3 ms
+   5: gcc/hashtab              17.226  /   16.771  /   18.577    -     172.2 ms
+   6: tommyds/dynamic          18.466  /   18.008  /   19.725    -     184.6 ms
+   7: libevent/ht              19.204  /   18.490  /   20.250    -     192.0 ms
+   8: amtl::hashmap            18.657  /   18.536  /   18.906    -     186.5 ms
+   9: ulib/chain-hash          21.044  /   20.072  /   22.073    -     210.4 ms
+  10: tommyds/linear           20.162  /   19.421  /   21.305    -     201.6 ms
+  11: emilib::HashMap          21.127  /   20.891  /   21.633    -     211.2 ms
+  12: google::densehash        23.244  /   21.497  /   27.985    -     232.4 ms
+  13: hashit/overflow          22.925  /   21.791  /   25.524    -     229.2 ms
+  14: google/c-dense           23.152  /   23.088  /   23.307    -     231.5 ms
+  15: libghthash/hashtable     25.764  /   24.413  /   27.170    -     257.6 ms
+  16: ulib::align-hash++       25.678  /   25.285  /   27.906    -     256.8 ms
+  17: apr/hashtable            27.009  /   26.038  /   28.728    -     270.1 ms
+  18: hashit/open              26.335  /   26.051  /   27.449    -     263.3 ms
+  19: ulib::open-hash++        27.990  /   27.269  /   30.419    -     279.9 ms
+  20: python/hashtable         29.785  /   29.608  /   30.280    -     297.8 ms
+  21: libCDS/HashMap           32.461  /   30.389  /   39.431    -     324.6 ms
+  22: judy/JSL                 54.433  /   46.181  /   61.659    -     544.3 ms
+  23: Qt::QHash                34.609  /   32.817  /   38.109    -     346.1 ms
+  24: eastl::hashmap           31.331  /   31.086  /   32.063    -     313.3 ms
+  25: calg/hashtable           33.378  /   31.444  /   36.684    -     333.8 ms
+  26: mct::linked_hash_map     44.028  /   35.941  /   60.812    -     440.3 ms
+  27: PeterMoore/st            37.263  /   34.106  /   43.377    -     372.6 ms
+  28: ulib/open-hash           34.069  /   32.755  /   38.683    -     340.7 ms
+  29: Tcl/hashtable            38.388  /   37.316  /   39.353    -     383.9 ms
+  30: apr-no-pool/hashtable    36.322  /   33.113  /   46.979    -     363.2 ms
+  31: mct::closed_hash_map     38.641  /   37.023  /   39.475    -     386.4 ms
+  32: klib/khash               34.703  /   33.895  /   37.499    -     347.0 ms
+  33: std::unordered_map       34.690  /   34.271  /   35.565    -     346.9 ms
+  34: uthash/hashtable         35.891  /   35.453  /   36.478    -     358.9 ms
+  35: hashit/chain             36.025  /   35.673  /   36.818    -     360.2 ms
+  36: clark/hashtable          37.563  /   37.211  /   37.781    -     375.6 ms
+  37: klib::khash++            37.899  /   37.734  /   38.498    -     379.0 ms
+  38: rigtorp::hashmap         38.273  /   38.077  /   38.566    -     382.7 ms
+  39: boost::unordered_map     41.304  /   40.627  /   42.228    -     413.0 ms
+  40: libdynamic/map           41.271  /   41.131  /   41.650    -     412.7 ms
+  41: stb/sdict                45.914  /   45.644  /   46.257    -     459.1 ms
+  42: google/c-sparse          47.039  /   46.577  /   48.026    -     470.4 ms
+  43: ulib::chain-hash++       51.488  /   49.746  /   53.788    -     514.9 ms
+  44: oddou::hashmap           61.603  /   61.395  /   62.008    -     616.0 ms
+  45: tbb::unordered_map       61.826  /   60.545  /   62.927    -     618.2 ms
+  46: ulib/align-hash          63.547  /   63.180  /   64.867    -     635.4 ms
+  47: google::sparsehash       75.545  /   74.635  /   76.699    -     755.4 ms
+  48: libcfu/hashtable         86.874  /   84.807  /   87.481    -     868.7 ms
+  49: python/dict             143.305  /  139.144  /  147.013    -       1.4  s
 
 Running test [miss]. Please wait ...
-  battle for 41: libcfu/hashtable too slow                                    
-  battle for 40: tbb::unordered_map too slow                                    
-  battle for 39: google::sparsehash too slow                                    
-  battle for 38: oddou::hashmap too slow                                    
-  battle for 37: stb/sdict too slow                                    
-  battle for 36: klib/khash too slow                                    
-  battle for 35: google/c-sparse too slow                                    
-  battle for 34: boost::unordered_map too slow                                    
-  battle for 33: hashit/open too slow                                    
-  battle for 32: hashit/chain too slow                                    
-  battle for 31: uthash/hashtable too slow                                    
-  battle for 30: rigtorp::hashmap too slow                                    
-  battle for 29: clark/hashtable too slow                                    
-  battle for 28: std::unordered_map too slow                                    
-  battle for 27: mct::closed_hash_map too slow                                    
-  battle for 26: mct::linked_hash_map too slow                                    
-  battle for 25: ulib/open-hash too slow                                    
-  battle for 24: apr-no-pool/hashtable too slow                                    
-  battle for 23: Qt::QHash too slow                                    
-  battle for 22: calg/hashtable too slow                                    
-  battle for 21: PeterMoore/st too slow                                    
-  battle for 20: ulib::open-hash++ too slow                                    
-  battle for 19: eastl::hashmap too slow                                    
-  battle for 18: libCDS/HashMap too slow                                    
-  battle for 17: python/hashtable too slow                                    
-  battle for 16: hashit/overflow too slow                                    
-  battle for 15: apr/hashtable too slow                                    
-  battle for 14: libghthash/hashtable too slow                                    
-  battle for 13: google/c-dense too slow                                    
-  battle for 12: tommyds/linear too slow                                    
-  battle for 11: amtl::hashmap too slow                                    
-  battle for 10: ulib/chain-hash too slow                                    
-  battle for  9: tommyds/dynamic too slow                                    
-  battle for  8: ulib::chain-hash++ too slow                                    
-  battle for  7: gcc/hashtab too slow                                    
-  battle for  6: emilib::HashMap too slow                                    
-  battle for  5: libevent/ht too slow                                    
-  battle for  4: google::densehash too slow                                    
-  battle for  3: rdestl::hash_map too slow                                    
-  battle for  2: glib/ghash too slow                                    
+  battle for 49: python/dict too slow                                    
+  battle for 48: ulib/align-hash too slow                                    
+  battle for 47: libcfu/hashtable too slow                                    
+  battle for 46: tbb::unordered_map too slow                                    
+  battle for 45: google::sparsehash too slow                                    
+  battle for 44: oddou::hashmap too slow                                    
+  battle for 43: stb/sdict too slow                                    
+  battle for 42: klib/khash too slow                                    
+  battle for 41: boost::unordered_map too slow                                    
+  battle for 40: libdynamic/map too slow                                    
+  battle for 39: hashit/chain too slow                                    
+  battle for 38: uthash/hashtable too slow                                    
+  battle for 37: rigtorp::hashmap too slow                                    
+  battle for 36: google/c-sparse too slow                                    
+  battle for 35: hashit/open too slow                                    
+  battle for 34: klib::khash++ too slow                                    
+  battle for 33: clark/hashtable too slow                                    
+  battle for 32: std::unordered_map too slow                                    
+  battle for 31: mct::closed_hash_map too slow                                    
+  battle for 30: ulib::chain-hash++ too slow                                    
+  battle for 29: apr-no-pool/hashtable too slow                                    
+  battle for 28: calg/hashtable too slow                                    
+  battle for 27: mct::linked_hash_map too slow                                    
+  battle for 26: ulib/open-hash too slow                                    
+  battle for 25: PeterMoore/st too slow                                    
+  battle for 24: Qt::QHash too slow                                    
+  battle for 23: Tcl/hashtable too slow                                    
+  battle for 22: eastl::hashmap too slow                                    
+  battle for 21: libCDS/HashMap too slow                                    
+  battle for 20: python/hashtable too slow                                    
+  battle for 19: judy/JSL too slow                                    
+  battle for 18: hashit/overflow too slow                                    
+  battle for 17: apr/hashtable too slow                                    
+  battle for 16: libghthash/hashtable too slow                                    
+  battle for 15: tommyds/linear too slow                                    
+  battle for 14: google/c-dense too slow                                    
+  battle for 13: ulib/chain-hash too slow                                    
+  battle for 12: tommyds/dynamic too slow                                    
+  battle for 11: emilib::HashMap too slow                                    
+  battle for 10: google::densehash too slow                                    
+  battle for  9: libevent/ht too slow                                    
+  battle for  8: gcc/hashtab too slow                                    
+  battle for  7: ulib::open-hash++ too slow                                    
+  battle for  6: amtl::hashmap too slow                                    
+  battle for  5: tommyds/fixed too slow                                    
+  battle for  4: ulib::align-hash++ too slow                                    
+  battle for  3: glib/ghash too slow                                    
+  battle for  2: rdestl::hash_map too slow                                    
   winner is   1: ccan/htable
 
 Results of test [miss] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable              11.874  /   11.784  /   11.946    -     118.7 ms
-   2: glib/ghash               16.144  /   16.047  /   16.228    -     161.4 ms
-   3: rdestl::hash_map         18.638  /   17.892  /   19.210    -     186.4 ms
-   4: google::densehash        19.207  /   19.024  /   20.003    -     192.0 ms
-   5: libevent/ht              20.207  /   19.942  /   20.400    -     202.0 ms
-   6: emilib::HashMap          20.893  /   20.783  /   21.075    -     208.9 ms
-   7: gcc/hashtab              21.336  /   20.627  /   22.195    -     213.3 ms
-   8: ulib::chain-hash++       21.548  /   21.178  /   22.129    -     215.5 ms
-   9: tommyds/dynamic          21.920  /   21.815  /   22.012    -     219.2 ms
-  10: ulib/chain-hash          23.323  /   23.005  /   23.594    -     233.2 ms
-  11: amtl::hashmap            23.996  /   23.507  /   24.755    -     239.9 ms
-  12: tommyds/linear           24.248  /   23.991  /   24.433    -     242.5 ms
-  13: google/c-dense           26.116  /   25.665  /   28.891    -     261.1 ms
-  14: libghthash/hashtable     27.217  /   26.963  /   27.559    -     272.2 ms
-  15: apr/hashtable            27.994  /   27.656  /   28.599    -     279.9 ms
-  16: hashit/overflow          29.159  /   28.418  /   29.725    -     291.6 ms
-  17: python/hashtable         30.210  /   29.747  /   30.723    -     302.1 ms
-  18: libCDS/HashMap           30.258  /   30.080  /   30.748    -     302.6 ms
-  19: eastl::hashmap           31.640  /   31.401  /   31.918    -     316.4 ms
-  20: ulib::open-hash++        31.858  /   31.518  /   32.110    -     318.6 ms
-  21: PeterMoore/st            32.213  /   31.643  /   32.639    -     322.1 ms
-  22: calg/hashtable           32.969  /   32.735  /   33.150    -     329.7 ms
-  23: Qt::QHash                34.232  /   33.688  /   35.976    -     342.3 ms
-  24: apr-no-pool/hashtable    35.082  /   34.864  /   35.420    -     350.8 ms
-  25: ulib/open-hash           34.961  /   34.488  /   36.883    -     349.6 ms
-  26: mct::linked_hash_map     38.851  /   37.308  /   40.061    -     388.5 ms
-  27: mct::closed_hash_map     38.807  /   38.502  /   39.143    -     388.1 ms
-  28: std::unordered_map       37.928  /   37.481  /   39.056    -     379.3 ms
-  29: clark/hashtable          41.048  /   40.930  /   41.316    -     410.5 ms
-  30: rigtorp::hashmap         43.864  /   41.867  /   52.275    -     438.6 ms
-  31: uthash/hashtable         44.447  /   43.970  /   45.143    -     444.5 ms
-  32: hashit/chain             45.722  /   42.774  /   48.420    -     457.2 ms
-  33: hashit/open              81.188  /   65.301  /   96.398    -     811.9 ms
-  34: boost::unordered_map     50.195  /   48.883  /   56.593    -     501.9 ms
-  35: google/c-sparse          45.544  /   45.219  /   46.104    -     455.4 ms
-  36: klib/khash               48.444  /   47.857  /   49.435    -     484.4 ms
-  37: stb/sdict                53.725  /   52.994  /   54.133    -     537.2 ms
-  38: oddou::hashmap           62.282  /   62.077  /   62.656    -     622.8 ms
-  39: google::sparsehash       64.463  /   64.164  /   65.141    -     644.6 ms
-  40: tbb::unordered_map       69.206  /   68.389  /   69.543    -     692.0 ms
-  41: libcfu/hashtable        115.593  /   90.359  /  131.208    -       1.1  s
+   1: ccan/htable              14.169  /   14.085  /   14.250    -     141.7 ms
+   2: rdestl::hash_map         16.781  /   16.637  /   16.946    -     167.8 ms
+   3: glib/ghash               17.120  /   17.029  /   17.296    -     171.2 ms
+   4: ulib::align-hash++       22.744  /   22.607  /   23.035    -     227.4 ms
+   5: tommyds/fixed            21.332  /   21.246  /   21.413    -     213.3 ms
+   6: amtl::hashmap            21.452  /   20.759  /   22.190    -     214.5 ms
+   7: ulib::open-hash++        21.673  /   21.536  /   21.827    -     216.7 ms
+   8: gcc/hashtab              22.220  /   21.583  /   22.744    -     222.2 ms
+   9: libevent/ht              23.320  /   23.142  /   23.486    -     233.2 ms
+  10: google::densehash        23.875  /   23.627  /   24.117    -     238.7 ms
+  11: emilib::HashMap          24.085  /   23.969  /   24.455    -     240.8 ms
+  12: tommyds/dynamic          24.166  /   24.001  /   24.231    -     241.6 ms
+  13: ulib/chain-hash          24.821  /   24.673  /   24.989    -     248.2 ms
+  14: google/c-dense           26.232  /   26.102  /   26.405    -     262.3 ms
+  15: tommyds/linear           27.112  /   26.944  /   27.300    -     271.1 ms
+  16: libghthash/hashtable     28.721  /   28.341  /   28.872    -     287.2 ms
+  17: apr/hashtable            29.896  /   29.653  /   30.217    -     298.9 ms
+  18: hashit/overflow          30.021  /   29.565  /   30.723    -     300.2 ms
+  19: judy/JSL                 31.223  /   31.125  /   31.367    -     312.2 ms
+  20: python/hashtable         34.061  /   33.775  /   34.359    -     340.6 ms
+  21: libCDS/HashMap           35.216  /   34.975  /   35.572    -     352.1 ms
+  22: eastl::hashmap           35.492  /   35.191  /   35.937    -     354.9 ms
+  23: Tcl/hashtable            36.788  /   36.387  /   37.372    -     367.9 ms
+  24: Qt::QHash                37.942  /   36.363  /   38.349    -     379.4 ms
+  25: PeterMoore/st            36.813  /   36.497  /   37.137    -     368.1 ms
+  26: ulib/open-hash           37.143  /   36.961  /   37.422    -     371.4 ms
+  27: mct::linked_hash_map     37.544  /   37.156  /   38.025    -     375.4 ms
+  28: calg/hashtable           38.243  /   38.003  /   38.595    -     382.4 ms
+  29: apr-no-pool/hashtable    39.091  /   38.951  /   39.248    -     390.9 ms
+  30: ulib::chain-hash++       41.111  /   40.760  /   41.716    -     411.1 ms
+  31: mct::closed_hash_map     40.802  /   39.881  /   41.204    -     408.0 ms
+  32: std::unordered_map       41.527  /   41.147  /   41.793    -     415.2 ms
+  33: clark/hashtable          37.764  /   37.313  /   39.073    -     377.6 ms
+  34: klib::khash++            45.877  /   44.767  /   47.704    -     458.8 ms
+  35: hashit/open              43.233  /   42.409  /   45.323    -     432.3 ms
+  36: google/c-sparse         105.645  /   88.906  /  128.210    -       1.0  s
+  37: rigtorp::hashmap         53.004  /   45.687  /   61.436    -     530.0 ms
+  38: uthash/hashtable         47.250  /   46.444  /   47.466    -     472.5 ms
+  39: hashit/chain             47.641  /   46.419  /   47.977    -     476.4 ms
+  40: libdynamic/map           49.934  /   49.756  /   50.154    -     499.3 ms
+  41: boost::unordered_map     51.533  /   51.015  /   52.787    -     515.3 ms
+  42: klib/khash               53.821  /   53.425  /   54.193    -     538.2 ms
+  43: stb/sdict                55.074  /   54.554  /   55.899    -     550.7 ms
+  44: oddou::hashmap           64.839  /   64.546  /   65.124    -     648.4 ms
+  45: google::sparsehash      117.414  /   87.408  /  149.584    -       1.1  s
+  46: tbb::unordered_map       72.369  /   68.843  /   77.329    -     723.7 ms
+  47: libcfu/hashtable         91.756  /   91.346  /   92.238    -     917.5 ms
+  48: ulib/align-hash         161.638  /  156.284  /  199.788    -       1.6  s
+  49: python/dict             192.413  /  181.267  /  239.862    -       1.9  s
 
 Running test [delete]. Please wait ...
-  battle for 41: ulib::chain-hash++ too slow                                    
-  battle for 40: stb/sdict too slow                                    
-  battle for 39: tbb::unordered_map too slow                                    
-  battle for 38: oddou::hashmap too slow                                    
-  battle for 37: libcfu/hashtable too slow                                    
-  battle for 36: google::sparsehash too slow                                    
-  battle for 35: google/c-sparse too slow                                    
-  battle for 34: hashit/open too slow                                    
-  battle for 33: boost::unordered_map too slow                                    
-  battle for 32: rigtorp::hashmap too slow                                    
-  battle for 31: ulib::open-hash++ too slow                                    
-  battle for 30: mct::linked_hash_map too slow                                    
-  battle for 29: uthash/hashtable too slow                                    
-  battle for 28: std::unordered_map too slow                                    
-  battle for 27: clark/hashtable too slow                                    
-  battle for 26: mct::closed_hash_map too slow                                    
-  battle for 25: google/c-dense too slow                                    
-  battle for 24: ulib/open-hash too slow                                    
-  battle for 23: Qt::QHash too slow                                    
-  battle for 22: PeterMoore/st too slow                                    
-  battle for 21: python/hashtable too slow                                    
-  battle for 20: calg/hashtable too slow                                    
-  battle for 19: klib/khash too slow                                    
-  battle for 18: hashit/chain too slow                                    
-  battle for 17: eastl::hashmap too slow                                    
-  battle for 16: libCDS/HashMap too slow                                    
-  battle for 15: amtl::hashmap too slow                                    
-  battle for 14: google::densehash too slow                                    
-  battle for 13: emilib::HashMap too slow                                    
-  battle for 12: libevent/ht too slow                                    
+  battle for 49: python/dict too slow                                    
+  battle for 48: stb/sdict too slow                                    
+  battle for 47: tbb::unordered_map too slow                                    
+  battle for 46: oddou::hashmap too slow                                    
+  battle for 45: google::sparsehash too slow                                    
+  battle for 44: libcfu/hashtable too slow                                    
+  battle for 43: google/c-sparse too slow                                    
+  battle for 42: hashit/open too slow                                    
+  battle for 41: ulib/align-hash too slow                                    
+  battle for 40: judy/JSL too slow                                    
+  battle for 39: libdynamic/map too slow                                    
+  battle for 38: boost::unordered_map too slow                                    
+  battle for 37: rigtorp::hashmap too slow                                    
+  battle for 36: uthash/hashtable too slow                                    
+  battle for 35: klib::khash++ too slow                                    
+  battle for 34: std::unordered_map too slow                                    
+  battle for 33: clark/hashtable too slow                                    
+  battle for 32: mct::linked_hash_map too slow                                    
+  battle for 31: ulib::chain-hash++ too slow                                    
+  battle for 30: mct::closed_hash_map too slow                                    
+  battle for 29: Tcl/hashtable too slow                                    
+  battle for 28: Qt::QHash too slow                                    
+  battle for 27: PeterMoore/st too slow                                    
+  battle for 26: ulib/open-hash too slow                                    
+  battle for 25: calg/hashtable too slow                                    
+  battle for 24: google/c-dense too slow                                    
+  battle for 23: eastl::hashmap too slow                                    
+  battle for 22: libCDS/HashMap too slow                                    
+  battle for 21: klib/khash too slow                                    
+  battle for 20: python/hashtable too slow                                    
+  battle for 19: hashit/chain too slow                                    
+  battle for 18: google::densehash too slow                                    
+  battle for 17: tommyds/linear too slow                                    
+  battle for 16: libevent/ht too slow                                    
+  battle for 15: ulib::open-hash++ too slow                                    
+  battle for 14: emilib::HashMap too slow                                    
+  battle for 13: libghthash/hashtable too slow                                    
+  battle for 12: tommyds/dynamic too slow                                    
   battle for 11: hashit/overflow too slow                                    
-  battle for 10: libghthash/hashtable too slow                                    
-  battle for  9: tommyds/linear too slow                                    
-  battle for  8: rdestl::hash_map too slow                                    
-  battle for  7: tommyds/dynamic too slow                                    
-  battle for  6: apr-no-pool/hashtable too slow                                    
-  battle for  5: apr/hashtable too slow                                    
-  battle for  4: glib/ghash too slow                                    
-  battle for  3: ulib/chain-hash too slow                                    
-  battle for  2: gcc/hashtab too slow                                    
+  battle for 10: amtl::hashmap too slow                                    
+  battle for  9: apr-no-pool/hashtable too slow                                    
+  battle for  8: ulib::align-hash++ too slow                                    
+  battle for  7: apr/hashtable too slow                                    
+  battle for  6: ulib/chain-hash too slow                                    
+  battle for  5: glib/ghash too slow                                    
+  battle for  4: rdestl::hash_map too slow                                    
+  battle for  3: gcc/hashtab too slow                                    
+  battle for  2: tommyds/fixed too slow                                    
   winner is   1: ccan/htable
 
 Results of test [delete] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable              12.983  /   12.900  /   13.189    -     129.8 ms
-   2: gcc/hashtab              13.445  /   13.401  /   13.681    -     134.4 ms
-   3: ulib/chain-hash          14.527  /   14.431  /   14.758    -     145.2 ms
-   4: glib/ghash               15.408  /   15.340  /   15.499    -     154.0 ms
-   5: apr/hashtable            16.657  /   16.349  /   16.963    -     166.6 ms
-   6: apr-no-pool/hashtable    17.120  /   17.072  /   17.301    -     171.2 ms
-   7: tommyds/dynamic          17.141  /   17.034  /   17.363    -     171.4 ms
-   8: rdestl::hash_map         18.135  /   17.359  /   18.525    -     181.3 ms
-   9: tommyds/linear           18.404  /   18.291  /   18.709    -     184.0 ms
-  10: libghthash/hashtable     18.438  /   18.253  /   19.704    -     184.4 ms
-  11: hashit/overflow          18.776  /   18.591  /   19.483    -     187.7 ms
-  12: libevent/ht              19.062  /   18.976  /   19.238    -     190.6 ms
-  13: emilib::HashMap          19.517  /   19.239  /   20.935    -     195.1 ms
-  14: google::densehash        20.054  /   19.925  /   20.429    -     200.5 ms
-  15: amtl::hashmap            21.663  /   21.279  /   21.970    -     216.6 ms
-  16: libCDS/HashMap           24.671  /   24.355  /   26.057    -     246.7 ms
-  17: eastl::hashmap           25.478  /   25.341  /   25.905    -     254.8 ms
-  18: hashit/chain             30.518  /   29.490  /   31.061    -     305.2 ms
-  19: klib/khash               28.110  /   27.776  /   28.549    -     281.1 ms
-  20: calg/hashtable           27.551  /   27.301  /   28.351    -     275.5 ms
-  21: python/hashtable         28.080  /   27.840  /   28.378    -     280.8 ms
-  22: PeterMoore/st            28.069  /   28.012  /   28.172    -     280.7 ms
-  23: Qt::QHash                26.538  /   26.295  /   27.201    -     265.4 ms
-  24: ulib/open-hash           28.521  /   28.329  /   29.108    -     285.2 ms
-  25: google/c-dense           30.158  /   29.982  /   30.908    -     301.6 ms
-  26: mct::closed_hash_map     31.366  /   31.159  /   31.625    -     313.6 ms
-  27: clark/hashtable          31.804  /   31.392  /   33.800    -     318.0 ms
-  28: std::unordered_map       32.024  /   31.885  /   32.349    -     320.2 ms
-  29: uthash/hashtable         34.205  /   33.857  /   34.508    -     342.0 ms
-  30: mct::linked_hash_map     34.136  /   32.805  /   34.629    -     341.3 ms
-  31: ulib::open-hash++        40.334  /   40.195  /   41.036    -     403.3 ms
-  32: rigtorp::hashmap         43.310  /   43.149  /   43.579    -     433.1 ms
-  33: boost::unordered_map     41.662  /   41.380  /   42.090    -     416.6 ms
-  34: hashit/open              57.959  /   56.681  /   58.724    -     579.6 ms
-  35: google/c-sparse          61.847  /   61.633  /   62.509    -     618.4 ms
-  36: google::sparsehash       70.884  /   70.703  /   71.157    -     708.8 ms
-  37: libcfu/hashtable         71.584  /   70.809  /   72.306    -     715.8 ms
-  38: oddou::hashmap           84.275  /   84.093  /   84.626    -     842.7 ms
-  39: tbb::unordered_map       86.373  /   85.964  /   86.894    -     863.7 ms
-  40: stb/sdict                94.111  /   93.391  /   94.508    -     941.1 ms
-  41: ulib::chain-hash++      156.052  /  152.624  /  160.405    -       1.5  s
+   1: ccan/htable              14.279  /   13.872  /   15.436    -     142.8 ms
+   2: tommyds/fixed            14.529  /   14.255  /   14.916    -     145.3 ms
+   3: gcc/hashtab              15.818  /   15.196  /   17.597    -     158.2 ms
+   4: rdestl::hash_map         16.695  /   16.621  /   17.000    -     166.9 ms
+   5: glib/ghash               16.886  /   16.795  /   17.129    -     168.8 ms
+   6: ulib/chain-hash          17.029  /   16.907  /   17.445    -     170.3 ms
+   7: apr/hashtable            18.123  /   17.310  /   19.543    -     181.2 ms
+   8: ulib::align-hash++       18.316  /   18.164  /   18.731    -     183.1 ms
+   9: apr-no-pool/hashtable    19.742  /   19.698  /   19.821    -     197.4 ms
+  10: amtl::hashmap            19.994  /   19.816  /   20.312    -     199.9 ms
+  11: hashit/overflow          20.387  /   20.072  /   21.151    -     203.8 ms
+  12: tommyds/dynamic          22.095  /   20.899  /   24.224    -     220.9 ms
+  13: libghthash/hashtable     33.526  /   27.295  /   35.301    -     335.3 ms
+  14: emilib::HashMap          23.038  /   21.672  /   23.672    -     230.3 ms
+  15: ulib::open-hash++        23.414  /   20.641  /   30.144    -     234.1 ms
+  16: libevent/ht              22.133  /   21.957  /   22.310    -     221.3 ms
+  17: tommyds/linear           34.765  /   30.776  /   37.657    -     347.7 ms
+  18: google::densehash        23.700  /   23.588  /   23.998    -     237.0 ms
+  19: hashit/chain             28.153  /   26.079  /   38.608    -     281.5 ms
+  20: python/hashtable         31.145  /   28.595  /   33.064    -     311.4 ms
+  21: klib/khash               29.291  /   29.202  /   29.526    -     292.9 ms
+  22: libCDS/HashMap           33.690  /   31.604  /   38.180    -     336.9 ms
+  23: eastl::hashmap           32.181  /   29.007  /   39.902    -     321.8 ms
+  24: google/c-dense           30.840  /   30.548  /   31.373    -     308.4 ms
+  25: calg/hashtable           33.077  /   32.945  /   33.207    -     330.8 ms
+  26: ulib/open-hash           52.611  /   45.188  /   63.697    -     526.1 ms
+  27: PeterMoore/st            33.299  /   31.306  /   41.546    -     333.0 ms
+  28: Qt::QHash                53.890  /   50.597  /   57.572    -     538.9 ms
+  29: Tcl/hashtable            38.886  /   38.066  /   40.040    -     388.9 ms
+  30: mct::closed_hash_map     44.114  /   36.293  /   49.552    -     441.1 ms
+  31: ulib::chain-hash++       34.132  /   32.182  /   42.163    -     341.3 ms
+  32: mct::linked_hash_map     37.240  /   36.178  /   42.011    -     372.4 ms
+  33: clark/hashtable          35.698  /   33.750  /   43.390    -     357.0 ms
+  34: std::unordered_map       36.454  /   35.473  /   44.305    -     364.5 ms
+  35: klib::khash++            37.032  /   36.230  /   42.626    -     370.3 ms
+  36: uthash/hashtable         37.943  /   36.382  /   43.962    -     379.4 ms
+  37: rigtorp::hashmap         44.774  /   44.255  /   47.602    -     447.7 ms
+  38: boost::unordered_map     46.715  /   45.925  /   50.410    -     467.1 ms
+  39: libdynamic/map           45.887  /   45.701  /   46.373    -     458.8 ms
+  40: judy/JSL                 46.007  /   45.450  /   46.472    -     460.1 ms
+  41: ulib/align-hash          53.588  /   53.418  /   53.871    -     535.9 ms
+  42: hashit/open              69.871  /   59.615  /   83.933    -     698.7 ms
+  43: google/c-sparse          67.899  /   65.174  /   80.548    -     679.0 ms
+  44: libcfu/hashtable         66.710  /   66.206  /   67.246    -     667.1 ms
+  45: google::sparsehash       74.990  /   74.694  /   75.263    -     749.9 ms
+  46: oddou::hashmap           86.130  /   85.914  /   86.307    -     861.3 ms
+  47: tbb::unordered_map       88.262  /   88.018  /   88.588    -     882.6 ms
+  48: stb/sdict                97.705  /   97.280  /   98.077    -     977.0 ms
+  49: python/dict             202.502  /  197.677  /  208.606    -       2.0  s
 
 Running test [replace]. Please wait ...
-  battle for 41: hashit/overflow too slow                                    
-  battle for 40: ulib::chain-hash++ too slow                                    
-  battle for 39: hashit/open too slow                                    
-  battle for 38: stb/sdict too slow                                    
-  battle for 37: google::sparsehash too slow                                    
-  battle for 36: tbb::unordered_map too slow                                    
-  battle for 35: google/c-sparse too slow                                    
-  battle for 34: oddou::hashmap too slow                                    
-  battle for 33: libcfu/hashtable too slow                                    
-  battle for 32: rigtorp::hashmap too slow                                    
-  battle for 31: boost::unordered_map too slow                                    
-  battle for 30: uthash/hashtable too slow                                    
-  battle for 29: ulib::open-hash++ too slow                                    
-  battle for 28: PeterMoore/st too slow                                    
-  battle for 27: clark/hashtable too slow                                    
-  battle for 26: hashit/chain too slow                                    
-  battle for 25: mct::closed_hash_map too slow                                    
-  battle for 24: mct::linked_hash_map too slow                                    
-  battle for 23: std::unordered_map too slow                                    
-  battle for 22: klib/khash too slow                                    
-  battle for 21: google/c-dense too slow                                    
-  battle for 20: ulib/open-hash too slow                                    
-  battle for 19: google::densehash too slow                                    
-  battle for 18: calg/hashtable too slow                                    
-  battle for 17: eastl::hashmap too slow                                    
-  battle for 16: apr-no-pool/hashtable too slow                                    
-  battle for 15: Qt::QHash too slow                                    
-  battle for 14: ulib/chain-hash too slow                                    
-  battle for 13: libghthash/hashtable too slow                                    
-  battle for 12: amtl::hashmap too slow                                    
-  battle for 11: libCDS/HashMap too slow                                    
-  battle for 10: glib/ghash too slow                                    
-  battle for  9: python/hashtable too slow                                    
-  battle for  8: apr/hashtable too slow                                    
-  battle for  7: emilib::HashMap too slow                                    
-  battle for  6: gcc/hashtab too slow                                    
-  battle for  5: tommyds/linear too slow                                    
-  battle for  4: libevent/ht too slow                                    
-  battle for  3: rdestl::hash_map too slow                                    
-  battle for  2: tommyds/dynamic too slow                                    
-  winner is   1: ccan/htable
+  battle for 49: hashit/overflow too slow                                    
+  battle for 48: python/dict too slow                                    
+  battle for 47: hashit/open too slow                                    
+  battle for 46: stb/sdict too slow                                    
+  battle for 45: google::sparsehash too slow                                    
+  battle for 44: tbb::unordered_map too slow                                    
+  battle for 43: ulib::chain-hash++ too slow                                    
+  battle for 42: google/c-sparse too slow                                    
+  battle for 41: libcfu/hashtable too slow                                    
+  battle for 40: oddou::hashmap too slow                                    
+  battle for 39: ulib/align-hash too slow                                    
+  battle for 38: libdynamic/map too slow                                    
+  battle for 37: rigtorp::hashmap too slow                                    
+  battle for 36: boost::unordered_map too slow                                    
+  battle for 35: judy/JSL too slow                                    
+  battle for 34: uthash/hashtable too slow                                    
+  battle for 33: klib::khash++ too slow                                    
+  battle for 32: PeterMoore/st too slow                                    
+  battle for 31: clark/hashtable too slow                                    
+  battle for 30: hashit/chain too slow                                    
+  battle for 29: mct::linked_hash_map too slow                                    
+  battle for 28: mct::closed_hash_map too slow                                    
+  battle for 27: std::unordered_map too slow                                    
+  battle for 26: Tcl/hashtable too slow                                    
+  battle for 25: klib/khash too slow                                    
+  battle for 24: ulib/open-hash too slow                                    
+  battle for 23: google::densehash too slow                                    
+  battle for 22: google/c-dense too slow                                    
+  battle for 21: calg/hashtable too slow                                    
+  battle for 20: eastl::hashmap too slow                                    
+  battle for 19: apr-no-pool/hashtable too slow                                    
+  battle for 18: Qt::QHash too slow                                    
+  battle for 17: ulib/chain-hash too slow                                    
+  battle for 16: libghthash/hashtable too slow                                    
+  battle for 15: libCDS/HashMap too slow                                    
+  battle for 14: python/hashtable too slow                                    
+  battle for 13: emilib::HashMap too slow                                    
+  battle for 12: glib/ghash too slow                                    
+  battle for 11: gcc/hashtab too slow                                    
+  battle for 10: tommyds/linear too slow                                    
+  battle for  9: apr/hashtable too slow                                    
+  battle for  8: libevent/ht too slow                                    
+  battle for  7: amtl::hashmap too slow                                    
+  battle for  6: ulib::open-hash++ too slow                                    
+  battle for  5: tommyds/dynamic too slow                                    
+  battle for  4: ccan/htable too slow                                    
+  battle for  3: tommyds/fixed too slow                                    
+  battle for  2: ulib::align-hash++ too slow                                    
+  winner is   1: rdestl::hash_map
 
 Results of test [replace] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable              25.259  /   25.136  /   25.464    -     252.6 ms
-   2: tommyds/dynamic          27.128  /   27.064  /   27.251    -     271.3 ms
-   3: rdestl::hash_map         35.076  /   30.228  /   42.298    -     350.7 ms
-   4: libevent/ht              31.662  /   31.521  /   31.792    -     316.6 ms
-   5: tommyds/linear           37.102  /   32.336  /   48.498    -     371.0 ms
-   6: gcc/hashtab              51.589  /   37.688  /   63.171    -     515.9 ms
-   7: emilib::HashMap          36.605  /   36.543  /   36.872    -     366.0 ms
-   8: apr/hashtable            45.007  /   36.005  /   56.655    -     450.1 ms
-   9: python/hashtable         40.545  /   39.718  /   41.005    -     405.4 ms
-  10: glib/ghash               44.284  /   38.014  /   54.176    -     442.8 ms
-  11: libCDS/HashMap           39.196  /   39.059  /   39.610    -     391.9 ms
-  12: amtl::hashmap            43.092  /   40.054  /   51.455    -     430.9 ms
-  13: libghthash/hashtable     45.453  /   44.924  /   47.735    -     454.5 ms
-  14: ulib/chain-hash          53.469  /   47.749  /   60.815    -     534.7 ms
-  15: Qt::QHash                70.166  /   61.833  /   87.493    -     701.7 ms
-  16: apr-no-pool/hashtable    47.758  /   43.849  /   64.305    -     477.6 ms
-  17: eastl::hashmap           44.911  /   42.708  /   48.988    -     449.1 ms
-  18: calg/hashtable           54.578  /   49.894  /   62.912    -     545.8 ms
-  19: google::densehash        50.377  /   48.832  /   50.842    -     503.8 ms
-  20: ulib/open-hash           56.176  /   54.932  /   59.602    -     561.7 ms
-  21: google/c-dense           54.890  /   53.613  /   58.741    -     548.9 ms
-  22: klib/khash               55.915  /   54.456  /   59.029    -     559.1 ms
-  23: std::unordered_map       72.733  /   64.630  /   95.600    -     727.3 ms
-  24: mct::linked_hash_map     70.302  /   65.388  /   76.525    -     703.0 ms
-  25: mct::closed_hash_map     70.521  /   68.194  /   74.181    -     705.2 ms
-  26: hashit/chain             72.057  /   71.441  /   73.553    -     720.6 ms
-  27: clark/hashtable          71.013  /   66.973  /   85.918    -     710.1 ms
-  28: PeterMoore/st            86.765  /   71.448  /  109.747    -     867.7 ms
-  29: ulib::open-hash++        64.281  /   63.754  /   66.058    -     642.8 ms
-  30: uthash/hashtable         75.333  /   74.199  /   76.512    -     753.3 ms
-  31: boost::unordered_map     83.917  /   83.489  /   84.396    -     839.2 ms
-  32: rigtorp::hashmap         88.891  /   88.575  /   89.351    -     888.9 ms
-  33: libcfu/hashtable        101.208  /  100.469  /  103.377    -       1.0  s
-  34: oddou::hashmap          101.822  /  101.563  /  102.434    -       1.0  s
-  35: google/c-sparse         102.606  /  101.703  /  104.192    -       1.0  s
-  36: tbb::unordered_map      136.922  /  132.267  /  153.984    -       1.3  s
-  37: google::sparsehash      153.332  /  152.802  /  154.421    -       1.5  s
-  38: stb/sdict               163.648  /  163.108  /  165.032    -       1.6  s
-  39: hashit/open             211.767  /  208.024  /  230.082    -       2.1  s
-  40: ulib::chain-hash++      527.064  /  523.864  /  533.972    -       5.2  s
-  41: hashit/overflow         820.301  /  819.856  /  821.776    -       8.2  s
+   1: rdestl::hash_map         28.307  /   28.240  /   28.554    -     283.0 ms
+   2: ulib::align-hash++       30.357  /   30.161  /   30.968    -     303.5 ms
+   3: tommyds/fixed            30.604  /   30.413  /   31.180    -     306.0 ms
+   4: ccan/htable              33.240  /   33.146  /   33.420    -     332.4 ms
+   5: tommyds/dynamic          33.561  /   32.844  /   33.859    -     335.6 ms
+   6: ulib::open-hash++        33.848  /   33.694  /   34.690    -     338.5 ms
+   7: amtl::hashmap            35.415  /   35.166  /   35.810    -     354.1 ms
+   8: libevent/ht              36.120  /   35.946  /   36.343    -     361.2 ms
+   9: apr/hashtable            35.995  /   35.824  /   36.293    -     359.9 ms
+  10: tommyds/linear           37.832  /   36.962  /   38.251    -     378.3 ms
+  11: gcc/hashtab              38.042  /   37.735  /   38.452    -     380.4 ms
+  12: glib/ghash               39.674  /   39.301  /   40.121    -     396.7 ms
+  13: emilib::HashMap          40.191  /   39.713  /   42.616    -     401.9 ms
+  14: python/hashtable         44.295  /   44.003  /   44.651    -     442.9 ms
+  15: libCDS/HashMap           49.642  /   49.068  /   51.492    -     496.4 ms
+  16: libghthash/hashtable     50.189  /   49.674  /   51.561    -     501.9 ms
+  17: ulib/chain-hash          52.890  /   52.065  /   53.352    -     528.9 ms
+  18: Qt::QHash                88.691  /   52.801  /  112.321    -     886.9 ms
+  19: apr-no-pool/hashtable    48.825  /   48.697  /   49.314    -     488.2 ms
+  20: eastl::hashmap           54.510  /   53.816  /   56.462    -     545.1 ms
+  21: calg/hashtable           51.158  /   50.019  /   60.289    -     511.6 ms
+  22: google/c-dense           51.961  /   50.127  /   56.735    -     519.6 ms
+  23: google::densehash        54.149  /   52.962  /   56.292    -     541.5 ms
+  24: ulib/open-hash           53.836  /   52.894  /   54.485    -     538.3 ms
+  25: klib/khash               57.202  /   55.540  /   65.379    -     572.0 ms
+  26: Tcl/hashtable            74.329  /   69.252  /   92.945    -     743.3 ms
+  27: std::unordered_map       70.302  /   68.401  /   74.337    -     703.0 ms
+  28: mct::closed_hash_map     74.137  /   73.888  /   74.399    -     741.3 ms
+  29: mct::linked_hash_map     72.743  /   71.150  /   74.104    -     727.4 ms
+  30: hashit/chain             77.737  /   75.444  /   84.488    -     777.4 ms
+  31: clark/hashtable          67.450  /   67.069  /   68.019    -     674.5 ms
+  32: PeterMoore/st            69.710  /   69.174  /   70.371    -     697.1 ms
+  33: klib::khash++            73.295  /   69.268  /   82.391    -     732.9 ms
+  34: uthash/hashtable         83.733  /   82.716  /   84.797    -     837.3 ms
+  35: judy/JSL                 86.100  /   85.502  /   86.747    -     861.0 ms
+  36: boost::unordered_map     92.436  /   91.768  /   93.689    -     924.3 ms
+  37: rigtorp::hashmap         93.180  /   90.630  /  105.042    -     931.8 ms
+  38: libdynamic/map           94.456  /   93.661  /   98.298    -     944.5 ms
+  39: ulib/align-hash          99.118  /   97.683  /  109.149    -     991.2 ms
+  40: oddou::hashmap          109.272  /  106.953  /  116.919    -       1.0  s
+  41: libcfu/hashtable        118.567  /  118.201  /  118.806    -       1.1  s
+  42: google/c-sparse         195.625  /  123.899  /  254.943    -       1.9  s
+  43: ulib::chain-hash++      139.710  /  119.277  /  163.510    -       1.3  s
+  44: tbb::unordered_map      138.698  /  137.575  /  139.382    -       1.3  s
+  45: google::sparsehash      162.497  /  162.199  /  162.657    -       1.6  s
+  46: stb/sdict               183.198  /  182.967  /  183.473    -       1.8  s
+  47: hashit/open             247.360  /  233.422  /  279.031    -       2.4  s
+  48: python/dict             371.499  /  353.296  /  448.153    -       3.7  s
+  49: hashit/overflow         839.295  /  826.092  /  859.753    -       8.3  s
 
 Running test [kbench]. Please wait ...
-  battle for 41: ulib::chain-hash++ too slow                                    
-  battle for 40: stb/sdict too slow                                    
-  battle for 39: tbb::unordered_map too slow                                    
-  battle for 38: oddou::hashmap too slow                                    
-  battle for 37: google::sparsehash too slow                                    
-  battle for 36: google/c-sparse too slow                                    
-  battle for 35: libcfu/hashtable too slow                                    
-  battle for 34: hashit/open too slow                                    
-  battle for 33: ulib::open-hash++ too slow                                    
-  battle for 32: boost::unordered_map too slow                                    
-  battle for 31: rigtorp::hashmap too slow                                    
-  battle for 30: mct::linked_hash_map too slow                                    
-  battle for 29: uthash/hashtable too slow                                    
-  battle for 28: mct::closed_hash_map too slow                                    
-  battle for 27: clark/hashtable too slow                                    
-  battle for 26: std::unordered_map too slow                                    
-  battle for 25: ulib/open-hash too slow                                    
-  battle for 24: google/c-dense too slow                                    
+  battle for 49: python/dict too slow                                    
+  battle for 48: tbb::unordered_map too slow                                    
+  battle for 47: stb/sdict too slow                                    
+  battle for 46: oddou::hashmap too slow                                    
+  battle for 45: google::sparsehash too slow                                    
+  battle for 44: libcfu/hashtable too slow                                    
+  battle for 43: google/c-sparse too slow                                    
+  battle for 42: ulib/align-hash too slow                                    
+  battle for 41: hashit/open too slow                                    
+  battle for 40: judy/JSL too slow                                    
+  battle for 39: boost::unordered_map too slow                                    
+  battle for 38: libdynamic/map too slow                                    
+  battle for 37: rigtorp::hashmap too slow                                    
+  battle for 36: klib::khash++ too slow                                    
+  battle for 35: uthash/hashtable too slow                                    
+  battle for 34: mct::closed_hash_map too slow                                    
+  battle for 33: mct::linked_hash_map too slow                                    
+  battle for 32: Tcl/hashtable too slow                                    
+  battle for 31: clark/hashtable too slow                                    
+  battle for 30: std::unordered_map too slow                                    
+  battle for 29: ulib/open-hash too slow                                    
+  battle for 28: PeterMoore/st too slow                                    
+  battle for 27: calg/hashtable too slow                                    
+  battle for 26: python/hashtable too slow                                    
+  battle for 25: eastl::hashmap too slow                                    
+  battle for 24: libCDS/HashMap too slow                                    
   battle for 23: klib/khash too slow                                    
-  battle for 22: calg/hashtable too slow                                    
-  battle for 21: python/hashtable too slow                                    
-  battle for 20: hashit/chain too slow                                    
-  battle for 19: PeterMoore/st too slow                                    
-  battle for 18: hashit/overflow too slow                                    
-  battle for 17: amtl::hashmap too slow                                    
-  battle for 16: eastl::hashmap too slow                                    
-  battle for 15: libCDS/HashMap too slow                                    
-  battle for 14: Qt::QHash too slow                                    
-  battle for 13: tommyds/linear too slow                                    
-  battle for 12: tommyds/dynamic too slow                                    
-  battle for 11: libevent/ht too slow                                    
-  battle for 10: google::densehash too slow                                    
-  battle for  9: emilib::HashMap too slow                                    
-  battle for  8: libghthash/hashtable too slow                                    
-  battle for  7: rdestl::hash_map too slow                                    
-  battle for  6: apr-no-pool/hashtable too slow                                    
-  battle for  5: apr/hashtable too slow                                    
-  battle for  4: glib/ghash too slow                                    
-  battle for  3: gcc/hashtab too slow                                    
-  battle for  2: ulib/chain-hash too slow                                    
+  battle for 22: google/c-dense too slow                                    
+  battle for 21: hashit/chain too slow                                    
+  battle for 20: hashit/overflow too slow                                    
+  battle for 19: ulib::chain-hash++ too slow                                    
+  battle for 18: Qt::QHash too slow                                    
+  battle for 17: tommyds/linear too slow                                    
+  battle for 16: google::densehash too slow                                    
+  battle for 15: tommyds/dynamic too slow                                    
+  battle for 14: amtl::hashmap too slow                                    
+  battle for 13: libevent/ht too slow                                    
+  battle for 12: emilib::HashMap too slow                                    
+  battle for 11: libghthash/hashtable too slow                                    
+  battle for 10: apr-no-pool/hashtable too slow                                    
+  battle for  9: ulib::open-hash++ too slow                                    
+  battle for  8: ulib::align-hash++ too slow                                    
+  battle for  7: apr/hashtable too slow                                    
+  battle for  6: glib/ghash too slow                                    
+  battle for  5: gcc/hashtab too slow                                    
+  battle for  4: tommyds/fixed too slow                                    
+  battle for  3: ulib/chain-hash too slow                                    
+  battle for  2: rdestl::hash_map too slow                                    
   winner is   1: ccan/htable
 
 Results of test [kbench] - 1e5 items (10 loops per test)
       Implementation        -   avg         min         max   ms -   elapsed
-   1: ccan/htable              15.664  /   15.561  /   15.793    -     156.6 ms
-   2: ulib/chain-hash          16.946  /   16.755  /   17.141    -     169.4 ms
-   3: gcc/hashtab              17.750  /   17.554  /   17.988    -     177.5 ms
-   4: glib/ghash               18.346  /   18.303  /   18.436    -     183.4 ms
-   5: apr/hashtable            19.080  /   18.819  /   19.334    -     190.8 ms
-   6: apr-no-pool/hashtable    19.277  /   19.176  /   19.550    -     192.8 ms
-   7: rdestl::hash_map         21.021  /   20.694  /   21.294    -     210.2 ms
-   8: libghthash/hashtable     21.072  /   20.852  /   22.657    -     210.7 ms
-   9: emilib::HashMap          21.763  /   21.662  /   21.959    -     217.6 ms
-  10: google::densehash        22.452  /   22.384  /   22.512    -     224.5 ms
-  11: libevent/ht              22.362  /   22.204  /   22.543    -     223.6 ms
-  12: tommyds/dynamic          24.529  /   24.162  /   25.280    -     245.3 ms
-  13: tommyds/linear           25.660  /   25.502  /   25.857    -     256.6 ms
-  14: Qt::QHash                26.707  /   26.508  /   27.010    -     267.0 ms
-  15: libCDS/HashMap           27.514  /   27.340  /   27.798    -     275.1 ms
-  16: eastl::hashmap           28.293  /   28.047  /   29.247    -     282.9 ms
-  17: amtl::hashmap            29.131  /   28.257  /   29.608    -     291.3 ms
-  18: hashit/overflow          28.348  /   28.063  /   28.573    -     283.5 ms
-  19: PeterMoore/st            29.521  /   29.385  /   29.623    -     295.2 ms
-  20: hashit/chain             31.967  /   31.496  /   32.490    -     319.6 ms
-  21: python/hashtable         29.490  /   29.045  /   29.914    -     294.9 ms
-  22: calg/hashtable           30.193  /   30.034  /   30.480    -     301.9 ms
-  23: klib/khash               29.856  /   29.646  /   30.090    -     298.5 ms
-  24: google/c-dense           32.160  /   32.068  /   32.243    -     321.6 ms
-  25: ulib/open-hash           32.701  /   32.440  /   32.859    -     327.0 ms
-  26: std::unordered_map       36.083  /   35.947  /   36.265    -     360.8 ms
-  27: clark/hashtable          37.390  /   37.177  /   37.743    -     373.9 ms
-  28: mct::closed_hash_map     40.066  /   39.457  /   40.399    -     400.6 ms
-  29: uthash/hashtable         40.319  /   39.829  /   41.018    -     403.2 ms
-  30: mct::linked_hash_map     42.657  /   40.351  /   43.577    -     426.6 ms
-  31: rigtorp::hashmap         44.736  /   44.644  /   44.816    -     447.3 ms
-  32: boost::unordered_map     48.011  /   47.218  /   48.788    -     480.1 ms
-  33: ulib::open-hash++        50.033  /   49.735  /   50.840    -     500.3 ms
-  34: hashit/open              54.596  /   54.407  /   54.893    -     545.9 ms
-  35: libcfu/hashtable         76.517  /   74.121  /   88.002    -     765.2 ms
-  36: google/c-sparse          81.824  /   66.762  /  112.130    -     818.2 ms
-  37: google::sparsehash      108.182  /   95.859  /  116.116    -       1.0  s
-  38: oddou::hashmap           89.766  /   89.462  /   90.997    -     897.6 ms
-  39: tbb::unordered_map       96.715  /   96.491  /   96.927    -     967.1 ms
-  40: stb/sdict               116.753  /  101.116  /  154.724    -       1.1  s
-  41: ulib::chain-hash++      306.120  /  266.451  /  343.783    -       3.0  s
+   1: ccan/htable              17.862  /   17.667  /   18.043    -     178.6 ms
+   2: rdestl::hash_map         19.786  /   19.580  /   19.968    -     197.8 ms
+   3: ulib/chain-hash          20.469  /   20.320  /   20.689    -     204.7 ms
+   4: tommyds/fixed            20.508  /   20.361  /   20.675    -     205.1 ms
+   5: gcc/hashtab              20.722  /   20.608  /   20.878    -     207.2 ms
+   6: glib/ghash               21.143  /   20.980  /   21.557    -     211.4 ms
+   7: apr/hashtable            21.571  /   21.457  /   21.744    -     215.7 ms
+   8: ulib::align-hash++       22.796  /   22.581  /   22.906    -     227.9 ms
+   9: ulib::open-hash++        24.500  /   24.295  /   25.332    -     245.0 ms
+  10: apr-no-pool/hashtable    24.794  /   24.506  /   25.122    -     247.9 ms
+  11: libghthash/hashtable     25.217  /   25.107  /   25.461    -     252.2 ms
+  12: emilib::HashMap          27.106  /   26.773  /   27.337    -     271.0 ms
+  13: libevent/ht              27.003  /   26.760  /   27.232    -     270.0 ms
+  14: amtl::hashmap            27.205  /   27.028  /   27.549    -     272.0 ms
+  15: tommyds/dynamic          28.081  /   27.823  /   28.211    -     280.8 ms
+  16: google::densehash        28.851  /   28.386  /   29.242    -     288.5 ms
+  17: tommyds/linear           29.804  /   29.579  /   29.971    -     298.0 ms
+  18: Qt::QHash                34.014  /   33.763  /   34.134    -     340.1 ms
+  19: ulib::chain-hash++       31.156  /   30.604  /   31.957    -     311.5 ms
+  20: hashit/overflow          31.584  /   31.197  /   32.363    -     315.8 ms
+  21: hashit/chain             33.075  /   32.456  /   34.818    -     330.7 ms
+  22: google/c-dense           33.831  /   33.650  /   34.125    -     338.3 ms
+  23: klib/khash               35.732  /   35.453  /   36.067    -     357.3 ms
+  24: libCDS/HashMap           35.802  /   35.445  /   36.596    -     358.0 ms
+  25: eastl::hashmap           36.007  /   35.489  /   36.243    -     360.1 ms
+  26: python/hashtable         36.186  /   35.529  /   37.923    -     361.8 ms
+  27: calg/hashtable           38.284  /   38.031  /   38.729    -     382.8 ms
+  28: PeterMoore/st            39.632  /   39.257  /   40.030    -     396.3 ms
+  29: ulib/open-hash           39.619  /   38.422  /   39.946    -     396.2 ms
+  30: std::unordered_map       40.766  /   40.323  /   41.779    -     407.6 ms
+  31: clark/hashtable          43.085  /   42.461  /   43.652    -     430.8 ms
+  32: Tcl/hashtable            43.745  /   42.992  /   45.142    -     437.4 ms
+  33: mct::linked_hash_map     43.852  /   43.020  /   44.273    -     438.5 ms
+  34: mct::closed_hash_map     46.124  /   45.429  /   46.514    -     461.2 ms
+  35: uthash/hashtable         65.182  /   52.691  /   86.859    -     651.8 ms
+  36: klib::khash++            42.376  /   41.163  /   44.928    -     423.7 ms
+  37: rigtorp::hashmap         48.572  /   47.991  /   50.965    -     485.7 ms
+  38: libdynamic/map           50.613  /   49.692  /   53.471    -     506.1 ms
+  39: boost::unordered_map     56.567  /   55.206  /   59.605    -     565.7 ms
+  40: judy/JSL                 51.260  /   50.617  /   51.651    -     512.6 ms
+  41: hashit/open              58.158  /   57.136  /   59.411    -     581.6 ms
+  42: ulib/align-hash          60.521  /   60.324  /   60.898    -     605.2 ms
+  43: google/c-sparse          74.992  /   69.100  /   83.837    -     749.9 ms
+  44: libcfu/hashtable         73.869  /   71.605  /   75.702    -     738.7 ms
+  45: google::sparsehash       93.561  /   91.331  /   97.022    -     935.6 ms
+  46: oddou::hashmap           94.082  /   93.818  /   94.303    -     940.8 ms
+  47: stb/sdict               102.421  /  102.177  /  103.037    -       1.0  s
+  48: tbb::unordered_map      103.303  /  102.115  /  107.381    -       1.0  s
+  49: python/dict             358.491  /  353.196  /  368.973    -       3.5  s

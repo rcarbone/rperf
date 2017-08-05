@@ -219,6 +219,7 @@ static void doit (char * progname, unsigned choice,
 		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
+  time_t now = time (0);
   struct utsname u;
 
   switch (choice)
@@ -228,7 +229,7 @@ static void doit (char * progname, unsigned choice,
       /* Welcome on board! */
       uname (& u);
       printf ("%s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
-      printf ("\n");
+      printf ("%s\n", ctime (& now));
 
       /* Initialize/Run/Terminate all the implementations under test */
       sw_done (run_suite (suite, sw_init (files, items, verbose), loops, items, verbose, quiet), verbose);
@@ -310,6 +311,7 @@ static char ** choose (char * progname, char * files [], char * included [], cha
 static void _version_ (char * progname, char * version)
 {
   printf ("%s version %s built on %s %s\n", progname, version, __DATE__, __TIME__);
+  printf ("\n");
   fflush (stdout);
 }
 

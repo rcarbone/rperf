@@ -11,8 +11,6 @@
 #include "vargs.h"
 
 
-#define RMAX(a, b)  (a > b ? a : b)
-
 #ifdef __cplusplus
 extern "C" {
 #endif

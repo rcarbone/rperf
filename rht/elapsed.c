@@ -68,11 +68,11 @@ static unsigned ssinn (uint64_t t)
 
 /* Eval minutes in hours
  *
- * Devo calcolare:
- *  quante ore ci sono in t               => hh = n2hh (t)
- *  quanti ns ci sono nelle ore calcolate => ns = n2hh (t) * 60 * 60 * 1000000000
- *  la differenza in ns tra di 2 valori   => dt = t - n2hh (t) * 60 * 60 * 1000000000
- *  quanti minuti ci sono nel dt          => mm = n2mm (t - n2hh (t) * 60 * 60 * 1000000000)
+ * eval:
+ *  hours in t       => hh = n2hh (t)
+ *  ns in hours      => ns = n2hh (t) * 60 * 60 * 1000000000
+ *  delta ns         => dt = t - n2hh (t) * 60 * 60 * 1000000000
+ *  minutes in delta => mm = n2mm (t - n2hh (t) * 60 * 60 * 1000000000)
  *
  */
 static unsigned mminn (uint64_t t)
@@ -111,25 +111,25 @@ char * ns2a (uint64_t nsecs)
 }
 
 
-/* Memory allocator/deallocator for the rspent_t variables. */
-rspent_t * mkspent (void * sw)
+/* Memory allocator/deallocator for the relapsed_t variables */
+relapsed_t * mkelapsed (void * sw)
 {
-  rspent_t * spent = calloc (1, sizeof (* spent));
-  spent -> min = ULONG_MAX;
-  spent -> sw  = sw;
-  return spent;
+  relapsed_t * elapsed = calloc (1, sizeof (* elapsed));
+  elapsed -> min = ULONG_MAX;
+  elapsed -> sw  = sw;
+  return elapsed;
 }
 
 
-void rmspent (void * spent)
+void rmelapsed (void * elapsed)
 {
-  safefree (spent);
+  safefree (elapsed);
 }
 
 
-rspent_t * dupspent (rspent_t * src)
+relapsed_t * dupelapsed (relapsed_t * src)
 {
-  rspent_t * dst = calloc (1, sizeof (* dst));
+  relapsed_t * dst = calloc (1, sizeof (* dst));
 
   dst -> t1      = src -> t1;
   dst -> t2      = src -> t2;
@@ -146,10 +146,10 @@ rspent_t * dupspent (rspent_t * src)
 }
 
 
-/* Sort test results by avg time spent */
+/* Sort test results by avg time elapsed */
 int sort_by_more_avg (const void * a, const void * b)
 {
-  return (* (rspent_t **) b) -> avg - (* (rspent_t **) a) -> avg;
+  return (* (relapsed_t **) b) -> avg - (* (relapsed_t **) a) -> avg;
 }
 
 
@@ -168,14 +168,14 @@ void print_test_header (unsigned maxn)
 
 
 /* Display timing information for a single test run */
-void show_spent (rspent_t * spent)
+void show_elapsed (relapsed_t * elapsed)
 {
-  if (spent)
+  if (elapsed)
     printf (" %8.3f  / %8.3f  / %8.3f    - %12.12s\n",
-	    spent -> avg / 1e6,
-	    spent -> min / 1e6,
-	    spent -> max / 1e6,
-	    ns2a (spent -> elapsed));
+	    elapsed -> avg / 1e6,
+	    elapsed -> min / 1e6,
+	    elapsed -> max / 1e6,
+	    ns2a (elapsed -> elapsed));
 }
 
 

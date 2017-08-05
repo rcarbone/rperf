@@ -96,28 +96,6 @@ void runit_all_rnd_print (void)
 
 /* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
 
-void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn)
-{
-  unsigned dots = name ? strlen (name) : 0;
-  unsigned i;
-  char fmt [1024];
-  char str [1014];
-
-  sprintf (fmt, "[%%%uu] %s %%s ", n, label);
-  sprintf (str, fmt, seq, name);
-
-  if (dots < maxn)
-    dots = maxn - dots + 3;
-  else
-    dots = 3;
-
-  printf ("%s", str);
-
-  for (i = 0; i < dots; i ++)
-    printf (".");
-  printf (" ");
-}
-
 
 void runit_print_no (void)
 {
@@ -172,4 +150,27 @@ void rsuite_print_all (void)
   runit_print_header ();
   for (i = 0; i <= rsuite_no (); i ++)
     runit_print_one (rsuite_find_at (i), i + 1);
+}
+
+
+void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn)
+{
+  unsigned dots = name ? strlen (name) : 0;
+  unsigned i;
+  char fmt [1024];
+  char str [1014];
+
+  sprintf (fmt, "[%%%uu] %s %%s ", n, label);
+  sprintf (str, fmt, seq, name);
+
+  if (dots < maxn)
+    dots = maxn - dots + 3;
+  else
+    dots = 3;
+
+  printf ("%s", str);
+
+  for (i = 0; i < dots; i ++)
+    printf (".");
+  printf (" ");
 }

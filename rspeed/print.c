@@ -16,7 +16,7 @@ void print_test_info (char * label, char * name, unsigned loops, unsigned items,
 
 
 /* Display times information spent in test execution */
-void print_results (rspent_t * results [], char * testname, unsigned maxn, unsigned loops, unsigned items)
+void print_results (relapsed_t * results [], char * testname, unsigned maxn, unsigned loops, unsigned items)
 {
   unsigned n = 0;
 
@@ -28,7 +28,7 @@ void print_results (rspent_t * results [], char * testname, unsigned maxn, unsig
     {
       sw_t * sw = (* results) -> sw;
       printf ("  %2d: %-*.*s ", ++ n, maxn, maxn, sw -> name);
-      show_spent (* results ++);
+      show_elapsed (* results ++);
     }
 }
 
@@ -46,7 +46,7 @@ void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
       if (sw_have (plugins, (* suite) -> name))
 	{
 	  print_results ((* suite) -> results, (* suite) -> name, maxn, loops, items);
-	  arrclear ((* suite) -> results, rmspent);
+	  arrclear ((* suite) -> results, rmelapsed);
 	  if (! * suite)
 	    printf ("\n");
 	}

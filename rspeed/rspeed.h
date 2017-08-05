@@ -28,7 +28,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * sw [], unsigned loops, unsigned it
 
 /* Public functions in file print.c */
 void print_test_info (char * label, char * name, unsigned loops, unsigned items, unsigned maxn);
-void print_results (rspent_t * results [], char * name, unsigned maxn, unsigned loops, unsigned items);
+void print_results (relapsed_t * results [], char * name, unsigned maxn, unsigned loops, unsigned items);
 void hall_of_fame (rtest_t * suite [], sw_t * plugins [], unsigned maxn, unsigned loops, unsigned items);
 
 

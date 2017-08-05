@@ -11,14 +11,14 @@
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
-				   unsigned loops,
-				   unsigned items, robj_t * objs [],
-				   unsigned serial,
-				   unsigned maxn, bool verbose)
+static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
+				     unsigned loops,
+				     unsigned items, robj_t * objs [],
+				     unsigned serial,
+				     unsigned maxn, bool verbose)
 {
   /* Allocate memory to store the results and bind the sw implementation to it */
-  rspent_t * result = mkspent (sw);
+  relapsed_t * result = mkelapsed (sw);
   double min = ULONG_MAX;
   double avg = 0;
   double max = 0;
@@ -63,7 +63,7 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
 
   /* Display timing information for this test */
   if (verbose)
-    show_spent (result);
+    show_elapsed (result);
 
   return result;
 }
@@ -96,7 +96,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   if (! suite || ! plugins)
     return plugins;
 
-  printf ("Evaluate average wall-time elapsed repeating %u times the same test with %u items per test\n", loops, items);
+  printf ("Evaluate average wall-time elapsed repeating %u times the same test each acting with %u items\n", loops, items);
   printf ("\n");
 
   n = rsuite_maxn (suite);
@@ -151,10 +151,10 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		{
 		  /* Run this test for this implementation using the same constant numer of items */
-		  rspent_t * result = run_single_test (* test, sw, loops, items, objs, i + 1, maxn, quiet);
+		  relapsed_t * result = run_single_test (* test, sw, loops, items, objs, i + 1, maxn, quiet);
 
 		  /* Save the results for later sorting/rendering */
-		  (* test) -> results = arrmore ((* test) -> results, result, rspent_t);
+		  (* test) -> results = arrmore ((* test) -> results, result, relapsed_t);
 		}
 	    }
 	  t2 = nswall ();
@@ -163,7 +163,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	  safefree (order);
 
 	  /* Sort the results by less avg time */
-	  (* test) -> results = arrsort ((* test) -> results, sort_by_less_avg, rspent_t);
+	  (* test) -> results = arrsort ((* test) -> results, sort_by_less_avg, relapsed_t);
 
 	  /* Show the results */
 	  if (verbose)

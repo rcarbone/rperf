@@ -8,6 +8,9 @@
 #include "safe.h"
 
 
+#define RMAX(a, b)  (((a) > (b)) ? (a) : (b))
+
+
 static int argscmp (const void * _a, const void * _b)
 {
   return strcmp (* (char **) _a, * (char **) _b);

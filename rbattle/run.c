@@ -26,23 +26,23 @@ static void print_test_info (char * name, unsigned swno, unsigned items, unsigne
 }
 
 
-static void print_winner (rspent_t * argv [], char * name, unsigned maxn, unsigned items, unsigned loops)
+static void print_winner (relapsed_t * argv [], char * name, unsigned maxn, unsigned items, unsigned loops)
 {
-  rspent_t ** rev = (rspent_t **) varev ((void **) argv);
+  relapsed_t ** rev = (relapsed_t **) varev ((void **) argv);
   print_results (rev, name, maxn, items, loops);
   vaclear ((void **) rev, NULL);
 }
 
 
 /* Initialize the table of runners for the test [name] */
-static rspent_t ** mkrunners (char * name, sw_t * plugins [])
+static relapsed_t ** mkrunners (char * name, sw_t * plugins [])
 {
-  rspent_t ** runners = NULL;
+  relapsed_t ** runners = NULL;
 
   while (plugins && * plugins)
     {
       if (rplugin_implement ((* plugins) -> plugin, name))
-	runners = arrmore (runners, mkspent (* plugins), rspent_t);
+	runners = arrmore (runners, mkelapsed (* plugins), relapsed_t);
       plugins ++;
     }
   return runners;
@@ -50,7 +50,7 @@ static rspent_t ** mkrunners (char * name, sw_t * plugins [])
 
 
 /* Check if _name_ is included in the table of loosers [argv] */
-static bool islooser (char * name, rspent_t * argv [])
+static bool islooser (char * name, relapsed_t * argv [])
 {
   while (name && argv && * argv)
     {
@@ -63,7 +63,7 @@ static bool islooser (char * name, rspent_t * argv [])
 }
 
 
-static unsigned getslow (char * name, rspent_t * runners [])
+static unsigned getslow (char * name, relapsed_t * runners [])
 {
   while (runners && * runners)
     {
@@ -79,14 +79,15 @@ static unsigned getslow (char * name, rspent_t * runners [])
 /*
  * Lookup for the worse implementation in [results] and in the event it is too sloow include it in the table of loosers
  */
-static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [], rspent_t * loosers [],
-				   unsigned nslow, unsigned rank)
+static relapsed_t ** update_results (relapsed_t * results [],
+				     relapsed_t * runners [], relapsed_t * loosers [],
+				     unsigned nslow, unsigned rank, unsigned maxn, char * elapsed)
 {
-  rspent_t * worse;
+  relapsed_t * worse;
   sw_t * sw;
 
-  /* Sort the results by more avg time spent in order to evalute worse implementation for this run */
-  results = arrsort (results, sort_by_more_avg, rspent_t);
+  /* Sort the results by more avg time elapsed in order to evalute worse implementation for this run */
+  results = arrsort (results, sort_by_more_avg, relapsed_t);
   worse = results [0];
   sw = worse -> sw;
 
@@ -97,13 +98,15 @@ static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [],
   if (worse -> slow == nslow)
     {
       /* In the event include the worse in the table of loosers */
-      loosers = arrmore (loosers, dupspent (worse), rspent_t);
+      loosers = arrmore (loosers, dupelapsed (worse), relapsed_t);
 
       /* Reset the stop condition for all the runners in order to repeat the suite with a clean environment */
       while (runners && * runners)
 	(* runners ++) -> slow = 0;
 
-      printf ("  battle for %2u: %s too slow                                    \n", rank, sw -> name);
+      printf ("  battle for %2u%s: %-*.*s out of race after %s\n",
+	      rank, rank == 2 ? "nd" : "th",
+	      maxn, maxn, sw -> name, elapsed);
     }
   else
     {
@@ -130,15 +133,16 @@ static rspent_t ** update_results (rspent_t * results [], rspent_t * runners [],
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
-				   unsigned loops,
-				   unsigned items, robj_t * objs [],
-				   unsigned serial,
-				   unsigned slow,
-				   unsigned maxn, bool verbose)
+static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
+				     unsigned loops,
+				     unsigned items, robj_t * objs [],
+				     unsigned serial,
+				     unsigned slow,
+				     unsigned maxn,
+				     bool verbose)
 {
   /* Allocate memory to store the results and bind the sw implementation to it */
-  rspent_t * result = mkspent (sw);
+  relapsed_t * result = mkelapsed (sw);
   double min = ULONG_MAX;
   double avg = 0;
   double max = 0;
@@ -186,7 +190,7 @@ static rspent_t * run_single_test (rtest_t * rtest, sw_t * sw,
 
   /* Display timing information for this test */
   if (verbose)
-    show_spent (result);
+    show_elapsed (result);
 
   return result;
 }
@@ -224,8 +228,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
     {
       unsigned items      = initials;                              /* Initial value of items for all tests             */
       unsigned torun      = sw_have (plugins, (* test) -> name);   /* Number of implementations to run for this test   */
-      rspent_t ** runners = mkrunners ((* test) -> name, plugins); /* The table of runners for this test               */
-      rspent_t ** loosers = NULL;                                  /* The table of loosers for this test               */
+      relapsed_t ** runners = mkrunners ((* test) -> name, plugins); /* The table of runners for this test               */
+      relapsed_t ** loosers = NULL;                                  /* The table of loosers for this test               */
 
       /* Display test information */
       if (! quiet)
@@ -242,7 +246,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	    {
 	      sw_t * sw  = plugins [i];
 	      if (rplugin_implement (sw -> plugin, (* test) -> name))
-		runners = arrmore (runners, mkspent (sw), rspent_t);
+		runners = arrmore (runners, mkelapsed (sw), relapsed_t);
 	    }
 
 	  /*
@@ -253,16 +257,19 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	    {
 	      robj_t ** objs      = mkobjs (items);           /* Initialize the memory needed by the test suite */
 	      unsigned * order    = rndorder (loaded);        /* Evaluate a random array to run implementation  */
-	      rspent_t ** results = NULL;
+	      relapsed_t ** results = NULL;
 	      unsigned rank       = torun - arrlen (loosers);
 	      unsigned tested     = 0;                        /* Counter over implementations tested            */
 	      unsigned i;
+	      rtime_t t1;
+	      rtime_t t2;
 
 	      /*
 	       * Deep loop:
 	       *   iterate over all loaded implementations 
 	       *     run a single test in order and evaluate min/avg/max times elapsed for its execution
 	       */
+	      t1 = nswall ();
 	      for (i = 0; i < loaded; i ++)
 		{
 		  /* Select the implementation under test in random order */
@@ -276,8 +283,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		  if (rplugin_implement (sw -> plugin, (* test) -> name) && ! islooser (sw -> name, loosers))
 		    {
 		      /* Run this test for this implementation with the current number of items */
-		      rspent_t * result = run_single_test (* test, sw, loops, items, objs,
-							   ++ tested, getslow (sw -> name, runners), maxn, verbose);
+		      relapsed_t * result = run_single_test (* test, sw, loops, items, objs,
+							     ++ tested, getslow (sw -> name, runners), maxn, verbose);
 		      if (! quiet)
 			{
 			  printf ("  battle for %2u: %-*.*s ... %s", rank, maxn, maxn, sw -> name, ns2a (result -> avg));
@@ -289,22 +296,23 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 			}
 
 		      /* Save the results of current run for later evaluation/sort/rendering */
-		      results = arrmore (results, result, rspent_t);
+		      results = arrmore (results, result, relapsed_t);
 		    }
 		}
+	      t2 = nswall ();
 
 	      /* Update the table of runners/loosers for this test (table of results is sorted) */
-	      loosers = update_results (results, runners, loosers, nslow, rank);
+	      loosers = update_results (results, runners, loosers, nslow, rank, maxn, ns2a (t2 - t1));
 
 	      /* Check for winner */
 	      if (arrlen (loosers) == torun - 1)
 		{
 		  printf ("  winner is  %2u: %s\n", 1, ((sw_t *) results [1] -> sw) -> name);
-		  loosers = arrmore (loosers, dupspent (results [1]), rspent_t);
+		  loosers = arrmore (loosers, dupelapsed (results [1]), relapsed_t);
 		}
 
 	      /* Free the memory used by the test suite */
-	      arrclear (results, rmspent);
+	      arrclear (results, rmelapsed);
 	      safefree (order);
 	      rmobjs (objs);
 	    }
@@ -314,8 +322,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	}
 
       /* Free the memory used by the test suite */
-      arrclear (loosers, rmspent);
-      arrclear (runners, rmspent);
+      arrclear (loosers, rmelapsed);
+      arrclear (runners, rmelapsed);
 
       test ++;
       if ((* test) -> name)

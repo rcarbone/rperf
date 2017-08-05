@@ -30,8 +30,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * sw [],
 
 
 /* Public functions in file print.c */
-void print_results (rspent_t * results [], char * name, unsigned maxn, unsigned items, unsigned loops);
-void hall_of_fame (char * name, rspent_t * results [], unsigned all, unsigned maxn,
+void print_results (relapsed_t * results [], char * name, unsigned maxn, unsigned items, unsigned loops);
+void hall_of_fame (char * name, relapsed_t * results [], unsigned all, unsigned maxn,
 		   unsigned initials, unsigned repeat, unsigned more);
 
 

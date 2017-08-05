@@ -9,8 +9,8 @@
 #include "rtest.h"
 
 
-/* Program version */
-#define _NAME_      "Run Unit Tests and Test Suite over this implementation"
+/* Program name/version */
+#define _NAME_      "Run builtin Unit Tests and Test Suite over an implementation"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
@@ -121,7 +121,8 @@ static rtest_t ** choose (char * progname, char * included [], char * excluded [
 
 
 /* Attempt to do what has been required by the user */
-static void doit (char * progname, unsigned choice, rtest_t * argv [],
+static void doit (char * progname, unsigned choice,
+		  rtest_t * argv [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {

@@ -5,15 +5,15 @@ PROGRAM   = rtest
 # C source files
 MAINSRCS += main.c
 MAINSRCS += stub-api.c
+LIBSRCS  += version.c
 LIBSRCS  += datasets.c
 LIBSRCS  += unit.c
 LIBSRCS  += unit-code.c
 LIBSRCS  += suite.c
 LIBSRCS  += suite-code.c
 LIBSRCS  += sw.c
-LIBSRCS  += spent.c
+LIBSRCS  += elapsed.c
 LIBSRCS  += print.c
-LIBSRCS  += version.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =
