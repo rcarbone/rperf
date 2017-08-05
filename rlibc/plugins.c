@@ -3,11 +3,9 @@
 #include <dirent.h>
 
 
-/* Private headers */
+/* Project headers */
 #include "plugins.h"
 #include "safe.h"
-#include "varrays.h"
-#include "args.h"
 
 
 /* The table of mandatory names that __must__ be defined in the plugin */

@@ -5,8 +5,7 @@
 
 /* Project headers */
 #include "roptions.h"
-#include "varrays.h"
-#include "args.h"
+#include "sargs.h"
 #include "rtest.h"
 
 

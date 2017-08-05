@@ -1,6 +1,7 @@
 /* System headers */
 #include <stdlib.h>
 
+
 /* Project headers */
 #include "support.h"
 #include "rwall.h"

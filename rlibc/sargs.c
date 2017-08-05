@@ -3,10 +3,9 @@
  */
 
 
-/* Public header files */
-#include "args.h"
+/* Project headers */
+#include "sargs.h"
 #include "safe.h"
-#include "varrays.h"
 
 
 static int argscmp (const void * _a, const void * _b)

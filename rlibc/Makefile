@@ -3,8 +3,8 @@ LIB       = rlibc
 PROGRAM   =
 
 # C source files
-LIBSRCS  += varrays.c
-LIBSRCS  += args.c
+LIBSRCS  += vargs.c
+LIBSRCS  += sargs.c
 LIBSRCS  += plugins.c
 LIBSRCS  += rwall.c
 LIBSRCS  += safe.c

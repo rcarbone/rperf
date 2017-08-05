@@ -5,7 +5,7 @@
 
 /* Project headers */
 #include "roptions.h"
-#include "args.h"
+#include "sargs.h"
 #include "rctype.h"
 #include "plugins.h"
 #include "rtest.h"

@@ -2,18 +2,20 @@
  * The definitions to load/unload/query/call plugins.
  *
  * What is a plugin for the goal of the project?
- *  A plugin is simply a shared object with basic restrictions to distinguish it from other common Unix files:
+ *  A plugin is simply a shared object with basic restrictions to distinguish it from other common Unix shated object files:
  */
 
 #pragma once
+
 
 /* System headers */
 #include <stdbool.h>
 #include <sys/time.h>
 #include <dlfcn.h>
 
+
 /* Project headers */
-#include "varrays.h"
+#include "sargs.h"
 
 
 /* Reserved keywords with mandatory names that _must_ be defined in each plugin in a blanks separated variable */

@@ -9,8 +9,8 @@
 typedef struct rht rht_t;
 #include "rht.h"
 
-#include "varrays.h"
-#include "args.h"
+
+#include "sargs.h"
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"

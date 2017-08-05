@@ -19,11 +19,11 @@ static bool isnumber (char d)
 /* Is the string passed by 's' numeric? */
 bool isnumeric (char * s)
 {
-  if (! s || ! * s)
+  if (! s)
     return false;
 
   while (* s)
-    if (! isnumber ((int) * s ++))
+    if (! isnumber (* s ++))
       return false;
 
   return true;

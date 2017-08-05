@@ -2,10 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Project headers */
-#include "varrays.h"
-#include "args.h"
-
 /* The implementation */
 #include "hashtable.c"
 

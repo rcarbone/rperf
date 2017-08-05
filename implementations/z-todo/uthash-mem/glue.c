@@ -7,7 +7,7 @@
 
 typedef struct rht rht_t;
 #include "rht.h"
-#include "varrays.h"
+#include "vargs.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 
-/* Private headers */
+
+/* Project headers */
 #include "datasets.h"
 #include "rht-hashers.h"
 

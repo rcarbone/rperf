@@ -1,5 +1,5 @@
 /* Project headers */
-#include "varrays.h"
+#include "vargs.h"
 #include "rtest.h"
 
 #define SEP  '|'
