@@ -14,6 +14,8 @@ pkgs="$pkgs qtbase5-dev"
 pkgs="$pkgs libqt5core5a"
 pkgs="$pkgs libtbb-dev"
 pkgs="$pkgs libjudy-dev"
+pkgs="$pkgs libpython-dev"
+pkgs="$pkgs tcl8.6-dev"
 
 echo "Checking software requirements for rperf ..."
 echo

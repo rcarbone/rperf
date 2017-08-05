@@ -1,5 +1,5 @@
 # The name of the games
-NAME      = python-rev
+NAME       = python
 
 # C/C++ source files
 LIBCSRCS   = glue.c

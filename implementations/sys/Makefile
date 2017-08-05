@@ -7,6 +7,7 @@ SUBDIRS += libstdc++
 SUBDIRS += python
 SUBDIRS += Qt
 SUBDIRS += tbb
+SUBDIRS += tcl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 # The project's source tree

@@ -1,15 +1,15 @@
 # The name of the games
-NAME       = python
+NAME       = tcl
 
 # C/C++ source files
 LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = `pkg-config --cflags python`
+INCLUDE    = -I/usr/include/tcl8.6
 CFLAGS     =
 C++FLAGS   =
-SYSLIBS    = `pkg-config --libs python`
+SYSLIBS    = -ltcl8.6
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
