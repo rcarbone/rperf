@@ -1,6 +1,3 @@
-# Do not edit anything below, make creates it.
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
 TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
 
 # Plugin (dynamic library)
@@ -87,6 +84,8 @@ suite: suite.o glue.o ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 unit: ut
 	@./$^ -x
 
@@ -99,6 +98,8 @@ x:
 	@echo
 	@echo "=*= running test suite =*="
 	@./suite -x
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 # Cleanup rules
 clean:
@@ -135,7 +136,7 @@ distclean: clean
 
 -include ${DEPS}
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 # Check for errors and memory leaks
 
@@ -171,7 +172,7 @@ vleak-%: %
 	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
 	@valgrind ${VFLAGS} $^ ${RUNFLAG}
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
 help:
 	@echo "Usage:"
@@ -189,10 +190,16 @@ help:
 	@echo "leaks"     | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks\n", $$1 }'
 	@echo "vleaks"    | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks (verbose mode)\n", $$1 }'
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# The fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+.PHONY: all clean distclean Makefile leaks vleaks
 
-.PHONY: all clean distclean
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Optimization experimental
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 SRCS = ${LIBCSRCS} ${LIBC++SRCS}
 
 glue-gcc.o: glue.cpp
@@ -258,4 +265,3 @@ a: glue-gcc.o glue-clang.o ${ALLO}
            done ; \
            echo "" ; \
          done
-

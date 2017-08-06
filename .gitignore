@@ -20,6 +20,9 @@ implementations/*/suite.c
 implementations/*/*/suite.c
 implementations/*/*/*/suite.c
 
+# Makefiles
+Makefile
+
 # Libraries
 *.a
 

@@ -9,47 +9,45 @@ srcdir=share
 
 echo "Configuring using ROOTDIR = $rootdir"
 
-makefiles=`find . -name Makefile`
+makefiles=`find . -name Makefile.in`
 for m in $makefiles; do
   d=`dirname $m`
-  if [ -f $d/Makefile.in ]; then
 
-    cat $d/Makefile.in                                     > $d/Makefile
+  cat $m                                                 > $d/Makefile
 
-    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-    echo "# Do not edit anything below, make creates it." >> $d/Makefile
-    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-    echo                                                  >> $d/Makefile
-    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-    echo "# The project's root directory"                 >> $d/Makefile
-    echo "ROOTDIR    = $rootdir"                          >> $d/Makefile
-    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-    echo                                                  >> $d/Makefile
-    cat $srcdir/FileSystem                                >> $d/Makefile
-    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-    echo                                                  >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo "# Do not edit anything below, make creates it." >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo "# The project's root directory"                 >> $d/Makefile
+  echo "ROOTDIR    = $rootdir"                          >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  cat $srcdir/FileSystem                                >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
 
-    # Check for node/leaf
-    node=`grep SUBDIRS $d/Makefile.in | head -1`
-    if [ "$node" != "" ]; then
+  # Check for node/leaf/plugins
+  node=`grep SUBDIRS $d/Makefile.in | head -1`
+  if [ "$node" != "" ]; then
 
-      cat $srcdir/Makefile.node                             >> $d/Makefile
+    cat $srcdir/Makefile.node                             >> $d/Makefile
+
+  else
+
+    plugin=`echo $d | grep implementations`
+    if [ "$plugin" != "" ]; then
+
+      cat $srcdir/Makefile.plugins                          >> $d/Makefile
+      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+      cat $srcdir/LIBS                                      >> $d/Makefile
 
     else
 
-      plugin=`echo $d | grep implementations`
-      if [ "$plugin" != "" ]; then
+      cat $srcdir/Makefile.leaf                             >> $d/Makefile
 
-        cat $srcdir/Makefile.plugins                          >> $d/Makefile
-        echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-        cat $srcdir/LIBS                                      >> $d/Makefile
-
-      else
-
-        cat $srcdir/Makefile.leaf                             >> $d/Makefile
-
-      fi
     fi
-
   fi
+
 done

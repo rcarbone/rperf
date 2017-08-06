@@ -1,5 +1,4 @@
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
+# Dependency files for generation of Makefiles
 TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.node
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
@@ -37,10 +36,10 @@ Makefile: Makefile.in ${TEMPLATES}
 	@cat $^ >> $@.tmp
 	@mv $@.tmp $@
 
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # The fake targets
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-.PHONY: all clean distclean ${SUBDIRS}
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+.PHONY: all clean distclean Makefile ${SUBDIRS}
 
 # In the event an unknown rule has been used
 .DEFAULT:
