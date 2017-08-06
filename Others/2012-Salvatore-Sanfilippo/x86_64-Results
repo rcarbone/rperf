@@ -1,0 +1,8 @@
+rocco@nuc.carbo.net 378> ./dict 
+Inserting: 5000000 items in 4250 ms
+Linear access of existing elements: 5000000 items in 2411 ms
+Linear access of existing elements (2nd round): 5000000 items in 2980 ms
+Random access of existing elements: 5000000 items in 3894 ms
+Accessing missing: 5000000 items in 2497 ms
+Removing and adding: 5000000 items in 3940 ms
+
