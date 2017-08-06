@@ -196,13 +196,13 @@ rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
 
 static void rsuite_run_one (rtest_t * rtest, unsigned argc, robj_t * argv [], unsigned n, unsigned seq, unsigned maxn)
 {
-  rtime_t spent;
+  rtime_t elapsed;
 
   print_dots (rtest -> name, "Running", n, seq, maxn);
 
-  spent = rtest -> suite (argc, argv);
-  if (spent)
-    printf ("Ok - %s\n", ns2a (spent));
+  elapsed = rtest -> suite (argc, argv);
+  if (elapsed)
+    printf ("Ok - %s\n", ns2a (elapsed));
   else
     printf ("No\n");
 }
@@ -274,10 +274,10 @@ rtest_t * rsuite_find_by_name (char * name)
 
 
 /* Return all the Test Suite names in an array in the same order they were defined */
-char ** rsuite_names (void)
+char ** rsuite_all_names (void)
 {
-  unsigned i;
   char ** all = NULL;
+  unsigned i;
   for (i = 0; i < RSUITE_NO; i ++)
     all = argsmore (all, rsuite_builtins [i] . name);
   return all;
@@ -316,6 +316,16 @@ rtest_t ** rsuite_all_n (unsigned n)
 rtest_t ** rsuite_all_rnd (void)
 {
   return (rtest_t **) varnd (rsuite_no (), (void **) rsuite_all ());
+}
+
+
+/* Return the Test Suite names in the same order they were defined in the table */
+char ** rsuite_names (rtest_t * suite [])
+{
+  char ** all = NULL;
+  while (suite && * suite)
+    all = argsmore (all, (* suite ++) -> name);
+  return all;
 }
 
 

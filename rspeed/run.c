@@ -103,16 +103,19 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   d = rsuite_maxd (suite);
   tno = arrlen (suite);
 
-  printf ("Tests to run: %u over %u implementations\n", tno, arrlen (plugins));
+  printf ("Tests to run: %u\n", tno);
   t = 0;
   test = suite;
   while (test && * test)
     {
-      printf ("  %u: %-*.*s (%-*.*s)\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description);
+      printf ("  %u: %-*.*s (%-*.*s) - %u implementations\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description,
+	      sw_have (plugins, (* test) ->  name));
       test ++;
     }
   printf ("\n");
-  printf ("To run #%u times each with #%u items\n", loops, items);
+  printf ("Running each test #%u times each acting with #%u items\n", loops, items);
+  printf ("Dataset: unique serial strings keys and generic void pointers as values\n");
+  printf ("\n");
 
   /*
    * Main loop:
@@ -169,13 +172,16 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	  if (verbose)
 	    print_results ((* test) -> results, (* test) -> name, maxn, loops, items);
 	  else
-	    printf ("Done! over #%u implementations - Elapsed %s\n", arrlen ((* test) -> results), ns2a (t2 - t1));
+	    printf ("Done! #%u implementations - Total elapsed time %s\n", arrlen ((* test) -> results), ns2a (t2 - t1));
 	}
       test ++;
     }
 
   /* Display the results sorted by more performant application */
   hall_of_fame (suite, plugins, maxn, loops, items);
+
+  /* Display the final ranking */
+  print_ranking (plugins, suite, maxn);
 
   /* Free the datasets used by the test suite */
   rmobjs (objs);

@@ -146,14 +146,6 @@ static void doit (char * progname, unsigned choice,
 }
 
 
-/* Display version information */
-static void _version_ (char * progname, char * version)
-{
-  printf ("%s version %s built on %s %s\n", progname, version, __DATE__, __TIME__);
-  fflush (stdout);
-}
-
-
 /* Display the syntax for using this program */
 static void _usage_ (char * progname, char * version, struct option * options)
 {

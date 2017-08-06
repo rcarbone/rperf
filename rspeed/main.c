@@ -1,7 +1,6 @@
 /* System headers */
 #include <stdio.h>
 #include <libgen.h>
-#include <sys/utsname.h>
 
 /* Project headers */
 #include "roptions.h"
@@ -212,24 +211,21 @@ static rtest_t ** build_suite (char * progname, char * included [], char * exclu
 
 
 /* Attempt to do what has been required by the user */
-static void doit (char * progname, unsigned choice,
+static void doit (char * progname, char * version,
+		  unsigned choice,
 		  char * dir, char * files [],
 		  rtest_t * suite [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
   rplugin_t ** loaded = NULL;
-  time_t now = time (0);
-  struct utsname u;
 
   switch (choice)
     {
     case OPT_EXECUTE:
 
       /* Welcome on board! */
-      uname (& u);
-      printf ("%s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
-      printf ("%s\n", ctime (& now));
+      _welcome_ (progname, version);
 
       /* Initialize/Run/Terminate all the implementations under test */
       sw_done (run_suite (suite, sw_init (files, items, verbose), loops, items, verbose, quiet), verbose);
@@ -304,15 +300,6 @@ static char ** choose (char * progname, char * files [], char * included [], cha
       names ++;
     }
   return subset;
-}
-
-
-/* Display version information */
-static void _version_ (char * progname, char * version)
-{
-  printf ("%s version %s built on %s %s\n", progname, version, __DATE__, __TIME__);
-  printf ("\n");
-  fflush (stdout);
 }
 
 
@@ -497,7 +484,7 @@ int main (int argc, char * argv [])
 	  /* Build the subset of plugins and go! */
 	  char ** subset = choose (progname, files, included, excluded);
 	  if (subset)
-	    doit (progname, choice, dir, subset, suite, loops, items, verbose, quiet);
+	    doit (progname, _VERSION_, choice, dir, subset, suite, loops, items, verbose, quiet);
 	  else
 	    printf ("%s: Empty subset\n", progname);
 	  argsclear (subset);

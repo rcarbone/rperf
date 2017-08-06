@@ -104,8 +104,8 @@ static relapsed_t ** update_results (relapsed_t * results [],
       while (runners && * runners)
 	(* runners ++) -> slow = 0;
 
-      printf ("  battle for %2u%s: %-*.*s out of race after %s\n",
-	      rank, rank == 2 ? "nd" : "th",
+      printf ("  battle for %2u-%s: %-*.*s      out of race after %s\n",
+	      rank, rank == 2 ? "nd" : rank == 3 ? "rd" : "th",
 	      maxn, maxn, sw -> name, elapsed);
     }
   else
@@ -287,7 +287,9 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 							     ++ tested, getslow (sw -> name, runners), maxn, verbose);
 		      if (! quiet)
 			{
-			  printf ("  battle for %2u: %-*.*s ... %s", rank, maxn, maxn, sw -> name, ns2a (result -> avg));
+			  printf ("  battle for %2u-%s: %-*.*s ... %s",
+				  rank, rank == 2 ? "nd" : rank == 3 ? "rd" : "th",
+				  maxn, maxn, sw -> name, ns2a (result -> avg));
 
 			  if (verbose)
 			    printf ("\n");

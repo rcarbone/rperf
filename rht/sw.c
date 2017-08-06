@@ -115,9 +115,10 @@ unsigned sw_maxname (sw_t * sw [])
 unsigned sw_have (sw_t * sw [], char * name)
 {
   unsigned n = 0;
-  while (name && sw && * sw)
-    if (sw_func (* sw ++, name))
-      n ++;
+  if (name)
+    while (sw && * sw)
+      if (sw_func (* sw ++, name))
+	n ++;
   return n;
 }
 

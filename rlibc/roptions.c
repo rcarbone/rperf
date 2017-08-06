@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
+#include <sys/utsname.h>
 
 /* Project headers */
 #include "roptions.h"
@@ -85,4 +87,26 @@ void usage_item (struct option * options, unsigned n, unsigned val, char * descr
     printf ("   -%c | --%s  %s\n", val, optname (options, n, val), description);
   else
     printf ("        --%s  %s\n", optname (options, n, val), description);
+}
+
+
+/* Display version information */
+void _version_ (char * progname, char * version)
+{
+  printf ("%s, ver. %s built on %s %s\n", progname, version, __DATE__, __TIME__);
+  printf ("\n");
+  fflush (stdout);
+}
+
+
+/* Welcome on board! */
+void _welcome_ (char * progname, char * version)
+{
+  time_t now = time (0);
+  struct utsname u;
+  uname (& u);
+  _version_ (progname, version);
+  printf ("Running on  : %s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
+  printf ("Current time: %s\n", ctime (& now));
+  fflush (stdout);
 }

@@ -26,6 +26,8 @@
 typedef unsigned runit_f (unsigned argc);
 typedef rtime_t rsuite_f (unsigned argc, robj_t * argv []);
 
+/* an implementation */
+struct sw;
 
 /* The structure to hold execution times for a single test run */
 typedef struct
@@ -41,7 +43,7 @@ typedef struct
   unsigned items;       /* The number of items used to execute the test */
   unsigned slow;        /* A counter used to evaluate a stop condition  */
 
-  void * sw;            /* The implementation under test                */
+  struct sw * sw;       /* The implementation under test                */
 
 } relapsed_t;
 
@@ -49,25 +51,26 @@ typedef struct
 /* The structure to hold both Unit Tests and Test Suite */
 typedef struct
 {
-  unsigned id;           /* unique id                  */
-  char * name;           /* unique name                */
-  char * description;    /* description                */
+  unsigned id;            /* unique id                  */
+  char * name;            /* unique name                */
+  char * description;     /* description                */
 
-  runit_f * unit;        /* function to run Unit Test  */
-  rsuite_f * suite;      /* function to run Test Suite */
+  runit_f * unit;         /* function to run Unit Test  */
+  rsuite_f * suite;       /* function to run Test Suite */
 
-  relapsed_t ** results;   /* results of test execution  */
+  relapsed_t ** results;  /* results of test execution  */
 
 } rtest_t;
 
 
 /* Definition of a software implementation with all defined testing functions */
-typedef struct
+typedef struct sw
 {
-  char * pathname;       /* shared object with the implementation           */
-  rplugin_t * plugin;    /* where all the functions are implemented         */
-  char * name;           /* name of implementation as defined in the plugin */
-  rtest_t ** suite;      /* suite of tests implemented in the shared object */
+  char * pathname;        /* shared object with the implementation               */
+  rplugin_t * plugin;     /* where all the functions are implemented             */
+  char * name;            /* name of implementation as defined in the plugin     */
+  rtest_t ** suite;       /* suite implemented in the shared object and executed */
+  unsigned mark;          /* indicator of performances */
 
 } sw_t;
 
@@ -107,10 +110,11 @@ rtest_t * rsuite_find_at (unsigned i);
 rtest_t * rsuite_find_by_id (unsigned id);
 rtest_t * rsuite_find_by_name (char * name);
 
-char ** rsuite_names (void);
+char ** rsuite_all_names (void);
 rtest_t ** rsuite_all (void);
 rtest_t ** rsuite_all_n (unsigned n);
 rtest_t ** rsuite_all_rnd (void);
+char ** rsuite_names (rtest_t * suite []);
 
 rtest_t * rsuite_valid (char * id);
 void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv []);

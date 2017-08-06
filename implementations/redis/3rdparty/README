@@ -24,4 +24,5 @@ The following sources files were locally copied from latest git version:
   - zmalloc.c
   - zmalloc.h
 
-I have made a little fix in dict.c in order to compile the files as a standalone module.
+I have made a little fix in dict.c in order to compile the files as a standalone module
+and one in fmacros.h to fix a compilation warning

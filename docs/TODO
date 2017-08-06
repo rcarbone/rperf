@@ -2,17 +2,24 @@
 
 * implementare differenti datasets
 
-* Implementazioni C
+* C Implementations
   * fast_hash
-  * generic-c-hashmap
-  * hhash
-  * htable
-  * sglib
+  * generic-c-hashmap  (as in kbench)
+  * hhash              (as in kbench)
+  * htable             (as in kbench)
+  * judyarray          (as in kbench)
+  * judy-template      (as in kbench)
+  * ltable             (as in kbench)
+  * lua-table          (as in kbench)
+  * ruby-st            (as in kbench)
+  * sglib              (as in kbench)
+  * LuaHashMap         (as in kbench)
+  * perl               (as in kbench)
+  * ruby               (as in kbench)
   * Android https://github.com/CyanogenMod/android_system_core/tree/ics/libcutils
 
-* Implementazioni C++
+* C++ Implementations
   * sparsehash-C11
   * folly (AtomicHashMap)
   * llvm
   * SieveHash/AdaptiveHash/SmartHash by Ben Reeves
-

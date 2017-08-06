@@ -36,9 +36,21 @@ LDFLAGS   =
 all: Makefile plugin.c ut.c suite.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
 
 Makefile: Makefile.in ${TEMPLATES}
+	@ROOTDIR=`grep ROOTDIR Makefile`
 	@echo "=*= making $@ =*="
-	@cat $^ >> $@.tmp
-	@mv $@.tmp $@
+	@cat Makefile.in                                        > Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# Do not edit anything below, make creates it." >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# The project's root directory"                 >> Makefile
+	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${TEMPLATES}                                      >> Makefile
 
 plugin.c: README.c ${SHAREDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
@@ -193,7 +205,7 @@ help:
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # The fake targets
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-.PHONY: all clean distclean Makefile leaks vleaks
+.PHONY: all clean distclean leaks vleaks
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
