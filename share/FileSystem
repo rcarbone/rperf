@@ -1,12 +1,8 @@
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-
 # The project's source tree
-ROOTDIR    = /home/rocco/git/rcarbone/rperf
-
 SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
-# The project's source tree
+# The project's libraries
 RLIBCDIR   = ${ROOTDIR}/rlibc
 RHTDIR     = ${ROOTDIR}/rht
 
@@ -19,6 +15,3 @@ USRLIBS   += ${RLIBCLIB}
 INCLUDE   += -I${RHTDIR}
 RHTLIB     = ${RHTDIR}/librht.a
 USRLIBS   += ${RHTLIB}
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-

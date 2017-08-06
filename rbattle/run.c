@@ -326,7 +326,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
       arrclear (runners, rmelapsed);
 
       test ++;
-      if ((* test) -> name)
+      if (* test)
 	printf ("\n");
     }
 

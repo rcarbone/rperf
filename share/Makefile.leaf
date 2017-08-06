@@ -1,6 +1,4 @@
-# Do not edit anything below, make creates it.
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-
+# Dependency files for generation of Makefiles
 TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.leaf
 
 # Static library

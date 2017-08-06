@@ -47,7 +47,7 @@ C++
 10. emilib               done!   yes      C++ template
 11. mct                  done!   yes      C++ template
 12. Qt                   done!   no       C++ template    - use of private hash function must be implemented
-13. khash++
+13. khash++              done!   yes      C++ template
 14. etl
 15. llvm
 16. sgi
