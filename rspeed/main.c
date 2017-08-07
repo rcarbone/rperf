@@ -491,6 +491,8 @@ int main (int argc, char * argv [])
 	}
       else
 	printf ("%s: no test to run\n", progname);
+
+      rsuite_clear_results (suite);
       arrclear (suite, NULL);
     }
   else

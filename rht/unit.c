@@ -214,33 +214,3 @@ void runit_run (rtest_t * argv [], unsigned items)
   while (argv && * argv)
     runit_run_one (* argv ++, items, n, ++ seq, maxn);
 }
-
-
-/* Rendering functions */
-
-/* Max name length */
-unsigned rsuite_maxn (rtest_t * argv [])
-{
-  unsigned n = 0;
-  while (argv && * argv)
-    {
-      n = RMAX (n, strlen ((* argv) -> name));
-      argv ++;
-    }
-  return n;
-}
-
-
-/* Max description length */
-unsigned rsuite_maxd (rtest_t * argv [])
-{
-  unsigned n = 0;
-  while (argv && * argv)
-    {
-      n = RMAX (n, strlen ((* argv) -> description));
-      argv ++;
-    }
-  return n;
-}
-
-

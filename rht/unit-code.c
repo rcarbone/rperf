@@ -8,7 +8,7 @@ typedef struct rht rht_t;
 #include "datasets.h"
 
 
-/* === Implementation of Unit Tests === */
+/* === Implementation of the built-in Unit Tests === */
 
 
 /* Callback to iterate over the hash table */
@@ -34,8 +34,6 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
   return ht;
 }
 
-
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 unsigned alloc_free (unsigned argc)
 {

@@ -83,45 +83,44 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  robj_t ** objs   = mkobjs (items);            /* Initialize datasets needed by the suite */
-  unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
-  unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
-  unsigned t;                                   /* Counter for tests to run                */
+  robj_t ** objs  = mkobjs (items);            /* Initialize datasets needed by the suite */
+  unsigned loaded = arrlen (plugins);          /* Number of loaded implementations        */
+  unsigned maxn   = sw_maxname (plugins);      /* Length of longest implementation name   */
+  unsigned n      = rsuite_maxn (suite);       /* Longest test name                       */
+  unsigned d      = rsuite_maxd (suite);       /* Longest test description                */
+  unsigned tno    = arrlen (suite);
+  unsigned seq;                                 /* Counter for tests to run                */
   rtest_t ** test;                              /* Iterator over the table of tests to run */
-  unsigned n;
-  unsigned d;
-  unsigned tno;
 
   /* Nothing to do if no test or no plugins */
   if (! suite || ! plugins)
     return plugins;
 
-  printf ("Evaluate average wall-time elapsed repeating %u times the same test each acting with %u items\n", loops, items);
+  printf ("Evaluate time elapsed repeating %u times the same test, each acting with %u unique items\n", loops, items);
+  printf ("\n");
+  printf ("Dataset  : unique sequential string keys (char *) and generic pointers (void *) as values\n");
+  printf ("Times    : wall-time\n");
+  printf ("Rendering: results are sorted by less average time elapsed\n");
   printf ("\n");
 
-  n = rsuite_maxn (suite);
-  d = rsuite_maxd (suite);
-  tno = arrlen (suite);
-
   printf ("Tests to run: %u\n", tno);
-  t = 0;
+  seq = 0;
   test = suite;
   while (test && * test)
     {
-      printf ("  %u: %-*.*s (%-*.*s) - %u implementations\n", ++ t, n, n, (* test) -> name, d, d, (* test) -> description,
+      printf ("  %u: %-*.*s (%-*.*s) - %u implementations\n", ++ seq,
+	      n, n, (* test) -> name,
+	      d, d, (* test) -> description,
 	      sw_have (plugins, (* test) ->  name));
       test ++;
     }
-  printf ("\n");
-  printf ("Running each test #%u times each acting with #%u items\n", loops, items);
-  printf ("Dataset: unique serial strings keys and generic void pointers as values\n");
   printf ("\n");
 
   /*
    * Main loop:
    *   iterate over all the names of the given test suite in the same order they were passed
    */
-  t = 0;
+  seq = 0;
   test = suite;
   while (test && * test)
     {
@@ -138,7 +137,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	  if (verbose)
 	    print_test_info ("Running", (* test) -> name, loops, items, maxn);
 	  else
-	    print_dots ((* test) -> name, "Running", digits (tno), ++ t, n);
+	    print_dots ((* test) -> name, "Running", digits (tno), ++ seq, n);
 
 	  /*
 	   * Inner loop over all the loaded implementations:
@@ -165,9 +164,6 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	  /* Free the memory used by the test suite */
 	  safefree (order);
 
-	  /* Sort the results by less avg time */
-	  (* test) -> results = arrsort ((* test) -> results, sort_by_less_avg, relapsed_t);
-
 	  /* Show the results */
 	  if (verbose)
 	    print_results ((* test) -> results, (* test) -> name, maxn, loops, items);
@@ -180,8 +176,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   /* Display the results sorted by more performant application */
   hall_of_fame (suite, plugins, maxn, loops, items);
 
-  /* Display the final ranking */
-  print_ranking (plugins, suite, maxn);
+  /* Display the final evaluation */
+  print_ranking (suite, plugins, maxn);
 
   /* Free the datasets used by the test suite */
   rmobjs (objs);

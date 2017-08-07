@@ -41,14 +41,14 @@ void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
   printf ("\n");
   printf ("%*.*s%s\n", 30, 30, " ", "H a l l   o f   F a m e");
 
+  /* Sort the results by less avg time for better rendering */
+  rsuite_sort_results (suite);
+
   while (suite && * suite)
     {
       if (sw_have (plugins, (* suite) -> name))
 	{
 	  print_results ((* suite) -> results, (* suite) -> name, maxn, loops, items);
-#if defined(ROCCO)
-	  arrclear ((* suite) -> results, rmelapsed);
-#endif /* ROCCO */
 	  if (! * suite)
 	    printf ("\n");
 	}
@@ -57,13 +57,13 @@ void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
 }
 
 
+/* Eval the position of an implementation in the execution of a test */
 static int rank (char * name, relapsed_t * results [])
 {
   unsigned n = 0;
   while (results && * results)
     {
-      sw_t * sw = (* results) -> sw;
-      if (! strcmp (name, sw -> name))
+      if (! strcmp (name, ((* results) -> sw) -> name))
 	return n + 1;
       n ++;
       results ++;
@@ -99,19 +99,22 @@ static int sort_by_mark (const void * a, const void * b)
 
 
 /* Print the table of graduation */
-void print_ranking (sw_t * plugins [], rtest_t * suite [], unsigned maxn)
+void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 {
   char ** names = rsuite_names (suite);
-  char ** name = names;
-  unsigned max = rsuite_maxn (suite);
+  char ** name  = names;
+  unsigned max  = rsuite_maxn (suite);
   sw_t ** sw;                           /* iterator over all the implementations */
   unsigned seq;
+
+  /* Sort the results by less avg time for good evaluation of order arrival */
+  rsuite_sort_results (suite);
 
   /* Update evaluation of performances */
   sw = plugins;
   while (sw && * sw)
     {
-      /* Evaluate the quality of the implementation after ran the suite */
+      /* Evaluate the mark to be assigned to the implementations based on the results of the executions of the tests */
       (* sw) -> mark = eval_mark (* sw, suite);
       sw ++;
     }
@@ -122,7 +125,7 @@ void print_ranking (sw_t * plugins [], rtest_t * suite [], unsigned maxn)
   printf ("\n");
 
   /* Print the header */
-  printf ("      %-*.*s          Position\n", maxn, maxn, " ");
+  printf ("      %-*.*s          Arrival Order per each test executed\n", maxn, maxn, " ");
   printf ("      %-*.*s | mark ", maxn, maxn, "Implementation");
   while (name && * name)
     printf ("| %-*.*s ", max, max, * name ++);

@@ -117,10 +117,12 @@ rtest_t ** rsuite_all_rnd (void);
 char ** rsuite_names (rtest_t * suite []);
 
 rtest_t * rsuite_valid (char * id);
-void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv []);
-
 unsigned rsuite_maxn (rtest_t * argv []);
 unsigned rsuite_maxd (rtest_t * argv []);
+
+void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv []);
+void rsuite_clear_results (rtest_t * suite []);
+void rsuite_sort_results (rtest_t * suite []);
 
 
 /* Public functions in file elapsed.c */
