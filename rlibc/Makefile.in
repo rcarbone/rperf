@@ -17,4 +17,3 @@ INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   =
-

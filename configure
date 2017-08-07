@@ -1,20 +1,29 @@
 #!/bin/sh
 #
-# This script will attempt to fix the development rperf's source tree
-# until a robust and safe build system will be in effect
+# This script will attempt to configure the development source tree
+# by generation of Makefiles in each subdirectory where a template
+# Makefile.in file is found.
+#
+# It is not a robust and safe build system but I am only on a Debian Systems
+# and I am not currently interested to run the software on a different platform,
+# so the compilation only depends on the root directory on the filesystem
+# where the software has been pulled from git.
+#
+# May be things can be changed in a near future.
 #
 
 rootdir=`pwd`
-srcdir=share
+srcdir=etc
 
-echo "Configuring using ROOTDIR = $rootdir"
+echo "Configuring for $rootdir ..."
 
 makefiles=`find . -name Makefile.in`
-for m in $makefiles; do
-  d=`dirname $m`
+for file in $makefiles; do
+  d=`dirname $file`
 
-  cat $m                                                 > $d/Makefile
+  cat $file                                              > $d/Makefile
 
+  echo                                                  >> $d/Makefile
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
   echo "# Do not edit anything below, make creates it." >> $d/Makefile
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
@@ -22,9 +31,7 @@ for m in $makefiles; do
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
   echo "# The project's root directory"                 >> $d/Makefile
   echo "ROOTDIR    = $rootdir"                          >> $d/Makefile
-  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-  echo                                                  >> $d/Makefile
-  cat $srcdir/FileSystem                                >> $d/Makefile
+  echo "ETCDIR     = \${ROOTDIR}/etc"                   >> $d/Makefile
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
   echo                                                  >> $d/Makefile
 
@@ -39,13 +46,25 @@ for m in $makefiles; do
     plugin=`echo $d | grep implementations`
     if [ "$plugin" != "" ]; then
 
+      cat $srcdir/FileSystem                                >> $d/Makefile
+      echo                                                  >> $d/Makefile
+      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+      echo                                                  >> $d/Makefile
       cat $srcdir/Makefile.plugins                          >> $d/Makefile
       echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+      echo                                                  >> $d/Makefile
       cat $srcdir/LIBS                                      >> $d/Makefile
 
     else
 
+      cat $srcdir/FileSystem                                >> $d/Makefile
+      echo                                                  >> $d/Makefile
+      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+      echo                                                  >> $d/Makefile
       cat $srcdir/Makefile.leaf                             >> $d/Makefile
+      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+      echo                                                  >> $d/Makefile
+      cat $srcdir/LIBS                                      >> $d/Makefile
 
     fi
   fi

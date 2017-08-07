@@ -1,4 +1,4 @@
-TEMPLATES = ${SHAREDIR}/FileSystem ${SHAREDIR}/Makefile.plugins ${SHAREDIR}/LIBS
+TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.plugins ${ETCDIR}/LIBS
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
@@ -46,21 +46,23 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo "# The project's root directory"                 >> Makefile
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo -n "ETCDIR   = $$"                               >> Makefile
+	@echo "{ROOTDIR}/etc"                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 	@cat ${TEMPLATES}                                      >> Makefile
 
-plugin.c: README.c ${SHAREDIR}/plugin.c
+plugin.c: README.c ${ETCDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-ut.c: ${SHAREDIR}/ut.c
+ut.c: ${ETCDIR}/ut.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-suite.c: ${SHAREDIR}/suite.c
+suite.c: ${ETCDIR}/suite.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 

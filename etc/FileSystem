@@ -1,5 +1,4 @@
 # The project's source tree
-SHAREDIR   = ${ROOTDIR}/share
 INSTALLDIR = ${ROOTDIR}/plugins
 
 # The project's libraries

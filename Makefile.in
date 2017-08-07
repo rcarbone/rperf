@@ -4,4 +4,3 @@ SUBDIRS += rht
 SUBDIRS += rspeed
 SUBDIRS += rbattle
 SUBDIRS += implementations
-
