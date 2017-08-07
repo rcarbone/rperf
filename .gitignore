@@ -9,6 +9,11 @@ implementations/*/suite
 implementations/*/*/suite
 implementations/*/*/*/suite
 
+# Automatically generated symlinks
+rht/ht-internal.h
+rht/tommytypes.h
+rht/uthash.h
+
 # Automatically generated C sources
 implementations/*/plugin.c
 implementations/*/*/plugin.c

@@ -70,3 +70,10 @@ for file in $makefiles; do
   fi
 
 done
+
+# Create symlinks
+(cd rht;
+ ln -sf ../implementations/libevent/3rdparty/ht-internal.h . &&
+ ln -sf ../implementations/tommyds/3rdparty/tommytypes.h .   &&
+ ln -sf ../implementations/uthash/3rdparty/uthash.h .
+)
