@@ -1,0 +1,4 @@
+1. tommyds (all)               - fix clear
+2. hashit (chain/open/overflow - SIGSEGV running kbench scenario - Need more investigation
+3. libdynamic                  - implement foreach/keys/vals
+4. eastl                       - fix Mismatched free() / delete / delete []

@@ -52,7 +52,7 @@ static unsigned chainhash_size (rht_t * ht)
 
 rht_t * rht_alloc (unsigned size)
 {
-  return chainhash_init (rht, size);
+  return chainhash_init (rht, size ? size : 1);      /* zero is not allowed */
 }
 
 

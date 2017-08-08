@@ -89,6 +89,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   unsigned n      = rsuite_maxn (suite);       /* Longest test name                       */
   unsigned d      = rsuite_maxd (suite);       /* Longest test description                */
   unsigned tno    = arrlen (suite);
+  unsigned done   = 0;                          /* Counter of tests executed               */
   unsigned seq;                                 /* Counter for tests to run                */
   rtest_t ** test;                              /* Iterator over the table of tests to run */
 
@@ -157,6 +158,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 
 		  /* Save the results for later sorting/rendering */
 		  (* test) -> results = arrmore ((* test) -> results, result, relapsed_t);
+
+		  done ++;
 		}
 	    }
 	  t2 = nswall ();
@@ -174,10 +177,12 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
     }
 
   /* Display the results sorted by more performant application */
-  hall_of_fame (suite, plugins, maxn, loops, items);
+  if (done)
+    hall_of_fame (suite, plugins, maxn, loops, items);
 
   /* Display the final evaluation */
-  print_ranking (suite, plugins, maxn);
+  if (done)
+    print_ranking (suite, plugins, maxn);
 
   /* Free the datasets used by the test suite */
   rmobjs (objs);

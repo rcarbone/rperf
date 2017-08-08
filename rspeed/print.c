@@ -38,7 +38,7 @@ void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
 		   unsigned maxn, unsigned loops, unsigned items)
 {
   /* Line separator */
-  printf ("\n");
+  printf ("\n\n");
   printf ("%*.*s%s\n", 30, 30, " ", "H a l l   o f   F a m e");
 
   /* Sort the results by less avg time for better rendering */
@@ -76,14 +76,16 @@ static int rank (char * name, relapsed_t * results [])
 static unsigned eval_mark (sw_t * sw, rtest_t * suite [])
 {
   unsigned mark = 0;
+
   /* Each implementation has its own table of results (that here should be already sorted) */
   rtest_t ** tests = suite;
   while (tests && * tests)
     {
       /* Number of tests executed over this implementation */
       unsigned tno = arrlen ((* tests) -> results);
-
-      mark += tno - rank (sw -> name, (* tests) -> results) + 1;
+      int r = rank (sw -> name, (* tests) -> results);
+      if (r != -1)
+	mark += tno - rank (sw -> name, (* tests) -> results) + 1;
 
       tests ++;
     }
@@ -114,13 +116,15 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
   sw = plugins;
   while (sw && * sw)
     {
+      // if (sw_have (plugins, (* sw) -> name))
+
       /* Evaluate the mark to be assigned to the implementations based on the results of the executions of the tests */
       (* sw) -> mark = eval_mark (* sw, suite);
       sw ++;
     }
 
   /* Line separator */
-  printf ("\n");
+  printf ("\n\n");
   printf ("%*.*s%s\n", 30, 30, " ", "F i n a l   E v a l u a t i o n");
   printf ("\n");
 
@@ -144,25 +148,35 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
       /* The table of tests for this implementation */
       rtest_t ** tests = suite;
 
-      printf ("%4u: %-*.*s | %4u |", ++ seq, maxn, maxn, (* sw) -> name, (* sw) -> mark);
-
-      while (tests && * tests)
+      if ((* sw) -> mark)
 	{
-	  /* Find the position of the test in the table of results */
-	  char fmt [1024];
-	  char str [1014];
+	  printf ("%4u: %-*.*s | %4u |", ++ seq, maxn, maxn, (* sw) -> name, (* sw) -> mark);
 
-	  sprintf (fmt, " %%%uu |", max);
-	  sprintf (str, fmt, rank ((* sw) -> name, (* tests) -> results));
-	  printf ("%s", str);
+	  while (tests && * tests)
+	    {
+	      /* Find the position of the test in the table of results */
+	      char fmt [1024];
+	      char str [1014];
 
-	  tests ++;
+	      if (rplugin_implement ((* sw) -> plugin, (* tests) -> name))
+		{
+		  sprintf (fmt, " %%%uu |", max);
+		  sprintf (str, fmt, rank ((* sw) -> name, (* tests) -> results));
+		}
+	      else
+		{
+		  sprintf (fmt, " %%%us |", max);
+		  sprintf (str, fmt, "---");
+		}
+	      printf ("%s", str);
+
+	      tests ++;
+	    }
 	}
 
-      sw ++;
-
-      if (* sw)
+      if ((* sw) -> mark)
 	printf ("\n");
+
+      sw ++;
     }
-  printf ("\n");
 }

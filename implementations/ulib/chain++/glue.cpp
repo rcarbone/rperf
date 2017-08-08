@@ -26,7 +26,7 @@ typedef ulib::chain_hash_map <char *, void *, hashfunc> rht_t;
 
 rht_t * rht_alloc (unsigned size)
 {
-  return new rht_t (size);
+  return new rht_t (size ? size : 1);   /* zero is not allowed */
 }
 
 
