@@ -26,50 +26,6 @@ static char * utoa (unsigned n)
 }
 
 
-#if defined(ROCCO)
-/*
- * Pseudo random number generator.
- *
- * Note that using (rand() % max) in Visual C results in totally bogus values,
- * with *strong* cache effects when accessing elements in a not really random order.
- * This happen because Visual C uses a simple linear congruential generator with only 32 bits.
- */
-static uint64_t SEED = 0;
-static unsigned rnd (unsigned max)
-{
-  unsigned r;
-  uint64_t divider;
-
- loop:
-
-  /*
-   * linear congruential generator from MMIX by Donald Knuth
-   * http://en.wikipedia.org/wiki/Linear_congruential_generator
-   */
-
-#ifdef _MSC_VER
-
-  divider = 0xFFFFFFFFFFFFFFFF / max;
-  SEED = SEED * 6364136223846793005 + 1442695040888963407;
-
-#else
-
-  divider = 0xFFFFFFFFFFFFFFFFULL / max;
-  SEED = SEED * 6364136223846793005LL + 1442695040888963407LL;
-
-#endif /* _MSC_VER */
-
-  r = (unsigned) (SEED / divider);
-
-  /* it may happen as the divider is approximated down */
-  if (r >= max)
-    goto loop;
-
-  return r;
-}
-#endif /* ROCCO */
-
-
 robj_t * mkobj (unsigned key, unsigned val, unsigned miss, unsigned dense, unsigned sparse)
 {
   robj_t * obj = calloc (1, sizeof (* obj));

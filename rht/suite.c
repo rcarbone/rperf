@@ -1,5 +1,5 @@
 /*
- * All the Test Suite are here grouped together in a static table.
+ * All the Test Suite are here, grouped together in a static table.
  *
  * Each implementation of a single Test Suite operates with 'n' different unique keys.
  */
@@ -8,8 +8,6 @@
 /* Project headers */
 typedef struct rht rht_t;
 #include "rht.h"
-
-
 #include "sargs.h"
 #include "rwall.h"
 #include "rctype.h"
@@ -40,7 +38,7 @@ rsuite_f rsuite_replace;
 rsuite_f rsuite_kbench;
 
 
-/* All the Test Suite in an array */
+/* All the Test Suite in a static array */
 static rtest_t rsuite_builtins [] =
 {
   { RSUITE_GROW,    "grow",    "Add items to an empty container", NULL, rsuite_grow    },
@@ -103,14 +101,14 @@ rtest_t * rsuite_next_rnd (void)
 }
 
 
-/* Looukup for an Test Suite by index */
+/* Looukup for a Test Suite by index */
 rtest_t * rsuite_find_at (unsigned i)
 {
   return i < RSUITE_NO ? & rsuite_builtins [i] : NULL;
 }
 
 
-/* Looukup for an Test Suite by its unique id */
+/* Looukup for a Test Suite by its unique id */
 rtest_t * rsuite_find_by_id (unsigned id)
 {
   unsigned i;
@@ -121,7 +119,7 @@ rtest_t * rsuite_find_by_id (unsigned id)
 }
 
 
-/* Looukup for an Test Suite by its unique name */
+/* Looukup for a Test Suite by its unique name */
 rtest_t * rsuite_find_by_name (char * name)
 {
   unsigned i;
@@ -220,7 +218,7 @@ unsigned rsuite_maxd (rtest_t * argv [])
 }
 
 
-/* Run the Test Suite included in argv[] */
+/* Run the Test Suite included in suite[] */
 void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv [])
 {
   unsigned maxn = rsuite_maxn (suite);
@@ -232,7 +230,7 @@ void rsuite_run (rtest_t * suite [], unsigned argc, robj_t * argv [])
 }
 
 
-/* Clear the results of a suite execution */
+/* Clear the results of a Test Suite execution */
 void rsuite_clear_results (rtest_t * suite [])
 {
   while (suite && * suite)
@@ -240,7 +238,7 @@ void rsuite_clear_results (rtest_t * suite [])
 }
 
 
-/* Sort the results of a suite execution by less avg time */
+/* Sort the results of a Test Suite execution by less avg time */
 void rsuite_sort_results (rtest_t * suite [])
 {
   while (suite && * suite)

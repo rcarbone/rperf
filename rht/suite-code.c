@@ -126,7 +126,7 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 /* Add if not found, delete otherwise */
 rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
 {
-  rht_t * ht = populate (argc, argv);
+  rht_t * ht = populate (0, NULL);
   rtime_t t1;
   rtime_t t2;
   unsigned i;

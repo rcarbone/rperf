@@ -46,11 +46,4 @@ void rht_print_version (void)
   printf ("Compiled by CC on %s : %s\n", __DATE__, __TIME__);
 #endif /* __GNUC__ */
   printf ("%s-%s-%s (%s)\n", name . machine, name . sysname, name . release, name . nodename);
-
-#if defined(ROCCO)
-  printf ("\nC Pre-processor defines:\n");
-
-  /* Operating Systems */
-  printf ("\n\n");
-#endif /* ROCCO */
 }

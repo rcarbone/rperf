@@ -1,8 +1,8 @@
 /*
- * All the Unit Tests are here grouped together in a static table.
+ * All the Unit Tests are here, grouped together in a static table.
  *
- * Each implementation of a single Unit test operates with 'n' different unique keys and
- * all are based on the assert(3) to check for assertions.
+ * Each implementation of a single Unit test operates with 'n' different unique keys
+ * and all are based on the assert(3) to check for assertions.
  */
 
 

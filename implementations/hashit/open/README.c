@@ -1,9 +1,11 @@
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+/* kbench cannot be run due to SIGSEGV */
+
 /* Plugin declarations */
 const char * variables   = "library module author description url";
-const char * functions   = "boot halt grow hit miss delete replace kbench";
+const char * functions   = "boot halt grow hit miss delete replace";
 
 /* Plugin definitions */
 const char * library     = "hashit";

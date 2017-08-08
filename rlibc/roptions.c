@@ -94,7 +94,6 @@ void usage_item (struct option * options, unsigned n, unsigned val, char * descr
 void _version_ (char * progname, char * version)
 {
   printf ("%s, ver. %s built on %s %s\n", progname, version, __DATE__, __TIME__);
-  printf ("\n");
   fflush (stdout);
 }
 
