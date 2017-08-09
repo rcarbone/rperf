@@ -125,14 +125,15 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 
 char ** rht_keys (rht_t * ht)
 {
-  char ** keys = calloc (rht_count (ht) * 2 + 1, sizeof (char *));
+  char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
   unsigned i = 0;
   for (i = 0; i < ht -> elements_capacity; i ++)
     {
       dynobj_t * obj = map_element (ht, i);
-      if (obj && ! equal_cb (ht, map_element (ht, i), ht -> element_empty))
+      if (! equal_cb (ht, obj, ht -> element_empty))
 	keys [i ++] = obj -> key;
     }
+  printf ("ROCCO: n = %u - k = %u\n", rht_count (ht), valen (keys));
   return keys;
 }
 

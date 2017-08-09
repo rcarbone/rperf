@@ -14,10 +14,9 @@ typedef struct htable rht_t;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* For simplicity's sake, say hash value is contents of elem */
-static size_t my_rehash (const void * elem, void * unused)
+static size_t my_rehash (const void * obj, void * unused)
 {
-  return * (size_t *) elem;
+  return rht_python_hash (((robj_t *) obj) -> skey);
 }
 
 
@@ -40,7 +39,7 @@ static bool cmp_key (const void * val, void * key)
 rht_t * rht_alloc (unsigned size)
 {
   rht_t * ht = calloc (1, sizeof (* ht));
-  htable_init_sized (ht, my_rehash, NULL, size);
+  htable_init (ht, my_rehash, NULL);
   return ht;
 }
 

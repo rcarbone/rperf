@@ -7,10 +7,10 @@ RHTDIR     = ${ROOTDIR}/rht
 
 # rlibc
 INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+RLIBCLIB   = ${RLIBCDIR}/*.o
 USRLIBS   += ${RLIBCLIB}
 
 # rht
 INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
+RHTLIB     = ${RHTDIR}/*.o
 USRLIBS   += ${RHTLIB}

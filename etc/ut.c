@@ -267,6 +267,9 @@ int main (int argc, char * argv [])
   if (! loops)
     loops = LOOPS;
 
+  if (included || excluded)
+    choice = OPT_RUN;
+
   /* Build a subset and go! */
   tests = build_tests (progname, included, excluded);
   if (tests)

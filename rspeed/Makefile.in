@@ -1,12 +1,15 @@
 # The name of the games
-LIB       = rspeed
+# LIB       = rspeed
 PROGRAM   = rspeed
 
 # C source files
 MAINSRCS += main.c
 MAINSRCS += fake-rht.c
-LIBSRCS  += run.c
-LIBSRCS  += print.c
+MAINSRCS  += run.c
+MAINSRCS  += print.c
+
+# LIBSRCS  += run.c
+# LIBSRCS  += print.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =

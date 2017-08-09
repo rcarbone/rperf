@@ -1,10 +1,11 @@
 # The name of the games
-LIB       = rht
-PROGRAM   = rtest
+# LIB       = rht
+# PROGRAM   = rtest
 
 # C source files
-MAINSRCS += main.c
-MAINSRCS += stub-api.c
+# MAINSRCS += main.c
+# MAINSRCS += stub-api.c
+
 LIBSRCS  += version.c
 LIBSRCS  += datasets.c
 LIBSRCS  += unit.c

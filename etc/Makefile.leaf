@@ -2,10 +2,11 @@
 TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.leaf
 
 # Static library
-STLIB     = lib${LIB}.a
+# STLIB     = lib${LIB}.a
 
 # All the targets
-TARGETS   = ${STLIB} ${PROGRAM}
+# TARGETS   = ${STLIB} ${PROGRAM}
+TARGETS   = ${OBJS} ${PROGRAM}
 
 # Source, object and depend files
 LIBOBJS   = ${LIBSRCS:%.c=%.o}
@@ -20,17 +21,17 @@ CC        = gcc
 C++       = g++
 AR        = ar
 LD        = gcc
-OPTIMIZE  = -O3
+OPTIMIZE  = -O3 -flto -fuse-linker-plugin
 CFLAGS   += -g -Wall
 CFLAGS   += ${OPTIMIZE}
 CFLAGS   += ${INCLUDES}
-CFLAGS   += -fPIC
+# CFLAGS   += -fPIC
 CFLAGS   += -fno-diagnostics-color
 C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
-LDFLAGS   =
+LDFLAGS   = ${OPTIMIZE}
 
-# The main target is responsible to make all the targets
+# The main target is responsible to make all the programs
 all: Makefile ${TARGETS}
 
 Makefile: Makefile.in ${TEMPLATES}
