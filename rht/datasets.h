@@ -31,10 +31,14 @@ typedef struct robj
   unsigned   rand_2;
   unsigned   rand_3;
 
+  unsigned   ukbench;
+
   char     * skey;
   char     * smiss;
   char     * skey_2;
   char     * skey_3;
+
+  char     * skbench;
 
   robj_t   * pkey;
 
@@ -65,7 +69,7 @@ extern "C" {
 
 
 /* Public functions */
-robj_t * mkobj (unsigned key, unsigned val, unsigned miss, unsigned dense, unsigned sparse);
+robj_t * mkobj (unsigned key, unsigned val, unsigned miss, unsigned dense, unsigned sparse, unsigned kbench);
 void rmobj (robj_t * obj);
 robj_t ** mkobjs (unsigned argc);
 void rmobjs (robj_t * argv []);

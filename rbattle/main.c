@@ -39,8 +39,8 @@ typedef enum
   OPT_LIST_TESTS   = 's',    /* List Test Suite     */
 
   /* Finger */
-  OPT_ADD_TEST     = 't',    /* Include Test        */
-  OPT_DEL_TEST     = 'T',    /* Exclude Test        */
+  OPT_ADD_TEST     = 'i',    /* Include Test        */
+  OPT_DEL_TEST     = 'e',    /* Exclude Test        */
 
   /* Execute */
   OPT_EXECUTE      = 'x',    /* Execute Test Suite  */

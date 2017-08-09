@@ -26,7 +26,8 @@ static char * utoa (unsigned n)
 }
 
 
-robj_t * mkobj (unsigned key, unsigned val, unsigned miss, unsigned dense, unsigned sparse)
+robj_t * mkobj (unsigned key, unsigned val, unsigned miss,
+		unsigned dense, unsigned sparse, unsigned kbench)
 {
   robj_t * obj = calloc (1, sizeof (* obj));
 
@@ -37,15 +38,17 @@ robj_t * mkobj (unsigned key, unsigned val, unsigned miss, unsigned dense, unsig
   obj -> umiss_2 = obj -> ukey_2 + 1;
   obj -> ukey_3  = sparse;
   obj -> umiss_3 = obj -> ukey_3 + 1;
+  obj -> ukbench = kbench;
 
   obj -> rand_2  = obj -> ukey_2;
   obj -> rand_3  = obj -> ukey_3;
 
   /* String Keys */
-  obj -> skey   = strdup (utoa (obj -> ukey));
-  obj -> smiss  = strdup (utoa (obj -> umiss));
-  obj -> skey_2 = strdup (utoa (obj -> ukey_2));
-  obj -> skey_3 = strdup (utoa (obj -> ukey_3));
+  obj -> skey    = strdup (utoa (obj -> ukey));
+  obj -> smiss   = strdup (utoa (obj -> umiss));
+  obj -> skey_2  = strdup (utoa (obj -> ukey_2));
+  obj -> skey_3  = strdup (utoa (obj -> ukey_3));
+  obj -> skbench = strdup (utoa (obj -> ukbench));
 
   /* Pointer Key */
   obj -> pkey = obj;
@@ -76,20 +79,25 @@ void rmobj (robj_t * obj)
     free (obj -> skey_2);
   if (obj -> skey_3)
     free (obj -> skey_3);
+  if (obj -> skbench)
+    free (obj -> skbench);
   if (obj -> sval)
     free (obj -> sval);
   free (obj);
 }
 
 
+/* Initializes the array with the natural numbers from 1 to argc */
 robj_t ** mkobjs (unsigned argc)
 {
   robj_t ** argv = calloc (argc + 1, sizeof (* argv));
   unsigned i;
 
-  /* Initializes the array with the natural numbers from 1 to argc */
+  srand48 (11);
+
   for (i = 0; i < argc; i ++)
-    argv [i] = mkobj (i + 1, i + 1, argc + i, 0x80000000 + i * 2, 0xffffffff / argc * i);
+    argv [i] = mkobj (i + 1, i + 1, argc + i, 0x80000000 + i * 2, 0xffffffff / argc * i,
+		      (argc * drand48 () / 4) * 271828183u);
   argv [i] = NULL;
 
 #if defined(ROCCO)

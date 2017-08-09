@@ -50,7 +50,7 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rht_get (ht, argv [i] -> skey);
-      if (found && found == argv [i] -> pval)
+      if (found && found == argv [i] -> pval)           /* dereference */
 	hit ++;
     }
   t2 = nswall ();
@@ -77,7 +77,7 @@ rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
 }
 
 
-/* Remove and dereference all the items */
+/* Remove all the items */
 rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
@@ -108,7 +108,7 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rht_get (ht, argv [i] -> skey);
-      if (found && found == argv [i] -> pval)
+      if (found && found == argv [i] -> pval)           /* dereference */
 	{
 	  rht_del (ht, argv [i] -> skey);
 	  found = rht_get (ht, argv [i] -> smiss);
@@ -123,7 +123,7 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
 }
 
 
-/* Add if not found, delete otherwise */
+/* Add if not found, delete otherwise - need an empty container and non-unique keys to be fully operable */
 rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (0, NULL);
@@ -134,11 +134,11 @@ rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     {
-      found = rht_get (ht, argv [i] -> skey);
-      if (found && found == argv [i] -> pval)
-	rht_del (ht, argv [i] -> skey);
+      found = rht_get (ht, argv [i] -> skbench);
+      if (found && found == argv [i] -> pval)           /* dereference */
+	rht_del (ht, argv [i] -> skbench);
       else
-	rht_set (ht, argv [i] -> smiss, argv [i] -> pval);
+	rht_set (ht, argv [i] -> skbench, argv [i] -> pval);
     }
   t2 = nswall ();
   rht_free (ht);

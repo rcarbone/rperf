@@ -31,7 +31,7 @@ typedef enum
   /* Test Suite */
 
   /* List */
-  OPT_LIST_TESTS   = 't',    /* List Test Suite     */
+  OPT_LIST_TESTS   = 's',    /* List Test Suite     */
 
   /* Finger */
   OPT_ADD_TEST     = 'i',    /* Include Test        */
