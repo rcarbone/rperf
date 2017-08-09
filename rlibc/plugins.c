@@ -62,7 +62,7 @@ static rplugin_symbol_t * mkfunction (void * handle, char * name)
 /* Add an item to the table of symbols */
 static rplugin_symbol_t ** addsymbol (rplugin_symbol_t * argv [], rplugin_symbol_t * s)
 {
-  return (rplugin_symbol_t **) vamore ((void **) argv, s);
+  return arrmore (argv, s, rplugin_symbol_t);
 }
 
 
@@ -111,7 +111,7 @@ static char ** rls_files (char * dir)
 
 /* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
 
-/* Allocate and initialize a new descriptor to hold info about a plugin */
+/* Allocate and initialize a new descriptor to keep info about a plugin */
 rplugin_t * rplugin_mk (char * path, int * code, char ** error)
 {
   rplugin_t * p = NULL;
@@ -199,7 +199,7 @@ rplugin_t * rplugin_mk (char * path, int * code, char ** error)
 }
 
 
-/* Free allocated memory and resources used to hold a plugin descriptor */
+/* Free allocated memory and resources used to keep a plugin descriptor */
 rplugin_t * rplugin_rm (rplugin_t * p)
 {
   if (p)

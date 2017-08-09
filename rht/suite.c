@@ -14,39 +14,21 @@ typedef struct rht rht_t;
 #include "support.h"
 #include "datasets.h"
 #include "rtest.h"
-
-
-/* The local identifiers for the Test Suite to run (indexed by keys) */
-typedef enum
-{
-  RSUITE_GROW    = 0x01,  /* Populate an empty container                        */
-  RSUITE_HIT     = 0x02,  /* Populate and search all existing items one-by-one  */
-  RSUITE_MISS    = 0x03,  /* Populate and search for non existing items         */
-  RSUITE_DELETE  = 0x04,  /* Populate and delete all existing items one-by-one  */
-  RSUITE_REPLACE = 0x05,  /* Populate and replace all existing items one-by-one */
-  RSUITE_KBENCH  = 0x06,  /* Delete if found, add otherwise items one-by-one    */
-
-} rsuite_id_t;
-
-
-/* The implementation elsewhere defined */
-rsuite_f rsuite_grow;
-rsuite_f rsuite_hit;
-rsuite_f rsuite_miss;
-rsuite_f rsuite_delete;
-rsuite_f rsuite_replace;
-rsuite_f rsuite_kbench;
+#include "rsuite.h"
 
 
 /* All the Test Suite in a static array */
 static rtest_t rsuite_builtins [] =
 {
-  { RSUITE_GROW,    "grow",    "Add items to an empty container", NULL, rsuite_grow    },
-  { RSUITE_HIT,     "hit",     "Find existing items",             NULL, rsuite_hit     },
-  { RSUITE_MISS,    "miss",    "Search non existing items",       NULL, rsuite_miss    },
-  { RSUITE_DELETE,  "delete",  "Delete existing items",           NULL, rsuite_delete  },
-  { RSUITE_REPLACE, "replace", "Replace existing items",          NULL, rsuite_replace },
-  { RSUITE_KBENCH,  "kbench",  "Delete if found, add otherwise",  NULL, rsuite_kbench  },
+  { RSUITE_GROW_SEQ, "grow_seq", "Add items to an empty container", NULL, rsuite_grow_seq },
+  { RSUITE_GROW_RND, "grow_rnd", "Add items to an empty container", NULL, rsuite_grow_rnd },
+  { RSUITE_HIT_SEQ,  "hit_seq",  "Find existing items",             NULL, rsuite_hit_seq  },
+  { RSUITE_HIT_RND,  "hit_rnd",  "Find existing items",             NULL, rsuite_hit_rnd  },
+  { RSUITE_MISS_SEQ, "miss_seq", "Search non existing items",       NULL, rsuite_miss_seq },
+  { RSUITE_MISS_RND, "miss_rnd", "Search non existing items",       NULL, rsuite_miss_seq },
+  { RSUITE_DELETE,   "delete",   "Delete existing items",           NULL, rsuite_delete   },
+  { RSUITE_REPLACE,  "replace",  "Replace existing items",          NULL, rsuite_replace  },
+  { RSUITE_KBENCH,   "kbench",   "Delete if found, add otherwise",  NULL, rsuite_kbench   },
 };
 #define RSUITE_NO (sizeof (rsuite_builtins) / sizeof (* rsuite_builtins))
 

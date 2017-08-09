@@ -100,7 +100,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   printf ("Evaluate time elapsed repeating %u times the same test, each acting with %u unique items\n", loops, items);
   printf ("\n");
   printf ("Dataset  : unique sequential string keys (char *) and generic pointers (void *) as values\n");
-  printf ("Times    : wall-clock time get at nanosecs resolution and rendered in a more human-readable format\n");
+  printf ("Times    : wall-clock time evaluated at nsecs resolution and rendered in a more human-readable format\n");
   printf ("Rendering: results are sorted by less average time elapsed\n");
   printf ("\n");
 

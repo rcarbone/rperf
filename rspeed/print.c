@@ -116,8 +116,6 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
   sw = plugins;
   while (sw && * sw)
     {
-      // if (sw_have (plugins, (* sw) -> name))
-
       /* Evaluate the mark to be assigned to the implementations based on the results of the executions of the tests */
       (* sw) -> mark = eval_mark (* sw, suite);
       sw ++;

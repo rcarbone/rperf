@@ -10,7 +10,7 @@
 
 
 /* Program name/version */
-#define _NAME_      "Run builtin tests over this implementation"
+#define _NAME_      "Run builtin Test Scenarios"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */

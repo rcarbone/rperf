@@ -35,10 +35,8 @@ static void rmtest (void * _t)
   if (! t)
     return;
 
-  if (t -> name)
-    free (t -> name);
-  if (t -> description)
-    free (t -> description);
+  safefree (t -> name);
+  safefree (t -> description);
   free (t);
 }
 
@@ -65,14 +63,16 @@ static sw_t * mksw (char * pathname, bool verbose)
 
       while (f && * f)
 	{
-	  /* ROCCO: settare correttamente anche la description */
-	  sw -> suite = arrmore (sw -> suite, mktest (i ++, * f, "description", sw_func (sw, * f)), rtest_t);
+	  /* ROCCO: Set to a suitable value also the description */
+	  sw -> suite = arrmore (sw -> suite, mktest (i ++, * f, "XXX-DESCRIPTION-XXX", sw_func (sw, * f)), rtest_t);
 	  f ++;
 	}
       argsclear (funcs);
     }
   else
     {
+      if (verbose)
+	printf ("Cannot load: %s\n", buffer);
       safefree (buffer);
       sw = rmsw (sw);
     }
@@ -86,10 +86,8 @@ static sw_t * rmsw (sw_t * sw)
   if (! sw)
     return NULL;
 
-  if (sw -> pathname)
-    free (sw -> pathname);
-  if (sw -> name)
-    free (sw -> name);
+  safefree (sw -> pathname);
+  safefree (sw -> name);
   rplugin_rm (sw -> plugin);
   arrclear (sw -> suite, rmtest);
   free (sw);
@@ -115,10 +113,9 @@ unsigned sw_maxname (sw_t * sw [])
 unsigned sw_have (sw_t * sw [], char * name)
 {
   unsigned n = 0;
-  if (name)
-    while (sw && * sw)
-      if (sw_func (* sw ++, name))
-	n ++;
+  while (sw && * sw)
+    if (sw_func (* sw ++, name))
+      n ++;
   return n;
 }
 
@@ -126,7 +123,7 @@ unsigned sw_have (sw_t * sw [], char * name)
 /* Check if an implementation has defined a function with a given name */
 rplugin_f * sw_func (sw_t * sw, char * name)
 {
-  if (sw && sw -> plugin && sw -> plugin -> funs)
+  if (name && sw && sw -> plugin && sw -> plugin -> funs)
     {
       rplugin_symbol_t ** f = sw -> plugin -> funs;
       while (f && * f)
@@ -209,10 +206,6 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
 	{
 	  if (verbose)
 	    printf ("Ok\n");
-#if defined(ROCCO)
-	  else
-	    printf (".");
-#endif /* ROCCO */
 
           done = arrmore (done, sw, sw_t);
 	}
@@ -220,10 +213,6 @@ sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
 	{
 	  if (verbose)
 	    printf ("No\n");
-#if defined(ROCCO)
-	  else
-            printf ("x");
-#endif /* ROCCO */
 	}
 
       path ++;

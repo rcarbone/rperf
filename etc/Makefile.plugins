@@ -22,7 +22,7 @@ CC        = gcc
 C++       = g++
 AR        = ar
 LD        = gcc
-OPTIMIZE  = -O3 -flto -fuse-linker-plugin
+# OPTIMIZE  = -O3 -flto -fuse-linker-plugin
 CFLAGS   += -g -Wall
 CFLAGS   += ${OPTIMIZE}
 CFLAGS   += ${INCLUDES}
@@ -31,6 +31,9 @@ CFLAGS   += -fno-diagnostics-color
 C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
 LDFLAGS   =
+
+# System libraries
+SYSLIBS  += -ldl
 
 # The main target is responsible to make all the targets
 all: Makefile plugin.c ut.c suite.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}

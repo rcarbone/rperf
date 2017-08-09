@@ -240,4 +240,10 @@ To be defined
 How to add a test scenario
 ==========================
 
-To be defined
+1. add in rht/suite-code.c the implementation of the scenario
+2. add in rht/rsuite.h
+   a. a new value of type rsuite_id_t
+   b. the declaration of the function
+3. add in etc/plugin.c an item to handle the call
+
+That's all folks!

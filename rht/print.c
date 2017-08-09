@@ -3,20 +3,20 @@
 #include "rtest.h"
 
 #define SEP  '|'
-#define MAXN 7
+#define MAXN 8      /* ROCCO: to be deleted */
 
 
-static void runit_print_one (rtest_t * runit, unsigned n)
+static void runit_print_header (unsigned maxn)
 {
-  if (runit)
-    printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, MAXN, MAXN, runit -> name, SEP, runit -> id, SEP, runit -> description);
+  printf (" # %c %-*.*s %c %s %c %s\n", SEP, maxn, maxn, "Name", SEP, "Id", SEP, "Description");
+  printf ("--- %s %c %s %c %s\n", "---------", SEP, "--", SEP, "----------------------");
 }
 
 
-static void runit_print_header (void)
+static void runit_print_one (rtest_t * runit, unsigned n, unsigned maxn)
 {
-  printf (" # %c %-*.*s %c %s %c %s\n", SEP, MAXN, MAXN, "Name", SEP, "Id", SEP, "Description");
-  printf ("--- %s %c %s %c %s\n", "--------", SEP, "--", SEP, "----------------------");
+  if (runit)
+    printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, runit -> name, SEP, runit -> id, SEP, runit -> description);
 }
 
 
@@ -106,11 +106,12 @@ void runit_print_no (void)
 /* Print the Unit Tests included in argv[] */
 void runit_print (rtest_t * argv [])
 {
+  unsigned maxn = rsuite_maxn (argv);
   unsigned i = 0;
 
-  runit_print_header ();
+  runit_print_header (maxn);
   while (argv && * argv)
-    runit_print_one (* argv ++, ++ i);
+    runit_print_one (* argv ++, ++ i, maxn);
 }
 
 
@@ -119,9 +120,9 @@ void runit_print_all (void)
 {
   unsigned i;
 
-  runit_print_header ();
+  runit_print_header (MAXN);
   for (i = 0; i <= runit_no (); i ++)
-    runit_print_one (runit_find_at (i), i + 1);
+    runit_print_one (runit_find_at (i), i + 1, MAXN);
 }
 
 
@@ -134,11 +135,12 @@ void rsuite_print_no (void)
 /* Print the Test Suite included in argv[] */
 void rsuite_print (rtest_t * argv [])
 {
+  unsigned maxn = rsuite_maxn (argv);
   unsigned i = 0;
 
-  runit_print_header ();
+  runit_print_header (maxn);
   while (argv && * argv)
-    runit_print_one (* argv ++, ++ i);
+    runit_print_one (* argv ++, ++ i, maxn);
 }
 
 
@@ -147,9 +149,9 @@ void rsuite_print_all (void)
 {
   unsigned i;
 
-  runit_print_header ();
+  runit_print_header (MAXN);
   for (i = 0; i <= rsuite_no (); i ++)
-    runit_print_one (rsuite_find_at (i), i + 1);
+    runit_print_one (rsuite_find_at (i), i + 1, MAXN);
 }
 
 

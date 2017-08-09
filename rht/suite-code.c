@@ -2,8 +2,9 @@
 typedef struct rht rht_t;
 #include "rht.h"
 #include "vargs.h"
-#include "rwall.h"
 #include "datasets.h"
+#include "rwall.h"
+#include "support.h"
 
 
 /* === Implementation of the built-in Test Suite === */
@@ -21,7 +22,7 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
 
 
 /* Allocate and populate all the items starting with an empty a hash table */
-rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
+rtime_t rsuite_grow_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);
   rtime_t t1;
@@ -37,8 +38,27 @@ rtime_t rsuite_grow (unsigned argc, robj_t * argv [])
 }
 
 
+/* Allocate and populate all the items starting with an empty a hash table */
+rtime_t rsuite_grow_rnd (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = rht_alloc (argc);
+  unsigned * order = rndorder (argc);
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    rht_set (ht, argv [order [i]] -> skey, argv [order [i]] -> pval);
+  t2 = nswall ();
+  free (order);
+  i = rht_count (ht);
+  rht_free (ht);
+  return i == argc ? t2 - t1 : 0;
+}
+
+
 /* Find and dereference with success all the items */
-rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
+rtime_t rsuite_hit_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned hit = 0;
@@ -59,8 +79,52 @@ rtime_t rsuite_hit (unsigned argc, robj_t * argv [])
 }
 
 
+/* Find and dereference with success all the items */
+rtime_t rsuite_hit_rnd (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = populate (argc, argv);
+  unsigned * order = rndorder (argc);
+  unsigned hit = 0;
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  void * found;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    {
+      found = rht_get (ht, argv [order [i]] -> skey);
+      if (found && found == argv [order [i]] -> pval)   /* dereference */
+	hit ++;
+    }
+  t2 = nswall ();
+  free (order);
+  rht_free (ht);
+  return hit == argc ? t2 - t1 : 0;
+}
+
+
 /* Find with failure all the items */
-rtime_t rsuite_miss (unsigned argc, robj_t * argv [])
+rtime_t rsuite_miss_seq (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = populate (argc, argv);
+  unsigned * order = rndorder (argc);
+  unsigned missed = 0;
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    if (! rht_get (ht, argv [order [i]] -> smiss))
+      missed ++;
+  t2 = nswall ();
+  free (order);
+  rht_free (ht);
+  return missed == argc ? t2 - t1 : 0;
+}
+
+
+/* Find with failure all the items */
+rtime_t rsuite_miss_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned missed = 0;
