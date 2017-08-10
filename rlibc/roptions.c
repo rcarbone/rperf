@@ -105,7 +105,9 @@ void _welcome_ (char * progname, char * version)
   struct utsname u;
   uname (& u);
   _version_ (progname, version);
-  printf ("Running on  : %s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
-  printf ("Current time: %s\n", ctime (& now));
+  printf ("\n");
+  printf ("Local time : %s", ctime (& now));
+  printf ("Running on : %s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
+  printf ("\n");
   fflush (stdout);
 }

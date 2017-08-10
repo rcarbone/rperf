@@ -1,7 +1,8 @@
 /*
  * All the Test Suite are here, grouped together in a static table.
  *
- * Each implementation of a single Test Suite operates with 'n' different unique keys.
+ * Each implementation of a single Test Suite operates with 'n' different unique keys
+ * (except kbench which requires a dataset of non-unique keys).
  */
 
 
@@ -20,15 +21,17 @@ typedef struct rht rht_t;
 /* All the Test Suite in a static array */
 static rtest_t rsuite_builtins [] =
 {
-  { RSUITE_GROW_SEQ, "grow_seq", "Add items to an empty container", NULL, rsuite_grow_seq },
-  { RSUITE_GROW_RND, "grow_rnd", "Add items to an empty container", NULL, rsuite_grow_rnd },
-  { RSUITE_HIT_SEQ,  "hit_seq",  "Find existing items",             NULL, rsuite_hit_seq  },
-  { RSUITE_HIT_RND,  "hit_rnd",  "Find existing items",             NULL, rsuite_hit_rnd  },
-  { RSUITE_MISS_SEQ, "miss_seq", "Search non existing items",       NULL, rsuite_miss_seq },
-  { RSUITE_MISS_RND, "miss_rnd", "Search non existing items",       NULL, rsuite_miss_seq },
-  { RSUITE_DELETE,   "delete",   "Delete existing items",           NULL, rsuite_delete   },
-  { RSUITE_REPLACE,  "replace",  "Replace existing items",          NULL, rsuite_replace  },
-  { RSUITE_KBENCH,   "kbench",   "Delete if found, add otherwise",  NULL, rsuite_kbench   },
+  { RSUITE_GROW_SEQ,    "grow_seq",    "Add items (sequential)",                           NULL, rsuite_grow_seq    },
+  { RSUITE_GROW_RND,    "grow_rnd",    "Add items (random)",                               NULL, rsuite_grow_rnd    },
+  { RSUITE_HIT_SEQ,     "hit_seq",     "Get existing items (sequential)",                  NULL, rsuite_hit_seq     },
+  { RSUITE_HIT_RND,     "hit_rnd",     "Get existing items (random)",                      NULL, rsuite_hit_rnd     },
+  { RSUITE_MISS_SEQ,    "miss_seq",    "Search non existing items (sequential)",           NULL, rsuite_miss_seq    },
+  { RSUITE_MISS_RND,    "miss_rnd",    "Search non existing items (random)",               NULL, rsuite_miss_rnd    },
+  { RSUITE_DELETE_SEQ,  "delete_seq",  "Delete existing items (sequential)",               NULL, rsuite_delete_seq  },
+  { RSUITE_DELETE_RND,  "delete_rnd",  "Delete existing items (random)",                   NULL, rsuite_delete_rnd  },
+  { RSUITE_REPLACE_SEQ, "replace_seq", "Replace existing items (sequential)",              NULL, rsuite_replace_seq },
+  { RSUITE_REPLACE_RND, "replace_rnd", "Replace existing items (random)",                  NULL, rsuite_replace_rnd },
+  { RSUITE_KBENCH,      "kbench",      "Delete if found, add otherwise (non unique keys)", NULL, rsuite_kbench      },
 };
 #define RSUITE_NO (sizeof (rsuite_builtins) / sizeof (* rsuite_builtins))
 
@@ -126,11 +129,22 @@ char ** rsuite_all_names (void)
 /* Return all the Test Suite in an array in the same order they were defined */
 rtest_t ** rsuite_all (void)
 {
-  unsigned i;
   rtest_t ** all = NULL;
+  unsigned i;
   for (i = 0; i < RSUITE_NO; i ++)
     all = arrmore (all, & rsuite_builtins [i], rtest_t);
   return all;
+}
+
+
+/* Longest name */
+unsigned rsuite_all_maxn (void)
+{
+  unsigned n = 0;
+  unsigned i;
+  for (i = 0; i < RSUITE_NO; i ++)
+    n = RMAX (n, strlen (rsuite_builtins [i] . name));
+  return n;
 }
 
 

@@ -8,6 +8,8 @@
 #include "sargs.h"
 #include "rtest.h"
 
+#include "README.c"
+
 
 /* Program name/version */
 #define _NAME_      "Run builtin Test Scenarios"
@@ -96,22 +98,38 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
 {
   char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
   rtest_t ** tests = included ? NULL : rsuite_all ();      /* The tests to run (nothing or everything but these)   */
+  char ** defined  = argsblanks ((char *) functions);
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
-      /* Add/Delete the given test to/from the table of given tests to run */
-      rtest_t * t = rsuite_valid (* names);
-      if (t)
-	tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
-      else
+      if (argsexists (defined, * names))
 	{
-	  printf ("%s: [%s] is not a valid id\n", progname, * names);
-	  arrclear (tests, NULL);
-	  return NULL;
+	  /* Add/Delete the given test to/from the table of given tests to run */
+	  rtest_t * t = rsuite_valid (* names);
+	  if (t)
+	    tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
+	  else
+	    {
+	      printf ("%s: [%s] is not a valid id\n", progname, * names);
+	      arrclear (tests, NULL);
+	      return NULL;
+	    }
 	}
+      else
+	printf ("%s not defined in README.c\n", * names);
       names ++;
     }
+
+  /* Do not run tests not included in README.c */
+  rtest_t ** t  = tests;
+  while (t && * t)
+    {
+      if (! argsexists (defined, (* t) -> name))
+	tests = arrless (tests, * t, rtest_t, NULL);
+      t ++;
+    }
+  argsclear (defined);
   return tests;
 }
 
@@ -269,6 +287,10 @@ int main (int argc, char * argv [])
 
   if (! loops)
     loops = LOOPS;
+
+  /* Default to run is somenthing has been specified */
+  if (included || excluded)
+    choice = OPT_RUN;
 
   /* Build a subset and go! */
   tests = build_tests (progname, included, excluded);

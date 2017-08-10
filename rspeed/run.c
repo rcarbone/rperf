@@ -104,12 +104,12 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   printf ("Rendering: results are sorted by less average time elapsed\n");
   printf ("\n");
 
-  printf ("Tests to run: %u\n", tno);
+  printf ("Selected builtin scenarios: #%u\n", tno);
   seq = 0;
   test = suite;
   while (test && * test)
     {
-      printf ("  %u: %-*.*s (%-*.*s) - %u implementations\n", ++ seq,
+      printf ("  %2u: %-*.*s (%-*.*s) - %u implementations\n", ++ seq,
 	      n, n, (* test) -> name,
 	      d, d, (* test) -> description,
 	      sw_have (plugins, (* test) ->  name));
@@ -119,7 +119,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 
   /*
    * Main loop:
-   *   iterate over all the names of the given test suite in the same order they were passed
+   *   iterate over all the given test suite in the same order they were passed
    */
   seq = 0;
   test = suite;
@@ -171,7 +171,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	  if (verbose)
 	    print_results ((* test) -> results, (* test) -> name, maxn, loops, items);
 	  else
-	    printf ("Done! #%u implementations - Total elapsed time %s\n", arrlen ((* test) -> results), ns2a (t2 - t1));
+	    printf ("Done! #%u implementations - Completed in %s\n", arrlen ((* test) -> results), ns2a (t2 - t1));
 	}
       test ++;
     }

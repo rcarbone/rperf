@@ -51,17 +51,19 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
     {
       switch (which)
 	{
-	case -1:                                                         break;  /* boot */
-	case -2:                                                         break;  /* halt */
-	case RSUITE_GROW_SEQ: rsuite_grow_seq (nobjs, (robj_t **) envp); break;
-	case RSUITE_GROW_RND: rsuite_grow_rnd (nobjs, (robj_t **) envp); break;
-	case RSUITE_HIT_SEQ:  rsuite_hit_seq (nobjs, (robj_t **) envp);  break;
-	case RSUITE_HIT_RND:  rsuite_hit_rnd (nobjs, (robj_t **) envp);  break;
-	case RSUITE_MISS_SEQ: rsuite_miss_seq (nobjs, (robj_t **) envp); break;
-	case RSUITE_MISS_RND: rsuite_miss_rnd (nobjs, (robj_t **) envp); break;
-	case RSUITE_DELETE:   rsuite_delete (nobjs, (robj_t **) envp);   break;
-	case RSUITE_REPLACE:  rsuite_replace (nobjs, (robj_t **) envp);  break;
-	case RSUITE_KBENCH:   rsuite_kbench (nobjs, (robj_t **) envp);   break;
+	case -1:                                                               break;  /* boot */
+	case -2:                                                               break;  /* halt */
+	case RSUITE_GROW_SEQ:    rsuite_grow_seq (nobjs, (robj_t **) envp);    break;
+	case RSUITE_GROW_RND:    rsuite_grow_rnd (nobjs, (robj_t **) envp);    break;
+	case RSUITE_HIT_SEQ:     rsuite_hit_seq (nobjs, (robj_t **) envp);     break;
+	case RSUITE_HIT_RND:     rsuite_hit_rnd (nobjs, (robj_t **) envp);     break;
+	case RSUITE_MISS_SEQ:    rsuite_miss_seq (nobjs, (robj_t **) envp);    break;
+	case RSUITE_MISS_RND:    rsuite_miss_rnd (nobjs, (robj_t **) envp);    break;
+	case RSUITE_DELETE_SEQ:  rsuite_delete_seq (nobjs, (robj_t **) envp);  break;
+	case RSUITE_DELETE_RND:  rsuite_delete_rnd (nobjs, (robj_t **) envp);  break;
+	case RSUITE_REPLACE_SEQ: rsuite_replace_seq (nobjs, (robj_t **) envp); break;
+	case RSUITE_REPLACE_RND: rsuite_replace_rnd (nobjs, (robj_t **) envp); break;
+	case RSUITE_KBENCH:      rsuite_kbench (nobjs, (robj_t **) envp);      break;
 	}
     }
 
@@ -119,15 +121,27 @@ int miss_rnd (int argc, char * argv [], void * envp [])
 }
 
 
-int delete (int argc, char * argv [], void * envp [])
+int delete_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_DELETE, argc, argv, envp);
+  return run_this (RSUITE_DELETE_SEQ, argc, argv, envp);
 }
 
 
-int replace (int argc, char * argv [], void * envp [])
+int delete_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_REPLACE, argc, argv, envp);
+  return run_this (RSUITE_DELETE_RND, argc, argv, envp);
+}
+
+
+int replace_seq (int argc, char * argv [], void * envp [])
+{
+  return run_this (RSUITE_REPLACE_SEQ, argc, argv, envp);
+}
+
+
+int replace_rnd (int argc, char * argv [], void * envp [])
+{
+  return run_this (RSUITE_REPLACE_RND, argc, argv, envp);
 }
 
 

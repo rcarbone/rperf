@@ -107,6 +107,24 @@ rtime_t rsuite_hit_rnd (unsigned argc, robj_t * argv [])
 rtime_t rsuite_miss_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
+  unsigned missed = 0;
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    if (! rht_get (ht, argv [i] -> smiss))
+      missed ++;
+  t2 = nswall ();
+  rht_free (ht);
+  return missed == argc ? t2 - t1 : 0;
+}
+
+
+/* Find with failure all the items */
+rtime_t rsuite_miss_rnd (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = populate (argc, argv);
   unsigned * order = rndorder (argc);
   unsigned missed = 0;
   rtime_t t1;
@@ -123,26 +141,8 @@ rtime_t rsuite_miss_seq (unsigned argc, robj_t * argv [])
 }
 
 
-/* Find with failure all the items */
-rtime_t rsuite_miss_rnd (unsigned argc, robj_t * argv [])
-{
-  rht_t * ht = populate (argc, argv);
-  unsigned missed = 0;
-  rtime_t t1;
-  rtime_t t2;
-  unsigned i;
-  t1 = nswall ();
-  for (i = 0; i < argc; i ++)
-    if (! rht_get (ht, argv [i] -> smiss))
-      missed ++;
-  t2 = nswall ();
-  rht_free (ht);
-  return missed == argc ? t2 - t1 : 0;
-}
-
-
 /* Remove all the items */
-rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
+rtime_t rsuite_delete_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned deleted;
@@ -159,8 +159,28 @@ rtime_t rsuite_delete (unsigned argc, robj_t * argv [])
 }
 
 
+/* Remove all the items */
+rtime_t rsuite_delete_rnd (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = populate (argc, argv);
+  unsigned * order = rndorder (argc);
+  unsigned deleted;
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    rht_del (ht, argv [order [i]] -> skey);
+  deleted = argc - rht_count (ht);
+  t2 = nswall ();
+  free (order);
+  rht_free (ht);
+  return deleted == argc ? t2 - t1 : 0;
+}
+
+
 /* Find, delete and reinsert with a different key all the items */
-rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
+rtime_t rsuite_replace_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned replaced;
@@ -182,6 +202,36 @@ rtime_t rsuite_replace (unsigned argc, robj_t * argv [])
     }
   t2 = nswall ();
   replaced = rht_count (ht);
+  rht_free (ht);
+  return replaced == argc ? t2 - t1 : 0;
+}
+
+
+/* Find, delete and reinsert with a different key all the items */
+rtime_t rsuite_replace_rnd (unsigned argc, robj_t * argv [])
+{
+  rht_t * ht = populate (argc, argv);
+  unsigned * order = rndorder (argc);
+  unsigned replaced;
+  rtime_t t1;
+  rtime_t t2;
+  unsigned i;
+  void * found;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    {
+      found = rht_get (ht, argv [i] -> skey);
+      if (found && found == argv [i] -> pval)           /* dereference */
+	{
+	  rht_del (ht, argv [order [i]] -> skey);
+	  found = rht_get (ht, argv [i] -> smiss);
+	  if (! found)
+	    rht_set (ht, argv [i] -> smiss, argv [i] -> pval);
+	}
+    }
+  t2 = nswall ();
+  replaced = rht_count (ht);
+  free (order);
   rht_free (ht);
   return replaced == argc ? t2 - t1 : 0;
 }

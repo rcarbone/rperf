@@ -105,7 +105,6 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 {
   char ** names = rsuite_names (suite);
   char ** name  = names;
-  unsigned max  = rsuite_maxn (suite);
   sw_t ** sw;                           /* iterator over all the implementations */
   unsigned seq;
 
@@ -123,17 +122,16 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 
   /* Line separator */
   printf ("\n\n");
-  printf ("%*.*s%s\n", 30, 30, " ", "F i n a l   E v a l u a t i o n");
+
+  printf ("%*.*s%s\n", 30, 30, " ", "A r r i v a l   O r d e r");
   printf ("\n");
 
-  /* Print the header */
-  printf ("      %-*.*s          Arrival Order per each test executed\n", maxn, maxn, " ");
   printf ("      %-*.*s | mark ", maxn, maxn, "Implementation");
-  while (name && * name)
-    printf ("| %-*.*s ", max, max, * name ++);
+  seq = 0;
+  name  = names;
+  while (name && * name ++)
+    printf ("| #%2u ", ++ seq);
   printf ("|\n");
-
-  argsclear (names);
 
   /* Sort the table of implementations accordingly to the evaluated quality */
   plugins = arrsort (plugins, sort_by_mark, sw_t);
@@ -158,12 +156,12 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 
 	      if (rplugin_implement ((* sw) -> plugin, (* tests) -> name))
 		{
-		  sprintf (fmt, " %%%uu |", max);
+		  sprintf (fmt, " %%%uu |", 3);
 		  sprintf (str, fmt, rank ((* sw) -> name, (* tests) -> results));
 		}
 	      else
 		{
-		  sprintf (fmt, " %%%us |", max);
+		  sprintf (fmt, " %%%us |", 3);
 		  sprintf (str, fmt, "---");
 		}
 	      printf ("%s", str);
@@ -177,4 +175,14 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 
       sw ++;
     }
+
+  /* Print the header */
+  printf ("\n");
+  printf ("Legend\n");
+  seq = 0;
+  name  = names;
+  while (name && * name)
+    printf ("| #%2u | %s\n", ++ seq, * name ++);
+  printf ("\n");
+  argsclear (names);
 }

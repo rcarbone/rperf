@@ -267,6 +267,7 @@ int main (int argc, char * argv [])
   if (! loops)
     loops = LOOPS;
 
+  /* Default to run is somenthing has been specified */
   if (included || excluded)
     choice = OPT_RUN;
 

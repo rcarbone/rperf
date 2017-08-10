@@ -12,7 +12,7 @@
 
 
 /* Program name/version */
-#define _NAME_      "Evaluate and compare Hash Tables Performances"
+#define _NAME_      "Time several Hash Table implementations and sort the results"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */

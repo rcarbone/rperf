@@ -3,13 +3,12 @@
 #include "rtest.h"
 
 #define SEP  '|'
-#define MAXN 8      /* ROCCO: to be deleted */
 
 
 static void runit_print_header (unsigned maxn)
 {
   printf (" # %c %-*.*s %c %s %c %s\n", SEP, maxn, maxn, "Name", SEP, "Id", SEP, "Description");
-  printf ("--- %s %c %s %c %s\n", "---------", SEP, "--", SEP, "----------------------");
+  printf ("--- %s %c %s %c %s\n", "------------", SEP, "--", SEP, "----------------------");
 }
 
 
@@ -118,11 +117,12 @@ void runit_print (rtest_t * argv [])
 /* Print the all the builtin Unit Tests */
 void runit_print_all (void)
 {
+  unsigned maxn = rsuite_all_maxn ();
   unsigned i;
 
-  runit_print_header (MAXN);
+  runit_print_header (maxn);
   for (i = 0; i <= runit_no (); i ++)
-    runit_print_one (runit_find_at (i), i + 1, MAXN);
+    runit_print_one (runit_find_at (i), i + 1, maxn);
 }
 
 
@@ -147,11 +147,12 @@ void rsuite_print (rtest_t * argv [])
 /* Print the all the builtin Test Suite */
 void rsuite_print_all (void)
 {
+  unsigned maxn = rsuite_all_maxn ();
   unsigned i;
 
-  runit_print_header (MAXN);
+  runit_print_header (maxn);
   for (i = 0; i <= rsuite_no (); i ++)
-    runit_print_one (rsuite_find_at (i), i + 1, MAXN);
+    runit_print_one (rsuite_find_at (i), i + 1, maxn);
 }
 
 

@@ -112,6 +112,7 @@ rtest_t * rsuite_find_by_name (char * name);
 
 char ** rsuite_all_names (void);
 rtest_t ** rsuite_all (void);
+unsigned rsuite_all_maxn (void);
 rtest_t ** rsuite_all_n (unsigned n);
 rtest_t ** rsuite_all_rnd (void);
 char ** rsuite_names (rtest_t * suite []);
@@ -143,7 +144,7 @@ unsigned sw_have (sw_t * sw [], char * name);
 rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose);
 rplugin_f * sw_func (sw_t * sw, char * name);
 sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
-void sw_done (sw_t * implementations [], bool verbose);
+void sw_done (sw_t * sw [], bool verbose);
 
 
 /* Public functions in file print.c */
