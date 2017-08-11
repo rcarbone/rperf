@@ -175,14 +175,4 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
 
       sw ++;
     }
-
-  /* Print the header */
-  printf ("\n");
-  printf ("Legend\n");
-  seq = 0;
-  name  = names;
-  while (name && * name)
-    printf ("| #%2u | %s\n", ++ seq, * name ++);
-  printf ("\n");
-  argsclear (names);
 }

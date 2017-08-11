@@ -133,7 +133,6 @@ char ** rht_keys (rht_t * ht)
       if (! equal_cb (ht, obj, ht -> element_empty))
 	keys [i ++] = obj -> key;
     }
-  printf ("ROCCO: n = %u - k = %u\n", rht_count (ht), valen (keys));
   return keys;
 }
 

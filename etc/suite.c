@@ -99,6 +99,7 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
   char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
   rtest_t ** tests = included ? NULL : rsuite_all ();      /* The tests to run (nothing or everything but these)   */
   char ** defined  = argsblanks ((char *) functions);
+  rtest_t ** t;
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
@@ -121,15 +122,17 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
       names ++;
     }
 
-  /* Do not run tests not included in README.c */
-  rtest_t ** t  = tests;
+  /* Do not run tests not defined in README.c */
+  t  = tests;
   while (t && * t)
     {
       if (! argsexists (defined, (* t) -> name))
-	tests = arrless (tests, * t, rtest_t, NULL);
+	t = tests = arrless (tests, * t, rtest_t, NULL);
       t ++;
     }
+
   argsclear (defined);
+
   return tests;
 }
 

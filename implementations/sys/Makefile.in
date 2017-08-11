@@ -1,10 +1,10 @@
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
 SUBDIRS += apr
-# SUBDIRS += boost
+SUBDIRS += boost
 SUBDIRS += glib
-# SUBDIRS += google
-# SUBDIRS += libstdc++
-# SUBDIRS += python
-# SUBDIRS += Qt
-# SUBDIRS += tbb
-# SUBDIRS += tcl
+SUBDIRS += google
+SUBDIRS += libstdc++
+SUBDIRS += python
+SUBDIRS += Qt
+SUBDIRS += tbb
+SUBDIRS += tcl

@@ -4,7 +4,7 @@ Pisa, May 2017
 
 Name         Vivien Oddou's hash map
 Module       hashmap
-Author       Vivien Oddou <erik@rigtorp.se>
+Author       Vivien Oddou <x@x.x>
 Description  open address hash map implementation in the STL-sense
 Download     http://github.com/lightness1024/cpp_open_addr_hashmap_container
 Date         2014 - 2015

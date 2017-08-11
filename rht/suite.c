@@ -21,17 +21,17 @@ typedef struct rht rht_t;
 /* All the Test Suite in a static array */
 static rtest_t rsuite_builtins [] =
 {
-  { RSUITE_GROW_SEQ,    "grow_seq",    "Add items (sequential)",                           NULL, rsuite_grow_seq    },
-  { RSUITE_GROW_RND,    "grow_rnd",    "Add items (random)",                               NULL, rsuite_grow_rnd    },
-  { RSUITE_HIT_SEQ,     "hit_seq",     "Get existing items (sequential)",                  NULL, rsuite_hit_seq     },
-  { RSUITE_HIT_RND,     "hit_rnd",     "Get existing items (random)",                      NULL, rsuite_hit_rnd     },
-  { RSUITE_MISS_SEQ,    "miss_seq",    "Search non existing items (sequential)",           NULL, rsuite_miss_seq    },
-  { RSUITE_MISS_RND,    "miss_rnd",    "Search non existing items (random)",               NULL, rsuite_miss_rnd    },
-  { RSUITE_DELETE_SEQ,  "delete_seq",  "Delete existing items (sequential)",               NULL, rsuite_delete_seq  },
-  { RSUITE_DELETE_RND,  "delete_rnd",  "Delete existing items (random)",                   NULL, rsuite_delete_rnd  },
-  { RSUITE_REPLACE_SEQ, "replace_seq", "Replace existing items (sequential)",              NULL, rsuite_replace_seq },
-  { RSUITE_REPLACE_RND, "replace_rnd", "Replace existing items (random)",                  NULL, rsuite_replace_rnd },
-  { RSUITE_KBENCH,      "kbench",      "Delete if found, add otherwise (non unique keys)", NULL, rsuite_kbench      },
+  { RSUITE_GROW_SEQ,    "grow_seq",    "Populate an empty container (sequential keys)",           NULL, rsuite_grow_seq    },
+  { RSUITE_GROW_RND,    "grow_rnd",    "Populate an empty container (random keys)",               NULL, rsuite_grow_rnd    },
+  { RSUITE_HIT_SEQ,     "hit_seq",     "Search one-by-one all existing items (sequential keys)",  NULL, rsuite_hit_seq     },
+  { RSUITE_HIT_RND,     "hit_rnd",     "Search one-by-one all existing items (random keys)",      NULL, rsuite_hit_rnd     },
+  { RSUITE_MISS_SEQ,    "miss_seq",    "Search for non existing items (sequential keys)",         NULL, rsuite_miss_seq    },
+  { RSUITE_MISS_RND,    "miss_rnd",    "Search for non existing items (random keys)",             NULL, rsuite_miss_rnd    },
+  { RSUITE_DELETE_SEQ,  "delete_seq",  "Delete one-by-one all existing items (sequential keys)",  NULL, rsuite_delete_seq  },
+  { RSUITE_DELETE_RND,  "delete_rnd",  "Delete one-by-one all existing items (random keys)",      NULL, rsuite_delete_rnd  },
+  { RSUITE_REPLACE_SEQ, "replace_seq", "Replace one-by-one all existing items (sequential keys)", NULL, rsuite_replace_seq },
+  { RSUITE_REPLACE_RND, "replace_rnd", "Replace one-by-one all existing items (random keys)",     NULL, rsuite_replace_rnd },
+  { RSUITE_KBENCH,      "kbench",      "Delete if found, add otherwise (non-unique keys)",        NULL, rsuite_kbench      },
 };
 #define RSUITE_NO (sizeof (rsuite_builtins) / sizeof (* rsuite_builtins))
 

@@ -1,159 +1,147 @@
  [rperf] is both:
-    [rspeed]   a speed program to execute user-defined test scenarios and evaluate/sort avg times elapsed
+    [rspeed]   a speed program to execute test scenarios and evaluate/sort avg times elapsed
     [rbattle]  a match race program where user-defined implementations run user-defined test scenarios
-               and evaluate which
-               in order to determine which performs worse and to exclude it from the match.
-               All the remainings start again a new match race until a winner is
+               in order to determine which performs worse and to exclude it one-by-one from the match.
+               All the remaining implementation start again a new match race until a winner is found.
 
- Moreover [rperf] claims to be a development enviroment for hash tables.
-
- Only the implementations that pass defined functional unit tests are included to be part of the projects
- and can be run with [rspeed] and/or [rbattle].
-
-  Up to 6 different test scenarios can be currently run.
-  1: grow    (Add items to an empty container)
-  2: hit     (Search for existing items      )
-  3: miss    (Search for non existing items  )
-  4: delete  (Delete existing items          )
-  5: replace (Replace existing items         )
-  6: kbench  (Delete if found, add otherwise )
-
+  Up to 11 different test scenarios can be currently run.
+   1: grow_seq    (Populate an empty container (sequential keys)          ) - 48 implementations
+   2: grow_rnd    (Populate an empty container (random keys)              ) - 48 implementations
+   3: hit_seq     (Search one-by-one all existing items (sequential keys) ) - 48 implementations
+   4: hit_rnd     (Search one-by-one all existing items (random keys)     ) - 48 implementations
+   5: miss_seq    (Search for non existing items (sequential keys)        ) - 48 implementations
+   6: miss_rnd    (Search for non existing items (random keys)            ) - 48 implementations
+   7: delete_seq  (Delete one-by-one all existing items (sequential keys) ) - 48 implementations
+   8: delete_rnd  (Delete one-by-one all existing items (random keys)     ) - 48 implementations
+   9: replace_seq (Replace one-by-one all existing items (sequential keys)) - 48 implementations
+  10: replace_rnd (Replace one-by-one all existing items (random keys)    ) - 42 implementations
+  11: kbench      (Delete if found, add otherwise (non-unique keys)       ) - 41 implementations
 
 #
 # Results for the impatients
 #
-rspeed, ver. 0.1.0 built on Aug  6 2017 12:26:23
+rspeed, ver. 0.1.0 built on Aug 11 2017 08:41:30
 
-Running on  : Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.89-2 x86_64
-Current time: Sun Aug  6 18:31:14 2017
+Local time : Fri Aug 11 09:23:17 2017
+Running on : Linux nuc 3.2.0-4-amd64 #1 SMP Debian 3.2.89-2 x86_64
 
-Evaluate average wall-time elapsed repeating 10 times the same test each acting with 100000 items
+Evaluate time elapsed repeating 10 times the same test, each acting with 100000 unique items
 
+Dataset  : unique sequential string keys (char *) and generic pointers (void *) as values
+Times    : wall-clock time evaluated at nsecs resolution and rendered in a more human-readable format
+Rendering: results are sorted by less average time elapsed
 
-Running each test #10 times each acting with #100000 items
-Dataset: unique serial strings keys and generic void pointers as values
+                              A r r i v a l   O r d e r
 
-[1] Running grow ...... Done! #48 implementations - Total elapsed time  14.0  s
-[2] Running hit ....... Done! #48 implementations - Total elapsed time  19.1  s
-[3] Running miss ...... Done! #48 implementations - Total elapsed time  23.1  s
-[4] Running delete .... Done! #48 implementations - Total elapsed time  21.1  s
-[5] Running replace ... Done! #48 implementations - Total elapsed time  43.4  s
-[6] Running kbench .... Done! #48 implementations - Total elapsed time  20.2  s
-
-
-                              F i n a l   E v a l u a t i o n
-
-                                     Position
-      Implementation        | mark | grow    | hit     | miss    | delete  | replace | kbench  |
-   1: ccan/htable           |  283 |       3 |       1 |       3 |       2 |       1 |       1 |
-   2: tommyds/fixed         |  277 |       1 |       3 |       4 |       1 |       4 |       4 |
-   3: rdestl::hash_map      |  272 |       7 |       2 |       1 |       5 |       2 |       5 |
-   4: gcc/hashtab           |  267 |       2 |       4 |       7 |       3 |       9 |       2 |
-   5: tommyds/dynamic       |  255 |       4 |       5 |       5 |       9 |       3 |      13 |
-   6: glib/ghash            |  241 |      12 |       9 |      10 |       4 |      11 |       7 |
-   7: emilib::HashMap       |  239 |      11 |       8 |       6 |      11 |      10 |       9 |
-   8: tommyds/linear        |  233 |       5 |       6 |       9 |      18 |       8 |      15 |
-   9: ulib/chain-hash       |  233 |      10 |      16 |      12 |       6 |      14 |       3 |
-  10: libevent/ht           |  232 |       6 |      14 |      14 |      12 |       6 |      10 |
-  11: google::densehash     |  220 |      14 |       7 |       8 |      14 |      19 |      12 |
-  12: amtl::hashmap         |  219 |      15 |      13 |      16 |      10 |       7 |      14 |
-  13: libghthash/hashtable  |  212 |      21 |      11 |      11 |      13 |      15 |      11 |
-  14: apr/hashtable         |  211 |      17 |      21 |      27 |       7 |       5 |       6 |
-  15: Tcl C-API/hashtable   |  196 |       8 |      12 |      15 |      19 |      21 |      23 |
-  16: eastl::hashmap        |  178 |      22 |      20 |      18 |      21 |      17 |      18 |
-  17: apr-no-pool/hashtable |  175 |      30 |      30 |      25 |       8 |      18 |       8 |
-  18: calg/hashtable        |  175 |      23 |      23 |      20 |      17 |      16 |      20 |
-  19: hashit/overflow       |  175 |      13 |      10 |      17 |      15 |      48 |      16 |
-  20: google/c-dense        |  172 |      16 |      15 |      13 |      30 |      22 |      26 |
-  21: Qt::QHash             |  163 |      19 |      18 |      30 |      31 |      12 |      21 |
-  22: ulib/open-hash        |  150 |      20 |      29 |      19 |      32 |      20 |      24 |
-  23: mct::linked_hash_map  |  145 |      26 |      24 |      22 |      23 |      26 |      28 |
-  24: libCDS/HashMap        |  141 |      37 |      35 |      35 |      16 |      13 |      17 |
-  25: PeterMoore/st         |  140 |      40 |      19 |      21 |      20 |      32 |      22 |
-  26: klib/khash            |  127 |      31 |      32 |      40 |      22 |      23 |      19 |
-  27: mct::closed_hash_map  |  125 |      32 |      31 |      26 |      25 |      24 |      31 |
-  28: judy/JSL              |  115 |      18 |      26 |      23 |      38 |      37 |      37 |
-  29: hashit/open           |  114 |       9 |      17 |      29 |      39 |      46 |      40 |
-  30: rigtorp::hashmap      |  111 |      24 |      25 |      37 |      28 |      35 |      34 |
-  31: clark/hashtable       |  109 |      38 |      28 |      39 |      24 |      27 |      29 |
-  32: std::unordered_map    |  109 |      39 |      22 |      32 |      37 |      28 |      27 |
-  33: hashit/chain          |  108 |      25 |      41 |      41 |      29 |      25 |      25 |
-  34: uthash/hashtable      |  104 |      28 |      27 |      36 |      33 |      33 |      33 |
-  35: redis/dict            |  103 |      34 |      34 |      38 |      26 |      29 |      30 |
-  36: klib::khash++         |   99 |      29 |      40 |      28 |      36 |      30 |      32 |
-  37: ulib::open-hash++     |   94 |      42 |      37 |      24 |      27 |      31 |      39 |
-  38: libdynamic/map        |   91 |      27 |      33 |      31 |      41 |      36 |      35 |
-  39: boost::unordered_map  |   81 |      33 |      38 |      33 |      35 |      38 |      36 |
-  40: ulib::chain-hash++    |   66 |      35 |      48 |       2 |      48 |      47 |      48 |
-  41: ulib/align-hash       |   62 |      36 |      42 |      48 |      34 |      34 |      38 |
-  42: google/c-sparse       |   48 |      41 |      45 |      34 |      42 |      42 |      42 |
-  43: Python C-API/dict     |   45 |      43 |      39 |      43 |      40 |      41 |      43 |
-  44: stb/sdict             |   33 |      46 |      36 |      42 |      46 |      45 |      46 |
-  45: oddou::hashmap        |   32 |      45 |      43 |      46 |      44 |      39 |      45 |
-  46: libcfu/hashtable      |   28 |      48 |      47 |      47 |      43 |      40 |      41 |
-  47: google::sparsehash    |   27 |      44 |      46 |      44 |      45 |      44 |      44 |
-  48: tbb::unordered_map    |   21 |      47 |      44 |      45 |      47 |      43 |      47 |
+      Implementation        | mark | # 1 | # 2 | # 3 | # 4 | # 5 | # 6 | # 7 | # 8 | # 9 | #10 | #11 |
+   1: ulib::align-hash++    |  507 |   2 |   1 |   3 |   2 |   1 |   3 |   2 |   2 |   1 |   1 |   1 |
+   2: ulib::open-hash++     |  480 |  11 |   4 |   7 |   1 |   5 |   1 |   8 |   1 |   4 |   2 |   2 |
+   3: rdestl::hash_map      |  463 |   5 |  17 |   4 |   8 |   2 |   5 |   6 |   6 |   2 |   4 |   4 |
+   4: amtl::hashmap         |  451 |   8 |   9 |  10 |   9 |   7 |   2 |  11 |   4 |   9 |   3 |   3 |
+   5: gcc/hashtab           |  440 |   3 |   7 |   5 |   4 |   9 |   6 |   3 |   3 |  10 |   5 |  31 |
+   6: glib/ghash            |  427 |   4 |  12 |   2 |  13 |   4 |  19 |   4 |   9 |  12 |  14 |   6 |
+   7: emilib::HashMap       |  403 |  15 |  14 |  12 |   6 |  11 |   9 |  16 |  10 |  11 |   7 |  12 |
+   8: google/c-dense        |  401 |  12 |   2 |  15 |   5 |  16 |   8 |  27 |   8 |  21 |   6 |   5 |
+   9: tommyds/fixed         |  401 |   1 |   5 |   1 |   7 |   3 |  12 |   1 |   7 |   3 | --- | --- |
+  10: libevent/ht           |  398 |  10 |  13 |   8 |   3 |   8 |   4 |  14 |  12 |   6 | --- |   7 |
+  11: tommyds/dynamic       |  395 |   6 |  11 |   6 |  12 |   6 |  10 |  10 |  13 |   5 | --- |   9 |
+  12: tommyds/linear        |  363 |   9 |   6 |  11 |  17 |  12 |  14 |  15 |  15 |   8 | --- |  13 |
+  13: ulib/chain-hash       |  354 |  14 |  16 |   9 |  14 |  10 |  13 |   5 |  17 |  17 |  15 | --- |
+  14: google::densehash     |  346 |  19 |  22 |  13 |  24 |  14 |  11 |  17 |  14 |  23 |  13 |  10 |
+  15: Qt::QHash             |  330 |  22 |  19 |  39 |  10 |  23 |   7 |  26 |  19 |  15 |   8 |   8 |
+  16: apr/hashtable         |  329 |  41 |  18 |  18 |  21 |  17 |  17 |   7 |  11 |   7 |  12 |  28 |
+  17: hashit/overflow       |  312 |   7 |   3 |  14 |  11 |  13 |  15 |  13 |   5 |  48 | --- | --- |
+  18: ccan/htable           |  295 |  30 |  25 |  19 |  23 |  18 |  20 |  23 |  22 |  13 |  11 |  27 |
+  19: libghthash/hashtable  |  294 |  16 |  28 |  17 |  20 |  15 |  16 |  12 |  30 |  14 |  22 | --- |
+  20: mct::linked           |  286 |  26 |  27 |  27 |  15 |  19 |  18 |  29 |  26 |  25 |  10 |  18 |
+  21: mct::closed           |  278 |  31 |  21 |  30 |  16 |  28 |  23 |  31 |  18 |  27 |   9 |  14 |
+  22: libCDS/HashMap        |  271 |  27 |  35 |  20 |  19 |  20 |  21 |  20 |  28 |  16 |  17 |  32 |
+  23: ulib/open-hash        |  265 |  24 |  24 |  31 |  26 |  27 |  26 |  28 |  16 |  22 |  16 |  21 |
+  24: klib/khash            |  248 |  18 |  20 |  26 |  34 |  42 |  43 |  22 |  20 |  24 |  18 |  11 |
+  25: eastl::hashmap        |  242 |  37 |  34 |  22 |  22 |  26 |  24 |  21 |  29 |  19 |  21 |  29 |
+  26: calg/hashtable        |  241 |  25 |  37 |  24 |  27 |  21 |  22 |  24 |  32 |  20 |  20 |  33 |
+  27: ulib::chain-hash++    |  226 |  20 |  15 |  16 |  25 |  24 |  38 |  19 |  24 |  39 |  38 | --- |
+  28: Tcl C-API/hashtable   |  220 |  17 |  32 |  33 |  32 |  30 |  25 |  32 |  31 |  29 |  23 |  22 |
+  29: apr-no-pool/hashtable |  218 |  35 |  45 |  29 |  33 |  29 |  28 |   9 |  23 |  18 |  24 |  35 |
+  30: uthash/hashtable      |  207 |  29 |  10 |  32 |  30 |  33 |  29 |  33 |  27 |  33 | --- |  20 |
+  31: std::unordered_map    |  193 |  33 |  26 |  28 |  29 |  31 |  32 |  34 |  39 |  28 |  28 |  25 |
+  32: klib::khash++         |  191 |  34 |  29 |  35 |  38 |  34 |  33 |  35 |  21 |  34 |  19 |  23 |
+  33: PeterMoore/st         |  190 |  28 |  47 |  23 |  28 |  25 |  30 |  25 |  33 |  31 |  30 |  36 |
+  34: hashit/open           |  187 |  13 |   8 |  21 |  18 |  35 |  39 |  40 |  35 |  47 |  41 | --- |
+  35: clark/hashtable       |  182 |  38 |  39 |  34 |  36 |  32 |  27 |  30 |  34 |  30 |  25 |  19 |
+  36: hashit/chain          |  180 |  32 |  31 |  44 |  35 |  36 |  31 |  18 |  25 |  26 |  26 | --- |
+  37: judy/JSL              |  175 |  21 |  23 |  25 |  41 |  22 |  34 |  39 |  38 |  37 |  32 |  39 |
+  38: tbb::unordered_map    |  143 |  23 |  30 |  36 |  39 |  37 |  40 |  42 |  42 |  35 |  33 |  26 |
+  39: boost::unordered_map  |  136 |  40 |  41 |  38 |  37 |  40 |  35 |  37 |  40 |  36 |  29 |  17 |
+  40: redis/dict            |  133 |  42 |  40 |  37 |  31 |  38 |  37 |  36 |  36 |  32 |  27 |  37 |
+  41: rigtorp::hashmap      |  117 |  44 |  38 |  41 |  42 |  39 |  42 |  38 |  37 |  38 |  34 |  16 |
+  42: google/c-sparse       |   89 |  47 |  43 |  42 |  40 |  41 |  36 |  43 |  41 |  43 |  31 |  30 |
+  43: stb/sdict             |   76 |  39 |  36 |  40 |  43 |  43 |  41 |  48 |  48 |  46 |  42 |  24 |
+  44: ulib/align-hash       |   75 |  43 |  42 |  47 |  48 |  48 |  48 |  41 |  43 |  41 |  35 |  15 |
+  45: Python C-API/dict     |   61 |  36 |  33 |  43 |  44 |  46 |  45 |  46 |  47 |  44 |  40 |  41 |
+  46: oddou::hashmap        |   54 |  45 |  44 |  45 |  45 |  44 |  44 |  47 |  44 |  40 |  36 |  38 |
+  47: google::sparsehash    |   40 |  46 |  48 |  46 |  47 |  45 |  46 |  45 |  45 |  45 |  39 |  34 |
+  48: libcfu/hashtable      |   35 |  48 |  46 |  48 |  46 |  47 |  47 |  44 |  46 |  42 |  37 |  40 |
 
 
 ===================================
-  Up to 48 C/C++ implementations are currently available for testing.
 
+Currently supported implementations
   Each implementation under test is simply a plugin
   (a shared object to be dynamically loaded/unloaded for the purpose of the tests).
 
-
-Currently supported implementations
 ===================================
- ## Library                        Module                Author                                             Filename
-  1 Qt Toolkit                     Qt::QHash             The Qt Company Ltd.                                (Qt-QHash.so)
-  2 amtl                           amtl::hashmap         David Anderson and AlliedModders LLC               (amtl.so)
-  3 Apache apr                     apr-no-pool/hashtable Apache Software Foundation (ASF)                   (apr-2.so)
-  4 Apache apr/C API               apr/hashtable         Apache Software Foundation (ASF)                   (apr.so)
-  5 Boost C++ Libraries            boost::unordered_map  Jeremy B. Maitin-Shepard and Daniel James          (boost.so)
-  6 Google libcash                 google/c-dense        Craig Silverstein                                  (c-densehash.so)
-  7 Google libcash                 google/c-sparse       Craig Silverstein                                  (c-sparsehash.so)
-  8 C Algorithms                   calg/hashtable        Simon Howard (fraggle@gmail.com)                   (calg.so)
-  9 ccan                           ccan/htable           Rusty Russell (rusty@rustcorp.com.au)              (ccan.so)
- 10 cwc22                          clark/hashtable       Christopher Clark (christopher.clark@cl.cam.ac.uk) (clark.so)
- 11 mct                            mct::closed_hash_map  Paul Pogonyshev (pogonyshev@gmail.net)             (closed-hash-map.so)
- 12 Google Hash-Map                google::densehash     Google Inc.                                        (densehash.so)
- 13 eastl                          eastl::hashmap        Electronic Arts Inc.                               (eastl.so)
- 14 emilib                         emilib::HashMap       Emil Ernerfeldt (emil.ernerfeldt@gmail.com)        (emilib.so)
- 15 glib                           glib/ghash            Peter Mattis, Spencer Kimball and Josh MacDonald   (ghash.so)
- 16 libghthash                     libghthash/hashtable  Simon Kagstrom (ska@bth.se)                        (ght.so)
- 17 hashit                         hashit/chain          David Gomez (david@pleyades.net)                   (hashit-chain.so)
- 18 hashit                         hashit/open           David Gomez (david@pleyades.net)                   (hashit-open.so)
- 19 hashit                         hashit/overflow       David Gomez (david@pleyades.net)                   (hashit-overflow.so)
- 20 GNU libiberty                  gcc/hashtab           Vladimir Makarov (vmakarov@cygnus.com)             (hashtab.so)
- 21 judy                           judy/JSL              Doug Baskinks (dougbaskins@yahoo.com)              (judy.so)
- 22 klib                           klib::khash++         Heng Li (lh3@me.com)                               (khash++.so)
- 23 klib                           klib/khash            Heng Li (lh3@me.com)                               (khash.so)
- 24 LibCDS                         libCDS/HashMap        ZongXian Shen (andy.zsshen@gmail.com)              (libCDS.so)
- 25 libcfu                         libcfu/hashtable      Don Owens (don@owensnet.com)                       (libcfu.so)
- 26 libdynamic                     libdynamic/map        Fredrik Widlund <fredrik.widlund@gmail.com>        (libdynamic.so)
- 27 libevent                       libevent/ht           Niels Provos (provos@umich.edu)                    (libevent.so)
- 28 mct                            mct::linked_hash_map  Paul Pogonyshev (pogonyshev@gmail.net)             (linked-hash-map.so)
- 29 oddou                          oddou::hashmap        Vivien Oddou <x@x.x>                               (oddou.so)
- 30 Python C/API                   Python C-API/dict     Guido van Rossum and the Python community          (python.so)
- 31 rdestl                         rdestl::hash_map      Maciej Sinilo                                      (rdestl.so)
- 32 Redis                          redis/dict            Salvatore Sanfilippo (antirez@gmail.com)           (redis.so)
- 33 rigtorp                        rigtorp::hashmap      Erik Rigtorp <erik@rigtorp.se>                     (rigtorp.so)
- 34 Google Hash-Map                google::sparsehash    Google Inc.                                        (sparsehash.so)
- 35 st                             PeterMoore/st         Peter Moore @ UCB                                  (st.so)
- 36 stb                            stb/sdict             Sean T. Barrett (sean@nothings.org)                (stb.so)
- 37 Intel Threading Building Block tbb::unordered_map    Intel Corporation                                  (tbb.so)
- 38 Tcl C-API                      Tcl C-API/hashtable   John Ousterhout and the Tcl community              (tcl.so)
- 39 tommyds                        tommyds/dynamic       Andrea Mazzoleni (amadvance@gmail.com)             (tommy-dyn.so)
- 40 tommyds                        tommyds/fixed         Andrea Mazzoleni (amadvance@gmail.com)             (tommy-fix.so)
- 41 tommyds                        tommyds/linear        Andrea Mazzoleni (amadvance@gmail.com)             (tommy-lin.so)
- 42 ulib                           ulib/align-hash       Zilong Tan (eric.zltan@gmail.com)                  (ulib-align.so)
- 43 ulib                           ulib::chain-hash++    Zilong Tan (eric.zltan@gmail.com)                  (ulib-chain++.so)
- 44 ulib                           ulib/chain-hash       Zilong Tan (eric.zltan@gmail.com)                  (ulib-chain.so)
- 45 ulib                           ulib::open-hash++     Zilong Tan (eric.zltan@gmail.com)                  (ulib-open++.so)
- 46 ulib                           ulib/open-hash        Zilong Tan (eric.zltan@gmail.com)                  (ulib-open.so)
- 47 GNU C++ Library                std::unordered_map    Silicon Graphics Computer Systems, Inc.            (unordered-map.so)
- 48 uthash                         uthash/hashtable      Troy D. Hanson                                     (uthash.so)
+ ## Library                        Module                Author
+  1 Qt Toolkit                     Qt::QHash             The Qt Company Ltd.
+  2 amtl                           amtl::hashmap         David Anderson and AlliedModders LLC
+  3 Apache apr                     apr-no-pool/hashtable Apache Software Foundation (ASF)
+  4 Apache apr/C API               apr/hashtable         Apache Software Foundation (ASF)
+  5 Boost C++ Libraries            boost::unordered_map  Jeremy B. Maitin-Shepard and Daniel James
+  6 Google libcash                 google/c-dense        Craig Silverstein
+  7 Google libcash                 google/c-sparse       Craig Silverstein
+  8 C Algorithms                   calg/hashtable        Simon Howard (fraggle@gmail.com)
+  9 ccan                           ccan/htable           Rusty Russell (rusty@rustcorp.com.au)
+ 10 cwc22                          clark/hashtable       Christopher Clark (christopher.clark@cl.cam.ac.uk
+ 11 mct                            mct::closed           Paul Pogonyshev (pogonyshev@gmail.net)
+ 12 Google Hash-Map                google::densehash     Google Inc.
+ 13 eastl                          eastl::hashmap        Electronic Arts Inc.
+ 14 emilib                         emilib::HashMap       Emil Ernerfeldt (emil.ernerfeldt@gmail.com)
+ 15 glib                           glib/ghash            Peter Mattis, Spencer Kimball and Josh MacDonald
+ 16 libghthash                     libghthash/hashtable  Simon Kagstrom (ska@bth.se)
+ 17 hashit                         hashit/chain          David Gomez (david@pleyades.net)
+ 18 hashit                         hashit/open           David Gomez (david@pleyades.net)
+ 19 hashit                         hashit/overflow       David Gomez (david@pleyades.net)
+ 20 GNU libiberty                  gcc/hashtab           Vladimir Makarov (vmakarov@cygnus.com)
+ 21 judy                           judy/JSL              Doug Baskinks (dougbaskins@yahoo.com)
+ 22 klib                           klib::khash++         Heng Li (lh3@me.com)
+ 23 klib                           klib/khash            Heng Li (lh3@me.com)
+ 24 LibCDS                         libCDS/HashMap        ZongXian Shen (andy.zsshen@gmail.com)
+ 25 libcfu                         libcfu/hashtable      Don Owens (don@owensnet.com)
+ 26 libevent                       libevent/ht           Niels Provos (provos@umich.edu)
+ 27 mct                            mct::linked           Paul Pogonyshev (pogonyshev@gmail.net)
+ 28 oddou                          oddou::hashmap        Vivien Oddou <x@x.x>
+ 29 Python C/API                   Python C-API/dict     Guido van Rossum and the Python community
+ 30 rdestl                         rdestl::hash_map      Maciej Sinilo
+ 31 Redis                          redis/dict            Salvatore Sanfilippo (antirez@gmail.com)
+ 32 rigtorp                        rigtorp::hashmap      Erik Rigtorp <erik@rigtorp.se>
+ 33 Google Hash-Map                google::sparsehash    Google Inc.
+ 34 st                             PeterMoore/st         Peter Moore @ UCB
+ 35 stb                            stb/sdict             Sean T. Barrett (sean@nothings.org)
+ 36 Intel Threading Building Block tbb::unordered_map    Intel Corporation
+ 37 Tcl C-API                      Tcl C-API/hashtable   John Ousterhout and the Tcl community
+ 38 tommyds                        tommyds/dynamic       Andrea Mazzoleni (amadvance@gmail.com)
+ 39 tommyds                        tommyds/fixed         Andrea Mazzoleni (amadvance@gmail.com)
+ 40 tommyds                        tommyds/linear        Andrea Mazzoleni (amadvance@gmail.com)
+ 41 ulib                           ulib::align-hash++    Zilong Tan (eric.zltan@gmail.com)
+ 42 ulib                           ulib/align-hash       Zilong Tan (eric.zltan@gmail.com)
+ 43 ulib                           ulib::chain-hash++    Zilong Tan (eric.zltan@gmail.com)
+ 44 ulib                           ulib/chain-hash       Zilong Tan (eric.zltan@gmail.com)
+ 45 ulib                           ulib::open-hash++     Zilong Tan (eric.zltan@gmail.com)
+ 46 ulib                           ulib/open-hash        Zilong Tan (eric.zltan@gmail.com)
+ 47 GNU C++ Library                std::unordered_map    Silicon Graphics Computer Systems, Inc.
+ 48 uthash                         uthash/hashtable      Troy D. Hanson
 
+===================================
 
 [rperf] so includes:
   * librht  - an abstract C library to be mapped over real hash table implementations which is used
@@ -231,12 +219,6 @@ Please not do forget at the end of the process to add the name of the new direct
 in implementations/Makefile.
 
 
-How to add an unit test
-=======================
-
-To be defined
-
-
 How to add a test scenario
 ==========================
 
@@ -245,5 +227,12 @@ How to add a test scenario
    a. a new value of type rsuite_id_t
    b. the declaration of the function
 3. add in etc/plugin.c an item to handle the call
+4. update README.c
 
 That's all folks!
+
+
+How to add an unit test
+=======================
+
+To be defined
