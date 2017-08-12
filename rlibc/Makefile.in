@@ -1,10 +1,10 @@
 # The name of the games
-# LIB       = rlibc
-# PROGRAM   =
+LIB       = rlibc
+PROGRAM   =
 
 # C source files
-LIBSRCS  += vargs.c
-LIBSRCS  += sargs.c
+LIBSRCS  += vargv.c
+LIBSRCS  += sargv.c
 LIBSRCS  += plugins.c
 LIBSRCS  += rwall.c
 LIBSRCS  += safe.c

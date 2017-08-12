@@ -10,7 +10,7 @@
 #include <getopt.h>
 
 /* Project headers */
-#include "vargs.h"
+#include "vargv.h"
 #include "support.h"
 #include "datasets.h"
 #include "plugins.h"

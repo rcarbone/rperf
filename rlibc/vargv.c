@@ -4,7 +4,7 @@
 
 
 /* Public header */
-#include "vargs.h"
+#include "vargv.h"
 
 
 /* Return the # of items in an array */

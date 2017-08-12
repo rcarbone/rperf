@@ -8,6 +8,7 @@
 typedef tommy_hashtable rht_t;
 #include "rht.h"
 #include "datasets.h"
+#include "safe.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -83,7 +84,15 @@ void rht_free (rht_t * ht)
 
 void rht_clear (rht_t * ht)
 {
-  ht -> count = 0;                   /* Bug! */
+  char ** keys = rht_keys (ht);
+  char ** k = keys;
+  while (k && * k)
+    {
+      robj_t * obj = rht_get (ht, * k);
+      tommy_hashtable_remove (ht, cmp_str, obj, rht_python_hash (* k));
+      k ++;
+    }
+  safefree (keys);
 }
 
 

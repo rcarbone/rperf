@@ -5,9 +5,9 @@
 /* The implementation */
 #include "uthash.h"
 
-typedef struct rht rht_t;
+#define NEED_RHT_TYPEDEF
 #include "rht.h"
-#include "vargs.h"
+#include "vargv.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

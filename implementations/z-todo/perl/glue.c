@@ -12,8 +12,6 @@ typedef HV rht_t;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-
 static PerlInterpreter * my_perl = NULL;
 
 rht_t * rht_alloc (unsigned size)
@@ -51,21 +49,22 @@ unsigned rht_count (rht_t * ht)
 
 void rht_set (rht_t * ht, char * key, void * val)
 {
-  SV * pval = newSVpv (val, sizeof (val));
+  SV * pval = newSVsv (val);
   hv_store (ht, key, strlen (key), pval, rht_python_hash (key));
 }
 
 
 void * rht_get (rht_t * ht, char * key)
 {
-  SV ** pval = hv_fetch (ht, key, strlen (key), rht_python_hash (key));
-  if (pval)
+  SV ** hit = hv_fetch (ht, key, strlen (key), rht_python_hash (key));
+  void * val = NULL;
+  if (hit)
     {
-      // val = SvPV (* hit, sizeof (void *));
-      // return SvPV (pval, sizeof (void *));
+      val = SvPV_nolen (* hit);
+      // return SvPV (* hit, sizeof (void *));
+      return val;
     }
-
-  return pval;
+  return val;
 }
 
 
@@ -83,11 +82,6 @@ bool rht_has (rht_t * ht, char * key)
 
 void rht_foreach (rht_t * ht, rht_each_f * fn, void * data)
 {
-#if defined(ROCCO)
-  apr_hash_index_t * k;
-  for (k = apr_hash_first (NULL, ht); k; k = apr_hash_next (k))
-    fn (data);
-#endif /* ROCCO */
 }
 
 
@@ -96,9 +90,7 @@ char ** rht_keys (rht_t * ht)
   char ** keys = calloc (rht_count (ht) + 1, sizeof (char *));
 #if defined(ROCCO)
   unsigned i = 0;
-  apr_hash_index_t * k;
-  for (k = apr_hash_first (NULL, ht); k; k = apr_hash_next (k))
-    keys [i ++] = (char *) apr_hash_this_key (k);
+  keys [i ++] = NULL;
 #endif /* ROCCO */
   return keys;
 }
@@ -109,9 +101,7 @@ void ** rht_vals (rht_t * ht)
   void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
 #if defined(ROCCO)
   unsigned i = 0;
-  apr_hash_index_t * k;
-  for (k = apr_hash_first (NULL, ht); k; k = apr_hash_next (k))
-    vals [i ++] = (void *) apr_hash_this_val (k);
+    vals [i ++] = NULL;
 #endif /* ROCCO */
   return vals;
 }

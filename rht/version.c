@@ -5,7 +5,7 @@
 
 
 /* librht - an abstract C library over real hash tables */
-typedef struct rht rht_t;
+#define NEED_RHT_TYPEDEF
 #include "rht.h"
 
 
@@ -14,7 +14,7 @@ static char __pkgname__     [] = "librht";
 static char __version__     [] = "version "RHT_VERSION;
 static char __title__       [] = "hash tables without a hash table";
 static char __released__    [] = "Jul 2017";
-static char __description__ [] = "librht - a C library for virtualization of hash tables";
+static char __description__ [] = "librht - an abstract C library over real hash tables";
 static char __author__      [] = "Rocco Carbone <rocco@tecsiel.it>";
 
 

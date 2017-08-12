@@ -2,11 +2,10 @@
 TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.leaf
 
 # Static library
-# STLIB     = lib${LIB}.a
+STLIB     = lib${LIB}.a
 
 # All the targets
-# TARGETS   = ${STLIB} ${PROGRAM}
-TARGETS   = ${OBJS} ${PROGRAM}
+TARGETS   = ${STLIB} ${PROGRAM}
 
 # Source, object and depend files
 LIBOBJS   = ${LIBSRCS:%.c=%.o}

@@ -5,7 +5,7 @@
 
 /* Project headers */
 #include "roptions.h"
-#include "sargs.h"
+#include "sargv.h"
 #include "rtest.h"
 
 #include "README.c"
@@ -104,21 +104,21 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
-      if (argsexists (defined, * names))
+      /* Add/Delete the given test to/from the table of given tests to run */
+      rtest_t * t = rsuite_valid (* names);
+      if (t)
 	{
-	  /* Add/Delete the given test to/from the table of given tests to run */
-	  rtest_t * t = rsuite_valid (* names);
-	  if (t)
+	  if (argsexists (defined, t -> name))
 	    tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
 	  else
-	    {
-	      printf ("%s: [%s] is not a valid id\n", progname, * names);
-	      arrclear (tests, NULL);
-	      return NULL;
-	    }
+	    printf ("%s [short for %s] is not defined in README.c\n", * names, t -> name);
 	}
       else
-	printf ("%s not defined in README.c\n", * names);
+	{
+	  printf ("%s: [%s] is not a valid id\n", progname, * names);
+	  arrclear (tests, NULL);
+	  return NULL;
+	}
       names ++;
     }
 
@@ -132,6 +132,7 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
     }
 
   argsclear (defined);
+
 
   return tests;
 }

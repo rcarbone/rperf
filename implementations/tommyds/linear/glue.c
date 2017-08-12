@@ -8,6 +8,7 @@
 typedef tommy_hashlin rht_t;
 #include "rht.h"
 #include "datasets.h"
+#include "safe.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -43,8 +44,7 @@ static int cmp_str (const void * key, const void * obj)
 static void foreach_cb (void * arg, void * obj)
 {
   func_t * func = arg;
-  if (func)
-    func -> fn (func -> data);
+  func -> fn (func -> data);
 }
 
 
@@ -83,7 +83,15 @@ void rht_free (rht_t * ht)
 
 void rht_clear (rht_t * ht)
 {
-  ht -> count = 0;                   /* Bug! */
+  char ** keys = rht_keys (ht);
+  char ** k = keys;
+  while (k && * k)
+    {
+      robj_t * obj = rht_get (ht, * k);
+      tommy_hashlin_remove (ht, cmp_str, obj, rht_python_hash (* k));
+      k ++;
+    }
+  safefree (keys);
 }
 
 

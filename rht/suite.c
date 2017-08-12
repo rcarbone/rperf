@@ -7,9 +7,9 @@
 
 
 /* Project headers */
-typedef struct rht rht_t;
+#define NEED_RHT_TYPEDEF
 #include "rht.h"
-#include "sargs.h"
+#include "sargv.h"
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"

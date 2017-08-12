@@ -1,7 +1,7 @@
 /* Project headers */
-typedef struct rht rht_t;
+#define NEED_RHT_TYPEDEF
 #include "rht.h"
-#include "vargs.h"
+#include "vargv.h"
 #include "datasets.h"
 #include "rwall.h"
 #include "support.h"
@@ -220,13 +220,13 @@ rtime_t rsuite_replace_rnd (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     {
-      found = rht_get (ht, argv [i] -> skey);
-      if (found && found == argv [i] -> pval)           /* dereference */
+      found = rht_get (ht, argv [order [i]] -> skey);
+      if (found && found == argv [order [i]] -> pval)           /* dereference */
 	{
 	  rht_del (ht, argv [order [i]] -> skey);
-	  found = rht_get (ht, argv [i] -> smiss);
+	  found = rht_get (ht, argv [order [i]] -> smiss);
 	  if (! found)
-	    rht_set (ht, argv [i] -> smiss, argv [i] -> pval);
+	    rht_set (ht, argv [order [i]] -> smiss, argv [order [i]] -> pval);
 	}
     }
   t2 = nswall ();

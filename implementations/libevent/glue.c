@@ -5,7 +5,7 @@
 #include "ht-internal.h"
 
 /* librht - an abstract C library over real hash tables */
-typedef struct rht rht_t;
+#define NEED_RHT_TYPEDEF
 #include "rht.h"
 #include "datasets.h"
 
