@@ -73,7 +73,7 @@ typedef enum
   OPT_ITEMS_8      = '8',    /* 10 ^ 8 */
   OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
 
-  /* Loop counter */
+  /* Loops counter */
   OPT_LOOPS        = 'r',
 
 } ropt_t;
@@ -354,7 +354,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9,      "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Loop counter: (default %u)\n", LOOPS);
+  printf ("  Loops counter: (default %u)\n", LOOPS);
   usage_item (options, n, OPT_LOOPS,        "Set the number of loops per test");
 }
 
@@ -382,7 +382,7 @@ int main (int argc, char * argv [])
   /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */
 
-  /* Loop counter */
+  /* Loops counter */
   unsigned loops   = LOOPS;                  /* # of loops per test         */
 
   unsigned choice  = OPT_DEFAULT;
@@ -451,7 +451,7 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_8: items = 1e8;           break;
 	case OPT_ITEMS_9: items = 1e9;           break;
 
-	  /* Loop counter */
+	  /* Loops counter */
 	case OPT_LOOPS:   loops = atoi (optarg); break;
 	}
     }

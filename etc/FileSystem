@@ -1,9 +1,9 @@
 # The project's source tree
-INSTALLDIR = ${ROOTDIR}/plugins
+INSTALLDIR = ${ROOTDIR}/src/hashtables/plugins
 
 # The project's libraries
 RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/rht
+RHTDIR     = ${ROOTDIR}/src/hashtables/builtins
 
 # rlibc
 INCLUDE   += -I${RLIBCDIR}
