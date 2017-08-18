@@ -2,6 +2,7 @@
 #pragma once
 
 /* System headers */
+#include <stdio.h>
 #include <stdint.h>
 #include <time.h>
 
@@ -19,6 +20,7 @@ unsigned * rndorder (unsigned n);
 
 /* sprintf() replacement */
 void itoa (int c, char * ret);
+char * utoa (unsigned n);
 
 /* Evaluate the number of digits in n */
 unsigned digits (unsigned n);

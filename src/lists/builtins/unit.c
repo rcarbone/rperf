@@ -17,25 +17,8 @@
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"
-#include "elems.h"
 #include "rltest.h"
-
-
-/* The local identifiers for the Unit Tests to run */
-typedef enum
-{
-  RLUNIT_MAKE    = 0x01,
-  RLUNIT_PREPEND = 0x02,
-  RLUNIT_APPEND  = 0x03,
-  RLUNIT_COUNT   = 0x04,
-  RLUNIT_CLEAR   = 0x05,
-  RLUNIT_FOUND   = 0x06,
-  RLUNIT_MISS    = 0x07,
-  RLUNIT_DELETE  = 0x08,
-  RLUNIT_MISSED  = 0x09,
-  RLUNIT_FOREACH = 0x0a,
-
-} rlunit_id_t;
+#include "rlunit.h"
 
 
 /* The implementation elsewhere defined */
@@ -51,27 +34,27 @@ rlunit_f alloc_missed_free;
 rlunit_f alloc_iterate_free;
 
 
-/* All the Unit Tests in an array */
-static rltest_t rlunit_builtins [] =
+/* All the Unit Tests in a static table */
+static rlunit_t builtins [] =
 {
-  { RLUNIT_MAKE,    "make",    "Allocate and free an empty container", alloc_free         },
-  { RLUNIT_PREPEND, "prepend", "Add elements at the head of the list", alloc_prepend_free },
-  { RLUNIT_APPEND,  "append",  "Add elements at the tail of the list", alloc_append_free  },
-  { RLUNIT_CLEAR,   "clear",   "Add elements and clear",               alloc_clear_free   },
-  { RLUNIT_COUNT,   "count",   "Add elements and count",               alloc_count_free   },
-  { RLUNIT_FOUND,   "found",   "Search for existent one-by-one",       alloc_found_free   },
-  { RLUNIT_MISS,    "miss",    "Search for non-existent one-by-one",   alloc_miss_free    },
-  { RLUNIT_DELETE,  "delete",  "Delete existent one-by-one",           alloc_delete_free  },
-  { RLUNIT_MISSED,  "missed",  "Delete non-existent one-by-one",       alloc_missed_free  },
-  { RLUNIT_FOREACH, "foreach", "Iterate over existent one-by-one",     alloc_iterate_free },
+  { "make",    "Allocate and free an empty container", alloc_free         },
+  { "prepend", "Add elements at the head of the list", alloc_prepend_free },
+  { "append",  "Add elements at the tail of the list", alloc_append_free  },
+  { "clear",   "Add elements and clear",               alloc_clear_free   },
+  { "count",   "Add elements and count",               alloc_count_free   },
+  { "found",   "Search for existent one-by-one",       alloc_found_free   },
+  { "miss",    "Search for non-existent one-by-one",   alloc_miss_free    },
+  { "delete",  "Delete existent one-by-one",           alloc_delete_free  },
+  { "missed",  "Delete non-existent one-by-one",       alloc_missed_free  },
+  { "foreach", "Iterate over existent one-by-one",     alloc_iterate_free },
 };
-#define RLUNIT_NO (sizeof (rlunit_builtins) / sizeof (* rlunit_builtins))
+#define RLUNIT_NO (sizeof (builtins) / sizeof (* builtins))
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-static void rlunit_run_one (rltest_t * rlunit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
+static void rlunit_run_one (rlunit_t * rlunit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
 {
   unsigned t;
 
@@ -85,6 +68,20 @@ static void rlunit_run_one (rltest_t * rlunit, unsigned items, unsigned n, unsig
 }
 
 
+static void rlunit_print_header (unsigned maxn)
+{
+  printf (" # %c %-*.*s %c %s %c %s\n", SEP, maxn, maxn, "Name", SEP, "Id", SEP, "Description");
+  printf ("--- %s %c %s %c %s\n", "--------", SEP, "--", SEP, "----------------------");
+}
+
+
+static void rlunit_print_one (rlunit_t * rlunit, unsigned n, unsigned maxn)
+{
+  if (rlunit)
+    printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, rlunit -> name, SEP, n, SEP, rlunit -> description);
+}
+
+
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 /* Return the # of Unit Tests */
@@ -95,60 +92,56 @@ unsigned rlunit_no (void)
 
 
 /* Return the handle of the first Unit Test */
-rltest_t * rlunit_first (void)
+rlunit_t * rlunit_first (void)
 {
-  return & rlunit_builtins [0];
+  return & builtins [0];
 }
 
 
 /* Return the handle of the last Unit Test */
-rltest_t * rlunit_last (void)
+rlunit_t * rlunit_last (void)
 {
-  return & rlunit_builtins [RLUNIT_NO - 1];
+  return & builtins [RLUNIT_NO - 1];
 }
 
 
 /* Return the handle of the next Unit Test */
-rltest_t * rlunit_next (void)
+rlunit_t * rlunit_next (void)
 {
   static unsigned i = 0;
-  return & rlunit_builtins [i ++ % RLUNIT_NO];
+  return & builtins [i ++ % RLUNIT_NO];
 }
 
 
 /* Return the handle of the next Unit Test randomly generated */
-rltest_t * rlunit_next_rnd (void)
+rlunit_t * rlunit_next_rnd (void)
 {
-  return & rlunit_builtins [rrand (RLUNIT_NO)];
+  return & builtins [rrand (RLUNIT_NO)];
 }
 
 
 /* Looukup for an Unit Test by index */
-rltest_t * rlunit_find_at (unsigned i)
+rlunit_t * rlunit_find_at (unsigned i)
 {
-  return i < RLUNIT_NO ? & rlunit_builtins [i] : NULL;
+  return i < RLUNIT_NO ? & builtins [i] : NULL;
 }
 
 
 /* Looukup for an Unit Test by its unique id */
-rltest_t * rlunit_find_by_id (unsigned id)
+rlunit_t * rlunit_find_by_id (unsigned id)
 {
-  unsigned i;
-  for (i = 0; i < RLUNIT_NO; i ++)
-    if (rlunit_builtins [i] . id == id)
-      return & rlunit_builtins [i];
-  return NULL;
+  return id > 0 && id <= RLUNIT_NO ? & builtins [id - 1] : NULL;
 }
 
 
 /* Looukup for an Unit Test by its unique name */
-rltest_t * rlunit_find_by_name (char * name)
+rlunit_t * rlunit_find_by_name (char * name)
 {
   unsigned i;
   if (name)
     for (i = 0; i < RLUNIT_NO; i ++)
-      if (! strcmp (rlunit_builtins [i] . name, name))
-	return & rlunit_builtins [i];
+      if (! strcmp (builtins [i] . name, name))
+	return & builtins [i];
   return NULL;
 }
 
@@ -159,26 +152,26 @@ char ** rlunit_names (void)
   unsigned i;
   char ** all = NULL;
   for (i = 0; i < RLUNIT_NO; i ++)
-    all = argsmore (all, rlunit_builtins [i] . name);
+    all = argsmore (all, builtins [i] . name);
   return all;
 }
 
 
 /* Return all the Unit Tests handles in an array in the same order they were defined */
-rltest_t ** rlunit_all (void)
+rlunit_t ** rlunit_all (void)
 {
   unsigned i;
-  rltest_t ** all = NULL;
+  rlunit_t ** all = NULL;
   for (i = 0; i < RLUNIT_NO; i ++)
-    all = arrmore (all, & rlunit_builtins [i], rltest_t);
+    all = arrmore (all, & builtins [i], rlunit_t);
   return all;
 }
 
 
 /* Return all the Unit Tests in an array in the same order they were defined starting at given offset */
-rltest_t ** rlunit_all_n (unsigned n)
+rlunit_t ** rlunit_all_n (unsigned n)
 {
-  rltest_t ** all;
+  rlunit_t ** all;
   unsigned i;
 
   n %= RLUNIT_NO;
@@ -186,16 +179,16 @@ rltest_t ** rlunit_all_n (unsigned n)
   for (i = 0; i < n; i ++)
     rlunit_next ();
 
-  all = arrmore (NULL, rlunit_next (), rltest_t);
+  all = arrmore (NULL, rlunit_next (), rlunit_t);
   while (arrlen (all) != rlunit_no ())
-    all = arrmore (all, rlunit_next (), rltest_t);
+    all = arrmore (all, rlunit_next (), rlunit_t);
   return all;
 }
 
 
-rltest_t ** rlunit_all_rnd (void)
+rlunit_t ** rlunit_all_rnd (void)
 {
-  return (rltest_t **) varnd (rlunit_no (), (void **) rlunit_all ());
+  return (rlunit_t **) varnd (rlunit_no (), (void **) rlunit_all ());
 }
 
 
@@ -205,13 +198,13 @@ unsigned rlunit_all_maxn (void)
   unsigned n = 0;
   unsigned i;
   for (i = 0; i < RLUNIT_NO; i ++)
-    n = RMAX (n, strlen (rlunit_builtins [i] . name));
+    n = RMAX (n, strlen (builtins [i] . name));
   return n;
 }
 
 
 /* Longest name */
-unsigned rlunit_maxn (rltest_t * argv [])
+unsigned rlunit_maxn (rlunit_t * argv [])
 {
   unsigned n = 0;
   while (argv && * argv)
@@ -223,14 +216,14 @@ unsigned rlunit_maxn (rltest_t * argv [])
 }
 
 
-rltest_t * rlunit_valid (char * id)
+rlunit_t * rlunit_valid (char * id)
 {
   return isnumeric (id) && atoi (id) ? rlunit_find_at (atoi (id) - 1) : rlunit_find_by_name (id);
 }
 
 
 /* Run the Unit Tests included in argv[] */
-void rlunit_run (rltest_t * argv [], unsigned items)
+void rlunit_run (rlunit_t * argv [], unsigned items)
 {
   unsigned maxn = rlunit_maxn (argv);
   unsigned n    = digits (arrlen (argv));
@@ -239,3 +232,37 @@ void rlunit_run (rltest_t * argv [], unsigned items)
   while (argv && * argv)
     rlunit_run_one (* argv ++, items, n, ++ seq, maxn);
 }
+
+
+/* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
+
+
+void rlunit_print_no (void)
+{
+  printf ("Built-in Units Tests : %u\n", rlunit_no ());
+}
+
+
+/* Print the Unit Tests included in argv[] */
+void rlunit_print (rlunit_t * argv [])
+{
+  unsigned maxn = rlunit_maxn (argv);
+  unsigned i = 0;
+
+  rlunit_print_header (maxn);
+  while (argv && * argv)
+    rlunit_print_one (* argv ++, ++ i, maxn);
+}
+
+
+/* Print the all the builtin Unit Tests */
+void rlunit_print_all (void)
+{
+  unsigned maxn = rlunit_all_maxn ();
+  unsigned i;
+
+  rlunit_print_header (maxn);
+  for (i = 0; i <= rlunit_no (); i ++)
+    rlunit_print_one (rlunit_find_at (i), i + 1, maxn);
+}
+

@@ -7,23 +7,8 @@
 
 /* Project headers */
 #include "datasets.h"
+#include "support.h"
 #include "rht-hashers.h"
-
-
-/* Unsigned to Ascii */
-static char * utoa (unsigned n)
-{
-  /* Limits for static buffers in utoa() */
-#define ITEMS 10      /* rows */
-#define SIZE  16      /* cols */
-
-  static char text [ITEMS] [SIZE];
-  static unsigned i = 0;
-
-  char * s = text [i ++ % ITEMS];
-  sprintf (s, "%u", n);
-  return s;
-}
 
 
 robj_t * mkobj (unsigned key, unsigned val, unsigned miss,

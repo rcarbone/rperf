@@ -21,7 +21,7 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
 }
 
 
-/* Allocate and populate all the items starting with an empty a hash table */
+/* Allocate and populate all the items starting with an empty hash table */
 rtime_t rsuite_grow_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);

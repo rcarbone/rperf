@@ -7,11 +7,11 @@
 #include "roptions.h"
 #include "sargv.h"
 #include "rltest.h"
-#include "rlunit.h"
+#include "rlsuite.h"
 
 
 /* Program name/version */
-#define _NAME_      "Run builtin Unit Tests"
+#define _NAME_      "Run builtin Test Suite"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
@@ -28,12 +28,12 @@ typedef enum
   OPT_QUIET      = 'q',
 
   /* Operations */
-  OPT_LIST       = 'l',    /* List Unit Tests    */
-  OPT_RUN        = 'x',    /* Execute Unit Tests */
+  OPT_LIST       = 'l',    /* List Test Suite    */
+  OPT_RUN        = 'x',    /* Execute Test Suite */
 
   /* Finger */
-  OPT_INCLUDE    = 'i',    /* Include Unit Test */
-  OPT_EXCLUDE    = 'e',    /* Exclude Unit Test */
+  OPT_INCLUDE    = 'i',    /* Include Test Suite */
+  OPT_EXCLUDE    = 'e',    /* Exclude Test Suite */
 
   /* Element counters */
   OPT_ITEMS      = 'n',    /* initial # of elements */
@@ -92,24 +92,24 @@ static struct option lopts [] =
 };
 
 
-/* Finger at Unit Tests to include/exclude */
-static rlunit_t ** choose (char * progname, char * included [], char * excluded [])
+/* Finger at Test Suite to include/exclude */
+static rlsuite_t ** choose (char * progname, char * included [], char * excluded [])
 {
   char ** names   = included ? included : excluded;
-  rlunit_t ** subset = included ? NULL : rlunit_all ();
+  rlsuite_t ** subset = included ? NULL : rlsuite_all ();
 
   /* Nothing but these */
   while (names && * names)
     {
-      rlunit_t * rlunit = rlunit_valid (* names);
-      if (! rlunit)
+      rlsuite_t * rlsuite = rlsuite_valid (* names);
+      if (! rlsuite)
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
 	  arrclear (subset, NULL);
 	  return NULL;
 	}
       else
-	subset = included ? arrmore (subset, rlunit, rlunit_t) : arrless (subset, rlunit, rlunit_t, NULL);
+	subset = included ? arrmore (subset, rlsuite, rlsuite_t) : arrless (subset, rlsuite, rlsuite_t, NULL);
       names ++;
     }
 
@@ -119,18 +119,21 @@ static rlunit_t ** choose (char * progname, char * included [], char * excluded 
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  rlunit_t * tests [],
+		  rlsuite_t * tests [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
+  relem_t ** elems = NULL;
   unsigned l;
   if (tests)
     {
       switch (choice)
 	{
 	case OPT_RUN:
+	  elems = mkelems (items);
 	  for (l = 0; l < loops; l ++)
-	    rlunit_run (tests, items);
+	    rlsuite_run (tests, items, elems);
+	  rmelems (elems);
 	  break;
 
 	default:
@@ -161,14 +164,14 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations with the Unit Tests:\n");
+  printf ("  Operations with the Test Suite:\n");
   usage_item (options, n, OPT_LIST,    "list");
   usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
 
   printf ("  Finger:\n");
-  usage_item (options, n, OPT_INCLUDE, "include Unit Test (repeatable)");
-  usage_item (options, n, OPT_EXCLUDE, "exclude Unit Test (repeatable)");
+  usage_item (options, n, OPT_INCLUDE, "include Test Suite (repeatable)");
+  usage_item (options, n, OPT_EXCLUDE, "exclude Test Suite (repeatable)");
   printf ("\n");
 
   printf ("  Element counters: (default %.0f)\n", INITIALS);
@@ -190,7 +193,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
 }
 
 
-/* Display/Select/Run Unit Tests */
+/* Display/Select/Run Test Suite */
 int main (int argc, char * argv [])
 {
   char * progname  = basename (argv [0]);    /* notice program name */
@@ -200,10 +203,10 @@ int main (int argc, char * argv [])
   bool verbose     = false;
   bool quiet       = false;
 
-  /* Unit Tests to run */
+  /* Test Suite to run */
   char ** included  = NULL;
   char ** excluded  = NULL;
-  rlunit_t ** tests = NULL;
+  rlsuite_t ** tests = NULL;
 
   /* Elements counters */
   unsigned items   = INITIALS;               /* initial # of elements per test */
@@ -233,7 +236,7 @@ int main (int argc, char * argv [])
 	case OPT_QUIET:   quiet   = true;                         break;
 
 	  /* Operations */
-	case OPT_LIST:    rlunit_print_all ();                    goto bye;
+	case OPT_LIST:    rlsuite_print_all ();                   goto bye;
 	case OPT_RUN:     choice = option;                        break;
 
 	  /* Finger */
@@ -278,13 +281,13 @@ int main (int argc, char * argv [])
   if (! tests)
     {
       if (choice == OPT_RUN)
-	tests = rlunit_all ();
+	tests = rlsuite_all ();
 
       /* Attempt to do what has been required by the user */
       if (included || excluded)
 	{
 	  /* Build a subset and go! */
-	  rlunit_t ** subset = choose (progname, included, excluded);
+	  rlsuite_t ** subset = choose (progname, included, excluded);
 	  if (subset)
 	    doit (progname, choice, subset, loops, items, verbose, quiet);
 	  else

@@ -8,10 +8,21 @@ MAINSRCS += bsd-slist.c
 LIBSRCS  += elems.c
 LIBSRCS  += unit.c
 LIBSRCS  += unit-code.c
+LIBSRCS  += suite.c
+LIBSRCS  += suite-code.c
 LIBSRCS  += print.c
+LIBSRCS  += elapsed.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   =
+
+#ut: main.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+#	@echo "=*= making program $@ =*="
+#	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+#ts: run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+#	@echo "=*= making program $@ =*="
+#	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@

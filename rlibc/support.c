@@ -75,6 +75,24 @@ void itoa (int c, char * ret)
 }
 
 
+/* Unsigned to Ascii */
+char * utoa (unsigned n)
+{
+  /* Limits for static buffers in utoa() */
+#define ITEMS 10      /* rows */
+#define SIZE  16      /* cols */
+
+  static char text [ITEMS] [SIZE];
+  static unsigned i = 0;
+
+  char * s = text [i ++ % ITEMS];
+  sprintf (s, "%u", n);
+  return s;
+}
+
+
+
+
 /* Evaluate the number of digits in n */
 unsigned digits (unsigned n)
 {
