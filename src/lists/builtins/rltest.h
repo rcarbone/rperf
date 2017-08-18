@@ -50,7 +50,7 @@ typedef struct
   char * name;            /* unique name                */
   char * description;     /* description                */
 
-  rlunit_f * unit;         /* function to run Unit Test  */
+  rlunit_f * unit;        /* function to run Unit Test  */
 
   relapsed_t ** results;  /* results of test execution  */
 
@@ -63,7 +63,7 @@ typedef struct sw
   char * pathname;        /* shared object with the implementation               */
   rplugin_t * plugin;     /* where all the functions are implemented             */
   char * name;            /* name of implementation as defined in the plugin     */
-  rltest_t ** suite;       /* suite implemented in the shared object and executed */
+  rltest_t ** suite;      /* suite implemented in the shared object and executed */
   unsigned mark;          /* indicator of performances */
 
 } sw_t;

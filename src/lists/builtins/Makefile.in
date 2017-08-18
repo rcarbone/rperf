@@ -1,6 +1,6 @@
 # The name of the games
 LIB       = rl
-PROGRAM   = rltest
+PROGRAMS  = rltest
 
 # C source files
 MAINSRCS += main.c

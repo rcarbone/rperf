@@ -222,8 +222,8 @@ in implementations/Makefile.
 How to add a test scenario
 ==========================
 
-1. add in rht/suite-code.c the implementation of the scenario
-2. add in rht/rsuite.h
+1. add in builtins/suite-code.c the implementation of the scenario
+2. add in builtins/rsuite.h
    a. a new value of type rsuite_id_t
    b. the declaration of the function
 3. add in etc/plugin.c an item to handle the call
@@ -232,7 +232,13 @@ How to add a test scenario
 That's all folks!
 
 
-How to add an unit test
+How to add an Unit Test
 =======================
 
-To be defined
+1. add in builtins/unit.c
+   a. the local Unit Test identifier
+   b. the external reference of the function which implements the Unit Test
+   c. an item to the table of builtins
+2. add in builtins/unit-code.c the implementation of the Unit Test
+
+That's all folks!

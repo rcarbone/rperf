@@ -25,42 +25,51 @@
 typedef enum
 {
   RLUNIT_MAKE    = 0x01,
-  RLUNIT_APPEND  = 0x02,
-  RLUNIT_PREPEND = 0x03,
-
-#if defined(ROCCO)
-  RLUNIT_COUNT   = 0x04,  /* Allocate, populate, count and free a container                        */
-  RLUNIT_CLEAR   = 0x05,  /* Allocate, populate, clear and free a container                        */
-
-  RLUNIT_FOUND   = 0x06,  /* Allocate, populate, find all existing elements one-by-one and free    */
-  RLUNIT_MISS    = 0x07,  /* Allocate, populate, find non existing elements and free               */
-  RLUNIT_DELETE  = 0x08,  /* Allocate, populate, delete all existing elements one-by-one and free  */
-  RLUNIT_MISSED  = 0x09,  /* Allocate, populate, delete non existing elements and free             */
-  RLUNIT_FOREACH = 0x0a,  /* Allocate, populate, iterate all existing elements one-by-one and free */
-  RLUNIT_KEYS    = 0x0b,  /* Allocate, populate, iterate to get all keys one-by-one and free       */
-  RLUNIT_VALS    = 0x0c,  /* Allocate, populate, iterate to get all values one-by-one and free     */
-#endif /* ROCCO */
+  RLUNIT_PREPEND = 0x02,
+  RLUNIT_APPEND  = 0x03,
+  RLUNIT_COUNT   = 0x04,
+  RLUNIT_CLEAR   = 0x05,
+  RLUNIT_FOUND   = 0x06,
+  RLUNIT_MISS    = 0x07,
+  RLUNIT_DELETE  = 0x08,
+  RLUNIT_MISSED  = 0x09,
+  RLUNIT_FOREACH = 0x0a,
 
 } rlunit_id_t;
 
 
 /* The implementation elsewhere defined */
 rlunit_f alloc_free;
-rlunit_f alloc_append_free;
 rlunit_f alloc_prepend_free;
+rlunit_f alloc_append_free;
+rlunit_f alloc_clear_free;
+rlunit_f alloc_count_free;
+rlunit_f alloc_found_free;
+rlunit_f alloc_miss_free;
+rlunit_f alloc_delete_free;
+rlunit_f alloc_missed_free;
+rlunit_f alloc_iterate_free;
 
 
 /* All the Unit Tests in an array */
 static rltest_t rlunit_builtins [] =
 {
-  { RLUNIT_MAKE,    "make",    "Allocate and free an empty container", alloc_free,         NULL },
-  { RLUNIT_APPEND,  "append",  "Add elements at the tail of the list", alloc_append_free,  NULL },
-  { RLUNIT_PREPEND, "prepend", "Add elements at the head of the list", alloc_prepend_free, NULL },
+  { RLUNIT_MAKE,    "make",    "Allocate and free an empty container", alloc_free         },
+  { RLUNIT_PREPEND, "prepend", "Add elements at the head of the list", alloc_prepend_free },
+  { RLUNIT_APPEND,  "append",  "Add elements at the tail of the list", alloc_append_free  },
+  { RLUNIT_CLEAR,   "clear",   "Add elements and clear",               alloc_clear_free   },
+  { RLUNIT_COUNT,   "count",   "Add elements and count",               alloc_count_free   },
+  { RLUNIT_FOUND,   "found",   "Search for existent one-by-one",       alloc_found_free   },
+  { RLUNIT_MISS,    "miss",    "Search for non-existent one-by-one",   alloc_miss_free    },
+  { RLUNIT_DELETE,  "delete",  "Delete existent one-by-one",           alloc_delete_free  },
+  { RLUNIT_MISSED,  "missed",  "Delete non-existent one-by-one",       alloc_missed_free  },
+  { RLUNIT_FOREACH, "foreach", "Iterate over existent one-by-one",     alloc_iterate_free },
 };
 #define RLUNIT_NO (sizeof (rlunit_builtins) / sizeof (* rlunit_builtins))
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
 
 static void rlunit_run_one (rltest_t * rlunit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
 {

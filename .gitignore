@@ -1,29 +1,29 @@
 # Executables
-rht/rtest
-rspeed/rspeed
-rbattle/rbattle
-implementations/*/ut
-implementations/*/*/ut
-implementations/*/*/*/ut
-implementations/*/suite
-implementations/*/*/suite
-implementations/*/*/*/suite
+src/*/builtins/rtest
+src/*/speed/rspeed
+src/*/battle/rbattle
+src/*/implementations/*/ut
+src/*/implementations/*/*/ut
+src/*/implementations/*/*/*/ut
+src/*/implementations/*/suite
+src/*/implementations/*/*/suite
+src/*/implementations/*/*/*/suite
 
 # Automatically generated symlinks
-rht/ht-internal.h
-rht/tommytypes.h
-rht/uthash.h
+src/*/builtins/ht-internal.h
+src/*/builtins/tommytypes.h
+src/*/builtins/uthash.h
 
 # Automatically generated C sources
-implementations/*/plugin.c
-implementations/*/*/plugin.c
-implementations/*/*/*/plugin.c
-implementations/*/ut.c
-implementations/*/*/ut.c
-implementations/*/*/*/ut.c
-implementations/*/suite.c
-implementations/*/*/suite.c
-implementations/*/*/*/suite.c
+src/*/implementations/*/plugin.c
+src/*/implementations/*/*/plugin.c
+src/*/implementations/*/*/*/plugin.c
+src/*/implementations/*/ut.c
+src/*/implementations/*/*/ut.c
+src/*/implementations/*/*/*/ut.c
+src/*/implementations/*/suite.c
+src/*/implementations/*/*/suite.c
+src/*/implementations/*/*/*/suite.c
 
 # Makefiles
 Makefile

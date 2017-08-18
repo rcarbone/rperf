@@ -24,17 +24,17 @@
 /* The local identifiers for the Unit Tests to run (indexed by keys) */
 typedef enum
 {
-  RUNIT_MAKE    = 0x01,  /* Allocate and free an empty container                                  */
-  RUNIT_FILL    = 0x02,  /* Allocate, populate and free a container                               */
-  RUNIT_CLEAR   = 0x03,  /* Allocate, populate, clear and free a container                        */
-  RUNIT_COUNT   = 0x04,  /* Allocate, populate, count and free a container                        */
-  RUNIT_FOUND   = 0x05,  /* Allocate, populate, find all existing elements one-by-one and free    */
-  RUNIT_MISS    = 0x06,  /* Allocate, populate, find non existing elements and free               */
-  RUNIT_DELETE  = 0x07,  /* Allocate, populate, delete all existing elements one-by-one and free  */
-  RUNIT_MISSED  = 0x08,  /* Allocate, populate, delete non existing elements and free             */
-  RUNIT_FOREACH = 0x09,  /* Allocate, populate, iterate all existing elements one-by-one and free */
-  RUNIT_KEYS    = 0x0a,  /* Allocate, populate, iterate to get all keys one-by-one and free       */
-  RUNIT_VALS    = 0x0b,  /* Allocate, populate, iterate to get all values one-by-one and free     */
+  RUNIT_MAKE    = 0x01,
+  RUNIT_FILL    = 0x02,
+  RUNIT_CLEAR   = 0x03,
+  RUNIT_COUNT   = 0x04,
+  RUNIT_FOUND   = 0x05,
+  RUNIT_MISS    = 0x06,
+  RUNIT_DELETE  = 0x07,
+  RUNIT_MISSED  = 0x08,
+  RUNIT_FOREACH = 0x09,
+  RUNIT_KEYS    = 0x0a,
+  RUNIT_VALS    = 0x0b,
 
 } runit_id_t;
 
@@ -73,6 +73,7 @@ static rtest_t runit_builtins [] =
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+
 static void runit_run_one (rtest_t * runit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
 {
   unsigned t;
@@ -85,6 +86,9 @@ static void runit_run_one (rtest_t * runit, unsigned items, unsigned n, unsigned
   else
     printf ("No\n");
 }
+
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 /* Return the # of Unit Tests */
