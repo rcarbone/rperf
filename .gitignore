@@ -15,6 +15,17 @@ src/*/builtins/tommytypes.h
 src/*/builtins/uthash.h
 
 # Automatically generated C sources
+src/*/implementations/*/plugin-rl.c
+src/*/implementations/*/*/plugin-rl.c
+src/*/implementations/*/*/*/plugin-rl.c
+src/*/implementations/*/ut-run.c
+src/*/implementations/*/*/ut-run.c
+src/*/implementations/*/*/*/ut-run.c
+src/*/implementations/*/suite-run.c
+src/*/implementations/*/*/suite-run.c
+src/*/implementations/*/*/*/suite-run.c
+
+# Automatically generated C sources
 src/*/implementations/*/plugin.c
 src/*/implementations/*/*/plugin.c
 src/*/implementations/*/*/*/plugin.c

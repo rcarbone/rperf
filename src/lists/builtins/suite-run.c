@@ -6,15 +6,16 @@
 /* Project headers */
 #include "roptions.h"
 #include "sargv.h"
-#include "rtest.h"
+#include "rltest.h"
+#include "rlsuite.h"
 
 
 /* Program name/version */
-#define _NAME_      "Run builtin Unit Tests"
+#define _NAME_      "Run builtin Test Suite"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
-#define OPT_DEFAULT OPT_LIST
+#define OPT_DEFAULT OPT_RUN
 
 
 /* All the command line long options are here */
@@ -27,15 +28,15 @@ typedef enum
   OPT_QUIET      = 'q',
 
   /* Operations */
-  OPT_LIST       = 'l',    /* List Unit Tests    */
-  OPT_RUN        = 'x',    /* Execute Unit Tests */
+  OPT_LIST       = 'l',    /* List Test Suite    */
+  OPT_RUN        = 'x',    /* Execute Test Suite */
 
   /* Finger */
-  OPT_INCLUDE    = 'i',    /* Include Unit Test */
-  OPT_EXCLUDE    = 'e',    /* Exclude Unit Test */
+  OPT_INCLUDE    = 'i',    /* Include Test Suite */
+  OPT_EXCLUDE    = 'e',    /* Exclude Test Suite */
 
-  /* Item counters */
-  OPT_ITEMS      = 'n',    /* initial # of items */
+  /* Element counters */
+  OPT_ITEMS      = 'n',    /* initial # of elements */
   OPT_ITEMS_0    = '0',    /* 10 ^ 0 */
   OPT_ITEMS_1    = '1',    /* 10 ^ 1 */
   OPT_ITEMS_2    = '2',    /* 10 ^ 2 */
@@ -70,8 +71,8 @@ static struct option lopts [] =
   { "include",      required_argument, NULL, OPT_INCLUDE },
   { "exclude",      required_argument, NULL, OPT_EXCLUDE },
 
-  /* Item counters */
-  { "items",        required_argument, NULL, OPT_ITEMS   },
+  /* Element counters */
+  { "elements",     required_argument, NULL, OPT_ITEMS   },
   { "one",          no_argument,       NULL, OPT_ITEMS_0 },
   { "ten",          no_argument,       NULL, OPT_ITEMS_1 },
   { "hundred",      no_argument,       NULL, OPT_ITEMS_2 },
@@ -91,19 +92,19 @@ static struct option lopts [] =
 };
 
 
-/* Build the Unit Tests to run */
-static rtest_t ** build_tests (char * progname, char * included [], char * excluded [])
+/* Build the Test Suite to run */
+static rlsuite_t ** build_tests (char * progname, char * included [], char * excluded [])
 {
-  char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  rtest_t ** tests = included ? NULL : runit_all ();       /* The tests to run (nothing or everything but these)   */
+  char ** names      = included ? included : excluded;      /* User-included items have priority over user-excluded */
+  rlsuite_t ** tests = included ? NULL : rlsuite_all ();    /* The tests to run (nothing or everything but these)   */
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
       /* Add/Delete the given test to/from the table of tests to run */
-      rtest_t * t = runit_valid (* names);
+      rlsuite_t * t = rlsuite_valid (* names);
       if (t)
-	tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
+	tests = included ? arrmore (tests, t, rlsuite_t) : arrless (tests, t, rlsuite_t, NULL);
       else
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
@@ -118,18 +119,21 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  rtest_t * tests [],
+		  rlsuite_t * tests [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
+  relem_t ** elems = NULL;
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: runit_print_all (); break;
+    case OPT_LIST: rlsuite_print_all (); break;
 
     case OPT_RUN:
+      elems = mkelems (items);
       for (l = 0; l < loops; l ++)
-	runit_run (tests, items);
+	rlsuite_run (tests, items, elems);
+      rmelems (elems);
       break;
 
     default:
@@ -157,18 +161,18 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations with the Unit Tests:\n");
+  printf ("  Operations with the Test Suite:\n");
   usage_item (options, n, OPT_LIST,    "list");
   usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
 
   printf ("  Finger:\n");
-  usage_item (options, n, OPT_INCLUDE, "include Unit Test (repeatable)");
-  usage_item (options, n, OPT_EXCLUDE, "exclude Unit Test (repeatable)");
+  usage_item (options, n, OPT_INCLUDE, "include Test Suite (repeatable)");
+  usage_item (options, n, OPT_EXCLUDE, "exclude Test Suite (repeatable)");
   printf ("\n");
 
-  printf ("  Item counters: (default %.0f)\n", INITIALS);
-  usage_item (options, n, OPT_ITEMS,   "set the initial number of items per test");
+  printf ("  Element counters: (default %.0f)\n", INITIALS);
+  usage_item (options, n, OPT_ITEMS,   "set the initial number of elements per test");
   usage_item (options, n, OPT_ITEMS_0, "one item                   (1e0)");
   usage_item (options, n, OPT_ITEMS_1, "ten items                  (1e1)");
   usage_item (options, n, OPT_ITEMS_2, "one hundred items          (1e2)");
@@ -186,26 +190,26 @@ static void _usage_ (char * progname, char * version, struct option * options)
 }
 
 
-/* Display/Select/Run Unit Tests */
+/* Display/Select/Run Test Suite */
 int main (int argc, char * argv [])
 {
-  char * progname  = basename (argv [0]);    /* notice program name */
-  char * sopts     = optlegitimate (lopts);  /* short option list   */
+  char * progname    = basename (argv [0]);    /* notice program name */
+  char * sopts       = optlegitimate (lopts);  /* short option list   */
 
   /* Booleans */
-  bool verbose     = false;
-  bool quiet       = false;
+  bool verbose       = false;
+  bool quiet         = false;
 
-  /* Unit Tests to run */
-  char ** included = NULL;
-  char ** excluded = NULL;
-  rtest_t ** tests = NULL;
+  /* Test Suite to run */
+  char ** included   = NULL;
+  char ** excluded   = NULL;
+  rlsuite_t ** tests = NULL;
 
-  /* Items counter */
-  unsigned items   = INITIALS;               /* initial # of items per test */
+  /* Elements counters */
+  unsigned items     = INITIALS;               /* initial # of elements per test */
 
   /* Loops counter */
-  unsigned loops   = 1;                      /* # of loops per test         */
+  unsigned loops     = 1;                      /* # of loops per test            */
 
   unsigned choice  = OPT_DEFAULT;
   int option;
@@ -236,7 +240,7 @@ int main (int argc, char * argv [])
         case OPT_INCLUDE: included = argsuniq (included, optarg); break;
         case OPT_EXCLUDE: excluded = argsuniq (excluded, optarg); break;
 
-	  /* Item counter */
+	  /* Element counters */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;
@@ -275,7 +279,7 @@ int main (int argc, char * argv [])
   if (included || excluded)
     choice = OPT_RUN;
 
-  /* Build a subset and go! */
+  /* Build the set of tests to run and go! */
   tests = build_tests (progname, included, excluded);
   if (tests)
     doit (progname, choice, tests, loops, items, verbose, quiet);

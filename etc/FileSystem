@@ -1,16 +1,26 @@
+# The project's run-time tree
+INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
+INSTALLDIR  = ${ROOTDIR}/src/hashtables/plugins
+
 # The project's source tree
-INSTALLDIR = ${ROOTDIR}/src/hashtables/plugins
+RLIBCDIR    = ${ROOTDIR}/rlibc
+RLDIR       = ${ROOTDIR}/src/lists/builtins
+RHTDIR      = ${ROOTDIR}/src/hashtables/builtins
 
 # The project's libraries
-RLIBCDIR   = ${ROOTDIR}/rlibc
-RHTDIR     = ${ROOTDIR}/src/hashtables/builtins
 
 # rlibc
-INCLUDE   += -I${RLIBCDIR}
-RLIBCLIB   = ${RLIBCDIR}/librlibc.a
-USRLIBS   += ${RLIBCLIB}
+INCLUDE    += -I${RLIBCDIR}
+RLIBCLIB    = ${RLIBCDIR}/librlibc.a
+USRLIBS    += ${RLIBCLIB}
+
+# rl
+INCLUDE    += -I${RLDIR}
+RLLIB       = ${RLDIR}/librl.a
+USRLIBS    += ${RLLIB}
 
 # rht
-INCLUDE   += -I${RHTDIR}
-RHTLIB     = ${RHTDIR}/librht.a
-USRLIBS   += ${RHTLIB}
+INCLUDE    += -I${RHTDIR}
+RHTLIB      = ${RHTDIR}/librht.a
+USRLIBS    += ${RHTLIB}
+

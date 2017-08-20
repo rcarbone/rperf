@@ -1,0 +1,1 @@
+/* Just to avoid errors when inclusion is required */

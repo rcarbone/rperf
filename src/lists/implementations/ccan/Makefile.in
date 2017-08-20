@@ -1,0 +1,13 @@
+# The name of the games
+NAME       = ccan-list
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./ccan
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    =
+

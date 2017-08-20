@@ -1,13 +1,13 @@
-TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.plugins ${ETCDIR}/LIBS
+TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.rl ${ETCDIR}/LIBS
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = ut suite
+PROGRAMS  = ut-run suite-run
 
 # All the targets
-TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
+TARGETS   = ${SHLIB} ${INSTALLDIR1}/${SHLIB} ${PROGRAMS}
 
 # Source, object and depend files
 CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
@@ -37,7 +37,7 @@ LDFLAGS   =
 SYSLIBS  += -ldl
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c ut.c suite.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RHTLIB}
+all: Makefile plugin-rl.c ut-run.c suite-run.c ${INSTALLDIR1} ${TARGETS} ${RLIBCLIB} ${RLLIB}
 
 Makefile: Makefile.in ${TEMPLATES}
 	@ROOTDIR=`grep ROOTDIR Makefile`
@@ -58,15 +58,15 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo                                                  >> Makefile
 	@cat ${TEMPLATES}                                      >> Makefile
 
-plugin.c: README.c ${ETCDIR}/plugin.c
+plugin-rl.c: README.c ${ETCDIR}/plugin-rl.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-ut.c: ${ETCDIR}/ut.c
+ut-run.c: ${RLDIR}/ut-run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-suite.c: ${ETCDIR}/suite.c
+suite-run.c: ${RLDIR}/suite-run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -76,46 +76,46 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o glue.o ${RHTLIB} ${RLIBCLIB}
+${SHLIB}: plugin-rl.o glue.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
-${INSTALLDIR}/${SHLIB}: ${SHLIB}
-	@if [ -d ${INSTALLDIR} ] ; then \
+${INSTALLDIR1}/${SHLIB}: ${SHLIB}
+	@if [ -d ${INSTALLDIR1} ] ; then \
           (rm -f $@ ; cp $^ $@) ; \
          else \
-          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR1}" ; \
          fi
 
-${INSTALLDIR}:
-	@if [ ! -d ${INSTALLDIR} ] ; then \
-           mkdir ${INSTALLDIR} ; \
+${INSTALLDIR1}:
+	@if [ ! -d ${INSTALLDIR1} ] ; then \
+           mkdir ${INSTALLDIR1} ; \
          fi
 
 # Binary programs
-ut: ut.o glue.o ${RHTLIB} ${RLIBCLIB}
+ut-run: ut-run.o glue.o ${ROOTDIR}/src/lists/builtins/librl.a ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-suite: suite.o glue.o ${RHTLIB} ${RLIBCLIB}
+suite-run: suite-run.o glue.o ${ROOTDIR}/src/lists/builtins/librl.a ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-unit: ut
+unit: ut-run
 	@./$^ -x
 
-run: suite
+run: suite-run
 	@./$^ -x
 
 x:
 	@echo "=*= running unit tests =*="
-	@./ut -x
+	@./ut-run -x
 	@echo
 	@echo "=*= running test suite =*="
-	@./suite -x
+	@./suite-run -x
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
@@ -124,15 +124,15 @@ clean:
 	@rm -f ${TARGETS}
 	@rm -f ${OBJS}
 	@rm -f *~
-	@rm -f plugin.o
-	@rm -f ut.o
-	@rm -f suite.o
+	@rm -f plugin-rl.o
+	@rm -f ut-run.o
+	@rm -f suite-run.o
 
 distclean: clean
 	@rm -f ${DEPS}
-	@rm -f plugin.c
-	@rm -f ut.c
-	@rm -f suite.c
+	@rm -f plugin-rl.c
+	@rm -f ut-run.c
+	@rm -f suite-run.c
 
 # How to make an object file from a C source
 %.o: %.c
@@ -228,35 +228,35 @@ glue-clang.o: glue.cpp
 	@echo "=*= making object $@ =*="
 	@clang++ -c ${C++FLAGS} -std=c++11 $< -o $@
 
-suite-gcc-O0: suite.c glue.o ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O0: suite.c glue.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@gcc ${INCLUDES} $^ ${SYSLIBS} -o $@
 
-suite-gcc-O1: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O1: suite.c glue-gcc.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@gcc ${INCLUDES} -O1 $^ ${SYSLIBS} -o $@
 
-suite-gcc-O2: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O2: suite.c glue-gcc.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@gcc ${INCLUDES} -O2 $^ ${SYSLIBS} -o $@
 
-suite-gcc-O3: suite.c glue-gcc.o ${RHTLIB} ${RLIBCLIB}
+suite-gcc-O3: suite.c glue-gcc.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@gcc ${INCLUDES} -O3 $^ ${SYSLIBS} -o $@
 
-suite-clang-O0: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+suite-clang-O0: suite.c glue-clang.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@clang ${INCLUDES} $^ ${SYSLIBS} -o $@
 
-suite-clang-O1: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+suite-clang-O1: suite.c glue-clang.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@clang ${INCLUDES} -O1 $^ ${SYSLIBS} -o $@
 
-suite-clang-O2: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+suite-clang-O2: suite.c glue-clang.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@clang ${INCLUDES} -O2 $^ ${SYSLIBS} -o $@
 
-suite-clang-O3: suite.c glue-clang.o ${RHTLIB} ${RLIBCLIB}
+suite-clang-O3: suite.c glue-clang.o ${RLLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@clang ${INCLUDES} -O3 $^ ${SYSLIBS} -o $@
 
@@ -283,3 +283,63 @@ a: glue-gcc.o glue-clang.o ${ALLO}
            done ; \
            echo "" ; \
          done
+
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rl
+${RLLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLLIB} =*="
+	@(cd ${RLDIR} && make)
+	@echo "==================="
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rl
+${RLLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLLIB} =*="
+	@(cd ${RLDIR} && make)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+
+# rl
+${RLLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLLIB} =*="
+	@(cd ${RLDIR} && make)
+	@echo "==================="
+
+# rht
+${RHTLIB}:
+	@echo "==================="
+	@echo "=*= making ${RHTLIB} =*="
+	@(cd ${RHTDIR} && make)
+	@echo "==================="

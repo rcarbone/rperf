@@ -18,24 +18,10 @@ static void addone (void * x)
 }
 
 
-/* Allocate and populate a list with n elements inserting at the list tail */
-static rl_t * tailpopulate (unsigned argc, relem_t * argv [])
-{
-  rl_t * list = rl_alloc (argc);
-  unsigned i;
-  assert (list);
-  assert (rl_count (list) == 0);
-  for (i = 0; i < argc; i ++)
-    rl_append (list, argv [i]);
-  assert (rl_count (list) == argc);
-  return list;
-}
-
-
-/* Allocate and populate a list with n elements inserting at the list head */
+/* Allocate and populate a list inserting argc elements at the list head */
 static rl_t * headpopulate (unsigned argc, relem_t * argv [])
 {
-  rl_t * list = rl_alloc (argc);
+  rl_t * list = rl_alloc ();
   unsigned i;
   assert (list);
   assert (rl_count (list) == 0);
@@ -46,9 +32,23 @@ static rl_t * headpopulate (unsigned argc, relem_t * argv [])
 }
 
 
+/* Allocate and populate a list inserting argc elements at the list tail */
+static rl_t * tailpopulate (unsigned argc, relem_t * argv [])
+{
+  rl_t * list = rl_alloc ();
+  unsigned i;
+  assert (list);
+  assert (rl_count (list) == 0);
+  for (i = 0; i < argc; i ++)
+    rl_append (list, argv [i]);
+  assert (rl_count (list) == argc);
+  return list;
+}
+
+
 unsigned alloc_free (unsigned argc)
 {
-  rl_t * list = rl_alloc (argc);
+  rl_t * list = headpopulate (0, NULL);
   assert (list);
   assert (rl_count (list) == 0);
   rl_free (list);

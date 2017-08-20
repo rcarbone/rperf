@@ -13,18 +13,21 @@
 #include "rctype.h"
 #include "support.h"
 #include "elems.h"
-#include "rltest.h"
 #include "rlsuite.h"
 
 
+#if defined(ROCCO)
 /* The implementations elsewhere defined */
-rlsuite_f rlsuite_grow;
+rlsuite_f rlsuite_grow_head;
+rlsuite_f rlsuite_grow_tail;
+#endif /* ROCCO */
 
 
 /* All the Test Suite in a static table */
 static rlsuite_t builtins [] =
 {
-  { "grow", "Populate an empty list", rlsuite_grow },
+  { "grow-head", "Populate an empty list", rlsuite_grow_head },
+  { "grow-tail", "Populate an empty list", rlsuite_grow_tail },
 };
 #define RLSUITE_NO (sizeof (builtins) / sizeof (* builtins))
 

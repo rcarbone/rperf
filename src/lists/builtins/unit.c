@@ -37,7 +37,7 @@ rlunit_f alloc_iterate_free;
 /* All the Unit Tests in a static table */
 static rlunit_t builtins [] =
 {
-  { "make",    "Allocate and free an empty container", alloc_free         },
+  { "make",    "Allocate and free an empty list",      alloc_free         },
   { "prepend", "Add elements at the head of the list", alloc_prepend_free },
   { "append",  "Add elements at the tail of the list", alloc_append_free  },
   { "clear",   "Add elements and clear",               alloc_clear_free   },
@@ -60,7 +60,7 @@ static void rlunit_run_one (rlunit_t * rlunit, unsigned items, unsigned n, unsig
 
   print_dots (rlunit -> name, "Running", n, seq, maxn);
 
-  t = rlunit -> unit (items);
+  t = rlunit -> func (items);
   if (t == items)
     printf ("Ok\n");
   else

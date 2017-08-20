@@ -5,7 +5,7 @@ TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.leaf
 STLIB     = lib${LIB}.a
 
 # All the targets
-TARGETS   = ${STLIB} ${PROGRAM}
+TARGETS   = ${STLIB} ${PROGRAM} ${PROGRAMS}
 
 # Source, object and depend files
 LIBOBJS   = ${LIBSRCS:%.c=%.o}
@@ -67,10 +67,19 @@ ${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
+ut-run: ut-run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+suite-run: suite-run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
 # Cleanup rules
 clean:
 	@rm -f ${TARGETS}
 	@rm -f ${OBJS}
+	@rm -f *.o
 	@rm -f *~
 
 distclean: clean

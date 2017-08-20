@@ -38,7 +38,7 @@ typedef void rl_each_f (void * elem);
 
 /* API */
 
-rl_t * rl_alloc ();
+rl_t * rl_alloc (void);
 void rl_free (rl_t * list);
 void rl_clear (rl_t * list);
 unsigned rl_count (rl_t * list);

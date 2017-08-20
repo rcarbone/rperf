@@ -1,10 +1,11 @@
 # The name of the games
 LIB       = rl
-PROGRAMS  = rltest
+PROGRAMS  = ut-run suite-run
 
 # C source files
-MAINSRCS += main.c
+MAINSRCS += ut-run.c
 MAINSRCS += bsd-slist.c
+
 LIBSRCS  += elems.c
 LIBSRCS  += unit.c
 LIBSRCS  += unit-code.c
@@ -18,11 +19,3 @@ INCLUDE   =
 CFLAGS    =
 C++FLAGS  =
 SYSLIBS   =
-
-#ut: main.o bsd-slist.o ${STLIB} ${RLIBCLIB}
-#	@echo "=*= making program $@ =*="
-#	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
-
-#ts: run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
-#	@echo "=*= making program $@ =*="
-#	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@

@@ -1,6 +1,6 @@
 # The name of the games
 LIB       = rlibc
-PROGRAM   =
+PROGRAMS  =
 
 # C source files
 LIBSRCS  += vargv.c

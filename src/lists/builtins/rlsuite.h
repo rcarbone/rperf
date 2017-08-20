@@ -6,12 +6,11 @@
 #include "rltest.h"
 
 
+/* Function definition for Test Suite */
 typedef rtime_t rlsuite_f (unsigned argc, relem_t * argv []);
 
 
-/* The local identifiers for the Test Suite to run is simply its position in the table */
-
-/* The structure to keep Test Suites */
+/* The structure to keep Test Suite */
 typedef struct
 {
   char * name;            /* unique name                */
@@ -23,7 +22,7 @@ typedef struct
 } rlsuite_t;
 
 
-/* Returns # of defined Test Suites */
+/* Returns # of builtins Test Suites */
 unsigned rlsuite_no (void);
 
 /* Returns a handle to a Test Suite */
@@ -41,7 +40,7 @@ rlsuite_t ** rlsuite_all (void);
 unsigned rlsuite_all_maxn (void);
 rlsuite_t ** rlsuite_all_n (unsigned n);
 rlsuite_t ** rlsuite_all_rnd (void);
-void rsuite_print_all (void);
+void rlsuite_print_all (void);
 
 rlsuite_t * rlsuite_valid (char * id);
 
@@ -52,3 +51,9 @@ unsigned rlsuite_maxd (rlsuite_t * argv []);
 void rlsuite_run (rlsuite_t * suite [], unsigned argc, relem_t * argv []);
 void rlsuite_clear_results (rlsuite_t * suite []);
 void rlsuite_sort_results (rlsuite_t * suite []);
+
+
+/* The implementations elsewhere defined */
+rlsuite_f rlsuite_grow_head;
+rlsuite_f rlsuite_grow_tail;
+

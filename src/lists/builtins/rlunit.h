@@ -17,14 +17,12 @@ typedef struct
 {
   char * name;            /* unique name                */
   char * description;     /* description                */
-  rlunit_f * unit;        /* function to run Unit Test  */
-
-  relapsed_t ** results;  /* results of test execution  */
+  rlunit_f * func;        /* function to run Unit Test  */
 
 } rlunit_t;
 
 
-/* Returns # of defined Unit Tests */
+/* Returns # of builtins Unit Tests */
 unsigned rlunit_no (void);
 
 /* Returns a handle to an Unit Test */
@@ -48,8 +46,6 @@ unsigned rlunit_maxn (rlunit_t * argv []);
 rlunit_t * rlunit_valid (char * id);
 void rlunit_run (rlunit_t * argv [], unsigned elems);
 
-
-/* Public functions in file print.c */
 void rlunit_print_no (void);
-void rlunit_print (rlunit_t * argv []);
 void rlunit_print_all (void);
+void rlunit_print (rlunit_t * argv []);
