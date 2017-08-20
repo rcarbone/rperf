@@ -2,6 +2,8 @@
 src/*/builtins/rtest
 src/*/speed/rspeed
 src/*/battle/rbattle
+src/*/builtins/ut-run
+src/*/builtins/suite-run
 src/*/implementations/*/ut
 src/*/implementations/*/*/ut
 src/*/implementations/*/*/*/ut

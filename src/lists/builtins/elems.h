@@ -22,7 +22,10 @@ typedef struct relem
   relem_t  * pval;
 
   /* Used to keep values in a singly-linked list of elements */
-  SLIST_ENTRY (relem) head;
+  SLIST_ENTRY (relem) shead;
+
+  /* Used to keep values in a double-linked list of elements */
+  LIST_ENTRY (relem) head;
 
 } relem_t;
 
