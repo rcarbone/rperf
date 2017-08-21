@@ -19,6 +19,10 @@
 #define SEP  '|'
 
 
+/* an implementation */
+struct sw;
+
+
 /* The structure to keep execution times for a single test run */
 typedef struct
 {
@@ -33,6 +37,8 @@ typedef struct
   unsigned elems;       /* The number of elements used to execute the test */
   unsigned slow;        /* A counter used to evaluate a stop condition     */
 
+  struct sw * sw;       /* The implementation under test                   */
+
 } relapsed_t;
 
 
@@ -43,6 +49,7 @@ void rmelapsed (void * elapsed);
 relapsed_t * dupelapsed (relapsed_t * src);
 int sort_by_more_avg (const void * a, const void * b);
 int sort_by_less_avg (const void * a, const void * b);
+void print_test_header (unsigned maxn);
 void show_elapsed (relapsed_t * elapsed);
 
 

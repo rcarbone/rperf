@@ -1,0 +1,15 @@
+# The name of the games
+LIB       = rl-speed
+PROGRAM   = rl-speed
+
+# C source files
+MAINSRCS += main.c
+MAINSRCS += fake-rl.c
+LIBSRCS  += run.c
+LIBSRCS  += print.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   =
+CFLAGS    =
+C++FLAGS  =
+SYSLIBS   = -ldl

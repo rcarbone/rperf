@@ -22,7 +22,7 @@ typedef struct
 } rlsuite_t;
 
 
-/* Returns # of builtins Test Suites */
+/* Returns # of builtins Test Suite */
 unsigned rlsuite_no (void);
 
 /* Returns a handle to a Test Suite */
@@ -56,4 +56,3 @@ void rlsuite_sort_results (rlsuite_t * suite []);
 /* The implementations elsewhere defined */
 rlsuite_f rlsuite_grow_head;
 rlsuite_f rlsuite_grow_tail;
-

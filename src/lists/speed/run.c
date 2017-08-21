@@ -2,8 +2,8 @@
 #include "safe.h"
 #include "sargv.h"
 #include "rwall.h"
-#include "rtest.h"
-#include "rspeed.h"
+#include "rlsuite.h"
+#include "rlspeed.h"
 
 
 /*
@@ -11,9 +11,9 @@
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
+static relapsed_t * run_single_test (rlsuite_t * test, sw_t * sw,
 				     unsigned loops,
-				     unsigned items, robj_t * objs [],
+				     unsigned items, relem_t * elems [],
 				     unsigned serial,
 				     unsigned maxn, bool verbose)
 {
@@ -35,7 +35,7 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
   for (l = 0; l < loops; l ++)
     {
       /* Run the test and evaluate the time elapsed for this run in nanoseconds */
-      double elapsed = sw_call (sw, rtest -> name, items, objs, false);
+      double elapsed = sw_call (sw, test -> name, items, (void **) elems, false);
 
       /* Evaluate min/max/avg time elapsed for the execution of the test */
       min = RMIN (min, elapsed);
@@ -59,7 +59,7 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
   result -> rate = result -> elapsed / items / loops;
 
   /* Update the number of items used in this test */
-  result -> items = items;
+  result -> elems = items;
 
   /* Display timing information for this test */
   if (verbose)
@@ -78,20 +78,20 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *
  * The datasets needed to run the suite are initialized just one time because the number of items is not incremented each loop.
  */
-sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
+sw_t ** run_suite (rlsuite_t * suite [], sw_t * plugins [],
 		   unsigned loops, unsigned items,
 		   bool verbose, bool quiet)
 {
   /* Initialize variables needed to run the suite */
-  robj_t ** objs  = mkobjs (items);            /* Initialize datasets needed by the suite */
-  unsigned loaded = arrlen (plugins);          /* Number of loaded implementations        */
-  unsigned maxn   = sw_maxname (plugins);      /* Length of longest implementation name   */
-  unsigned n      = rsuite_maxn (suite);       /* Longest test name                       */
-  unsigned d      = rsuite_maxd (suite);       /* Longest test description                */
-  unsigned tno    = arrlen (suite);
-  unsigned done   = 0;                          /* Counter of tests executed               */
+  relem_t ** elems = mkelems (items);           /* Initialize datasets needed by the suite */
+  unsigned loaded  = arrlen (plugins);          /* Number of loaded implementations        */
+  unsigned maxn    = sw_maxname (plugins);      /* Length of longest implementation name   */
+  unsigned n       = rlsuite_maxn (suite);      /* Longest test name                       */
+  unsigned d       = rlsuite_maxd (suite);      /* Longest test description                */
+  unsigned tno     = arrlen (suite);
+  unsigned done    = 0;                         /* Counter of tests executed               */
   unsigned seq;                                 /* Counter for tests to run                */
-  rtest_t ** test;                              /* Iterator over the table of tests to run */
+  rlsuite_t ** test;                            /* Iterator over the table of tests to run */
 
   /* Nothing to do if no test or no plugins */
   if (! suite || ! plugins)
@@ -99,7 +99,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 
   printf ("Evaluate time elapsed repeating %u times the same test, each acting with %u unique items\n", loops, items);
   printf ("\n");
-  printf ("Dataset  : unique sequential string keys (char *) and generic pointers (void *) as values\n");
+  printf ("Dataset  : unique generic pointers (void *) as elements\n");
   printf ("Times    : wall-clock time evaluated at nsecs resolution and rendered in a more human-readable format\n");
   printf ("Rendering: results are sorted by less average time elapsed\n");
   printf ("\n");
@@ -154,7 +154,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		{
 		  /* Run this test for this implementation using the same constant number of items */
-		  relapsed_t * result = run_single_test (* test, sw, loops, items, objs, i + 1, maxn, quiet);
+		  relapsed_t * result = run_single_test (* test, sw, loops, items, elems, i + 1, maxn, quiet);
 
 		  /* Save the results for later sorting/rendering */
 		  (* test) -> results = arrmore ((* test) -> results, result, relapsed_t);
@@ -185,7 +185,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
     print_ranking (suite, plugins, maxn);
 
   /* Free the datasets used by the test suite */
-  rmobjs (objs);
+  rmelems (elems);
 
   return plugins;
 }

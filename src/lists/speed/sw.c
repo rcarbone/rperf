@@ -1,0 +1,269 @@
+/* Projects headers */
+#include "safe.h"
+#include "sargv.h"
+#include "rwall.h"
+#include "rlsuite.h"
+#include "rlspeed.h"
+
+
+/* Public functions in file sw.c */
+unsigned sw_maxname (sw_t * sw []);
+unsigned sw_no (sw_t * sw []);
+unsigned sw_have (sw_t * sw [], char * name);
+rtime_t sw_call (sw_t * sw, char * name, unsigned items, void * elems [], bool verbose);
+rplugin_f * sw_func (sw_t * sw, char * name);
+sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
+void sw_done (sw_t * sw [], bool verbose);
+
+
+/* Forward */
+static sw_t * rmsw (sw_t * sw);
+
+
+/* Get the 'module' variable defined in the plugin */
+static char * pmodule (rplugin_t * p)
+{
+  char * m = rplugin_module (p);
+  return m ? m : "undefined";
+}
+
+
+static rlsuite_t * mktest (char * name, char * description, rplugin_f * fun)
+{
+  rlsuite_t * t = calloc (1, sizeof (* t));
+
+  t -> name        = strdup (name);
+  t -> description = strdup (description);
+
+  return t;
+}
+
+
+static void rmtest (void * _t)
+{
+  rlsuite_t * t = _t;
+  if (! t)
+    return;
+
+  safefree (t -> name);
+  safefree (t -> description);
+  free (t);
+}
+
+
+static sw_t * mksw (char * pathname, bool verbose)
+{
+  sw_t * sw = calloc (1, sizeof (sw_t));
+  int error = 0;
+  char * buffer = NULL;
+
+  /* Load the shared object in memory */
+  sw -> plugin = rplugin_mk (pathname, & error, & buffer);
+  if (sw -> plugin)
+    {
+      char ** funcs = rplugin_functions (sw -> plugin);
+      char ** f = funcs;
+
+      /* Call now its boot() function */
+      sw_call (sw, "boot", 0, NULL, verbose);
+
+      sw -> pathname = strdup (pathname);
+      sw -> name     = strdup (pmodule (sw -> plugin));
+
+      while (f && * f)
+	{
+	  /* ROCCO: Set to a suitable value also the description */
+	  sw -> suite = arrmore (sw -> suite, mktest (* f, "XXX-DESCRIPTION-XXX", sw_func (sw, * f)), rlsuite_t);
+	  f ++;
+	}
+      argsclear (funcs);
+    }
+  else
+    {
+      if (verbose)
+	printf ("Cannot load: %s\n", buffer);
+      safefree (buffer);
+      sw = rmsw (sw);
+    }
+
+  return sw;
+}
+
+
+static sw_t * rmsw (sw_t * sw)
+{
+  if (! sw)
+    return NULL;
+
+  safefree (sw -> pathname);
+  safefree (sw -> name);
+  rplugin_rm (sw -> plugin);
+  arrclear (sw -> suite, rmtest);
+  free (sw);
+
+  return NULL;
+}
+
+
+/* Evaluate max length of implementation names under test */
+unsigned sw_maxname (sw_t * sw [])
+{
+  unsigned n = 0;
+  while (sw && * sw)
+    {
+      n = RMAX (strlen ((* sw) -> name), n);
+      sw ++;
+    }
+  return n;
+}
+
+
+/* Returns number of implementations which have a function implemented with the given name */
+unsigned sw_have (sw_t * sw [], char * name)
+{
+  unsigned n = 0;
+  while (sw && * sw)
+    if (sw_func (* sw ++, name))
+      n ++;
+  return n;
+}
+
+
+/* Check if an implementation has defined a function with a given name */
+rplugin_f * sw_func (sw_t * sw, char * name)
+{
+  if (name && sw && sw -> plugin && sw -> plugin -> funs)
+    {
+      rplugin_symbol_t ** f = sw -> plugin -> funs;
+      while (f && * f)
+        {
+          if (! strcmp (name, (* f) -> name))
+	    return rplugin_function ((* f) -> name, sw -> plugin -> funs);
+          f ++;
+        }
+    }
+  return NULL;
+}
+
+
+rtime_t sw_call (sw_t * sw, char * name, unsigned items, void * elems [], bool verbose)
+{
+  /* Lookup by name for a function implemented in the shared object */
+  rplugin_f * fun = sw_func (sw, name);
+  if (fun)
+    {
+      int argc = 0;
+      char * argv [5] = { NULL, NULL, NULL, NULL, NULL };
+      char aitems [32];
+      bool ret;
+      rtime_t t1;
+      rtime_t t2;
+
+      sprintf (aitems, "%u", items);
+
+      argv [argc ++] = name;
+      argv [argc ++] = "-n";
+      argv [argc ++] = aitems;
+
+      if (verbose)
+	argv [argc ++] = "-v";
+
+      if (verbose)
+	printf ("    calling %s/%s ... ", pmodule (sw -> plugin), name);
+
+      t1 = nswall ();
+      ret = fun (argc, argv, elems);
+      t2 = nswall ();
+
+      if (verbose)
+	{
+	  if (! ret)
+	    printf (" Ok\n");
+	  else
+	    printf (" No\n");
+	}
+      return ! ret ? t2 - t1 : 0;
+    }
+  return 0;
+}
+
+
+/* Initialize all the implementations under test
+ *   - load the shared object in memory
+ *   - call its boot() function
+ */
+sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose)
+{
+  char ** path = argv;
+  sw_t ** done = NULL;
+
+  if (verbose)
+    {
+      printf ("Initializing ");
+      printf ("\n\n");
+    }
+
+  while (path && * path)
+    {
+      sw_t * sw;
+
+      if (verbose)
+	printf ("  loading %s ... ", * path);
+
+      sw = mksw (* path, verbose);
+      if (sw)
+	{
+	  if (verbose)
+	    printf ("Ok\n");
+
+          done = arrmore (done, sw, sw_t);
+	}
+      else
+	{
+	  if (verbose)
+	    printf ("No\n");
+	}
+
+      path ++;
+    }
+
+  if (verbose)
+    printf (" %d implementations initialized (of %d defined)\n", arrlen (done), arrlen (argv));
+
+  return done;
+}
+
+
+/* Terminate all the implementations under test
+ *   - call its halt() function
+ *   - unload the shared object
+ */
+void sw_done (sw_t * argv [], bool verbose)
+{
+  sw_t ** sw = argv;
+  unsigned done = 0;
+
+  if (verbose)
+    {
+      printf ("Terminating  ");
+      printf ("\n\n");
+    }
+
+  while (sw && * sw)
+    {
+      /* Call the halt function */
+      sw_call (* sw, "halt", 0, NULL, verbose);
+
+      rmsw (* sw ++);
+
+      if (verbose)
+	printf (".");
+
+      done ++;
+    }
+
+  if (verbose)
+    printf (" %d implementations terminated (of %d loaded)\n", done, arrlen (argv));
+
+  safefree (argv);
+}

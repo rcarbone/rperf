@@ -79,13 +79,13 @@ int halt (int argc, char * argv [], void * envp [])
 }
 
 
-int grow_seq (int argc, char * argv [], void * envp [])
+int grow_head (int argc, char * argv [], void * envp [])
 {
   return run_this (RLSUITE_GROW_HEAD, argc, argv, envp);
 }
 
 
-int grow_rnd (int argc, char * argv [], void * envp [])
+int grow_tail (int argc, char * argv [], void * envp [])
 {
   return run_this (RLSUITE_GROW_TAIL, argc, argv, envp);
 }
