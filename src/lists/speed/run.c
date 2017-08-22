@@ -184,7 +184,7 @@ sw_t ** run_suite (rlsuite_t * suite [], sw_t * plugins [],
   if (done)
     print_ranking (suite, plugins, maxn);
 
-  /* Free the datasets used by the test suite */
+  /* Free the elements used by the test suite */
   rmelems (elems);
 
   return plugins;

@@ -1,0 +1,13 @@
+# The name of the games
+NAME       = bsd-stailq
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    =
+CFLAGS     =
+C++FLAGS   =
+SYSLIBS    =
+

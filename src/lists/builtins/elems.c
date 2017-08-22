@@ -11,25 +11,13 @@
 #include "safe.h"
 
 
-relem_t * mkelem (unsigned key, unsigned val, unsigned miss)
+relem_t * mkelem (unsigned key)
 {
   relem_t * elem = calloc (1, sizeof (* elem));
 
-  /* Unsigned Keys */
-  elem -> ukey  = key;
-  elem -> umiss = miss + 1;
-
-  /* String Keys */
-  elem -> skey  = strdup (utoa (elem -> ukey));
-  elem -> smiss = strdup (utoa (elem -> umiss));
-
-  /* Pointer Key */
-  elem -> pkey = elem;
-
-  /* Values */
-  elem -> uval = val;
-  elem -> sval = strdup (utoa (elem -> uval));
-  elem -> pval = elem;
+  elem -> foo = key;
+  elem -> bar = strdup (utoa (elem -> foo));
+  elem -> me  = elem;
 
   return elem;
 }
@@ -40,9 +28,7 @@ void rmelem (relem_t * elem)
   if (! elem)
     return;
 
-  safefree (elem -> skey);
-  safefree (elem -> smiss);
-  safefree (elem -> sval);
+  safefree (elem -> bar);
   free (elem);
 }
 
@@ -54,7 +40,7 @@ relem_t ** mkelems (unsigned argc)
   unsigned i;
 
   for (i = 0; i < argc; i ++)
-    argv [i] = mkelem (i + 1, i + 1, argc + i);
+    argv [i] = mkelem (i + 1);
   argv [i] = NULL;
 
   return argv;

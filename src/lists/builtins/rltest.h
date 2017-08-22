@@ -19,7 +19,7 @@
 #define SEP  '|'
 
 
-/* an implementation */
+/* Opaque structure used to represent an implementation */
 struct sw;
 
 

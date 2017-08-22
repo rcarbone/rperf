@@ -6,16 +6,6 @@
 #include "rlspeed.h"
 
 
-/* Public functions in file sw.c */
-unsigned sw_maxname (sw_t * sw []);
-unsigned sw_no (sw_t * sw []);
-unsigned sw_have (sw_t * sw [], char * name);
-rtime_t sw_call (sw_t * sw, char * name, unsigned items, void * elems [], bool verbose);
-rplugin_f * sw_func (sw_t * sw, char * name);
-sw_t ** sw_init (char * argv [], unsigned itesm, bool verbose);
-void sw_done (sw_t * sw [], bool verbose);
-
-
 /* Forward */
 static sw_t * rmsw (sw_t * sw);
 
@@ -28,18 +18,16 @@ static char * pmodule (rplugin_t * p)
 }
 
 
-static rlsuite_t * mktest (char * name, char * description, rplugin_f * fun)
+static rlsuite_t * mksuite (char * name)
 {
   rlsuite_t * t = calloc (1, sizeof (* t));
 
-  t -> name        = strdup (name);
-  t -> description = strdup (description);
-
+  t -> name     = strdup (name);
   return t;
 }
 
 
-static void rmtest (void * _t)
+static void rmsuite (void * _t)
 {
   rlsuite_t * t = _t;
   if (! t)
@@ -71,11 +59,7 @@ static sw_t * mksw (char * pathname, bool verbose)
       sw -> name     = strdup (pmodule (sw -> plugin));
 
       while (f && * f)
-	{
-	  /* ROCCO: Set to a suitable value also the description */
-	  sw -> suite = arrmore (sw -> suite, mktest (* f, "XXX-DESCRIPTION-XXX", sw_func (sw, * f)), rlsuite_t);
-	  f ++;
-	}
+	sw -> suite = arrmore (sw -> suite, mksuite (* f ++), rlsuite_t);
       argsclear (funcs);
     }
   else
@@ -98,7 +82,7 @@ static sw_t * rmsw (sw_t * sw)
   safefree (sw -> pathname);
   safefree (sw -> name);
   rplugin_rm (sw -> plugin);
-  arrclear (sw -> suite, rmtest);
+  arrclear (sw -> suite, rmsuite);
   free (sw);
 
   return NULL;

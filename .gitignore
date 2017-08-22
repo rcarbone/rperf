@@ -1,15 +1,13 @@
 # Executables
-src/*/builtins/rtest
-src/*/speed/rspeed
-src/*/battle/rbattle
-src/*/builtins/ut-run
-src/*/builtins/suite-run
-src/*/implementations/*/ut
-src/*/implementations/*/*/ut
-src/*/implementations/*/*/*/ut
-src/*/implementations/*/suite
-src/*/implementations/*/*/suite
-src/*/implementations/*/*/*/suite
+rtest
+rl-speed
+rspeed
+rbattle
+
+ut-run
+suite-run
+ut
+suite
 
 # Automatically generated symlinks
 src/*/builtins/ht-internal.h

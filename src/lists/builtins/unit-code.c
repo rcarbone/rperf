@@ -119,12 +119,9 @@ unsigned alloc_miss_free (unsigned argc)
   relem_t ** argv = mkelems (argc);
   rl_t * list = headpopulate (argc, argv);
   unsigned i;
+  relem_t miss;
   for (i = 0; i < argc; i ++)
-    {
-      relem_t miss;
-      relem_t * elem = rl_get (list, & miss);
-      assert (! elem);
-    }
+    assert (! rl_get (list, & miss));
   rl_free (list);
   rmelems (argv);
   return argc;
@@ -136,10 +133,9 @@ unsigned alloc_delete_free (unsigned argc)
   relem_t ** argv = mkelems (argc);
   rl_t * list = headpopulate (argc, argv);
   unsigned i;
-  relem_t miss;
   for (i = 0; i < argc; i ++)
-    rl_del (list, & miss);
-  assert (rl_count (list) == argc);
+    rl_del (list, argv [i]);
+  assert (rl_count (list) == 0);
   rl_free (list);
   rmelems (argv);
   return argc;
@@ -151,9 +147,10 @@ unsigned alloc_missed_free (unsigned argc)
   relem_t ** argv = mkelems (argc);
   rl_t * list = headpopulate (argc, argv);
   unsigned i;
+  relem_t miss;
   for (i = 0; i < argc; i ++)
-    rl_del (list, argv [i]);
-  assert (rl_count (list) == 0);
+    rl_del (list, & miss);
+  assert (rl_count (list) == argc);
   rl_free (list);
   rmelems (argv);
   return argc;

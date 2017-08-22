@@ -1,7 +1,8 @@
 /* System headers */
 #include <stdlib.h>
 
-/* This implementation uses from the 4.4BSD <sys/queue.h> macros */
+
+/* The implementation */
 #include <sys/queue.h>
 
 
@@ -11,27 +12,30 @@
 
 
 /* librl - an abstract C library over real list implementations */
-typedef SLIST_HEAD (, relem) rl_t;
+typedef LIST_HEAD (, relem) rl_t;
 #include "rl.h"
 
 
 static relem_t * rl_last (rl_t * list)
 {
-  relem_t * elem = SLIST_FIRST (list);
+  relem_t * elem = LIST_FIRST (list);
   relem_t * last = NULL;
   while (elem)
     {
       last = elem;
-      elem = SLIST_NEXT (elem, shead);
+      elem = LIST_NEXT (elem, head);
     }
   return last;
 }
 
 
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+
 rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
-  SLIST_INIT (list);
+  LIST_INIT (list);
 
   return list;
 }
@@ -45,6 +49,9 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
+  relem_t * elem;
+  LIST_FOREACH (elem, list, head)
+    ;
 }
 
 
@@ -52,7 +59,7 @@ unsigned rl_count (rl_t * list)
 {
   unsigned count = 0;
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
     count ++;
   return count;
 }
@@ -60,23 +67,23 @@ unsigned rl_count (rl_t * list)
 
 void rl_prepend (rl_t * list, relem_t * elem)
 {
-  SLIST_INSERT_HEAD (list, elem, shead);
+  LIST_INSERT_HEAD (list, elem, head);
 }
 
 
 void rl_append (rl_t * list, relem_t * elem)
 {
-  if (SLIST_EMPTY (list))
-    SLIST_INSERT_HEAD (list, elem, shead);
+  if (LIST_EMPTY (list))
+    LIST_INSERT_HEAD (list, elem, head);
   else 
-    SLIST_INSERT_AFTER (rl_last (list), elem, shead);
+    LIST_INSERT_AFTER (rl_last (list), elem, head);
 }
 
 
 relem_t * rl_get (rl_t * list, relem_t * arg)
 {
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
     if (elem == arg)
       return elem;
   return NULL;
@@ -86,9 +93,9 @@ relem_t * rl_get (rl_t * list, relem_t * arg)
 void rl_del (rl_t * list, relem_t * arg)
 {
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
     if (elem == arg)
-      SLIST_REMOVE (list, arg, relem, shead);
+      LIST_REMOVE (elem, head);
 }
 
 
@@ -101,6 +108,6 @@ bool rl_has (rl_t * list, relem_t * elem)
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
   relem_t * elem;
-  SLIST_FOREACH (elem, list, shead)
+  LIST_FOREACH (elem, list, head)
     fn (data);
 }

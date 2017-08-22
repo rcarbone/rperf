@@ -1,7 +1,8 @@
 /* System headers */
 #include <stdlib.h>
 
-/* This implementation uses from the 4.4BSD <sys/queue.h> macros */
+
+/* The implementation */
 #include <sys/queue.h>
 
 
@@ -11,27 +12,17 @@
 
 
 /* librl - an abstract C library over real list implementations */
-typedef SLIST_HEAD (, relem) rl_t;
+typedef STAILQ_HEAD (, relem) rl_t;
 #include "rl.h"
 
 
-static relem_t * rl_last (rl_t * list)
-{
-  relem_t * elem = SLIST_FIRST (list);
-  relem_t * last = NULL;
-  while (elem)
-    {
-      last = elem;
-      elem = SLIST_NEXT (elem, shead);
-    }
-  return last;
-}
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
-  SLIST_INIT (list);
+  STAILQ_INIT (list);
 
   return list;
 }
@@ -45,6 +36,9 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
+  relem_t * elem;
+  STAILQ_FOREACH (elem, list, stailq)
+    ;
 }
 
 
@@ -52,7 +46,7 @@ unsigned rl_count (rl_t * list)
 {
   unsigned count = 0;
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
     count ++;
   return count;
 }
@@ -60,23 +54,23 @@ unsigned rl_count (rl_t * list)
 
 void rl_prepend (rl_t * list, relem_t * elem)
 {
-  SLIST_INSERT_HEAD (list, elem, shead);
+  STAILQ_INSERT_HEAD (list, elem, stailq);
 }
 
 
 void rl_append (rl_t * list, relem_t * elem)
 {
-  if (SLIST_EMPTY (list))
-    SLIST_INSERT_HEAD (list, elem, shead);
+  if (STAILQ_EMPTY (list))
+    STAILQ_INSERT_HEAD (list, elem, stailq);
   else 
-    SLIST_INSERT_AFTER (rl_last (list), elem, shead);
+    STAILQ_INSERT_TAIL (list, elem, stailq);
 }
 
 
 relem_t * rl_get (rl_t * list, relem_t * arg)
 {
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
     if (elem == arg)
       return elem;
   return NULL;
@@ -86,9 +80,9 @@ relem_t * rl_get (rl_t * list, relem_t * arg)
 void rl_del (rl_t * list, relem_t * arg)
 {
   relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
+  for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
     if (elem == arg)
-      SLIST_REMOVE (list, arg, relem, shead);
+      STAILQ_REMOVE (list, elem, relem, stailq);
 }
 
 
@@ -101,6 +95,6 @@ bool rl_has (rl_t * list, relem_t * elem)
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
   relem_t * elem;
-  SLIST_FOREACH (elem, list, shead)
+  STAILQ_FOREACH (elem, list, stailq)
     fn (data);
 }
