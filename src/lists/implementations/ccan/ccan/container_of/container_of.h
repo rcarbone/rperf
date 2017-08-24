@@ -3,7 +3,9 @@
 #define CCAN_CONTAINER_OF_H
 #include <stddef.h>
 
+#if defined(ROCCO)
 #include "config.h"
+#endif /* ROCCO */
 #include <ccan/check_type/check_type.h>
 
 /**

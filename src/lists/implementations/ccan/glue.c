@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 /* The implementation */
 #include "list/list.h"
+#undef LIST_HEAD
 
 /* librl - an abstract C library over real singly/double lists implementations */
 typedef struct list_head rl_t;
@@ -15,7 +17,7 @@ typedef struct list_head rl_t;
 
 rl_t * rl_alloc (void)
 {
-  struct list_head * list = calloc (1, sizeof (* list));
+  rl_t * list = calloc (1, sizeof (* list));
   list_head_init (list);
   return list;
 }
@@ -34,52 +36,51 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
-#if defined(ROCCO)
   relem_t * item;
   relem_t * i;
   list_for_each_safe_off (list, item, i, 0)
     ;
-#endif /* ROCCO */
 }
 
 
-unsigned count = 0;
-
 unsigned rl_count (rl_t * list)
 {
-#if defined(ROCCO)
+  unsigned count = 0;
   relem_t * item;
-  relem_t * i;
-  list_for_each_safe_off (list, item, i, 0)
+  list_for_each (list, item, ccan)
     count ++;
-#endif /* ROCCO */
   return count;
 }
 
 
 void rl_prepend (rl_t * list, relem_t * elem)
 {
-  list_add (list, (struct list_node *) elem);
-  count ++;
+  list_add (list, & elem -> ccan);
 }
 
 
 void rl_append (rl_t * list, relem_t * elem)
 {
-  list_add_tail (list, & list -> n);
-  count ++;
+  list_add_tail (list, & elem -> ccan);
 }
 
 
 relem_t * rl_get (rl_t * list, relem_t * elem)
 {
+  relem_t * item;
+  list_for_each (list, item, ccan)
+    if (item == elem)
+      return item;
   return NULL;
 }
 
 
 void rl_del (rl_t * list, relem_t * elem)
 {
-  count --;
+  relem_t * item;
+  list_for_each (list, item, ccan)
+    if (item == elem)
+      list_del (& item -> ccan);
 }
 
 
@@ -91,4 +92,7 @@ bool rl_has (rl_t * list, relem_t * elem)
 
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
+  relem_t * item;
+  list_for_each (list, item, ccan)
+    fn (data);
 }

@@ -1,8 +1,12 @@
 
 #pragma once
 
-/* Berkeley lists */
+/* Berkeley 4.4 lists */
 #include <sys/queue.h>
+#undef LIST_HEAD
+
+/* CCAN - Rusty Russell */
+#include "ccan/list/list.h"
 
 
 /* List Element definition */
@@ -13,17 +17,20 @@ typedef struct relem
   char     * bar;
   relem_t  * me;
 
-  /* Used to keep values in a singly-linked list of elements */
+  /* Required by BSD implementation to keep values in a singly-linked list of elements */
   SLIST_ENTRY (relem) shead;
 
-  /* Used to keep values in a double-linked list of elements */
+  /* Required by BSD implementation to keep values in a double-linked list of elements */
   LIST_ENTRY (relem) head;
 
-  /* Used to keep values in a singly-linked tail queue of elements */
+  /* Required by BSD implementation to keep values in a singly-linked tail queue of elements */
   STAILQ_ENTRY (relem) stailq;
 
-  /* Used to keep values in a doubly-linked tail queue of elements */
+  /* Required by BSD implementation to keep values in a doubly-linked tail queue of elements */
   TAILQ_ENTRY (relem) tailq;
+
+  /* Required by CCAN implementation to make the structure list-able */
+  struct list_node ccan;
 
 } relem_t;
 

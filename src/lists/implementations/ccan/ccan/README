@@ -17,9 +17,10 @@ The following sources files were locally copied from latest git version:
   - check_type/check_type.h
   - container_of/container_of.h
   - list/list.h
-  - list/list.c
   - str/str_debug.h
   - str/str.h
 
-The following modifications were needed to compile the files as a standalone module:
-  1. config.h was locally edited because it is included in str/str.h
+The following modifications were needed to avoid inclusion of config.h:
+  1. check_type/check_type.h
+  2. container_of/container_of.h
+  3. str/str.h
