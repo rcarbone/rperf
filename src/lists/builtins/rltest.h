@@ -13,7 +13,7 @@
 #define RMIN(a, b) (((a) < (b)) ? (a) : (b))
 #define RMAX(a, b) (((a) > (b)) ? (a) : (b))
 
-#define INITIALS  1e4   /* initial # of elements */
+#define INITIALS  1e5   /* initial # of elements */
 #define LOOPS     10    /* default # of loops per test */
 
 #define SEP  '|'

@@ -145,13 +145,14 @@ unsigned alloc_delete_free (unsigned argc)
 unsigned alloc_missed_free (unsigned argc)
 {
   relem_t ** argv = mkelems (argc);
+  relem_t ** miss = mkelems (argc);
   rl_t * list = headpopulate (argc, argv);
   unsigned i;
-  relem_t miss;
   for (i = 0; i < argc; i ++)
-    rl_del (list, & miss);
+    rl_del (list, miss [i]);
   assert (rl_count (list) == argc);
   rl_free (list);
+  rmelems (miss);
   rmelems (argv);
   return argc;
 }

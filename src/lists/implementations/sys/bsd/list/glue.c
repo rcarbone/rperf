@@ -6,14 +6,14 @@
 #include <sys/queue.h>
 
 
+/* librl - an abstract C library over real list implementations */
+struct relem;
+typedef LIST_HEAD (, relem) rl_t;
+#include "rl.h"
+
 /* Project headers */
 #include "elems.h"
 #include "safe.h"
-
-
-/* librl - an abstract C library over real list implementations */
-typedef LIST_HEAD (, relem) rl_t;
-#include "rl.h"
 
 
 static relem_t * rl_last (rl_t * list)

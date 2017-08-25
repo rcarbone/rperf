@@ -2,3 +2,4 @@
 SUBDIRS += ccan
 SUBDIRS += klib
 SUBDIRS += sys
+SUBDIRS += tommyds

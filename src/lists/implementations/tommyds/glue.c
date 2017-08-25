@@ -4,11 +4,11 @@
 
 
 /* The implementation */
-#include "list/list.h"
-#undef LIST_HEAD
+#include "tommylist.c"
+
 
 /* librl - an abstract C library over real singly/double lists implementations */
-typedef struct list_head rl_t;
+typedef tommy_list rl_t;
 #include "rl.h"
 #include "elems.h"
 
@@ -18,69 +18,57 @@ typedef struct list_head rl_t;
 rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
-  list_head_init (list);
+  tommy_list_init (list);
   return list;
 }
 
 
 void rl_free (rl_t * list)
 {
-  relem_t * elem;
-  relem_t * it;
-  list_for_each_safe_off (list, elem, it, 0)
-    ;
-
   free (list);
 }
 
 
 void rl_clear (rl_t * list)
 {
-  relem_t * item;
-  relem_t * i;
-  list_for_each_safe_off (list, item, i, 0)
-    ;
 }
 
 
 unsigned rl_count (rl_t * list)
 {
-  unsigned count = 0;
-  relem_t * item;
-  list_for_each (list, item, ccan)
-    count ++;
-  return count;
+  return tommy_list_count (list);
 }
 
 
 void rl_prepend (rl_t * list, relem_t * elem)
 {
-  list_add (list, & elem -> ccan);
+  tommy_list_insert_head (list, & elem -> tommy, elem);
 }
 
 
 void rl_append (rl_t * list, relem_t * elem)
 {
-  list_add_tail (list, & elem -> ccan);
+  tommy_list_insert_tail (list, & elem -> tommy, elem);
 }
 
 
 relem_t * rl_get (rl_t * list, relem_t * elem)
 {
-  relem_t * item;
-  list_for_each (list, item, ccan)
-    if (item == elem)
-      return item;
+  tommy_node * node = tommy_list_head (list);
+  while (node)
+    {
+      if (node -> data == elem)
+	return elem;
+      node = node -> next;
+    }
   return NULL;
 }
 
 
 void rl_del (rl_t * list, relem_t * elem)
 {
-  relem_t * item;
-  list_for_each (list, item, ccan)
-    if (item == elem)
-      list_del (& item -> ccan);
+  if (rl_get (list, elem))
+    tommy_list_remove_existing (list, & elem -> tommy);
 }
 
 
@@ -92,7 +80,10 @@ bool rl_has (rl_t * list, relem_t * elem)
 
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-  relem_t * item;
-  list_for_each (list, item, ccan)
-    fn (data);
+  tommy_node * node = tommy_list_head (list);
+  while (node)
+    {
+      fn (data);
+      node = node -> next;
+    }
 }

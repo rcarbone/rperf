@@ -128,7 +128,7 @@ void print_ranking (rlsuite_t * suite [], sw_t * plugins [], unsigned maxn)
 
   printf ("      %-*.*s | mark ", maxn, maxn, "Implementation");
   seq = 0;
-  name  = names;
+  name = names;
   while (name && * name ++)
     printf ("| #%2u ", ++ seq);
   printf ("|\n");
@@ -175,4 +175,5 @@ void print_ranking (rlsuite_t * suite [], sw_t * plugins [], unsigned maxn)
 
       sw ++;
     }
+  argsclear (names);
 }

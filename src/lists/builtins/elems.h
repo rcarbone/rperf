@@ -3,10 +3,14 @@
 
 /* Berkeley 4.4 lists */
 #include <sys/queue.h>
+/* LIST_HEAD is also defined in CCAN */
 #undef LIST_HEAD
 
 /* CCAN - Rusty Russell */
 #include "ccan/list/list.h"
+
+/* tommyds - Andrea Mazzoleni */
+#include "tommytypes.h"
 
 
 /* List Element definition */
@@ -31,6 +35,9 @@ typedef struct relem
 
   /* Required by CCAN implementation to make the structure list-able */
   struct list_node ccan;
+
+  /* Required by tommyds implementation to make the structure list-able */
+  tommy_node tommy;
 
 } relem_t;
 
