@@ -11,6 +11,7 @@ struct relem;
 typedef LIST_HEAD (, relem) rl_t;
 #include "rl.h"
 
+
 /* Project headers */
 #include "elems.h"
 #include "safe.h"
@@ -49,9 +50,11 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
+#if defined(notused)
   relem_t * elem;
   LIST_FOREACH (elem, list, head)
     ;
+#endif /* notused */
 }
 
 
@@ -65,14 +68,16 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, relem_t * elem)
+void rl_prepend (rl_t * list, void * arg)
 {
+  relem_t * elem = arg;
   LIST_INSERT_HEAD (list, elem, head);
 }
 
 
-void rl_append (rl_t * list, relem_t * elem)
+void rl_append (rl_t * list, void * arg)
 {
+  relem_t * elem = arg;
   if (LIST_EMPTY (list))
     LIST_INSERT_HEAD (list, elem, head);
   else 
@@ -80,7 +85,7 @@ void rl_append (rl_t * list, relem_t * elem)
 }
 
 
-relem_t * rl_get (rl_t * list, relem_t * arg)
+void * rl_get (rl_t * list, void * arg)
 {
   relem_t * elem;
   for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
@@ -90,7 +95,7 @@ relem_t * rl_get (rl_t * list, relem_t * arg)
 }
 
 
-void rl_del (rl_t * list, relem_t * arg)
+void rl_del (rl_t * list, void * arg)
 {
   relem_t * elem;
   for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
@@ -99,7 +104,7 @@ void rl_del (rl_t * list, relem_t * arg)
 }
 
 
-bool rl_has (rl_t * list, relem_t * elem)
+bool rl_has (rl_t * list, void * elem)
 {
   return rl_get (list, elem);
 }

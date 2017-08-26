@@ -10,15 +10,11 @@
 #include "elems.h"
 #include "safe.h"
 
-
 /* librl - an abstract C library over real list implementations */
 #define nofree(x)
 KLIST_INIT(kl, relem_t *, nofree)
 typedef klist_t (kl) rl_t;
 #include "rl.h"
-
-
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 rl_t * rl_alloc (void)
@@ -35,9 +31,11 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
+#if defined(notused)
   kliter_t (kl) * it;
   for (it = kl_begin (list); it; it = kl_next (it))
     ;
+#endif /* notused */
 }
 
 
@@ -47,7 +45,7 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, relem_t * elem)
+void rl_prepend (rl_t * list, void * elem)
 {
 #if defined(ROCCO)
   kl1_kl * p = kmp_alloc (kl, list -> mp);
@@ -63,13 +61,13 @@ void rl_prepend (rl_t * list, relem_t * elem)
 }
 
 
-void rl_append (rl_t * list, relem_t * elem)
+void rl_append (rl_t * list, void * elem)
 {
   * kl_pushp (kl, list) = elem;
 }
 
 
-relem_t * rl_get (rl_t * list, relem_t * elem)
+void * rl_get (rl_t * list, void * elem)
 {
   kliter_t (kl) * it;
   for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
@@ -79,7 +77,7 @@ relem_t * rl_get (rl_t * list, relem_t * elem)
 }
 
 
-void rl_del (rl_t * list, relem_t * elem)
+void rl_del (rl_t * list, void * elem)
 {
   kliter_t (kl) * it;
   for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
@@ -88,7 +86,7 @@ void rl_del (rl_t * list, relem_t * elem)
 }
 
 
-bool rl_has (rl_t * list, relem_t * elem)
+bool rl_has (rl_t * list, void * elem)
 {
   return rl_get (list, elem);
 }

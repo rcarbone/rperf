@@ -12,6 +12,9 @@
 /* tommyds - Andrea Mazzoleni */
 #include "tommytypes.h"
 
+/* clibs - TJ Holowaychuk */
+#include "tj-list.h"
+
 
 /* List Element definition */
 typedef struct relem relem_t;
@@ -38,6 +41,9 @@ typedef struct relem
 
   /* Required by tommyds implementation to make the structure list-able */
   tommy_node tommy;
+
+  /* Required by tommyds implementation to make the structure list-able */
+  tj_list_node_t clibs;
 
 } relem_t;
 

@@ -1,5 +1,4 @@
 /* System headers */
-#include <stdio.h>
 #include <stdlib.h>
 
 
@@ -7,13 +6,15 @@
 #include "list/list.h"
 #undef LIST_HEAD
 
+
+/* Project headers */
+
 /* librl - an abstract C library over real singly/double lists implementations */
 typedef struct list_head rl_t;
 #include "rl.h"
+
 #include "elems.h"
 
-
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 rl_t * rl_alloc (void)
 {
@@ -29,17 +30,18 @@ void rl_free (rl_t * list)
   relem_t * it;
   list_for_each_safe_off (list, elem, it, 0)
     ;
-
   free (list);
 }
 
 
 void rl_clear (rl_t * list)
 {
+#if defined(notused)
   relem_t * item;
   relem_t * i;
   list_for_each_safe_off (list, item, i, 0)
     ;
+#endif /* notused */
 }
 
 
@@ -53,19 +55,19 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, relem_t * elem)
+void rl_prepend (rl_t * list, void * elem)
 {
-  list_add (list, & elem -> ccan);
+  list_add (list, & ((relem_t *) elem) -> ccan);
 }
 
 
-void rl_append (rl_t * list, relem_t * elem)
+void rl_append (rl_t * list, void * elem)
 {
-  list_add_tail (list, & elem -> ccan);
+  list_add_tail (list, & ((relem_t *) elem) -> ccan);
 }
 
 
-relem_t * rl_get (rl_t * list, relem_t * elem)
+void * rl_get (rl_t * list, void * elem)
 {
   relem_t * item;
   list_for_each (list, item, ccan)
@@ -75,7 +77,7 @@ relem_t * rl_get (rl_t * list, relem_t * elem)
 }
 
 
-void rl_del (rl_t * list, relem_t * elem)
+void rl_del (rl_t * list, void * elem)
 {
   relem_t * item;
   list_for_each (list, item, ccan)
@@ -84,7 +86,7 @@ void rl_del (rl_t * list, relem_t * elem)
 }
 
 
-bool rl_has (rl_t * list, relem_t * elem)
+bool rl_has (rl_t * list, void * elem)
 {
   return rl_get (list, elem);
 }

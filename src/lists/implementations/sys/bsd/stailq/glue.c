@@ -7,13 +7,14 @@
 
 
 /* Project headers */
-#include "elems.h"
-#include "safe.h"
-
 
 /* librl - an abstract C library over real list implementations */
+struct relem;
 typedef STAILQ_HEAD (, relem) rl_t;
 #include "rl.h"
+
+#include "elems.h"
+#include "safe.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -36,9 +37,11 @@ void rl_free (rl_t * list)
 
 void rl_clear (rl_t * list)
 {
+#if defined(notused)
   relem_t * elem;
   STAILQ_FOREACH (elem, list, stailq)
     ;
+#endif /* notused */
 }
 
 
@@ -52,22 +55,22 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, relem_t * elem)
+void rl_prepend (rl_t * list, void * elem)
 {
-  STAILQ_INSERT_HEAD (list, elem, stailq);
+  STAILQ_INSERT_HEAD (list, (relem_t *) elem, stailq);
 }
 
 
-void rl_append (rl_t * list, relem_t * elem)
+void rl_append (rl_t * list, void * elem)
 {
   if (STAILQ_EMPTY (list))
-    STAILQ_INSERT_HEAD (list, elem, stailq);
+    STAILQ_INSERT_HEAD (list, (relem_t *) elem, stailq);
   else 
-    STAILQ_INSERT_TAIL (list, elem, stailq);
+    STAILQ_INSERT_TAIL (list, (relem_t *) elem, stailq);
 }
 
 
-relem_t * rl_get (rl_t * list, relem_t * arg)
+void * rl_get (rl_t * list, void * arg)
 {
   relem_t * elem;
   for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
@@ -77,7 +80,7 @@ relem_t * rl_get (rl_t * list, relem_t * arg)
 }
 
 
-void rl_del (rl_t * list, relem_t * arg)
+void rl_del (rl_t * list, void * arg)
 {
   relem_t * elem;
   for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
@@ -86,7 +89,7 @@ void rl_del (rl_t * list, relem_t * arg)
 }
 
 
-bool rl_has (rl_t * list, relem_t * elem)
+bool rl_has (rl_t * list, void * elem)
 {
   return rl_get (list, elem);
 }

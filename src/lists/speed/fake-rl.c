@@ -53,32 +53,32 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, relem_t * elem)
+void rl_prepend (rl_t * list, void * elem)
 {
   never ("rl_prepend");
 }
 
 
-void rl_append (rl_t * list, relem_t * elem)
+void rl_append (rl_t * list, void * elem)
 {
   never ("rl_append");
 }
 
 
-relem_t * rl_get (rl_t * list, relem_t * elem)
+void * rl_get (rl_t * list, void * elem)
 {
   never ("rl_get");
   return NULL;
 }
 
 
-void rl_del (rl_t * list, relem_t * elem)
+void rl_del (rl_t * list, void * elem)
 {
   never ("rl_del");
 }
 
 
-bool rl_has (rl_t * list, relem_t * elem)
+bool rl_has (rl_t * list, void * elem)
 {
   never ("rl_has");
   return false;
