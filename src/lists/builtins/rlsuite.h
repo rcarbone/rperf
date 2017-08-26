@@ -7,7 +7,7 @@
 
 
 /* Function definition for Test Suite */
-typedef rtime_t rlsuite_f (unsigned argc, relem_t * argv []);
+typedef rtime_t rlsuite_f (unsigned argc, void * argv []);
 
 
 /* The structure to keep Test Suite */
@@ -48,7 +48,7 @@ char ** rlsuite_names (rlsuite_t * suite []);
 unsigned rlsuite_maxn (rlsuite_t * argv []);
 unsigned rlsuite_maxd (rlsuite_t * argv []);
 
-void rlsuite_run (rlsuite_t * suite [], unsigned argc, relem_t * argv []);
+void rlsuite_run (rlsuite_t * suite [], unsigned argc, void * argv []);
 void rlsuite_clear_results (rlsuite_t * suite []);
 void rlsuite_sort_results (rlsuite_t * suite []);
 
@@ -56,3 +56,4 @@ void rlsuite_sort_results (rlsuite_t * suite []);
 /* The implementations elsewhere defined */
 rlsuite_f rlsuite_grow_head;
 rlsuite_f rlsuite_grow_tail;
+rlsuite_f rlsuite_iterate;

@@ -1,5 +1,6 @@
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
 SUBDIRS += ccan
+SUBDIRS += clibs
 SUBDIRS += klib
 SUBDIRS += sys
 SUBDIRS += tommyds

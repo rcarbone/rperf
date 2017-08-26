@@ -11,9 +11,16 @@
 
 /* === Implementation of the built-in Test Suite === */
 
-#if defined(ROCCO)
+
+/* Callback to iterate over the list elements */
+static void addone_cb (void * x)
+{
+  (* (unsigned *) x) ++;
+}
+
+
 /* Allocate and populate a list inserting argc elements at the list head */
-static rl_t * grow_head (unsigned argc, relem_t * argv [])
+static rl_t * grow_head (unsigned argc, void * argv [])
 {
   rl_t * list = rl_alloc ();
   unsigned i;
@@ -23,8 +30,9 @@ static rl_t * grow_head (unsigned argc, relem_t * argv [])
 }
 
 
+#if defined(ROCCO)
 /* Allocate and populate a list inserting argc elements at the list tail */
-static rl_t * grow_tail (unsigned argc, relem_t * argv [])
+static rl_t * grow_tail (unsigned argc, void * argv [])
 {
   rl_t * list = rl_alloc ();
   unsigned i;
@@ -36,7 +44,7 @@ static rl_t * grow_tail (unsigned argc, relem_t * argv [])
 
 
 /* Allocate and populate a list inserting argc elements at the list head */
-rtime_t rlsuite_grow_head (unsigned argc, relem_t * argv [])
+rtime_t rlsuite_grow_head (unsigned argc, void * argv [])
 {
   rl_t * list = rl_alloc ();
   rtime_t t1;
@@ -53,7 +61,7 @@ rtime_t rlsuite_grow_head (unsigned argc, relem_t * argv [])
 
 
 /* Allocate and populate a list inserting argc elements at the list tail */
-rtime_t rlsuite_grow_tail (unsigned argc, relem_t * argv [])
+rtime_t rlsuite_grow_tail (unsigned argc, void * argv [])
 {
   rl_t * list = rl_alloc ();
   rtime_t t1;
@@ -66,4 +74,19 @@ rtime_t rlsuite_grow_tail (unsigned argc, relem_t * argv [])
   i = rl_count (list);
   rl_free (list);
   return i == argc ? t2 - t1 : 0;
+}
+
+
+/* Iterate over all the list elements (forward) */
+rtime_t rlsuite_iterate (unsigned argc, void * argv [])
+{
+  rl_t * list = grow_head (argc, argv);
+  unsigned n = 0;
+  rtime_t t1;
+  rtime_t t2;
+  t1 = nswall ();
+  rl_foreach (list, addone_cb, & n);
+  t2 = nswall ();
+  rl_free (list);
+  return n == argc ? t2 - t1 : 0;
 }

@@ -25,13 +25,12 @@
 rlunit_f alloc_free;
 rlunit_f alloc_prepend_free;
 rlunit_f alloc_append_free;
-rlunit_f alloc_clear_free;
+rlunit_f alloc_iterate_free;
 rlunit_f alloc_count_free;
 rlunit_f alloc_found_free;
 rlunit_f alloc_miss_free;
 rlunit_f alloc_delete_free;
 rlunit_f alloc_missed_free;
-rlunit_f alloc_iterate_free;
 
 
 /* All the Unit Tests in a static table */
@@ -40,13 +39,12 @@ static rlunit_t builtins [] =
   { "make",    "Allocate and free an empty list",      alloc_free         },
   { "prepend", "Add elements at the head of the list", alloc_prepend_free },
   { "append",  "Add elements at the tail of the list", alloc_append_free  },
-  { "clear",   "Add elements and clear",               alloc_clear_free   },
+  { "iterate", "Iterate over existent one-by-one",     alloc_iterate_free },
   { "count",   "Add elements and count",               alloc_count_free   },
   { "found",   "Search for existent one-by-one",       alloc_found_free   },
   { "miss",    "Search for non-existent one-by-one",   alloc_miss_free    },
   { "delete",  "Delete existent one-by-one",           alloc_delete_free  },
   { "missed",  "Delete non-existent one-by-one",       alloc_missed_free  },
-  { "foreach", "Iterate over existent one-by-one",     alloc_iterate_free },
 };
 #define RLUNIT_NO (sizeof (builtins) / sizeof (* builtins))
 

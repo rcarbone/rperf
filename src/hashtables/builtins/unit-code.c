@@ -12,7 +12,7 @@
 
 
 /* Callback to iterate over the hash table */
-static void addone (void * x)
+static void addone_cb (void * x)
 {
   (* (unsigned *) x) ++;
 }
@@ -149,7 +149,7 @@ unsigned alloc_add_iterate_free (unsigned argc)
   robj_t ** argv = mkobjs (argc);
   rht_t * ht = populate (argc, argv);
   unsigned count = 0;
-  rht_foreach (ht, addone, & count);
+  rht_foreach (ht, addone_cb, & count);
   assert (rht_count (ht) == count);
   rht_free (ht);
   rmobjs (argv);

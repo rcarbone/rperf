@@ -35,13 +35,12 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-#if defined(notused)
   relem_t * elem;
   STAILQ_FOREACH (elem, list, stailq)
-    ;
-#endif /* notused */
+    if (fn)
+      fn (data);
 }
 
 
@@ -86,18 +85,4 @@ void rl_del (rl_t * list, void * arg)
   for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
     if (elem == arg)
       STAILQ_REMOVE (list, elem, relem, stailq);
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  return rl_get (list, elem);
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  relem_t * elem;
-  STAILQ_FOREACH (elem, list, stailq)
-    fn (data);
 }

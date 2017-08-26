@@ -29,13 +29,12 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-#if defined(notused)
   kliter_t (kl) * it;
-  for (it = kl_begin (list); it; it = kl_next (it))
-    ;
-#endif /* notused */
+  for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
+    if (fn)
+      fn (data);
 }
 
 
@@ -83,18 +82,4 @@ void rl_del (rl_t * list, void * elem)
   for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
     if (kl_val (it) == elem)
       kl_shift (kl, list, NULL);
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  return rl_get (list, elem);
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  kliter_t (kl) * it;
-  for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
-    fn (data);
 }

@@ -1,0 +1,24 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, Aug 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         clibs
+Module       Doubly linked lists
+Author       TJ Holowaychuk (tj@vision-media.ca)
+Description  C doubly linked list implementation
+Download     http://github.com/clibs/list
+Date         2010
+Language     C
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+The following sources files were copied from latest git:
+
+  - list.c
+  - list.h
+  - list_iterator.c
+  - list_node.c
+
+and locally modified to meet the requirements:
+  1. prefix the name of the types with tj_ to avoid conflict with same names in CCAN
+  2. avoid the free of the node in list_remove() because my implementation do not allocate memory

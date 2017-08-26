@@ -36,11 +36,10 @@ typedef void rl_each_f (void * elem);
 
 rl_t * rl_alloc (void);
 void rl_free (rl_t * list);
-void rl_clear (rl_t * list);
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data);
 unsigned rl_count (rl_t * list);
 void rl_prepend (rl_t * list, void * elem);
 void rl_append (rl_t * list, void * elem);
 void * rl_get (rl_t * list, void * elem);
 void rl_del (rl_t * list, void * elem);
-bool rl_has (rl_t * list, void * elem);
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data);
+

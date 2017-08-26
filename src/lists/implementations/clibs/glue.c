@@ -30,8 +30,13 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
+  list_iterator_t * it = list_iterator_new (list, TJ_LIST_HEAD);
+  while (list_iterator_next (it))
+    if (fn)
+      fn (data);
+  list_iterator_destroy (it);
 }
 
 
@@ -71,19 +76,4 @@ void rl_del (rl_t * list, void * arg)
       elem -> clibs . val = arg;
       list_remove (list, & elem -> clibs);
     }
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  return rl_get (list, elem);
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  list_iterator_t * it = list_iterator_new (list, TJ_LIST_HEAD);
-  while (list_iterator_next (it))
-    fn (data);
-  list_iterator_destroy (it);
 }

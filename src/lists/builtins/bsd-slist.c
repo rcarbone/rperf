@@ -48,16 +48,6 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
-{
-#if defined(notused)
-  relem_t * elem;
-  SLIST_FOREACH (elem, list, shead)
-    ;
-#endif /* notused */
-}
-
-
 unsigned rl_count (rl_t * list)
 {
   unsigned count = 0;
@@ -65,6 +55,15 @@ unsigned rl_count (rl_t * list)
   for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
     count ++;
   return count;
+}
+
+
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
+{
+  relem_t * elem;
+  SLIST_FOREACH (elem, list, shead)
+    if (fn)
+      fn (data);
 }
 
 
@@ -99,18 +98,4 @@ void rl_del (rl_t * list, void * arg)
   for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
     if (elem == arg)
       SLIST_REMOVE (list, elem, relem, shead);
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  return rl_get (list, elem);
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  relem_t * elem;
-  SLIST_FOREACH (elem, list, shead)
-    fn (data);
 }

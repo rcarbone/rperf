@@ -7,8 +7,17 @@
 /* Project headers */
 #include "rlsuite.h"
 
-#define RLSUITE_GROW_HEAD  1
-#define RLSUITE_GROW_TAIL  2
+
+/* The local identifiers for the Test Scenarios to run */
+typedef enum
+{
+  RLSUITE_BOOT = 1,
+  RLSUITE_HALT,
+  RLSUITE_GROW_HEAD,
+  RLSUITE_GROW_TAIL,
+  RLSUITE_ITERATE
+
+} rlsuite_id_t;
 
 
 static unsigned nelems = 0;
@@ -54,10 +63,11 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
     {
       switch (which)
 	{
-	case -1:                                                               break;  /* boot */
-	case -2:                                                               break;  /* halt */
-	case RLSUITE_GROW_HEAD: rlsuite_grow_head (nelems, (relem_t **) envp); break;
-	case RLSUITE_GROW_TAIL: rlsuite_grow_tail (nelems, (relem_t **) envp); break;
+	case RLSUITE_BOOT:                                        break;
+	case RLSUITE_HALT:                                        break;
+	case RLSUITE_GROW_HEAD: rlsuite_grow_head (nelems, envp); break;
+	case RLSUITE_GROW_TAIL: rlsuite_grow_tail (nelems, envp); break;
+	case RLSUITE_ITERATE:   rlsuite_iterate (nelems, envp);   break;
 	}
     }
 
@@ -69,13 +79,13 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
 
 int boot (int argc, char * argv [], void * envp [])
 {
-  return run_this (-1, argc, argv, envp);
+  return run_this (RLSUITE_BOOT, argc, argv, envp);
 }
 
 
 int halt (int argc, char * argv [], void * envp [])
 {
-  return run_this (-2, argc, argv, envp);
+  return run_this (RLSUITE_HALT, argc, argv, envp);
 }
 
 
@@ -88,4 +98,10 @@ int grow_head (int argc, char * argv [], void * envp [])
 int grow_tail (int argc, char * argv [], void * envp [])
 {
   return run_this (RLSUITE_GROW_TAIL, argc, argv, envp);
+}
+
+
+int iterate (int argc, char * argv [], void * envp [])
+{
+  return run_this (RLSUITE_ITERATE, argc, argv, envp);
 }

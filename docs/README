@@ -222,12 +222,17 @@ in implementations/Makefile.
 How to add a test scenario
 ==========================
 
-1. add in builtins/suite-code.c the implementation of the scenario
-2. add in builtins/rsuite.h
-   a. a new value of type rsuite_id_t
-   b. the declaration of the function
-3. add in etc/plugin.c an item to handle the call
-4. update README.c
+1. add in builtins/rlsuite.h the declaration of the function
+2. add in builtins/suite.c an item in the builtins static table
+3. add in builtins/suite-code.c the implementation of the scenario
+
+4. add in etc/plugin-rl.c
+  a. an item in enum rlsuite_id_t
+  b. a case in function run_this()
+  c. a function to handle the call
+
+5. update README.c foreach plugin
+
 
 That's all folks!
 

@@ -12,9 +12,7 @@ Language     C
 
 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 
-
-The following sources files were copied from latest git version at:
-  http://github.com/amadvance/tommyds
+The following sources files were copied from latest git version:
 
   - tommytypes.h
   - tommychain.h

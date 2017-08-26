@@ -132,7 +132,7 @@ static void doit (char * progname, unsigned choice,
     case OPT_RUN:
       elems = mkelems (items);
       for (l = 0; l < loops; l ++)
-	rlsuite_run (tests, items, elems);
+	rlsuite_run (tests, items, (void **) elems);
       rmelems (elems);
       break;
 

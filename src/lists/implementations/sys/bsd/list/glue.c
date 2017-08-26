@@ -6,13 +6,13 @@
 #include <sys/queue.h>
 
 
+/* Project headers */
+
 /* librl - an abstract C library over real list implementations */
 struct relem;
 typedef LIST_HEAD (, relem) rl_t;
 #include "rl.h"
 
-
-/* Project headers */
 #include "elems.h"
 #include "safe.h"
 
@@ -48,13 +48,12 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-#if defined(notused)
   relem_t * elem;
   LIST_FOREACH (elem, list, head)
-    ;
-#endif /* notused */
+    if (fn)
+      fn (data);
 }
 
 
@@ -101,18 +100,4 @@ void rl_del (rl_t * list, void * arg)
   for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
     if (elem == arg)
       LIST_REMOVE (elem, head);
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  return rl_get (list, elem);
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  relem_t * elem;
-  LIST_FOREACH (elem, list, head)
-    fn (data);
 }

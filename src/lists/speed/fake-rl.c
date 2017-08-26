@@ -40,9 +40,9 @@ void rl_free (rl_t * list)
 }
 
 
-void rl_clear (rl_t * list)
+void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-  never ("rl_clear");
+  never ("rl_foreach");
 }
 
 
@@ -75,17 +75,4 @@ void * rl_get (rl_t * list, void * elem)
 void rl_del (rl_t * list, void * elem)
 {
   never ("rl_del");
-}
-
-
-bool rl_has (rl_t * list, void * elem)
-{
-  never ("rl_has");
-  return false;
-}
-
-
-void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
-{
-  never ("rl_foreach");
 }

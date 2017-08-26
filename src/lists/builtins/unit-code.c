@@ -11,8 +11,8 @@
 /* === Implementation of the built-in Unit Tests === */
 
 
-/* Callback to iterate over the list */
-static void addone (void * x)
+/* Callback to iterate over the list elements */
+static void addone_cb (void * x)
 {
   (* (unsigned *) x) ++;
 }
@@ -76,11 +76,13 @@ unsigned alloc_prepend_free (unsigned argc)
 }
 
 
-unsigned alloc_clear_free (unsigned argc)
+unsigned alloc_iterate_free (unsigned argc)
 {
   relem_t ** argv = mkelems (argc);
   rl_t * list = headpopulate (argc, argv);
-  rl_clear (list);
+  unsigned count = 0;
+  rl_foreach (list, addone_cb, & count);
+  assert (rl_count (list) == count);
   rl_free (list);
   rmelems (argv);
   return argc;
@@ -153,19 +155,6 @@ unsigned alloc_missed_free (unsigned argc)
   assert (rl_count (list) == argc);
   rl_free (list);
   rmelems (miss);
-  rmelems (argv);
-  return argc;
-}
-
-
-unsigned alloc_iterate_free (unsigned argc)
-{
-  relem_t ** argv = mkelems (argc);
-  rl_t * list = headpopulate (argc, argv);
-  unsigned count = 0;
-  rl_foreach (list, addone, & count);
-  assert (rl_count (list) == count);
-  rl_free (list);
   rmelems (argv);
   return argc;
 }

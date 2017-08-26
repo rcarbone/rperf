@@ -21,6 +21,7 @@ static rlsuite_t builtins [] =
 {
   { "grow_head", "Populate an empty list at the head", rlsuite_grow_head },
   { "grow_tail", "Populate an empty list at the tail", rlsuite_grow_tail },
+  { "iterate",   "Iterate over all list elements",     rlsuite_iterate   },
 };
 #define RLSUITE_NO (sizeof (builtins) / sizeof (* builtins))
 
@@ -28,7 +29,8 @@ static rlsuite_t builtins [] =
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-static void rlsuite_run_one (rlsuite_t * test, unsigned argc, relem_t * argv [], unsigned n, unsigned seq, unsigned maxn)
+static void rlsuite_run_one (rlsuite_t * test, unsigned argc, void * argv [],
+			     unsigned n, unsigned seq, unsigned maxn)
 {
   rtime_t elapsed;
 
@@ -232,7 +234,7 @@ unsigned rlsuite_maxd (rlsuite_t * argv [])
 
 
 /* Run the Test Suite included in suite[] */
-void rlsuite_run (rlsuite_t * suite [], unsigned argc, relem_t * argv [])
+void rlsuite_run (rlsuite_t * suite [], unsigned argc, void * argv [])
 {
   unsigned maxn = rlsuite_maxn (suite);
   unsigned n    = digits (arrlen (suite));
