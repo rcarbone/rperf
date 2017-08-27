@@ -65,6 +65,20 @@ void rl_append (rl_t * list, void * elem)
 }
 
 
+void * rl_head (rl_t * list)
+{
+  never ("rl_head");
+  return NULL;
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  never ("rl_tail");
+  return NULL;
+}
+
+
 void * rl_get (rl_t * list, void * elem)
 {
   never ("rl_get");

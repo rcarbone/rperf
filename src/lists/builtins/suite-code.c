@@ -90,3 +90,38 @@ rtime_t rlsuite_iterate (unsigned argc, void * argv [])
   rl_free (list);
   return n == argc ? t2 - t1 : 0;
 }
+
+
+/* Delete from the head of the list all the elements one-by-one */
+rtime_t rlsuite_pop_head (unsigned argc, void * argv [])
+{
+  rl_t * list = grow_head (argc, argv);
+  unsigned n = 0;
+  unsigned i;
+  rtime_t t1;
+  rtime_t t2;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    rl_del (list, rl_head (list));
+  t2 = nswall ();
+  n = rl_count (list);
+  rl_free (list);
+  return n == 0 ? t2 - t1 : 0;
+}
+
+
+rtime_t rlsuite_pop_tail (unsigned argc, void * argv [])
+{
+  rl_t * list = grow_head (argc, argv);
+  unsigned n = 0;
+  unsigned i;
+  rtime_t t1;
+  rtime_t t2;
+  t1 = nswall ();
+  for (i = 0; i < argc; i ++)
+    rl_del (list, rl_tail (list));
+  t2 = nswall ();
+  n = rl_count (list);
+  rl_free (list);
+  return n == 0 ? t2 - t1 : 0;
+}

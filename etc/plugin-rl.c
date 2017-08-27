@@ -11,11 +11,13 @@
 /* The local identifiers for the Test Scenarios to run */
 typedef enum
 {
-  RLSUITE_BOOT = 1,
+  RLSUITE_BOOT       = 1,
   RLSUITE_HALT,
   RLSUITE_GROW_HEAD,
   RLSUITE_GROW_TAIL,
-  RLSUITE_ITERATE
+  RLSUITE_ITERATE,
+  RLSUITE_POP_HEAD,
+  RLSUITE_POP_TAIL
 
 } rlsuite_id_t;
 
@@ -68,6 +70,8 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
 	case RLSUITE_GROW_HEAD: rlsuite_grow_head (nelems, envp); break;
 	case RLSUITE_GROW_TAIL: rlsuite_grow_tail (nelems, envp); break;
 	case RLSUITE_ITERATE:   rlsuite_iterate (nelems, envp);   break;
+	case RLSUITE_POP_HEAD:  rlsuite_pop_head (nelems, envp);  break;
+	case RLSUITE_POP_TAIL:  rlsuite_pop_tail (nelems, envp);  break;
 	}
     }
 
@@ -104,4 +108,16 @@ int grow_tail (int argc, char * argv [], void * envp [])
 int iterate (int argc, char * argv [], void * envp [])
 {
   return run_this (RLSUITE_ITERATE, argc, argv, envp);
+}
+
+
+int pop_head (int argc, char * argv [], void * envp [])
+{
+  return run_this (RLSUITE_POP_HEAD, argc, argv, envp);
+}
+
+
+int pop_tail (int argc, char * argv [], void * envp [])
+{
+  return run_this (RLSUITE_POP_TAIL, argc, argv, envp);
 }

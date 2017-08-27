@@ -12,16 +12,17 @@
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"
-#include "elems.h"
 #include "rlsuite.h"
 
 
 /* All the Test Suite in a static table */
 static rlsuite_t builtins [] =
 {
-  { "grow_head", "Populate an empty list at the head", rlsuite_grow_head },
-  { "grow_tail", "Populate an empty list at the tail", rlsuite_grow_tail },
-  { "iterate",   "Iterate over all list elements",     rlsuite_iterate   },
+  { "grow_head", "Populate an empty list at the head",             rlsuite_grow_head },
+  { "grow_tail", "Populate an empty list at the tail",             rlsuite_grow_tail },
+  { "iterate",   "Iterate over all list elements",                 rlsuite_iterate   },
+  { "pop_head",  "Remove all elements one-by-one from list head",  rlsuite_pop_head  },
+  { "pop_tail",  "Remove all elements one-by-one from list tail ", rlsuite_pop_tail  },
 };
 #define RLSUITE_NO (sizeof (builtins) / sizeof (* builtins))
 

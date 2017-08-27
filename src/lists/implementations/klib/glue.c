@@ -66,6 +66,18 @@ void rl_append (rl_t * list, void * elem)
 }
 
 
+void * rl_head (rl_t * list)
+{
+  return kl_begin (list);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return kl_end (list);
+}
+
+
 void * rl_get (rl_t * list, void * elem)
 {
   kliter_t (kl) * it;

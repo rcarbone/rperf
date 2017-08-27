@@ -1,5 +1,5 @@
 /* System headers */
-#include <stdlib.h>
+#include <stdio.h>
 
 
 /* The implementation */
@@ -10,11 +10,13 @@
 
 /* librl - an abstract C library over real list implementations */
 struct relem;
-typedef LIST_HEAD (, relem) rl_t;
+typedef LIST_HEAD (xxx, relem) rl_t;
 #include "rl.h"
 
 #include "elems.h"
-#include "safe.h"
+
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 static relem_t * rl_last (rl_t * list)
@@ -81,6 +83,18 @@ void rl_append (rl_t * list, void * arg)
     LIST_INSERT_HEAD (list, elem, head);
   else 
     LIST_INSERT_AFTER (rl_last (list), elem, head);
+}
+
+
+void * rl_head (rl_t * list)
+{
+  return LIST_FIRST (list);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return rl_last (list);
 }
 
 

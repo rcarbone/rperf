@@ -3,7 +3,7 @@
 
 /* Plugin declarations */
 const char * variables   = "library module author description url";
-const char * functions   = "boot halt grow_head iterate";
+const char * functions   = "boot halt grow_head iterate pop_head pop_tail";
 
 /* Plugin definitions */
 const char * library     = "bsd";

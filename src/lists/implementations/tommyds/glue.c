@@ -13,7 +13,6 @@ typedef tommy_list rl_t;
 #include "rl.h"
 
 #include "elems.h"
-#include "safe.h"
 
 
 rl_t * rl_alloc (void)
@@ -57,6 +56,18 @@ void rl_prepend (rl_t * list, void * elem)
 void rl_append (rl_t * list, void * elem)
 {
   tommy_list_insert_tail (list, & ((relem_t *) elem) -> tommy, elem);
+}
+
+
+void * rl_head (rl_t * list)
+{
+  return tommy_list_head (list);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return tommy_list_tail (list);
 }
 
 

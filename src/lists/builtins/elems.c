@@ -8,7 +8,6 @@
 /* Project headers */
 #include "elems.h"
 #include "support.h"
-#include "safe.h"
 
 
 relem_t * mkelem (unsigned key)

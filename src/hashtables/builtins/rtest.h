@@ -26,8 +26,10 @@
 typedef unsigned runit_f (unsigned argc);
 typedef rtime_t rsuite_f (unsigned argc, robj_t * argv []);
 
-/* an implementation */
+
+/* Opaque structure used to represent an implementation */
 struct sw;
+
 
 /* The structure to hold execution times for a single test run */
 typedef struct

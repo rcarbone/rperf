@@ -1,5 +1,5 @@
 /* System headers */
-#include <stdlib.h>
+#include <stdio.h>
 
 
 /* The implementation */
@@ -14,7 +14,6 @@ typedef SLIST_HEAD (, relem) rl_t;
 #include "rl.h"
 
 #include "elems.h"
-#include "safe.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -82,6 +81,18 @@ void rl_append (rl_t * list, void * elem)
     SLIST_INSERT_HEAD (list, (relem_t *) elem, shead);
   else 
     SLIST_INSERT_AFTER (rl_last (list), (relem_t *) elem, shead);
+}
+
+
+void * rl_head (rl_t * list)
+{
+  return SLIST_FIRST (list);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return rl_last (list);
 }
 
 

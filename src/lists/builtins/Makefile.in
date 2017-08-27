@@ -4,7 +4,7 @@ PROGRAMS  = ut-run suite-run
 
 # C source files
 MAINSRCS += ut-run.c
-MAINSRCS += bsd-slist.c
+MAINSRCS += bsd-tailq.c
 
 LIBSRCS  += elems.c
 LIBSRCS  += unit.c

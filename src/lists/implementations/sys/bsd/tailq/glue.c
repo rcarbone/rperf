@@ -1,5 +1,5 @@
 /* System headers */
-#include <stdlib.h>
+#include <stdio.h>
 
 
 /* The implementation */
@@ -10,11 +10,10 @@
 
 /* librl - an abstract C library over real list implementations */
 struct relem;
-typedef TAILQ_HEAD (, relem) rl_t;
+typedef TAILQ_HEAD (xxx, relem) rl_t;
 #include "rl.h"
 
 #include "elems.h"
-#include "safe.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -66,6 +65,18 @@ void rl_append (rl_t * list, void * elem)
     TAILQ_INSERT_HEAD (list, (relem_t *) elem, tailq);
   else 
     TAILQ_INSERT_TAIL (list, (relem_t *) elem, tailq);
+}
+
+
+void * rl_head (rl_t * list)
+{
+  return TAILQ_FIRST (list);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return TAILQ_LAST (list, xxx);
 }
 
 

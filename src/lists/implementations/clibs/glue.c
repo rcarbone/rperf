@@ -15,7 +15,6 @@ typedef tj_list_t rl_t;
 #include "rl.h"
 
 #include "elems.h"
-#include "safe.h"
 
 
 rl_t * rl_alloc (void)
@@ -59,6 +58,18 @@ void rl_append (rl_t * list, void * arg)
   relem_t * elem = arg;
   elem -> clibs . val = arg;
   list_rpush (list, & elem -> clibs);
+}
+
+
+void * rl_head (rl_t * list)
+{
+  return list_at (list, 0);
+}
+
+
+void * rl_tail (rl_t * list)
+{
+  return list_at (list, rl_count (list) - 1);
 }
 
 

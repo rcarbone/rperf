@@ -1,9 +1,13 @@
-
 #pragma once
+
+
+/* Project headers */
+#include "safe.h"
+
 
 /* Berkeley 4.4 lists */
 #include <sys/queue.h>
-/* LIST_HEAD is also defined in CCAN */
+/* undef here to avoid conflicts because LIST_HEAD is also defined in CCAN */
 #undef LIST_HEAD
 
 /* CCAN - Rusty Russell */

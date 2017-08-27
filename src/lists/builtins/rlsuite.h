@@ -57,3 +57,5 @@ void rlsuite_sort_results (rlsuite_t * suite []);
 rlsuite_f rlsuite_grow_head;
 rlsuite_f rlsuite_grow_tail;
 rlsuite_f rlsuite_iterate;
+rlsuite_f rlsuite_pop_head;
+rlsuite_f rlsuite_pop_tail;
