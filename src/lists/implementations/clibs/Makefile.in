@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = clibs-list
+NAME       = rl-clibs
 
 # C/C++ source files
 LIBCSRCS   = glue.c
@@ -10,4 +10,3 @@ INCLUDE    = -I./pub
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    =
-

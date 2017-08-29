@@ -3,6 +3,7 @@ SUBDIRS += apr
 SUBDIRS += boost
 SUBDIRS += glib
 SUBDIRS += google
+SUBDIRS += judy
 SUBDIRS += libstdc++
 SUBDIRS += python
 SUBDIRS += Qt

@@ -1,6 +1,6 @@
 # The project's run-time tree
 INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
-INSTALLDIR  = ${ROOTDIR}/src/hashtables/plugins
+INSTALLDIR2 = ${ROOTDIR}/src/hashtables/plugins
 
 # The project's source tree
 RLIBCDIR    = ${ROOTDIR}/rlibc
@@ -23,4 +23,3 @@ USRLIBS    += ${RLLIB}
 INCLUDE    += -I${RHTDIR}
 RHTLIB      = ${RHTDIR}/librht.a
 USRLIBS    += ${RHTLIB}
-

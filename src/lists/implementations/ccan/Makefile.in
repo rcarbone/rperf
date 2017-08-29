@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = ccan-list
+NAME       = rl-ccan
 
 # C/C++ source files
 LIBCSRCS   = glue.c
@@ -10,4 +10,3 @@ INCLUDE    = -I./ccan
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    =
-

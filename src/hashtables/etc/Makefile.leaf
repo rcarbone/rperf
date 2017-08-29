@@ -1,5 +1,5 @@
 # Dependency files for generation of Makefiles
-TEMPLATES = ${ETCDIR}/FileSystem ${ETCDIR}/Makefile.leaf
+TEMPLATES = ${ETCDIR}/FileSystem ${RHTETCDIR}/Makefile.leaf
 
 # Static library
 STLIB     = lib${LIB}.a
@@ -48,9 +48,19 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
 	@echo -n "ETCDIR     = $$"                             >> Makefile
 	@echo "{ROOTDIR}/etc"                                  >> Makefile
+	@echo -n "RHTETCDIR  = $$"                             >> Makefile
+	@echo "{ROOTDIR}/src/hashtables/etc"                   >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${TEMPLATES}                                      >> Makefile
+	@cat ${ETCDIR}/FileSystem                              >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RHTETCDIR}/Makefile.leaf                        >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RHTETCDIR}/LIBS                                 >> Makefile
 
 # Static Library
 ${STLIB}: ${LIBOBJS}
@@ -67,11 +77,11 @@ ${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-ut-run: ut-run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+ut-run: ut-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-suite-run: suite-run.o bsd-slist.o ${STLIB} ${RLIBCLIB}
+suite-run: suite-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

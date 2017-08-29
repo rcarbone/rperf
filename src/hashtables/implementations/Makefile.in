@@ -9,7 +9,6 @@ SUBDIRS += emilib
 SUBDIRS += gcc
 SUBDIRS += google-c
 SUBDIRS += hashit
-SUBDIRS += judy
 SUBDIRS += klib
 SUBDIRS += libCDS
 SUBDIRS += libcfu

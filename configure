@@ -5,23 +5,33 @@
 # Makefile.in file is found.
 #
 # It is not a robust and safe build system but I am only on a Debian Systems
-# and I am not currently interested to run the software on a different platform,
+# and I am not currently interested to run the software on different platforms,
 # so the compilation only depends on the root directory on the filesystem
-# where the software has been pulled from git.
+# where the software has been pulled out from git.
 #
 # May be things can be changed in a near future.
 #
 
 rootdir=`pwd`
-srcdir=etc
+etcdir=etc
+rletcdir=src/lists/etc
+rhtetcdir=src/hashtables/etc # will be in effect later
 
-echo "Configuring for $rootdir ..."
+echo "Configuring software for $rootdir ..."
 
 makefiles=`find . -name Makefile.in`
 for file in $makefiles; do
   d=`dirname $file`
 
   cat $file                                              > $d/Makefile
+
+  # Check for lists/hashtables
+  lists=`echo $d | grep lists`
+  if [ "$lists" != "" ]; then
+     srcdir=$rletcdir
+  else
+     srcdir=$rhtetcdir
+  fi
 
   echo                                                  >> $d/Makefile
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
@@ -32,41 +42,36 @@ for file in $makefiles; do
   echo "# The project's root directory"                 >> $d/Makefile
   echo "ROOTDIR    = $rootdir"                          >> $d/Makefile
   echo "ETCDIR     = \${ROOTDIR}/etc"                   >> $d/Makefile
+
+  if [ "$lists" != "" ]; then
+    echo "RLETCDIR   = \${ROOTDIR}/src/lists/etc"       >> $d/Makefile
+  else
+    echo "RHTETCDIR  = \${ROOTDIR}/src/hashtables/etc"  >> $d/Makefile
+  fi
+
   echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
   echo                                                  >> $d/Makefile
 
   # Check for node/leaf/plugins
   node=`grep SUBDIRS $d/Makefile.in | head -1`
   if [ "$node" != "" ]; then
-
     cat $srcdir/Makefile.node                             >> $d/Makefile
-
   else
+    cat $etcdir/FileSystem                                >> $d/Makefile
+    echo                                                  >> $d/Makefile
+    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+    echo                                                  >> $d/Makefile
 
     plugin=`echo $d | grep implementations`
     if [ "$plugin" != "" ]; then
-
-      cat $srcdir/FileSystem                                >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      cat $srcdir/Makefile.plugins                          >> $d/Makefile
-      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      cat $srcdir/LIBS                                      >> $d/Makefile
-
+      cat $srcdir/Makefile.plugins                        >> $d/Makefile
     else
-
-      cat $srcdir/FileSystem                                >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      cat $srcdir/Makefile.leaf                             >> $d/Makefile
-      echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
-      echo                                                  >> $d/Makefile
-      cat $srcdir/LIBS                                      >> $d/Makefile
-
+      cat $srcdir/Makefile.leaf                           >> $d/Makefile
     fi
+    echo                                                  >> $d/Makefile
+    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+    echo                                                  >> $d/Makefile
+    cat $srcdir/LIBS                                      >> $d/Makefile
   fi
 
 done

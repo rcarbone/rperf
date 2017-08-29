@@ -1,12 +1,12 @@
 # The name of the games
-NAME       = klist
+NAME       = rl-klist
 
 # C/C++ source files
 LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    =
+INCLUDE    = -I./pub
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    =

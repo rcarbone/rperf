@@ -6,6 +6,7 @@ PROGRAM   = rl-speed
 MAINSRCS += main.c
 MAINSRCS += fake-rl.c
 LIBSRCS  += run.c
+LIBSRCS  += sw.c
 LIBSRCS  += print.c
 
 # Compiler flags and System libraries (optional)

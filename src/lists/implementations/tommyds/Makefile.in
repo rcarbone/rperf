@@ -1,5 +1,5 @@
 # The name of the games
-NAME       = tommyds-list
+NAME       = rl-tommyds
 
 # C/C++ source files
 LIBCSRCS   = glue.c
@@ -10,4 +10,3 @@ INCLUDE    = -I./pub
 CFLAGS     =
 C++FLAGS   =
 SYSLIBS    =
-
