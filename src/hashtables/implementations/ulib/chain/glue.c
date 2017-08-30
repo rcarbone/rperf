@@ -32,7 +32,7 @@ DEFINE_CHAINHASH (rht, char *, void *, ULIB_ISMAP, custom_hash_fn, eq_fn, cmp_fn
 
 /* librht - an abstract C library over real hash tables */
 typedef chainhash_t(rht) rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 
 static unsigned chainhash_size (rht_t * ht)

@@ -1,0 +1,48 @@
+/* Generic single-linked list */
+SYNOPSIS
+  #include "klist.h"
+
+  kl_init(type)
+  kl_destroy(type, ht)
+
+  kl_size(ht)
+
+  kl_clear(type, ht)
+  kl_resize(type, ht, sz)
+
+  kl_put(type, ht, key, ret)
+  kl_get(type, ht, key)
+  kl_del(type, ht, key)
+
+  kl_exist(ht, iter)
+  kl_key(ht, iter)
+  kl_val(ht, iter)
+
+  kl_begin(ht)
+  kl_end(ht)
+  kl_foreach(ht, x, y, func)
+  kl_foreach_value(ht, x, func)
+
+
+/* Define list <name> containing elements of <type> and free function <free_f> */
+KLIST_INIT(name, type, free_f)
+
+/*
+ * Typedef
+ *   klist_t(name)      #define klist_t(name) kl_##name##_t
+ *   kliter_t(name)     #define kliter_t(name) kl1_##name
+ */
+
+
+/* constructor/destructor */
+klist_t(name) * kl_init (name);
+void kl_destroy (name, klist_t(name) * list);
+
+/* push/pop */
+type * kl_pushp (name, klist_t(name) * list);
+type * kl_shift (name, klist_t(name) * list, type * ptr);
+
+#define kl_begin(kl)     (kl -> head)
+#define kl_end(kl)       (kl -> tail)
+#define kl_next(iter)    (iter -> next)
+#define kl_val(iter)     (iter -> data)

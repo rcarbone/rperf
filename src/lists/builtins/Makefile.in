@@ -5,14 +5,12 @@ PROGRAMS  = ut-run suite-run
 # C source files
 MAINSRCS += ut-run.c
 MAINSRCS += bsd-tailq.c
-
 LIBSRCS  += elems.c
+LIBSRCS  += elapsed.c
 LIBSRCS  += unit.c
 LIBSRCS  += unit-code.c
 LIBSRCS  += suite.c
 LIBSRCS  += suite-code.c
-LIBSRCS  += print.c
-LIBSRCS  += elapsed.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =

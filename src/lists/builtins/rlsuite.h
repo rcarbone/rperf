@@ -40,7 +40,6 @@ rlsuite_t ** rlsuite_all (void);
 unsigned rlsuite_all_maxn (void);
 rlsuite_t ** rlsuite_all_n (unsigned n);
 rlsuite_t ** rlsuite_all_rnd (void);
-void rlsuite_print_all (void);
 
 rlsuite_t * rlsuite_valid (char * id);
 
@@ -51,6 +50,8 @@ unsigned rlsuite_maxd (rlsuite_t * argv []);
 void rlsuite_run (rlsuite_t * suite [], unsigned argc, void * argv []);
 void rlsuite_clear_results (rlsuite_t * suite []);
 void rlsuite_sort_results (rlsuite_t * suite []);
+
+void rlsuite_print_all (void);
 
 
 /* The implementations elsewhere defined */

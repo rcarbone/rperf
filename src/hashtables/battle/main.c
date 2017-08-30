@@ -8,7 +8,7 @@
 #include "sargv.h"
 #include "rctype.h"
 #include "plugins.h"
-#include "rtest.h"
+#include "rht-test.h"
 #include "rbattle.h"
 
 

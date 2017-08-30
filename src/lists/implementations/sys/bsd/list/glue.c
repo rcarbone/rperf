@@ -11,7 +11,7 @@
 /* librl - an abstract C library over real list implementations */
 struct relem;
 typedef LIST_HEAD (xxx, relem) rl_t;
-#include "rl.h"
+#include "rl-api.h"
 
 #include "elems.h"
 

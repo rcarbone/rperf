@@ -6,10 +6,10 @@
 /* Project headers */
 #include "roptions.h"
 #include "sargv.h"
-#include "rtest.h"
+#include "rht-test.h"
+#include "rht-suite.h"
 
 #include "README.c"
-
 
 /* Program name/version */
 #define _NAME_      "Run builtin Test Scenarios"
@@ -94,22 +94,22 @@ static struct option lopts [] =
 
 
 /* Build the tests to run */
-static rtest_t ** build_tests (char * progname, char * included [], char * excluded [])
+static rhtsuite_t ** build_tests (char * progname, char * included [], char * excluded [])
 {
   char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  rtest_t ** tests = included ? NULL : rsuite_all ();      /* The tests to run (nothing or everything but these)   */
+  rhtsuite_t ** tests = included ? NULL : rhtsuite_all ();      /* The tests to run (nothing or everything but these)   */
   char ** defined  = argsblanks ((char *) functions);
-  rtest_t ** t;
+  rhtsuite_t ** t;
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
       /* Add/Delete the given test to/from the table of given tests to run */
-      rtest_t * t = rsuite_valid (* names);
+      rhtsuite_t * t = rhtsuite_valid (* names);
       if (t)
 	{
 	  if (argsexists (defined, t -> name))
-	    tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
+	    tests = included ? arrmore (tests, t, rhtsuite_t) : arrless (tests, t, rhtsuite_t, NULL);
 	  else
 	    printf ("%s [short for %s] is not defined in README.c\n", * names, t -> name);
 	}
@@ -127,12 +127,11 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
   while (t && * t)
     {
       if (! argsexists (defined, (* t) -> name))
-	t = tests = arrless (tests, * t, rtest_t, NULL);
+	t = tests = arrless (tests, * t, rhtsuite_t, NULL);
       t ++;
     }
 
   argsclear (defined);
-
 
   return tests;
 }
@@ -140,7 +139,7 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  rtest_t * tests [],
+		  rhtsuite_t * tests [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
@@ -148,12 +147,12 @@ static void doit (char * progname, unsigned choice,
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: rsuite_print_all (); break;
+    case OPT_LIST: rhtsuite_print_all (); break;
 
     case OPT_RUN:
       objs = mkobjs (items);
       for (l = 0; l < loops; l ++)
-	rsuite_run (tests, items, objs);
+	rhtsuite_run (tests, items, (void **) objs);
       rmobjs (objs);
       break;
     }
@@ -221,7 +220,7 @@ int main (int argc, char * argv [])
   /* Tests to run */
   char ** included = NULL;
   char ** excluded = NULL;
-  rtest_t ** tests = NULL;
+  rhtsuite_t ** tests = NULL;
 
   /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */

@@ -8,7 +8,7 @@
 
 /* librht - an abstract C library over real hash tables */
 typedef stb_sdict rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

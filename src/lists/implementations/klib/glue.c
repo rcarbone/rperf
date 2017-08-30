@@ -14,7 +14,7 @@
 #define nofree(x)
 KLIST_INIT(kl, relem_t *, nofree)
 typedef klist_t (kl) rl_t;
-#include "rl.h"
+#include "rl-api.h"
 
 
 rl_t * rl_alloc (void)

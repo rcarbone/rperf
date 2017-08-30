@@ -6,7 +6,7 @@
 
 /* librht - an abstract C library over real hash tables */
 typedef xxx_t rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

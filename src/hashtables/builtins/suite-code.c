@@ -1,6 +1,6 @@
 /* Project headers */
 #define NEED_RHT_TYPEDEF
-#include "rht.h"
+#include "rht-api.h"
 #include "vargv.h"
 #include "datasets.h"
 #include "rwall.h"
@@ -22,7 +22,7 @@ static rht_t * populate (unsigned argc, robj_t * argv [])
 
 
 /* Allocate and populate all the items starting with an empty hash table */
-rtime_t rsuite_grow_seq (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_grow_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);
   rtime_t t1;
@@ -39,7 +39,7 @@ rtime_t rsuite_grow_seq (unsigned argc, robj_t * argv [])
 
 
 /* Allocate and populate all the items starting with an empty a hash table */
-rtime_t rsuite_grow_rnd (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_grow_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = rht_alloc (argc);
   unsigned * order = rndorder (argc);
@@ -58,7 +58,7 @@ rtime_t rsuite_grow_rnd (unsigned argc, robj_t * argv [])
 
 
 /* Find and dereference with success all the items */
-rtime_t rsuite_hit_seq (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_hit_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned hit = 0;
@@ -80,7 +80,7 @@ rtime_t rsuite_hit_seq (unsigned argc, robj_t * argv [])
 
 
 /* Find and dereference with success all the items */
-rtime_t rsuite_hit_rnd (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_hit_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned * order = rndorder (argc);
@@ -104,7 +104,7 @@ rtime_t rsuite_hit_rnd (unsigned argc, robj_t * argv [])
 
 
 /* Find with failure all the items */
-rtime_t rsuite_miss_seq (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_miss_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned missed = 0;
@@ -122,7 +122,7 @@ rtime_t rsuite_miss_seq (unsigned argc, robj_t * argv [])
 
 
 /* Find with failure all the items */
-rtime_t rsuite_miss_rnd (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_miss_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned * order = rndorder (argc);
@@ -142,7 +142,7 @@ rtime_t rsuite_miss_rnd (unsigned argc, robj_t * argv [])
 
 
 /* Remove all the items */
-rtime_t rsuite_delete_seq (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_delete_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned deleted;
@@ -160,7 +160,7 @@ rtime_t rsuite_delete_seq (unsigned argc, robj_t * argv [])
 
 
 /* Remove all the items */
-rtime_t rsuite_delete_rnd (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_delete_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned * order = rndorder (argc);
@@ -180,7 +180,7 @@ rtime_t rsuite_delete_rnd (unsigned argc, robj_t * argv [])
 
 
 /* Find, delete and reinsert with a different key all the items */
-rtime_t rsuite_replace_seq (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_replace_seq (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned replaced;
@@ -208,7 +208,7 @@ rtime_t rsuite_replace_seq (unsigned argc, robj_t * argv [])
 
 
 /* Find, delete and reinsert with a different key all the items */
-rtime_t rsuite_replace_rnd (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_replace_rnd (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (argc, argv);
   unsigned * order = rndorder (argc);
@@ -238,7 +238,7 @@ rtime_t rsuite_replace_rnd (unsigned argc, robj_t * argv [])
 
 
 /* Add if not found, delete otherwise - need an empty container and non-unique keys to be fully operable */
-rtime_t rsuite_kbench (unsigned argc, robj_t * argv [])
+rtime_t rhtsuite_kbench (unsigned argc, robj_t * argv [])
 {
   rht_t * ht = populate (0, NULL);
   rtime_t t1;

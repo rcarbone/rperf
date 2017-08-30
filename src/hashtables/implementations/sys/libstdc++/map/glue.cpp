@@ -22,7 +22,7 @@ class hashfunc
 
 /* librhash - an abstract C library over real hash tables */
 typedef std::map <char *, void *, hashfunc> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

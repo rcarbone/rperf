@@ -26,7 +26,7 @@ SGLIB_DEFINE_HASHED_CONTAINER_FUNCTIONS (robj_t, HASHSIZE, hash_obj)
 
 /* librht - an abstract C library over real hash tables */
 typedef robj_t rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

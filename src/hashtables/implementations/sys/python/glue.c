@@ -6,7 +6,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef PyObject rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */

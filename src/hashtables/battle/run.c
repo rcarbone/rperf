@@ -2,7 +2,7 @@
 #include "safe.h"
 #include "sargv.h"
 #include "rwall.h"
-#include "rtest.h"
+#include "rht-test.h"
 #include "rbattle.h"
 
 

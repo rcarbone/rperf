@@ -2,7 +2,7 @@
 #include "safe.h"
 #include "sargv.h"
 #include "rwall.h"
-#include "rtest.h"
+#include "rht-suite.h"
 #include "rspeed.h"
 
 
@@ -11,9 +11,9 @@
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
+static relapsed_t * run_single_test (rhtsuite_t * test, sw_t * sw,
 				     unsigned loops,
-				     unsigned items, robj_t * objs [],
+				     unsigned items, void * objs [],
 				     unsigned serial,
 				     unsigned maxn, bool verbose)
 {
@@ -35,7 +35,7 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
   for (l = 0; l < loops; l ++)
     {
       /* Run the test and evaluate the time elapsed for this run in nanoseconds */
-      double elapsed = sw_call (sw, rtest -> name, items, objs, false);
+      double elapsed = sw_call (sw, test -> name, items, objs, false);
 
       /* Evaluate min/max/avg time elapsed for the execution of the test */
       min = RMIN (min, elapsed);
@@ -78,7 +78,7 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *
  * The datasets needed to run the suite are initialized just one time because the number of items is not incremented each loop.
  */
-sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
+sw_t ** run_suite (rhtsuite_t * suite [], sw_t * plugins [],
 		   unsigned loops, unsigned items,
 		   bool verbose, bool quiet)
 {
@@ -86,12 +86,12 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   robj_t ** objs  = mkobjs (items);            /* Initialize datasets needed by the suite */
   unsigned loaded = arrlen (plugins);          /* Number of loaded implementations        */
   unsigned maxn   = sw_maxname (plugins);      /* Length of longest implementation name   */
-  unsigned n      = rsuite_maxn (suite);       /* Longest test name                       */
-  unsigned d      = rsuite_maxd (suite);       /* Longest test description                */
+  unsigned n      = rhtsuite_maxn (suite);     /* Longest test name                       */
+  unsigned d      = rhtsuite_maxd (suite);     /* Longest test description                */
   unsigned tno    = arrlen (suite);
-  unsigned done   = 0;                          /* Counter of tests executed               */
-  unsigned seq;                                 /* Counter for tests to run                */
-  rtest_t ** test;                              /* Iterator over the table of tests to run */
+  unsigned done   = 0;                         /* Counter of tests executed               */
+  unsigned seq;                                /* Counter for tests to run                */
+  rhtsuite_t ** test;                          /* Iterator over the table of tests to run */
 
   /* Nothing to do if no test or no plugins */
   if (! suite || ! plugins)
@@ -154,7 +154,8 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	      if (rplugin_implement (sw -> plugin, (* test) -> name))
 		{
 		  /* Run this test for this implementation using the same constant number of items */
-		  relapsed_t * result = run_single_test (* test, sw, loops, items, objs, i + 1, maxn, quiet);
+		  relapsed_t * result = run_single_test (* test, sw, loops, items,
+							 (void **) objs, i + 1, maxn, quiet);
 
 		  /* Save the results for later sorting/rendering */
 		  (* test) -> results = arrmore ((* test) -> results, result, relapsed_t);

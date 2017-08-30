@@ -15,7 +15,7 @@
 // static quint32 qHash (const char * & key) { return rht_python_hash (key); }
 
 typedef QHash <char *, void *> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

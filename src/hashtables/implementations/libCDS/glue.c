@@ -6,7 +6,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef HashMap rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

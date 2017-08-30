@@ -28,7 +28,7 @@ struct eqstr
 
 
 typedef khmap_t <char *, void *, hashfunc, eqstr> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

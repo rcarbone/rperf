@@ -6,7 +6,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef tommy_hashtable rht_t;
-#include "rht.h"
+#include "rht-api.h"
 #include "datasets.h"
 #include "safe.h"
 

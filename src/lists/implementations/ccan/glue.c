@@ -11,7 +11,7 @@
 
 /* librl - an abstract C library over real singly/double lists implementations */
 typedef struct list_head rl_t;
-#include "rl.h"
+#include "rl-api.h"
 
 #include "elems.h"
 

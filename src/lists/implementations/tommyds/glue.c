@@ -10,7 +10,7 @@
 
 /* librl - an abstract C library over real singly/double lists implementations */
 typedef tommy_list rl_t;
-#include "rl.h"
+#include "rl-api.h"
 
 #include "elems.h"
 

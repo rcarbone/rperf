@@ -8,7 +8,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef struct htable rht_t;
-#include "rht.h"
+#include "rht-api.h"
 #include "datasets.h"
 
 

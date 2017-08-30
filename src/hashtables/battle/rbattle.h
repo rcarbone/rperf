@@ -14,7 +14,7 @@
 #include "support.h"
 #include "datasets.h"
 #include "plugins.h"
-#include "rtest.h"
+#include "rht-test.h"
 
 
 #ifdef __cplusplus

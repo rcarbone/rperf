@@ -9,7 +9,7 @@
 
 /* librl - an abstract C library over real list implementations */
 #define NEED_RL_TYPEDEF
-#include "rl.h"
+#include "rl-api.h"
 
 
 typedef struct rl

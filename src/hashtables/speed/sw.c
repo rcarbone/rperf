@@ -2,7 +2,8 @@
 #include "safe.h"
 #include "sargv.h"
 #include "rwall.h"
-#include "rtest.h"
+#include "rht-suite.h"
+#include "rspeed.h"
 
 
 /* Forward */
@@ -17,21 +18,18 @@ static char * pmodule (rplugin_t * p)
 }
 
 
-static rtest_t * mktest (unsigned id, char * name, char * description, rplugin_f * fun)
+static rhtsuite_t * mksuite (char * name)
 {
-  rtest_t * t = calloc (1, sizeof (* t));
+  rhtsuite_t * t = calloc (1, sizeof (* t));
 
-  t -> id          = id;
-  t -> name        = strdup (name);
-  t -> description = strdup (description);
-
+  t -> name      = strdup (name);
   return t;
 }
 
 
-static void rmtest (void * _t)
+static void rmsuite (void * _t)
 {
-  rtest_t * t = _t;
+  rhtsuite_t * t = _t;
   if (! t)
     return;
 
@@ -53,7 +51,6 @@ static sw_t * mksw (char * pathname, bool verbose)
     {
       char ** funcs = rplugin_functions (sw -> plugin);
       char ** f = funcs;
-      unsigned i = 0;
 
       /* Call now its boot() function */
       sw_call (sw, "boot", 0, NULL, verbose);
@@ -62,11 +59,7 @@ static sw_t * mksw (char * pathname, bool verbose)
       sw -> name     = strdup (pmodule (sw -> plugin));
 
       while (f && * f)
-	{
-	  /* ROCCO: Set to a suitable value also the description */
-	  sw -> suite = arrmore (sw -> suite, mktest (i ++, * f, "XXX-DESCRIPTION-XXX", sw_func (sw, * f)), rtest_t);
-	  f ++;
-	}
+	sw -> suite = arrmore (sw -> suite, mksuite (* f ++), rhtsuite_t);
       argsclear (funcs);
     }
   else
@@ -89,7 +82,7 @@ static sw_t * rmsw (sw_t * sw)
   safefree (sw -> pathname);
   safefree (sw -> name);
   rplugin_rm (sw -> plugin);
-  arrclear (sw -> suite, rmtest);
+  arrclear (sw -> suite, rmsuite);
   free (sw);
 
   return NULL;
@@ -137,7 +130,7 @@ rplugin_f * sw_func (sw_t * sw, char * name)
 }
 
 
-rtime_t sw_call (sw_t * sw, char * name, unsigned items, robj_t * objs [], bool verbose)
+rtime_t sw_call (sw_t * sw, char * name, unsigned items, void * objs [], bool verbose)
 {
   /* Lookup by name for a function implemented in the shared object */
   rplugin_f * fun = sw_func (sw, name);

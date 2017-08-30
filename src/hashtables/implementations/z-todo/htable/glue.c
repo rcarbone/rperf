@@ -9,7 +9,7 @@
 
 /* librht - an abstract C library over real hash tables */
 typedef struct hash_table rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

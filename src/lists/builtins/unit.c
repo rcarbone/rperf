@@ -11,8 +11,7 @@
 
 /* Project headers */
 #define NEED_RL_TYPEDEF
-#include "rl.h"
-
+#include "rl-api.h"
 #include "sargv.h"
 #include "rwall.h"
 #include "rctype.h"
@@ -52,13 +51,13 @@ static rlunit_t builtins [] =
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
-static void rlunit_run_one (rlunit_t * rlunit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
+static void rlunit_run_one (rlunit_t * unit, unsigned items, unsigned n, unsigned seq, unsigned maxn)
 {
   unsigned t;
 
-  print_dots (rlunit -> name, "Running", n, seq, maxn);
+  print_dots (unit -> name, "Running", n, seq, maxn);
 
-  t = rlunit -> func (items);
+  t = unit -> func (items);
   if (t == items)
     printf ("Ok\n");
   else
@@ -73,14 +72,14 @@ static void rlunit_print_header (unsigned maxn)
 }
 
 
-static void rlunit_print_one (rlunit_t * rlunit, unsigned n, unsigned maxn)
+static void rlunit_print_one (rlunit_t * unit, unsigned n, unsigned maxn)
 {
-  if (rlunit)
-    printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, rlunit -> name, SEP, n, SEP, rlunit -> description);
+  printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, unit -> name, SEP, n, SEP, unit -> description);
 }
 
 
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
+
 
 /* Return the # of Unit Tests */
 unsigned rlunit_no (void)
@@ -166,7 +165,7 @@ rlunit_t ** rlunit_all (void)
 }
 
 
-/* Return all the Unit Tests in an array in the same order they were defined starting at given offset */
+/* Return all the Unit Tests handles in an array in the same order they were defined starting at given offset */
 rlunit_t ** rlunit_all_n (unsigned n)
 {
   rlunit_t ** all;
@@ -207,7 +206,7 @@ unsigned rlunit_maxn (rlunit_t * argv [])
   unsigned n = 0;
   while (argv && * argv)
     {
-      n = RMAX (n, strlen ((* argv) -> name));
+      n = RMAX (n, strlen ((* argv ++) -> name));
       argv ++;
     }
   return n;
@@ -230,9 +229,6 @@ void rlunit_run (rlunit_t * argv [], unsigned items)
   while (argv && * argv)
     rlunit_run_one (* argv ++, items, n, ++ seq, maxn);
 }
-
-
-/* -=-=-=-=-=-=-= API -=-=-=-=-=-=-= */
 
 
 void rlunit_print_no (void)

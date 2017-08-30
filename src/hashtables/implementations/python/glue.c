@@ -7,7 +7,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef _Py_hashtable_t rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 #define PTR_VAL_SIZE sizeof (void *)

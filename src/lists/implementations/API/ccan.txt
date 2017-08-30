@@ -1,0 +1,100 @@
+/*
+ * Double linked list.
+ *
+ * Copyright (c) 2010, Rusty Russell. All rights reserved.
+ */
+
+
+/*
+ * Typedef
+ *  struct list_head
+ *  struct list_node
+ */
+
+
+/* constructor/destructor */
+
+/* create (1) */
+
+/* initialize a list_head */
+void list_head_init (struct list_head * h);
+
+LIST_HEAD (name);
+struct list_head name = LIST_HEAD_INIT (name);
+
+
+/* initialize a list_node */
+void list_node_init (struct list_node * n);
+
+/* add (4) */
+
+/* add an entry at the start of a linked list */
+void list_add (struct list_head * h, void * object);
+
+/* add an entry at the end of a linked list */
+void list_add_tail (struct list_head * h, void * object);
+
+/* add an entry after an existing node in a linked list */
+void list_add_after (struct list_head * h, struct list_node * p, struct list_node * n);
+
+/* add an entry before an existing node in a linked list */
+void list_add_before (struct list_head * h, struct list_node * p, struct list_node * n);
+
+/* delete an entry from an (unknown) linked list */
+void list_del (struct list_node * n);
+
+list_del_from ();
+list_del_off ();
+list_del_from_off ();
+
+struct list_head * list_check (const struct list_head * h, const char * abortstr);
+
+void list_node_init (struct list_node * n);
+list_check_node ();
+
+/* pop (3) */
+
+/* remove the first entry in a list */
+void * list_pop (struct list_head * h, type, member);
+
+/* get the first entry in a list */
+void * list_top (struct list_head * h, type, member);
+
+/* get the last entry in a list */
+void * list_tail (struct list_head * h, type, member);
+
+
+/* Iterators */
+
+/* iterate through a list */
+void list_for_each (struct list_head * h, type, member)
+
+/* iterate through a list backwards */
+void list_for_each_rev (struct list_head * h, type, member);
+
+/* iterate through a list maybe during deletion */
+list_for_each_safe (struct list_head * h, type, member);
+
+/* iterate through a list backwards maybe during deletion */
+list_for_each_rev_safe (struct list_head * h, type, member);
+
+/* get the next entry in a list */
+void * list_next (struct list_head * h, type, member);
+
+/* get the previous entry in a list */
+void * list_prev (struct list_head * h, type, member);
+
+
+/* utils (2) */
+
+/* is a list empty? */
+bool list_empty (struct list_head * h);
+
+/* empty one list onto the end of another */
+void list_append_list (struct list_head * to, struct list_head * from);
+
+/* empty one list into the start of another */
+void list_prepend_list (struct list_head * to, struct list_head * from);
+
+/* swap out an entry from an (unknown) linked list for a new one */
+void list_swap (struct list_node * o, struct list_node * n);

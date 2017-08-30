@@ -34,7 +34,7 @@ void print_results (relapsed_t * results [], char * testname, unsigned maxn, uns
 
 
 /* Display information about all the test executed sorted by best implementation per test */
-void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
+void hall_of_fame (rhtsuite_t * suite [], sw_t * plugins [],
 		   unsigned maxn, unsigned loops, unsigned items)
 {
   /* Line separator */
@@ -42,7 +42,7 @@ void hall_of_fame (rtest_t * suite [], sw_t * plugins [],
   printf ("%*.*s%s\n", 30, 30, " ", "H a l l   o f   F a m e");
 
   /* Sort the results by less avg time for better rendering */
-  rsuite_sort_results (suite);
+  rhtsuite_sort_results (suite);
 
   while (suite && * suite)
     {
@@ -73,12 +73,12 @@ static int rank (char * name, relapsed_t * results [])
 
 
 /* Evaluate the quality of an implementation after all the suite have been executed */
-static unsigned eval_mark (sw_t * sw, rtest_t * suite [])
+static unsigned eval_mark (sw_t * sw, rhtsuite_t * suite [])
 {
   unsigned mark = 0;
 
   /* Each implementation has its own table of results (that here should be already sorted) */
-  rtest_t ** tests = suite;
+  rhtsuite_t ** tests = suite;
   while (tests && * tests)
     {
       /* Number of tests executed over this implementation */
@@ -101,15 +101,15 @@ static int sort_by_mark (const void * a, const void * b)
 
 
 /* Print the table of graduation */
-void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
+void print_ranking (rhtsuite_t * suite [], sw_t * plugins [], unsigned maxn)
 {
-  char ** names = rsuite_names (suite);
+  char ** names = rhtsuite_names (suite);
   char ** name  = names;
   sw_t ** sw;                           /* iterator over all the implementations */
   unsigned seq;
 
   /* Sort the results by less avg time for good evaluation of order arrival */
-  rsuite_sort_results (suite);
+  rhtsuite_sort_results (suite);
 
   /* Update evaluation of performances */
   sw = plugins;
@@ -142,7 +142,7 @@ void print_ranking (rtest_t * suite [], sw_t * plugins [], unsigned maxn)
   while (sw && * sw)
     {
       /* The table of tests for this implementation */
-      rtest_t ** tests = suite;
+      rhtsuite_t ** tests = suite;
 
       if ((* sw) -> mark)
 	{

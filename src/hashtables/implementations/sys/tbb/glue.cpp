@@ -18,7 +18,7 @@ class hashfunc
 };
 
 typedef tbb::concurrent_unordered_map <char *, void *, hashfunc> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

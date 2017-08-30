@@ -29,7 +29,7 @@ struct Policy
 
 /* librhash - an abstract C library over real hash tables */
 typedef ke::HashMap<char *, void *, Policy> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

@@ -1,15 +1,15 @@
 /* The 'rht' is an abstract specification that defines an independent C interface for Hash Table implementations */
 
 /*
- * Before including this header file applications need to declare its own rht_t type or define NEED_RHT_TYPEDEF
+ * Before including this header file applications need to declare their own rht_t type or define NEED_RHT_TYPEDEF
  *
  * e.g.
- *  typedef struct rht rht_t;
- *  #include "rht.h"
+ *  typedef struct my_own_ht rht_t;
+ *  #include "rht-api.h"
  *
  * or
  * #define NEED_RHT_TYPEDEF
- *  #include "rht.h"
+ *  #include "rht-api.h"
  */
 
 #pragma once
@@ -17,6 +17,7 @@
 #if defined(NEED_RHT_TYPEDEF)
 typedef struct rht rht_t;
 #endif /* NEED_RHT_TYPEDEF */
+
 
 /* System headers */
 #include <stdio.h>
@@ -69,18 +70,7 @@ void rht_foreach (rht_t * ht, rht_each_f * fn, void * data);
 char ** rht_keys (rht_t * ht);
 void ** rht_vals (rht_t * ht);
 
+
 #ifdef __cplusplus
 }
-
-
-class rht {
-
- public:
-  rht (unsigned n);
-  ~rht ();
-
- private:
-  void * ht = NULL;
-};
-
 #endif /* __cplusplus */

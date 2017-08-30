@@ -8,7 +8,7 @@
 
 /* librht - an abstract C library over real hash tables */
 typedef HashTable rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

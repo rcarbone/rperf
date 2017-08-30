@@ -6,7 +6,7 @@
 #include "uthash.h"
 
 #define NEED_RHT_TYPEDEF
-#include "rht.h"
+#include "rht-api.h"
 #include "vargv.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */

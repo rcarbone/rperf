@@ -6,7 +6,7 @@
 
 /* librht - an abstract C library over real hash tables */
 #define NEED_RHT_TYPEDEF
-#include "rht.h"
+#include "rht-api.h"
 
 
 /* The name of the game with its version number (major), release number (minor) and patchlevel (lower) */

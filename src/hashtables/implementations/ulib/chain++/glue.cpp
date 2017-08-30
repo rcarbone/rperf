@@ -19,7 +19,7 @@ class hashfunc
 
 /* librht - an abstract C library over real hash tables */
 typedef ulib::chain_hash_map <char *, void *, hashfunc> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

@@ -7,11 +7,11 @@
 /* Project headers */
 #include "support.h"
 #include "rtypes.h"
-#include "elems.h"
+#include "datasets.h"
 
 
 /* Useful macros */
-#define INITIALS  1e4   /* initial # of elements */
+#define INITIALS  1e4   /* initial # of items */
 #define LOOPS     10    /* default # of loops per test */
 
 #define SEP  '|'
@@ -32,10 +32,10 @@ typedef struct
   rtime_t max;          /* Longest time elapsed  */
   unsigned rate;
 
-  unsigned elems;       /* The number of elements used to execute the test */
-  unsigned slow;        /* A counter used to evaluate a stop condition     */
+  unsigned items;       /* The number of items used to execute the test */
+  unsigned slow;        /* A counter used to evaluate a stop condition  */
 
-  struct sw * sw;       /* The implementation under test                   */
+  struct sw * sw;       /* The implementation under test                */
 
 } relapsed_t;
 

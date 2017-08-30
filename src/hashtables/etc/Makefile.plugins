@@ -75,7 +75,7 @@ ut-run.c: ${RHTETCDIR}/ut-run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-suite-run.c: ${RHTETCDIR}/suite-run.c
+suite-run.c: ${RHTDIR}/suite-run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 

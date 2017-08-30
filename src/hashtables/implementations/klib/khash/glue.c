@@ -13,7 +13,7 @@ KHASH_INIT(rht, char *, void *, 1, rht_python_hash, kh_str_hash_equal)
 
 /* librht - an abstract C library over real hash tables */
 typedef khash_t(rht) rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

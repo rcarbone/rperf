@@ -6,7 +6,7 @@
 /* Project headers */
 #include "roptions.h"
 #include "sargv.h"
-#include "rtest.h"
+#include "rht-unit.h"
 
 
 /* Program name/version */
@@ -92,18 +92,18 @@ static struct option lopts [] =
 
 
 /* Build the Unit Tests to run */
-static rtest_t ** build_tests (char * progname, char * included [], char * excluded [])
+static rhtunit_t ** build_tests (char * progname, char * included [], char * excluded [])
 {
   char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  rtest_t ** tests = included ? NULL : runit_all ();       /* The tests to run (nothing or everything but these)   */
+  rhtunit_t ** tests = included ? NULL : rhtunit_all ();       /* The tests to run (nothing or everything but these)   */
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
       /* Add/Delete the given test to/from the table of tests to run */
-      rtest_t * t = runit_valid (* names);
+      rhtunit_t * t = rhtunit_valid (* names);
       if (t)
-	tests = included ? arrmore (tests, t, rtest_t) : arrless (tests, t, rtest_t, NULL);
+	tests = included ? arrmore (tests, t, rhtunit_t) : arrless (tests, t, rhtunit_t, NULL);
       else
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
@@ -118,18 +118,18 @@ static rtest_t ** build_tests (char * progname, char * included [], char * exclu
 
 /* Attempt to do what has been required by the user */
 static void doit (char * progname, unsigned choice,
-		  rtest_t * tests [],
+		  rhtunit_t * tests [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: runit_print_all (); break;
+    case OPT_LIST: rhtunit_print_all (); break;
 
     case OPT_RUN:
       for (l = 0; l < loops; l ++)
-	runit_run (tests, items);
+	rhtunit_run (tests, items);
       break;
 
     default:
@@ -199,7 +199,7 @@ int main (int argc, char * argv [])
   /* Unit Tests to run */
   char ** included = NULL;
   char ** excluded = NULL;
-  rtest_t ** tests = NULL;
+  rhtunit_t ** tests = NULL;
 
   /* Items counter */
   unsigned items   = INITIALS;               /* initial # of items per test */

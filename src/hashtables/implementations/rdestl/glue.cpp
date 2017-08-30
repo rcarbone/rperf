@@ -32,7 +32,7 @@ struct hasher
 
 /* librhash - an abstract C library over real hash tables */
 typedef rde::hash_map<char *, void *, hasher, 6, eqstr> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

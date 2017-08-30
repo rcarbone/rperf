@@ -7,7 +7,7 @@
 #include "sargv.h"
 #include "rctype.h"
 #include "plugins.h"
-#include "rtest.h"
+#include "rht-test.h"
 #include "rspeed.h"
 
 
@@ -186,18 +186,18 @@ static int rp_valid_id (char * id, char * rargv [])
 
 
 /* Build the tests to run */
-static rtest_t ** build_suite (char * progname, char * included [], char * excluded [])
+static rhtsuite_t ** build_suite (char * progname, char * included [], char * excluded [])
 {
   char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded        */
-  rtest_t ** suite = included ? NULL : rsuite_all ();      /* The suite of tests to run (nothing or everything but these) */
+  rhtsuite_t ** suite = included ? NULL : rhtsuite_all ();      /* The suite of tests to run (nothing or everything but these) */
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
       /* Add/Delete the given test to/from the table of given suite to run */
-      rtest_t * t = rsuite_valid (* names);
+      rhtsuite_t * t = rhtsuite_valid (* names);
       if (t)
-	suite = included ? arrmore (suite, t, rtest_t) : arrless (suite, t, rtest_t, NULL);
+	suite = included ? arrmore (suite, t, rhtsuite_t) : arrless (suite, t, rhtsuite_t, NULL);
       else
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
@@ -214,7 +214,7 @@ static rtest_t ** build_suite (char * progname, char * included [], char * exclu
 static void doit (char * progname, char * version,
 		  unsigned choice,
 		  char * dir, char * files [],
-		  rtest_t * suite [],
+		  rhtsuite_t * suite [],
 		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
@@ -409,7 +409,7 @@ int main (int argc, char * argv [])
 	  /* Test Suite */
 
 	  /* List */
-        case OPT_LIST_TESTS:   rsuite_print_all ();                     goto bye;
+        case OPT_LIST_TESTS:   rhtsuite_print_all ();                     goto bye;
 
 	  /* Finger */
         case OPT_ADD_TEST:     enabled  = argsuniq (enabled, optarg);   break;
@@ -478,7 +478,7 @@ int main (int argc, char * argv [])
   if (files)
     {
       /* Build the suite to run */
-      rtest_t ** suite = build_suite (progname, enabled, disabled);
+      rhtsuite_t ** suite = build_suite (progname, enabled, disabled);
       if (suite)
 	{
 	  /* Build the subset of plugins and go! */
@@ -492,7 +492,7 @@ int main (int argc, char * argv [])
       else
 	printf ("%s: no test to run\n", progname);
 
-      rsuite_clear_results (suite);
+      rhtsuite_clear_results (suite);
       arrclear (suite, NULL);
     }
   else

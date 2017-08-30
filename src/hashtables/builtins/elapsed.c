@@ -4,7 +4,7 @@
 #include <limits.h>
 
 /* Project headers */
-#include "rtest.h"
+#include "rht-test.h"
 #include "safe.h"
 
 

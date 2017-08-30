@@ -26,7 +26,7 @@ DEFINE_ALIGNHASH (rht, char *, void *, ULIB_ISMAP, hash_str_fn, eq_str_fn)
 
 /* librht - an abstract C library over real hash tables */
 typedef alignhash_t(rht) rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

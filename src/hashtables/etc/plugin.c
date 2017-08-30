@@ -5,11 +5,31 @@
 #include <getopt.h>
 
 /* Project headers */
-#include "rtest.h"
-#include "rsuite.h"
+#include "rht-test.h"
+#include "rht-suite.h"
+
+/* The local identifiers for the Test Scenarios to run */
+typedef enum
+{
+  RHTSUITE_BOOT        = 1,
+  RHTSUITE_HALT,
+  RHTSUITE_GROW_SEQ,
+  RHTSUITE_GROW_RND,
+  RHTSUITE_HIT_SEQ,
+  RHTSUITE_HIT_RND,
+  RHTSUITE_MISS_SEQ,
+  RHTSUITE_MISS_RND,
+  RHTSUITE_DELETE_SEQ,
+  RHTSUITE_DELETE_RND,
+  RHTSUITE_REPLACE_SEQ,
+  RHTSUITE_REPLACE_RND,
+  RHTSUITE_KBENCH
+
+} rlsuite_id_t;
+
 
 static unsigned nobjs = 0;
-static bool verbose = false;
+static bool verbose   = false;
 
 
 /* All the functions implemented share the same options */
@@ -51,19 +71,19 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
     {
       switch (which)
 	{
-	case -1:                                                               break;  /* boot */
-	case -2:                                                               break;  /* halt */
-	case RSUITE_GROW_SEQ:    rsuite_grow_seq (nobjs, (robj_t **) envp);    break;
-	case RSUITE_GROW_RND:    rsuite_grow_rnd (nobjs, (robj_t **) envp);    break;
-	case RSUITE_HIT_SEQ:     rsuite_hit_seq (nobjs, (robj_t **) envp);     break;
-	case RSUITE_HIT_RND:     rsuite_hit_rnd (nobjs, (robj_t **) envp);     break;
-	case RSUITE_MISS_SEQ:    rsuite_miss_seq (nobjs, (robj_t **) envp);    break;
-	case RSUITE_MISS_RND:    rsuite_miss_rnd (nobjs, (robj_t **) envp);    break;
-	case RSUITE_DELETE_SEQ:  rsuite_delete_seq (nobjs, (robj_t **) envp);  break;
-	case RSUITE_DELETE_RND:  rsuite_delete_rnd (nobjs, (robj_t **) envp);  break;
-	case RSUITE_REPLACE_SEQ: rsuite_replace_seq (nobjs, (robj_t **) envp); break;
-	case RSUITE_REPLACE_RND: rsuite_replace_rnd (nobjs, (robj_t **) envp); break;
-	case RSUITE_KBENCH:      rsuite_kbench (nobjs, (robj_t **) envp);      break;
+	case RHTSUITE_BOOT:                                            break;
+	case RHTSUITE_HALT:                                            break;
+	case RHTSUITE_GROW_SEQ:    rhtsuite_grow_seq (nobjs, envp);    break;
+	case RHTSUITE_GROW_RND:    rhtsuite_grow_rnd (nobjs, envp);    break;
+	case RHTSUITE_HIT_SEQ:     rhtsuite_hit_seq (nobjs, envp);     break;
+	case RHTSUITE_HIT_RND:     rhtsuite_hit_rnd (nobjs, envp);     break;
+	case RHTSUITE_MISS_SEQ:    rhtsuite_miss_seq (nobjs, envp);    break;
+	case RHTSUITE_MISS_RND:    rhtsuite_miss_rnd (nobjs, envp);    break;
+	case RHTSUITE_DELETE_SEQ:  rhtsuite_delete_seq (nobjs, envp);  break;
+	case RHTSUITE_DELETE_RND:  rhtsuite_delete_rnd (nobjs, envp);  break;
+	case RHTSUITE_REPLACE_SEQ: rhtsuite_replace_seq (nobjs, envp); break;
+	case RHTSUITE_REPLACE_RND: rhtsuite_replace_rnd (nobjs, envp); break;
+	case RHTSUITE_KBENCH:      rhtsuite_kbench (nobjs, envp);      break;
 	}
     }
 
@@ -75,77 +95,77 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
 
 int boot (int argc, char * argv [], void * envp [])
 {
-  return run_this (-1, argc, argv, envp);
+  return run_this (RHTSUITE_BOOT, argc, argv, envp);
 }
 
 
 int halt (int argc, char * argv [], void * envp [])
 {
-  return run_this (-2, argc, argv, envp);
+  return run_this (RHTSUITE_HALT, argc, argv, envp);
 }
 
 
 int grow_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_GROW_SEQ, argc, argv, envp);
+  return run_this (RHTSUITE_GROW_SEQ, argc, argv, envp);
 }
 
 
 int grow_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_GROW_RND, argc, argv, envp);
+  return run_this (RHTSUITE_GROW_RND, argc, argv, envp);
 }
 
 
 int hit_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_HIT_SEQ, argc, argv, envp);
+  return run_this (RHTSUITE_HIT_SEQ, argc, argv, envp);
 }
 
 
 int hit_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_HIT_RND, argc, argv, envp);
+  return run_this (RHTSUITE_HIT_RND, argc, argv, envp);
 }
 
 
 int miss_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_MISS_SEQ, argc, argv, envp);
+  return run_this (RHTSUITE_MISS_SEQ, argc, argv, envp);
 }
 
 
 int miss_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_MISS_RND, argc, argv, envp);
+  return run_this (RHTSUITE_MISS_RND, argc, argv, envp);
 }
 
 
 int delete_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_DELETE_SEQ, argc, argv, envp);
+  return run_this (RHTSUITE_DELETE_SEQ, argc, argv, envp);
 }
 
 
 int delete_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_DELETE_RND, argc, argv, envp);
+  return run_this (RHTSUITE_DELETE_RND, argc, argv, envp);
 }
 
 
 int replace_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_REPLACE_SEQ, argc, argv, envp);
+  return run_this (RHTSUITE_REPLACE_SEQ, argc, argv, envp);
 }
 
 
 int replace_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_REPLACE_RND, argc, argv, envp);
+  return run_this (RHTSUITE_REPLACE_RND, argc, argv, envp);
 }
 
 
 int kbench (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_KBENCH, argc, argv, envp);
+  return run_this (RHTSUITE_KBENCH, argc, argv, envp);
 }

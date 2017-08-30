@@ -27,7 +27,7 @@ struct equaler
 
 /* librhash - an abstract C library over real hash tables */
 typedef rigtorp::HashMap<char *, void *, hasher, equaler> rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

@@ -6,11 +6,11 @@
  *
  * e.g.
  *  typedef struct my_own_list rl_t;
- *  #include "rl.h"
+ *  #include "rl-api.h"
  *
  * or
  * #define NEED_RL_TYPEDEF
- *  #include "rl.h"
+ *  #include "rl-api.h"
  */
 
 #pragma once
@@ -32,6 +32,11 @@ typedef struct rl rl_t;
 typedef void rl_each_f (void * elem);
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 /* API */
 
 /* Constructor/Destructor */
@@ -51,5 +56,10 @@ void * rl_head (rl_t * list);
 void * rl_tail (rl_t * list);
 void * rl_get (rl_t * list, void * elem);
 
-/* Pop */
+/* Delete */
 void rl_del (rl_t * list, void * elem);
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */

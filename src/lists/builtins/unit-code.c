@@ -3,7 +3,7 @@
 
 /* Project headers */
 #define NEED_RL_TYPEDEF
-#include "rl.h"
+#include "rl-api.h"
 #include "vargv.h"
 #include "elems.h"
 

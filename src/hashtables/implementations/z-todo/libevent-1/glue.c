@@ -8,7 +8,7 @@
 
 /* librht - an abstract C library over real hash tables */
 typedef struct leht rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 

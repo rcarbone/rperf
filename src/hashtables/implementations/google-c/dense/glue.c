@@ -10,7 +10,7 @@
 
 /* librhash - an abstract C library over real hash tables */
 typedef struct HashTable rht_t;
-#include "rht.h"
+#include "rht-api.h"
 
 #define DONTCOPY 0
 

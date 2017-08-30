@@ -5,7 +5,7 @@
 
 /* librht - an abstract C library over real hash table implementations */
 #define NEED_RHT_TYPEDEF
-#include "rht.h"
+#include "rht-api.h"
 
 
 typedef struct rht

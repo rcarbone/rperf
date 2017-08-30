@@ -56,6 +56,7 @@ void print_results (relapsed_t * results [], char * name, unsigned maxn, unsigne
 void hall_of_fame (rlsuite_t * suite [], sw_t * plugins [], unsigned maxn, unsigned loops, unsigned items);
 void print_ranking (rlsuite_t * suite [], sw_t * plugins [], unsigned maxn);
 
+
 #ifdef __cplusplus
 }
 #endif

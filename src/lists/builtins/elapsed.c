@@ -159,14 +159,6 @@ int sort_by_less_avg (const void * a, const void * b)
 }
 
 
-/* Display test header */
-void print_test_header (unsigned maxn)
-{
-  printf ("      %-*.*s -   avg         min         max   ms -   elapsed\n",
-	  maxn, maxn, "Implementation");
-}
-
-
 /* Display timing information for a single test run */
 void show_elapsed (relapsed_t * elapsed)
 {
@@ -176,6 +168,14 @@ void show_elapsed (relapsed_t * elapsed)
 	    elapsed -> min / 1e6,
 	    elapsed -> max / 1e6,
 	    ns2a (elapsed -> elapsed));
+}
+
+
+/* Display test header */
+void print_test_header (unsigned maxn)
+{
+  printf ("      %-*.*s -   avg         min         max   ms -   elapsed\n",
+	  maxn, maxn, "Implementation");
 }
 
 

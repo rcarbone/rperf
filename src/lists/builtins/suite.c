@@ -7,7 +7,7 @@
 
 /* Project headers */
 #define NEED_RL_TYPEDEF
-#include "rl.h"
+#include "rl-api.h"
 #include "sargv.h"
 #include "rwall.h"
 #include "rctype.h"
@@ -54,8 +54,7 @@ static void rlsuite_print_header (unsigned maxn)
 
 static void rlsuite_print_one (rlsuite_t * test, unsigned n, unsigned maxn)
 {
-  if (test)
-    printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, test -> name, SEP, n, SEP, test -> description);
+  printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, test -> name, SEP, n, SEP, test -> description);
 }
 
 
@@ -180,18 +179,6 @@ rlsuite_t ** rlsuite_all_rnd (void)
 }
 
 
-/* Print the all the builtin Test Suite */
-void rlsuite_print_all (void)
-{
-  unsigned maxn = rlsuite_all_maxn ();
-  unsigned i;
-
-  rlsuite_print_header (maxn);
-  for (i = 0; i <= rlsuite_no (); i ++)
-    rlsuite_print_one (rlsuite_find_at (i), i + 1, maxn);
-}
-
-
 /* Return the Test Suite names in the same order they were defined in the table */
 char ** rlsuite_names (rlsuite_t * suite [])
 {
@@ -262,4 +249,16 @@ void rlsuite_sort_results (rlsuite_t * suite [])
       (* suite) -> results = arrsort ((* suite) -> results, sort_by_less_avg, relapsed_t);
       suite ++;
     }
+}
+
+
+/* Print the all the builtin Test Suite */
+void rlsuite_print_all (void)
+{
+  unsigned maxn = rlsuite_all_maxn ();
+  unsigned i;
+
+  rlsuite_print_header (maxn);
+  for (i = 0; i <= rlsuite_no (); i ++)
+    rlsuite_print_one (rlsuite_find_at (i), i + 1, maxn);
 }

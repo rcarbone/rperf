@@ -12,7 +12,7 @@
 
 /* librl - an abstract C library over real singly/double lists implementations */
 typedef tj_list_t rl_t;
-#include "rl.h"
+#include "rl-api.h"
 
 #include "elems.h"
 

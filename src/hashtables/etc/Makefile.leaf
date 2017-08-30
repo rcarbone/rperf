@@ -77,11 +77,11 @@ ${PROGRAM}: ${MAINOBJS} ${STLIB} ${RHTLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-ut-run: ut-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
+ut-run: ut-run.o gnu-search.o ${STLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-suite-run: suite-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
+suite-run: suite-run.o gnu-search.o ${STLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

@@ -6,7 +6,7 @@
 
 /* librht - an abstract C library over real hash tables */
 #define NEED_RHT_TYPEDEF
-#include "rht.h"
+#include "rht-api.h"
 #include "datasets.h"
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
