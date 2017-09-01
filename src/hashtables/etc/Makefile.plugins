@@ -71,7 +71,7 @@ plugin.c: README.c ${RHTETCDIR}/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-ut-run.c: ${RHTETCDIR}/ut-run.c
+ut-run.c: ${RHTDIR}/ut-run.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 

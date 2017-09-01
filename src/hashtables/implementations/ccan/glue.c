@@ -112,7 +112,7 @@ char ** rht_keys (rht_t * ht)
 
 void ** rht_vals (rht_t * ht)
 {
-  void ** vals = calloc (rht_count (ht) + 1, sizeof (char *));
+  void ** vals = calloc (rht_count (ht) + 1, sizeof (void *));
   unsigned i = 0;
   struct htable_iter it;
   void * obj;

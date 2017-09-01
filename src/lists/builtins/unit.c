@@ -206,7 +206,7 @@ unsigned rlunit_maxn (rlunit_t * argv [])
   unsigned n = 0;
   while (argv && * argv)
     {
-      n = RMAX (n, strlen ((* argv ++) -> name));
+      n = RMAX (n, strlen ((* argv) -> name));
       argv ++;
     }
   return n;
@@ -256,7 +256,6 @@ void rlunit_print_all (void)
   unsigned i;
 
   rlunit_print_header (maxn);
-  for (i = 0; i <= rlunit_no (); i ++)
+  for (i = 0; i < rlunit_no (); i ++)
     rlunit_print_one (rlunit_find_at (i), i + 1, maxn);
 }
-

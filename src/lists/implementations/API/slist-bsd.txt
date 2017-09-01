@@ -1,0 +1,29 @@
+NAME
+       SLIST_ENTRY, SLIST_HEAD, SLIST_HEAD_INITIALIZER, SLIST_INIT,
+       SLIST_INSERT_HEAD, SLIST_INSERT_AFTER, SLIST_REMOVE_HEAD, SLIST_REMOVE,
+       SLIST_FIRST, SLIST_NEXT, SLIST_FOREACH, SLIST_EMPTY
+
+       implementations of singly linked lists
+
+SYNOPSIS
+       #include <sys/queue.h>
+
+       SLIST_ENTRY (TYPE);
+
+       SLIST_HEAD (HEADNAME, TYPE);
+       SLIST_HEAD_INITIALIZER (SLIST_HEAD head);
+       SLIST_INIT (SLIST_HEAD * head);
+
+       SLIST_INSERT_HEAD (SLIST_HEAD * head, TYPE * elm, LIST_ENTRY NAME);
+       SLIST_INSERT_AFTER (SLIST_ENTRY * listelm, TYPE * elm, LIST_ENTRY NAME);
+       SLIST_REMOVE_HEAD (SLIST_HEAD * head, SLIST_ENTRY NAME);
+       SLIST_REMOVE (TYPE * elm, SLIST_ENTRY NAME);
+
+       SLIST_FIRST (SLIST_HEAD * head);
+       SLIST_NEXT (TYPE * elm, SLIST_ENTRY NAME);
+       SLIST_FOREACH (TYPE * var, SLIST_HEAD * head, SLIST_ENTRY NAME);
+
+       SLIST_EMPTY (SLIST_HEAD * head);
+
+       In the macro definitions, TYPE is the name of a user-defined structure, that must contain a field of type SLIST_ENTRY
+       named NAME. The argument HEADNAME is the name of a user-defined structure that must be declared using the macros SLIST_HEAD.

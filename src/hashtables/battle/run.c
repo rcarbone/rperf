@@ -133,9 +133,9 @@ static relapsed_t ** update_results (relapsed_t * results [],
  *
  * Iterate to run 'loops' times the same test and evaluate min/avg/max time elapsed
  */
-static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
+static relapsed_t * run_single_test (rhtsuite_t * rtest, sw_t * sw,
 				     unsigned loops,
-				     unsigned items, robj_t * objs [],
+				     unsigned items, void * objs [],
 				     unsigned serial,
 				     unsigned slow,
 				     unsigned maxn,
@@ -205,7 +205,7 @@ static relapsed_t * run_single_test (rtest_t * rtest, sw_t * sw,
  *
  * The datasets needed to run the suite are initialized at each loop because the number of items is incremented each loop.
  */
-sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
+sw_t ** run_suite (rhtsuite_t * suite [], sw_t * plugins [],
 		   unsigned loops, unsigned initials,
 		   unsigned nslow, unsigned repeat, unsigned more,
 		   bool verbose, bool quiet)
@@ -213,7 +213,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
   /* Initialize variables needed to run the suite */
   unsigned loaded = arrlen (plugins);           /* Number of loaded implementations        */
   unsigned maxn   = sw_maxname (plugins);       /* Lenght of longest implementation name   */
-  rtest_t ** test;                              /* Iterator over the table of tests to run */
+  rhtsuite_t ** test;                           /* Iterator over the table of tests to run */
 
   /* Nothing to do if no test or no plugins */
   if (! suite || ! plugins)
@@ -255,11 +255,11 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 	   */
 	  while (arrlen (loosers) < torun - 1)
 	    {
-	      robj_t ** objs      = mkobjs (items);           /* Initialize the memory needed by the test suite */
-	      unsigned * order    = rndorder (loaded);        /* Evaluate a random array to run implementation  */
+	      robj_t ** objs        = mkobjs (items);           /* Initialize the memory needed by the test suite */
+	      unsigned * order      = rndorder (loaded);        /* Evaluate a random array to run implementation  */
 	      relapsed_t ** results = NULL;
-	      unsigned rank       = torun - arrlen (loosers);
-	      unsigned tested     = 0;                        /* Counter over implementations tested            */
+	      unsigned rank         = torun - arrlen (loosers);
+	      unsigned tested       = 0;                        /* Counter over implementations tested            */
 	      unsigned i;
 	      rtime_t t1;
 	      rtime_t t2;
@@ -283,7 +283,7 @@ sw_t ** run_suite (rtest_t * suite [], sw_t * plugins [],
 		  if (rplugin_implement (sw -> plugin, (* test) -> name) && ! islooser (sw -> name, loosers))
 		    {
 		      /* Run this test for this implementation with the current number of items */
-		      relapsed_t * result = run_single_test (* test, sw, loops, items, objs,
+		      relapsed_t * result = run_single_test (* test, sw, loops, items, (void **) objs,
 							     ++ tested, getslow (sw -> name, runners), maxn, verbose);
 		      if (! quiet)
 			{

@@ -76,9 +76,9 @@ static void rhtunit_print_header (unsigned maxn)
 }
 
 
-static void rhtunit_print_one (rhtunit_t * runit, unsigned n, unsigned maxn)
+static void rhtunit_print_one (rhtunit_t * unit, unsigned n, unsigned maxn)
 {
-  printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, runit -> name, SEP, n, SEP, runit -> description);
+  printf ("%3d%c %-*.*s %c%3d %c %s\n", n, SEP, maxn, maxn, unit -> name, SEP, n, SEP, unit -> description);
 }
 
 
@@ -139,9 +139,10 @@ rhtunit_t * rhtunit_find_by_id (unsigned id)
 rhtunit_t * rhtunit_find_by_name (char * name)
 {
   unsigned i;
-  for (i = 0; name && i < RHTUNIT_NO; i ++)
-    if (! strcmp (builtins [i] . name, name))
-      return & builtins [i];
+  if (name)
+    for (i = 0; i < RHTUNIT_NO; i ++)
+      if (! strcmp (builtins [i] . name, name))
+	return & builtins [i];
   return NULL;
 }
 
@@ -192,12 +193,6 @@ rhtunit_t ** rhtunit_all_rnd (void)
 }
 
 
-rhtunit_t * rhtunit_valid (char * id)
-{
-  return isnumeric (id) && atoi (id) ? rhtunit_find_at (atoi (id) - 1) : rhtunit_find_by_name (id);
-}
-
-
 /* Longest name */
 unsigned rhtunit_all_maxn (void)
 {
@@ -219,6 +214,12 @@ unsigned rhtunit_maxn (rhtunit_t * argv [])
       argv ++;
     }
   return n;
+}
+
+
+rhtunit_t * rhtunit_valid (char * id)
+{
+  return isnumeric (id) && atoi (id) ? rhtunit_find_at (atoi (id) - 1) : rhtunit_find_by_name (id);
 }
 
 
@@ -259,6 +260,6 @@ void rhtunit_print_all (void)
   unsigned i;
 
   rhtunit_print_header (maxn);
-  for (i = 0; i <= rhtunit_no (); i ++)
+  for (i = 0; i < rhtunit_no (); i ++)
     rhtunit_print_one (rhtunit_find_at (i), i + 1, maxn);
 }

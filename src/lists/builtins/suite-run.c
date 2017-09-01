@@ -9,9 +9,10 @@
 #include "rltest.h"
 #include "rlsuite.h"
 
+#include "README.c"
 
 /* Program name/version */
-#define _NAME_      "Run builtin Test Suite"
+#define _NAME_      "Run builtin Test Scenarios"
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
@@ -35,7 +36,7 @@ typedef enum
   OPT_INCLUDE    = 'i',    /* Include Test Suite */
   OPT_EXCLUDE    = 'e',    /* Exclude Test Suite */
 
-  /* Element counters */
+  /* Elements counter */
   OPT_ITEMS      = 'n',    /* initial # of elements */
   OPT_ITEMS_0    = '0',    /* 10 ^ 0 */
   OPT_ITEMS_1    = '1',    /* 10 ^ 1 */
@@ -71,7 +72,7 @@ static struct option lopts [] =
   { "include",      required_argument, NULL, OPT_INCLUDE },
   { "exclude",      required_argument, NULL, OPT_EXCLUDE },
 
-  /* Element counters */
+  /* Elements counter */
   { "elements",     required_argument, NULL, OPT_ITEMS   },
   { "one",          no_argument,       NULL, OPT_ITEMS_0 },
   { "ten",          no_argument,       NULL, OPT_ITEMS_1 },
@@ -95,16 +96,18 @@ static struct option lopts [] =
 /* Build the Test Suite to run */
 static rlsuite_t ** build_tests (char * progname, char * included [], char * excluded [])
 {
-  char ** names      = included ? included : excluded;      /* User-included items have priority over user-excluded */
-  rlsuite_t ** tests = included ? NULL : rlsuite_all ();    /* The tests to run (nothing or everything but these)   */
+  char ** names      = included ? included : excluded;     /* User-included items have priority over user-excluded */
+  rlsuite_t ** tests = included ? NULL : rlsuite_all ();   /* The tests to run (nothing or everything but these)   */
+  char ** defined     = argsblanks ((char *) functions);
+  rlsuite_t ** t;
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
-      /* Add/Delete the given test to/from the table of tests to run */
-      rlsuite_t * t = rlsuite_valid (* names);
-      if (t)
-	tests = included ? arrmore (tests, t, rlsuite_t) : arrless (tests, t, rlsuite_t, NULL);
+      /* Add/Delete the given test to/from the table of given tests to run */
+      rlsuite_t * test = rlsuite_valid (* names);
+      if (test)
+	tests = included ? arrmore (tests, test, rlsuite_t) : arrless (tests, test, rlsuite_t, NULL);
       else
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
@@ -113,6 +116,16 @@ static rlsuite_t ** build_tests (char * progname, char * included [], char * exc
 	}
       names ++;
     }
+  /* Do not run tests not defined in README.c */
+  t  = tests;
+  while (t && * t)
+    {
+      if (! argsexists (defined, (* t) -> name))
+	t = tests = arrless (tests, * t, rlsuite_t, NULL);
+      t ++;
+    }
+  argsclear (defined);
+
   return tests;
 }
 
@@ -161,7 +174,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations with the Test Suite:\n");
+  printf ("  Operations on the Test Suite:\n");
   usage_item (options, n, OPT_LIST,    "list");
   usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
@@ -171,7 +184,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_EXCLUDE, "exclude Test Suite (repeatable)");
   printf ("\n");
 
-  printf ("  Element counters: (default %.0f)\n", INITIALS);
+  printf ("  Elements counter: (default %.0f)\n", INITIALS);
   usage_item (options, n, OPT_ITEMS,   "set the initial number of elements per test");
   usage_item (options, n, OPT_ITEMS_0, "one item                   (1e0)");
   usage_item (options, n, OPT_ITEMS_1, "ten items                  (1e1)");
@@ -240,7 +253,7 @@ int main (int argc, char * argv [])
         case OPT_INCLUDE: included = argsuniq (included, optarg); break;
         case OPT_EXCLUDE: excluded = argsuniq (excluded, optarg); break;
 
-	  /* Element counters */
+	  /* Elements counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;
@@ -286,9 +299,8 @@ int main (int argc, char * argv [])
   else
     printf ("%s: no test to run\n", progname);
 
- bye:
-
   /* Memory cleanup */
+ bye:
   arrclear (tests, NULL);
   argsclear (excluded);
   argsclear (included);

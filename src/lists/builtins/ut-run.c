@@ -35,7 +35,7 @@ typedef enum
   OPT_INCLUDE    = 'i',    /* Include Unit Test */
   OPT_EXCLUDE    = 'e',    /* Exclude Unit Test */
 
-  /* Element counters */
+  /* Elements counter */
   OPT_ITEMS      = 'n',    /* initial # of elements */
   OPT_ITEMS_0    = '0',    /* 10 ^ 0 */
   OPT_ITEMS_1    = '1',    /* 10 ^ 1 */
@@ -71,7 +71,7 @@ static struct option lopts [] =
   { "include",      required_argument, NULL, OPT_INCLUDE },
   { "exclude",      required_argument, NULL, OPT_EXCLUDE },
 
-  /* Element counters */
+  /* Elements counter */
   { "elements",     required_argument, NULL, OPT_ITEMS   },
   { "one",          no_argument,       NULL, OPT_ITEMS_0 },
   { "ten",          no_argument,       NULL, OPT_ITEMS_1 },
@@ -158,7 +158,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations with the Unit Tests:\n");
+  printf ("  Operations on the Unit Tests:\n");
   usage_item (options, n, OPT_LIST,    "list");
   usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
@@ -168,7 +168,7 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_EXCLUDE, "exclude Unit Test (repeatable)");
   printf ("\n");
 
-  printf ("  Element counters: (default %.0f)\n", INITIALS);
+  printf ("  Elements counter: (default %.0f)\n", INITIALS);
   usage_item (options, n, OPT_ITEMS,   "set the initial number of elements per test");
   usage_item (options, n, OPT_ITEMS_0, "one item                   (1e0)");
   usage_item (options, n, OPT_ITEMS_1, "ten items                  (1e1)");
@@ -237,7 +237,7 @@ int main (int argc, char * argv [])
         case OPT_INCLUDE: included = argsuniq (included, optarg); break;
         case OPT_EXCLUDE: excluded = argsuniq (excluded, optarg); break;
 
-	  /* Element counters */
+	  /* Elements counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;
@@ -272,7 +272,7 @@ int main (int argc, char * argv [])
   if (! loops)
     loops = 1;
 
-  /* Default to run is something to include/exclude has been specified */
+  /* Switch default to run when something to include/exclude has been specified */
   if (included || excluded)
     choice = OPT_RUN;
 
@@ -283,9 +283,8 @@ int main (int argc, char * argv [])
   else
     printf ("%s: no test to run\n", progname);
 
- bye:
-
   /* Memory cleanup */
+ bye:
   arrclear (tests, NULL);
   argsclear (excluded);
   argsclear (included);

@@ -16,41 +16,41 @@
 #define _VERSION_   "0.1.0"
 
 /* Default option (if none was specified) */
-#define OPT_DEFAULT OPT_LIST
+#define OPT_DEFAULT OPT_RUN
 
 
 /* All the command line long options are here */
 typedef enum
 {
   /* Miscellanea */
-  OPT_HELP         = 'h',
-  OPT_VERSION      = 'v',
-  OPT_VERBOSE      = 'V',
-  OPT_QUIET        = 'q',
+  OPT_HELP       = 'h',
+  OPT_VERSION    = 'v',
+  OPT_VERBOSE    = 'V',
+  OPT_QUIET      = 'q',
 
   /* Operations */
-  OPT_LIST         = 'l',
-  OPT_RUN          = 'x',
+  OPT_LIST       = 'l',    /* List Test Suite    */
+  OPT_RUN        = 'x',    /* Execute Test Suite */
 
   /* Finger */
-  OPT_INCLUDE      = 'i',    /* include item */
-  OPT_EXCLUDE      = 'e',    /* exclude item */
+  OPT_INCLUDE    = 'i',    /* Include Test Suite */
+  OPT_EXCLUDE    = 'e',    /* Exclude Test Suite */
 
-  /* Item counters */
-  OPT_ITEMS        = 'n',    /* initial # of items */
-  OPT_ITEMS_0      = '0',    /* 10 ^ 0 */
-  OPT_ITEMS_1      = '1',    /* 10 ^ 1 */
-  OPT_ITEMS_2      = '2',    /* 10 ^ 2 */
-  OPT_ITEMS_3      = '3',    /* 10 ^ 3 */
-  OPT_ITEMS_4      = '4',    /* 10 ^ 4 */
-  OPT_ITEMS_5      = '5',    /* 10 ^ 5 */
-  OPT_ITEMS_6      = '6',    /* 10 ^ 6 */
-  OPT_ITEMS_7      = '7',    /* 10 ^ 7 */
-  OPT_ITEMS_8      = '8',    /* 10 ^ 8 */
-  OPT_ITEMS_9      = '9',    /* 10 ^ 9 */
+  /* Items counter */
+  OPT_ITEMS      = 'n',    /* initial # of items */
+  OPT_ITEMS_0    = '0',    /* 10 ^ 0 */
+  OPT_ITEMS_1    = '1',    /* 10 ^ 1 */
+  OPT_ITEMS_2    = '2',    /* 10 ^ 2 */
+  OPT_ITEMS_3    = '3',    /* 10 ^ 3 */
+  OPT_ITEMS_4    = '4',    /* 10 ^ 4 */
+  OPT_ITEMS_5    = '5',    /* 10 ^ 5 */
+  OPT_ITEMS_6    = '6',    /* 10 ^ 6 */
+  OPT_ITEMS_7    = '7',    /* 10 ^ 7 */
+  OPT_ITEMS_8    = '8',    /* 10 ^ 8 */
+  OPT_ITEMS_9    = '9',    /* 10 ^ 9 */
 
-  /* Loop counter */
-  OPT_LOOPS        = 'r',
+  /* Loops counter */
+  OPT_LOOPS      = 'r',
 
 } ropt_t;
 
@@ -72,7 +72,7 @@ static struct option lopts [] =
   { "include",      required_argument, NULL, OPT_INCLUDE },
   { "exclude",      required_argument, NULL, OPT_EXCLUDE },
 
-  /* Item counters */
+  /* Items counter */
   { "items",        required_argument, NULL, OPT_ITEMS   },
   { "one",          no_argument,       NULL, OPT_ITEMS_0 },
   { "ten",          no_argument,       NULL, OPT_ITEMS_1 },
@@ -85,7 +85,7 @@ static struct option lopts [] =
   { "100-million",  no_argument,       NULL, OPT_ITEMS_8 },
   { "billion",      no_argument,       NULL, OPT_ITEMS_9 },
 
-  /* Loop counter */
+  /* Loops counter */
   { "loops",        required_argument, NULL, OPT_LOOPS   },
 
   /* End of options */
@@ -93,25 +93,25 @@ static struct option lopts [] =
 };
 
 
-/* Build the tests to run */
+/* Build the Test Suite to run */
 static rhtsuite_t ** build_tests (char * progname, char * included [], char * excluded [])
 {
-  char ** names    = included ? included : excluded;       /* User-included items have priority over user-excluded */
-  rhtsuite_t ** tests = included ? NULL : rhtsuite_all ();      /* The tests to run (nothing or everything but these)   */
-  char ** defined  = argsblanks ((char *) functions);
+  char ** names       = included ? included : excluded;      /* User-included items have priority over user-excluded */
+  rhtsuite_t ** tests = included ? NULL : rhtsuite_all ();   /* The tests to run (nothing or everything but these)   */
+  char ** defined     = argsblanks ((char *) functions);
   rhtsuite_t ** t;
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
       /* Add/Delete the given test to/from the table of given tests to run */
-      rhtsuite_t * t = rhtsuite_valid (* names);
-      if (t)
+      rhtsuite_t * test = rhtsuite_valid (* names);
+      if (test)
 	{
-	  if (argsexists (defined, t -> name))
-	    tests = included ? arrmore (tests, t, rhtsuite_t) : arrless (tests, t, rhtsuite_t, NULL);
+	  if (argsexists (defined, test -> name))
+	    tests = included ? arrmore (tests, test, rhtsuite_t) : arrless (tests, test, rhtsuite_t, NULL);
 	  else
-	    printf ("%s [short for %s] is not defined in README.c\n", * names, t -> name);
+	    printf ("%s [short for %s] is not defined in README.c\n", * names, test -> name);
 	}
       else
 	{
@@ -130,7 +130,6 @@ static rhtsuite_t ** build_tests (char * progname, char * included [], char * ex
 	t = tests = arrless (tests, * t, rhtsuite_t, NULL);
       t ++;
     }
-
   argsclear (defined);
 
   return tests;
@@ -155,6 +154,9 @@ static void doit (char * progname, unsigned choice,
 	rhtsuite_run (tests, items, (void **) objs);
       rmobjs (objs);
       break;
+
+    default:
+      break;
     }
 }
 
@@ -178,17 +180,17 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_QUIET,   "run tests quietly");
   printf ("\n");
 
-  printf ("  Operations on the tests:\n");
-  usage_item (options, n, OPT_LIST,    "list tests");
-  usage_item (options, n, OPT_RUN,     "run tests");
+  printf ("  Operations on the Test Suite:\n");
+  usage_item (options, n, OPT_LIST,    "list");
+  usage_item (options, n, OPT_RUN,     "run");
   printf ("\n");
 
   printf ("  Finger:\n");
-  usage_item (options, n, OPT_INCLUDE, "include item (repeatable)");
-  usage_item (options, n, OPT_EXCLUDE, "exclude item (repeatable)");
+  usage_item (options, n, OPT_INCLUDE, "include Test Suite (repeatable)");
+  usage_item (options, n, OPT_EXCLUDE, "exclude Test Suite (repeatable)");
   printf ("\n");
 
-  printf ("  Item counters: (default %.0f)\n", INITIALS);
+  printf ("  Items counter: (default %.0f)\n", INITIALS);
   usage_item (options, n, OPT_ITEMS,   "set the initial number of items per test");
   usage_item (options, n, OPT_ITEMS_0, "one item                   (1e0)");
   usage_item (options, n, OPT_ITEMS_1, "ten items                  (1e1)");
@@ -202,33 +204,33 @@ static void _usage_ (char * progname, char * version, struct option * options)
   usage_item (options, n, OPT_ITEMS_9, "one billion items          (1e9)");
   printf ("\n");
 
-  printf ("  Loop counter: (default %u)\n", LOOPS);
-  usage_item (options, n, OPT_LOOPS,    "set the number of loops per test");
+  printf ("  Loops counter: (default %u)\n", LOOPS);
+  usage_item (options, n, OPT_LOOPS,   "set the number of loops per test");
 }
 
 
-/* Display/Select/Run Tests */
+/* Display/Select/Run Test Suite */
 int main (int argc, char * argv [])
 {
-  char * progname  = basename (argv [0]);    /* notice program name */
-  char * sopts     = optlegitimate (lopts);  /* short option list   */
+  char * progname     = basename (argv [0]);    /* notice program name */
+  char * sopts        = optlegitimate (lopts);  /* short option list   */
 
   /* Booleans */
-  bool verbose     = false;
-  bool quiet       = false;
+  bool verbose        = false;
+  bool quiet          = false;
 
   /* Tests to run */
-  char ** included = NULL;
-  char ** excluded = NULL;
+  char ** included    = NULL;
+  char ** excluded    = NULL;
   rhtsuite_t ** tests = NULL;
 
   /* Items counter */
-  unsigned items   = INITIALS;               /* initial # of items per test */
+  unsigned items      = INITIALS;               /* initial # of items per test */
 
   /* Loop counter */
-  unsigned loops   = 1;                      /* # of loops per test         */
+  unsigned loops      = 1;                      /* # of loops per test         */
 
-  unsigned choice  = OPT_DEFAULT;
+  unsigned choice     = OPT_DEFAULT;
   int option;
 
   /* Set unbuffered stdout */
@@ -257,7 +259,7 @@ int main (int argc, char * argv [])
         case OPT_INCLUDE: included = argsuniq (included, optarg); break;
         case OPT_EXCLUDE: excluded = argsuniq (excluded, optarg); break;
 
-	  /* Item counter */
+	  /* Items counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;
@@ -270,7 +272,7 @@ int main (int argc, char * argv [])
 	case OPT_ITEMS_8: items = 1e8;           break;
 	case OPT_ITEMS_9: items = 1e9;           break;
 
-	  /* Loop counter */
+	  /* Loops counter */
 	case OPT_LOOPS:   loops = atoi (optarg); break;
 	}
     }
@@ -288,23 +290,23 @@ int main (int argc, char * argv [])
   if (! items)
     items = INITIALS;
 
+  /* Avoid to run with 0 loops */
   if (! loops)
-    loops = LOOPS;
+    loops = 1;
 
-  /* Default to run is somenthing has been specified */
+  /* Default to run is something to include/exclude has been specified */
   if (included || excluded)
     choice = OPT_RUN;
 
-  /* Build a subset and go! */
+  /* Build the set of tests to run and go! */
   tests = build_tests (progname, included, excluded);
   if (tests)
     doit (progname, choice, tests, loops, items, verbose, quiet);
   else
     printf ("%s: no test to run\n", progname);
 
- bye:
-
   /* Memory cleanup */
+ bye:
   arrclear (tests, NULL);
   argsclear (excluded);
   argsclear (included);
