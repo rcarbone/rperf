@@ -1,6 +1,9 @@
 /* System headers */
-#include <stdbool.h>
 #include <ctype.h>
+
+
+/* Project headers */
+#include "rctype.h"
 
 
 static bool isnumber (char d)

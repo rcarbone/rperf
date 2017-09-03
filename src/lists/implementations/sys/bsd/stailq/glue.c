@@ -18,12 +18,26 @@ typedef STAILQ_HEAD (xxx, relem) rl_t;
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+static relem_t * rl_last (rl_t * list)
+{
+  relem_t * elem = STAILQ_FIRST (list);
+  relem_t * last = NULL;
+  while (elem)
+    {
+      last = elem;
+      elem = STAILQ_NEXT (elem, stailq);
+    }
+  return last;
+}
+
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
 
 rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
   STAILQ_INIT (list);
-
   return list;
 }
 
@@ -76,24 +90,23 @@ void * rl_head (rl_t * list)
 
 void * rl_tail (rl_t * list)
 {
+  return rl_last (list);
+}
+
+
+void * rl_get (rl_t * list, void * elem)
+{
+  relem_t * item;
+  for (item = STAILQ_FIRST (list); item; item = STAILQ_NEXT (item, stailq))
+    if (item == elem)
+      return item;
   return NULL;
 }
 
 
-void * rl_get (rl_t * list, void * arg)
+void rl_del (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
-    if (elem == arg)
-      return elem;
-  return NULL;
-}
-
-
-void rl_del (rl_t * list, void * arg)
-{
-  relem_t * elem;
-  for (elem = STAILQ_FIRST (list); elem; elem = STAILQ_NEXT (elem, stailq))
-    if (elem == arg)
-      STAILQ_REMOVE (list, elem, relem, stailq);
+  relem_t * item = rl_get (list, elem);
+  if (item)
+    STAILQ_REMOVE (list, item, relem, stailq);
 }

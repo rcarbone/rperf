@@ -5,7 +5,7 @@
 #include "safe.h"
 
 
-/* Berkeley 4.4 lists */
+/* Berkeley BSD 4.4 lists */
 #include <sys/queue.h>
 /* undef here to avoid conflicts because LIST_HEAD is also defined in CCAN */
 #undef LIST_HEAD
@@ -18,6 +18,9 @@
 
 /* clibs - TJ Holowaychuk */
 #include "tj-list.h"
+
+/* ulib - Zilong Tan */
+#include "ulib-list.h"
 
 
 /* List Element definition */
@@ -46,8 +49,11 @@ typedef struct relem
   /* Required by tommyds implementation to make the structure list-able */
   tommy_node tommy;
 
-  /* Required by tommyds implementation to make the structure list-able */
+  /* Required by clibs implementation to make the structure list-able */
   tj_list_node_t clibs;
+
+  /* Required by ulib implementation to make the structure list-able */
+  struct ulist_head ulib;
 
 } relem_t;
 

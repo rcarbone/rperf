@@ -1,0 +1,32 @@
+NAME
+       Implementations of tail queues
+
+SYNOPSIS
+       #include <sys/queue.h>
+
+       TAILQ_ENTRY (TYPE);
+
+       TAILQ_HEAD (HEADNAME, TYPE);
+       TAILQ_HEAD_INITIALIZER (TAILQ_HEAD head);
+       TAILQ_INIT (TAILQ_HEAD * head);
+
+       TAILQ_INSERT_HEAD (TAILQ_HEAD * head, TYPE * elm, TAILQ_ENTRY NAME);
+       TAILQ_INSERT_TAIL (TAILQ_HEAD * head, TYPE * elm, TAILQ_ENTRY NAME);
+       TAILQ_INSERT_BEFORE (TYPE * listelm, TYPE * elm, TAILQ_ENTRY NAME);
+       TAILQ_INSERT_AFTER (TAILQ_HEAD * head, TYPE * listelm, TYPE * elm, TAILQ_ENTRY NAME);
+
+       TAILQ_REMOVE (TAILQ_HEAD * head, TYPE * elm, TAILQ_ENTRY NAME);
+
+       TAILQ_FIRST (TAILQ_HEAD * head);
+       TAILQ_LAST (TAILQ_HEAD * head, HEADNAME);
+       TAILQ_NEXT (TYPE * elm, TAILQ_ENTRY NAME);
+       TAILQ_PREV (TYPE * elm, HEADNAME, TAILQ_ENTRY NAME);
+       TAILQ_FOREACH (TYPE * var, TAILQ_HEAD * head, TAILQ_ENTRY NAME);
+       TAILQ_FOREACH_REVERSE (TYPE * var, TAILQ_HEAD * head, HEADNAME, TAILQ_ENTRY NAME);
+
+       TAILQ_EMPTY (TAILQ_HEAD * head);
+       TAILQ_CONCAT (TAILQ_HEAD * head1, TAILQ_HEAD * head2, TAILQ_ENTRY NAME);
+       TAILQ_SWAP (TAILQ_HEAD * head1, TAILQ_HEAD * head2, TYPE, TAILQ_ENTRY NAME);
+
+       In the macro definitions, TYPE is the name of a user-defined structure, that must contain a field of type TAILQ_ENTRY
+       named NAME. The argument HEADNAME is the name of a user-defined structure that must be declared using the macros TAILQ_HEAD.

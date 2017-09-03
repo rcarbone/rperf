@@ -45,19 +45,19 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, void * arg)
+void rl_prepend (rl_t * list, void * elem)
 {
-  relem_t * elem = arg;
-  elem -> clibs . val = arg;
-  list_lpush (list, & elem -> clibs);
+  relem_t * item = elem;
+  item -> clibs . val = elem;
+  list_lpush (list, & item -> clibs);
 }
 
 
-void rl_append (rl_t * list, void * arg)
+void rl_append (rl_t * list, void * elem)
 {
-  relem_t * elem = arg;
-  elem -> clibs . val = arg;
-  list_rpush (list, & elem -> clibs);
+  relem_t * item = elem;
+  item -> clibs . val = elem;
+  list_rpush (list, & item -> clibs);
 }
 
 
@@ -79,12 +79,12 @@ void * rl_get (rl_t * list, void * elem)
 }
 
 
-void rl_del (rl_t * list, void * arg)
+void rl_del (rl_t * list, void * elem)
 {
-  if (rl_get (list, arg))
+  if (rl_get (list, elem))
     {
-      relem_t * elem = arg;
-      elem -> clibs . val = arg;
-      list_remove (list, & elem -> clibs);
+      relem_t * item = elem;
+      item -> clibs . val = elem;
+      list_remove (list, & item -> clibs);
     }
 }

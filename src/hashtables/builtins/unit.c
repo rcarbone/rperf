@@ -121,21 +121,21 @@ rhtunit_t * rhtunit_next_rnd (void)
 }
 
 
-/* Looukup for an Unit Test by index */
+/* Lookup for an Unit Test by index */
 rhtunit_t * rhtunit_find_at (unsigned i)
 {
   return i < RHTUNIT_NO ? & builtins [i] : NULL;
 }
 
 
-/* Looukup for an Unit Test by its unique id */
+/* Lookup for an Unit Test by its unique id */
 rhtunit_t * rhtunit_find_by_id (unsigned id)
 {
   return id > 0 && id <= RHTUNIT_NO ? & builtins [id - 1] : NULL;
 }
 
 
-/* Looukup for an Unit Test by its unique name */
+/* Lookup for an Unit Test by its unique name */
 rhtunit_t * rhtunit_find_by_name (char * name)
 {
   unsigned i;
@@ -150,8 +150,8 @@ rhtunit_t * rhtunit_find_by_name (char * name)
 /* Return all the Unit Test names in an array in the same order they were defined */
 char ** rhtunit_names (void)
 {
-  unsigned i;
   char ** all = NULL;
+  unsigned i;
   for (i = 0; i < RHTUNIT_NO; i ++)
     all = argsmore (all, builtins [i] . name);
   return all;
@@ -161,8 +161,8 @@ char ** rhtunit_names (void)
 /* Return all the Unit Tests handles in an array in the same order they were defined */
 rhtunit_t ** rhtunit_all (void)
 {
-  unsigned i;
   rhtunit_t ** all = NULL;
+  unsigned i;
   for (i = 0; i < RHTUNIT_NO; i ++)
     all = arrmore (all, & builtins [i], rhtunit_t);
   return all;

@@ -69,20 +69,18 @@ unsigned rl_count (rl_t * list)
 }
 
 
-void rl_prepend (rl_t * list, void * arg)
+void rl_prepend (rl_t * list, void * elem)
 {
-  relem_t * elem = arg;
-  LIST_INSERT_HEAD (list, elem, head);
+  LIST_INSERT_HEAD (list, (relem_t *) elem, head);
 }
 
 
-void rl_append (rl_t * list, void * arg)
+void rl_append (rl_t * list, void * elem)
 {
-  relem_t * elem = arg;
   if (LIST_EMPTY (list))
-    LIST_INSERT_HEAD (list, elem, head);
+    LIST_INSERT_HEAD (list, (relem_t *) elem, head);
   else 
-    LIST_INSERT_AFTER (rl_last (list), elem, head);
+    LIST_INSERT_AFTER (rl_last (list), (relem_t *) elem, head);
 }
 
 
@@ -98,20 +96,19 @@ void * rl_tail (rl_t * list)
 }
 
 
-void * rl_get (rl_t * list, void * arg)
+void * rl_get (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
-    if (elem == arg)
-      return elem;
+  relem_t * item;
+  for (item = LIST_FIRST (list); item; item = LIST_NEXT (item, head))
+    if (item == elem)
+      return item;
   return NULL;
 }
 
 
-void rl_del (rl_t * list, void * arg)
+void rl_del (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = LIST_FIRST (list); elem; elem = LIST_NEXT (elem, head))
-    if (elem == arg)
-      LIST_REMOVE (elem, head);
+  relem_t * item = rl_get (list, elem);
+  if (item)
+    LIST_REMOVE (item, head);
 }

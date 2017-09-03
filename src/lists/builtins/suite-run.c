@@ -9,6 +9,7 @@
 #include "rltest.h"
 #include "rlsuite.h"
 
+/* Include the names of the functions implemented */
 #include "README.c"
 
 /* Program name/version */

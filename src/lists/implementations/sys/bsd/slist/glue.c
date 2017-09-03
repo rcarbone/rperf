@@ -10,7 +10,7 @@
 
 /* librl - an abstract C library over real list implementations */
 struct relem;
-typedef SLIST_HEAD (, relem) rl_t;
+typedef SLIST_HEAD (xxx, relem) rl_t;
 #include "rl-api.h"
 
 #include "elems.h"
@@ -96,20 +96,19 @@ void * rl_tail (rl_t * list)
 }
 
 
-void * rl_get (rl_t * list, void * arg)
+void * rl_get (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
-    if (elem == arg)
-      return elem;
+  relem_t * item;
+  for (item = SLIST_FIRST (list); item; item = SLIST_NEXT (item, shead))
+    if (item == elem)
+      return item;
   return NULL;
 }
 
 
-void rl_del (rl_t * list, void * arg)
+void rl_del (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = SLIST_FIRST (list); elem; elem = SLIST_NEXT (elem, shead))
-    if (elem == arg)
-      SLIST_REMOVE (list, elem, relem, shead);
+  relem_t * item = rl_get (list, elem);
+  if (item)
+    SLIST_REMOVE (list, item, relem, shead);
 }

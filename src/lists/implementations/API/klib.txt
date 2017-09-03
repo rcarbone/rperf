@@ -1,6 +1,10 @@
-/* Generic single-linked list */
+NAME
+   Implementations of single-linked list
+
 SYNOPSIS
   #include "klist.h"
+
+  kl_t(name)
 
   kl_init(type)
   kl_destroy(type, ht)
@@ -23,6 +27,8 @@ SYNOPSIS
   kl_foreach(ht, x, y, func)
   kl_foreach_value(ht, x, func)
 
+
+/* Other convenient macros... */
 
 /* Define list <name> containing elements of <type> and free function <free_f> */
 KLIST_INIT(name, type, free_f)

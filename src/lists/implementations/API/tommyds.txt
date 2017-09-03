@@ -1,66 +1,40 @@
-/*
- * Double linked list.
- *
- * Copyright (c) 2010, Andrea Mazzoleni. All rights reserved.
- */
+NAME
+       Double linked list
 
+AUTHOR
+       Copyright (c) 2010, Andrea Mazzoleni. All rights reserved
 
-/*
- * Typedef
- *  tommy_list
- *  tommy_node
- */
+TYPEDEFS
+       tommy_list
+       tommy_node
 
+SYNOPSIS
+       #include "tommylist.h"
+ 
+NAME
+       [ 1] void tommy_list_init (tommy_list * list);
+       [ 2] void tommy_list_insert_head (tommy_list * list, tommy_node * node, void * data);
+       [ 3] void tommy_list_insert_tail (tommy_list * list, tommy_node * node, void * data);
+       [ 4] void * tommy_list_remove_existing (tommy_list * list, tommy_node * node);
+       [ 5] tommy_node * tommy_list_head (tommy_list * list);
+       [ 6] tommy_node * tommy_list_tail (tommy_list * list);
+       [ 7] void tommy_list_foreach (tommy_list * list, tommy_foreach_func * func);
+       [ 8] void tommy_list_foreach_arg (tommy_list * list, tommy_foreach_arg_func * func, void * arg);
+       [ 9] tommy_count_t tommy_list_count (tommy_list * list);
+       [10] tommy_bool_t tommy_list_empty (tommy_list * list);
+       [11] void tommy_list_concat (tommy_list * first, tommy_list * second);
+       [12] void tommy_list_sort (tommy_list * list, tommy_compare_func * cmp);
 
-/* Constructor/Destructor (1) */
-
-/* Initializes the list. The list is completely inplace, so it doesn't need to be deinitialized */
-tommy_inline void tommy_list_init (tommy_list * list);
-
-
-/* Insert (2) */
-
-/* Inserts an element at the head of a list */
-tommy_inline void tommy_list_insert_head (tommy_list * list, tommy_node * node, void * data);
-
-/* Inserts an element at the tail of a list */
-tommy_inline void tommy_list_insert_tail (tommy_list * list, tommy_node * node, void * data);
-
-
-/* Remove (1) */
-
-/* Removes an element from the list. You must already have the address of the element to remove */
-tommy_inline void * tommy_list_remove_existing (tommy_list * list, tommy_node * node);
-
-
-/* Access (2) */
-
-
-/* Iterators (4) */
-
-/* Gets the head of the list or NULL for empty list */
-tommy_inline tommy_node * tommy_list_head (tommy_list * list);
-
-/* Gets the tail of the list or NULL for empty list */
-tommy_inline tommy_node * tommy_list_tail (tommy_list * list);
-
-/* Calls the specified function for each element in the list. You cannot add or remove elements */
-tommy_inline void tommy_list_foreach (tommy_list * list, tommy_foreach_func * func);
-
-/* Calls the specified function with an argument for each element in the list */
-tommy_inline void tommy_list_foreach_arg(tommy_list* list, tommy_foreach_arg_func* func, void* arg);
-
-
-/* Utils (4) */
-
-/* Gets the number of elements */
-tommy_count_t tommy_list_count (tommy_list * list);
-
-/* Checks if empty */
-tommy_bool_t tommy_list_empty (tommy_list * list);
-
-/* Concats two lists. The second list is concatenated at the first list */
-void tommy_list_concat (tommy_list * first, tommy_list * second);
-
-/* Sorts a list */
-void tommy_list_sort (tommy_list * list, tommy_compare_func * cmp);
+DESCRIPTION
+       [ 1] Initializes the list. The list is completely inplace, so it doesn't need to be deinitialized
+       [ 2] Inserts an element at the head of a list
+       [ 3] Inserts an element at the tail of a list
+       [ 4] Removes an element from the list. You must already have the address of the element to remove
+       [ 5] Gets the head of the list or NULL for empty list
+       [ 6] Gets the tail of the list or NULL for empty list
+       [ 7] Calls the specified function for each element in the list. You cannot add or remove elements
+       [ 8] Calls the specified function with an argument for each element in the list
+       [ 9] Gets the number of elements
+       [10] Checks if empty
+       [11] Concats two lists. The second list is concatenated at the first list
+       [12] Sorts a list

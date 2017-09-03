@@ -1,9 +1,8 @@
 NAME
-       SLIST_ENTRY, SLIST_HEAD, SLIST_HEAD_INITIALIZER, SLIST_INIT,
-       SLIST_INSERT_HEAD, SLIST_INSERT_AFTER, SLIST_REMOVE_HEAD, SLIST_REMOVE,
-       SLIST_FIRST, SLIST_NEXT, SLIST_FOREACH, SLIST_EMPTY
+       Implementations of singly-linked lists
 
-       implementations of singly linked lists
+AUTHOR
+       Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved
 
 SYNOPSIS
        #include <sys/queue.h>
@@ -14,8 +13,9 @@ SYNOPSIS
        SLIST_HEAD_INITIALIZER (SLIST_HEAD head);
        SLIST_INIT (SLIST_HEAD * head);
 
-       SLIST_INSERT_HEAD (SLIST_HEAD * head, TYPE * elm, LIST_ENTRY NAME);
-       SLIST_INSERT_AFTER (SLIST_ENTRY * listelm, TYPE * elm, LIST_ENTRY NAME);
+       SLIST_INSERT_HEAD (SLIST_HEAD * head, TYPE * elm, SLIST_ENTRY NAME);
+       SLIST_INSERT_AFTER (SLIST_ENTRY * listelm, TYPE * elm, SLIST_ENTRY NAME);
+
        SLIST_REMOVE_HEAD (SLIST_HEAD * head, SLIST_ENTRY NAME);
        SLIST_REMOVE (TYPE * elm, SLIST_ENTRY NAME);
 

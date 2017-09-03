@@ -78,9 +78,10 @@ done
 
 # Create symlinks
 (cd src/lists/builtins;
- ln -sf ../implementations/ccan/ccan . &&
+ ln -sf ../implementations/ccan/ccan .                &&
  ln -sf ../implementations/tommyds/pub/tommytypes.h . &&
- ln -sf ../implementations/clibs/pub/list.h tj-list.h
+ ln -sf ../implementations/clibs/pub/list.h tj-list.h &&
+ ln -sf ../implementations/ulib/pub/ulib-list.h .
 )
 
 (cd src/hashtables/builtins;

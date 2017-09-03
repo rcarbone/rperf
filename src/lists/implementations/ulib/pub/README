@@ -1,0 +1,20 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, Sep 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         ulib
+Module       list
+Author       Zilong Tan (eric.zltan@gmail.com)
+Description  single-linked list based on the one from Linux kernel
+Download     http://github.com/ZilongTan/Coding
+Date         2011
+Language     C macro
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+
+The following sources files were copied from latest git version:
+  - list.h
+
+I changed all the list_xxx() calls in ulist_xxx() to have an unique namespace
+and avoid conflicts with other implementations.

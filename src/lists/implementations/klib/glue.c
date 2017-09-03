@@ -93,5 +93,8 @@ void rl_del (rl_t * list, void * elem)
   kliter_t (kl) * it;
   for (it = kl_begin (list); it != kl_end (list); it = kl_next (it))
     if (kl_val (it) == elem)
-      kl_shift (kl, list, NULL);
+      {
+	kl_shift (kl, list, NULL);
+	break;
+      }
 }

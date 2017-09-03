@@ -1,15 +1,19 @@
 NAME
-       LIST_ENTRY, LIST_HEAD, LIST_HEAD_INITIALIZER, LIST_INIT,
-       LIST_INSERT_HEAD, LIST_INSERT_AFTER, LIST_REMOVE_HEAD, LIST_REMOVE,
-       LIST_FIRST, LIST_NEXT, LIST_FOREACH, LIST_EMPTY
+       Implementations of doubly-linked lists
 
-       implementations of doubly linked lists
+AUTHOR
+       Copyright (c) 1991, 1993 The Regents of the University of California. All rights reserved
 
 SYNOPSIS
        #include <sys/queue.h>
 
+TYPEDEFS
        LIST_ENTRY (TYPE);
 
+       In the macro definitions, TYPE is the name of a user-defined structure, that must contain a field of type LIST_ENTRY
+       named NAME. The argument HEADNAME is the name of a user-defined structure that must be declared using the macros LIST_HEAD.
+
+NAME
        LIST_HEAD (HEADNAME, TYPE);
        LIST_HEAD_INITIALIZER (LIST_HEAD head);
        LIST_INIT (LIST_HEAD * head);
@@ -17,6 +21,7 @@ SYNOPSIS
        LIST_INSERT_HEAD (LIST_HEAD * head, TYPE * elm, LIST_ENTRY NAME);
        LIST_INSERT_AFTER (LIST_ENTRY * listelm, TYPE * elm, LIST_ENTRY NAME);
        LIST_INSERT_BEFORE (LIST_ENTRY * listelm, TYPE * elm, LIST_ENTRY NAME);
+
        LIST_REMOVE_HEAD (LIST_HEAD * head, LIST_ENTRY NAME);
        LIST_REMOVE (TYPE * elm, LIST_ENTRY NAME);
 
@@ -26,6 +31,3 @@ SYNOPSIS
 
        LIST_EMPTY (LIST_HEAD * head);
        LIST_SWAP (LIST_HEAD * head1, LIST_HEAD * head2, TYPE, LIST_ENTRY NAME);
-
-       In the macro definitions, TYPE is the name of a user-defined structure, that must contain a field of type LIST_ENTRY
-       named NAME. The argument HEADNAME is the name of a user-defined structure that must be declared using the macros LIST_HEAD.

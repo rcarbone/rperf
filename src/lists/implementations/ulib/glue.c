@@ -3,50 +3,46 @@
 
 
 /* The implementation */
-#include "list/list.h"
-#undef LIST_HEAD
+#include "ulib-list.h"
 
 
 /* Project headers */
-
-/* librl - an abstract C library over real singly/double lists implementations */
-typedef struct list_head rl_t;
-#include "rl-api.h"
-
 #include "elems.h"
+#include "safe.h"
+
+/* librl - an abstract C library over real list implementations */
+typedef struct ulist_head rl_t;
+#include "rl-api.h"
 
 
 rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
-  list_head_init (list);
+  INIT_LIST_HEAD (list);
   return list;
 }
 
 
 void rl_free (rl_t * list)
 {
-  relem_t * elem;
-  relem_t * it;
-  list_for_each_safe_off (list, elem, it, 0)
-    ;
-  free (list);
+  safefree (list);
 }
 
 
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data)
 {
-  relem_t * item;
-  list_for_each (list, item, ccan)
-    fn (data);
+  relem_t * elem;
+  ulist_for_each_entry (elem, list, ulib)
+    if (fn)
+      fn (data);
 }
 
 
 unsigned rl_count (rl_t * list)
 {
   unsigned count = 0;
-  relem_t * item;
-  list_for_each (list, item, ccan)
+  relem_t * elem;
+  ulist_for_each_entry (elem, list, ulib)
     count ++;
   return count;
 }
@@ -54,32 +50,36 @@ unsigned rl_count (rl_t * list)
 
 void rl_prepend (rl_t * list, void * elem)
 {
-  list_add (list, & ((relem_t *) elem) -> ccan);
+  ulist_add (& ((relem_t *) elem) -> ulib, list);
 }
 
 
 void rl_append (rl_t * list, void * elem)
 {
-  list_add_tail (list, & ((relem_t *) elem) -> ccan);
+  ulist_add_tail (& ((relem_t *) elem) -> ulib, list);
 }
 
 
 void * rl_head (rl_t * list)
 {
-  return list_top (list, relem_t, ccan);
+  return ulist_first_entry (list, relem_t, ulib);
 }
 
 
 void * rl_tail (rl_t * list)
 {
-  return list_tail (list, relem_t, ccan);
+  relem_t * elem;
+  ulist_for_each_entry (elem, list, ulib)
+    if (ulist_is_last (& elem -> ulib, list))
+      return elem;
+  return NULL;
 }
 
 
 void * rl_get (rl_t * list, void * elem)
 {
   relem_t * item;
-  list_for_each (list, item, ccan)
+  ulist_for_each_entry (item, list, ulib)
     if (item == elem)
       return item;
   return NULL;
@@ -89,10 +89,10 @@ void * rl_get (rl_t * list, void * elem)
 void rl_del (rl_t * list, void * elem)
 {
   relem_t * item;
-  list_for_each (list, item, ccan)
+  ulist_for_each_entry (item, list, ulib)
     if (item == elem)
       {
-	list_del (& item -> ccan);
+	ulist_del (& item -> ulib);
 	break;
       }
 }

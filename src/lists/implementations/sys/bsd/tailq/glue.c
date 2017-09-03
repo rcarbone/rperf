@@ -23,7 +23,6 @@ rl_t * rl_alloc (void)
 {
   rl_t * list = calloc (1, sizeof (* list));
   TAILQ_INIT (list);
-
   return list;
 }
 
@@ -80,20 +79,19 @@ void * rl_tail (rl_t * list)
 }
 
 
-void * rl_get (rl_t * list, void * arg)
+void * rl_get (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = TAILQ_FIRST (list); elem; elem = TAILQ_NEXT (elem, tailq))
-    if (elem == arg)
-      return elem;
+  relem_t * item;
+  for (item = TAILQ_FIRST (list); item; item = TAILQ_NEXT (item, tailq))
+    if (item == elem)
+      return item;
   return NULL;
 }
 
 
-void rl_del (rl_t * list, void * arg)
+void rl_del (rl_t * list, void * elem)
 {
-  relem_t * elem;
-  for (elem = TAILQ_FIRST (list); elem; elem = TAILQ_NEXT (elem, tailq))
-    if (elem == arg)
-      TAILQ_REMOVE (list, elem, tailq);
+  relem_t * item = rl_get (list, elem);
+  if (item)
+    TAILQ_REMOVE (list, item, tailq);
 }

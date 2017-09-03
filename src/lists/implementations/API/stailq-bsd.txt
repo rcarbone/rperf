@@ -1,0 +1,28 @@
+NAME
+       Implementations of simple queues
+
+SYNOPSIS
+       #include <sys/queue.h>
+
+       STAILQ_ENTRY (TYPE);
+
+       STAILQ_HEAD (HEADNAME, TYPE);
+       STAILQ_HEAD_INITIALIZER (STAILQ_HEAD head);
+       STAILQ_INIT (STAILQ_HEAD * head);
+
+       STAILQ_INSERT_HEAD (STAILQ_HEAD * head, TYPE * elm, STAILQ_ENTRY NAME);
+       STAILQ_INSERT_TAIL (STAILQ_HEAD * head, TYPE * elm, STAILQ_ENTRY NAME);
+       STAILQ_INSERT_AFTER (STAILQ_HEAD * head, TYPE * listelm, TYPE * elm, STAILQ_ENTRY NAME);
+
+       STAILQ_REMOVE_HEAD (STAILQ_HEAD * head, STAILQ_ENTRY NAME);
+       STAILQ_REMOVE (STAILQ_HEAD * head, TYPE * elm, TYPE, STAILQ_ENTRY NAME);
+
+       STAILQ_FIRST (STAILQ_HEAD * head);
+       STAILQ_NEXT (TYPE * elm, STAILQ_ENTRY NAME);
+       STAILQ_FOREACH (TYPE * var, STAILQ_HEAD * head, STAILQ_ENTRY NAME);
+
+       STAILQ_EMPTY (STAILQ_HEAD * head);
+       STAILQ_CONCAT (STAILQ_HEAD * head1, STAILQ_HEAD * head2);
+
+       In the macro definitions, TYPE is the name of a user-defined structure, that must contain a field of type STAILQ_ENTRY
+       named NAME. The argument HEADNAME is the name of a user-defined structure that must be declared using the macros STAILQ_HEAD.
