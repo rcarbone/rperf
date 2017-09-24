@@ -39,13 +39,26 @@ extern "C" {
 
 /* API */
 
-/* Constructor/Destructor */
+/*
+ * Constructor/Destructor
+ */
+
+/* Allocates and initializes the list */
 rl_t * rl_alloc (void);
+
+  /* Deallocates the memory used by the list */
 void rl_free (rl_t * list);
 
-/* Iterators */
+
+/*
+ * Iterators
+ */
 void rl_foreach (rl_t * list, rl_each_f * fn, void * data);
+
+
+/* Returns the size of the list */
 unsigned rl_count (rl_t * list);
+
 
 /* Write */
 void rl_prepend (rl_t * list, void * elem);
@@ -63,3 +76,12 @@ void rl_del (rl_t * list, void * elem);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+
+/*
+ * Checks if the list is empty
+ * rl_isempty ();
+ *
+ * Prints the list elements inline or separating them with a new line
+ * rl_print ();
+ */

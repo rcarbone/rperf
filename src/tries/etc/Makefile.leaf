@@ -1,11 +1,11 @@
 # Dependency files for generation of Makefiles
-TEMPLATES = ${ETCDIR}/FileSystem ${RLETCDIR}/Makefile.leaf
+TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Makefile.leaf
 
 # Static library
 STLIB     = lib${LIB}.a
 
 # All the targets
-TARGETS   = ${STLIB} ${PROGRAM} ${PROGRAMS}
+TARGETS   = ${STLIB} ${PROGRAM}
 
 # Source, object and depend files
 LIBOBJS   = ${LIBSRCS:%.c=%.o}
@@ -48,19 +48,19 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
 	@echo -n "ETCDIR     = $$"                             >> Makefile
 	@echo "{ROOTDIR}/etc"                                  >> Makefile
-	@echo -n "RLETCDIR   = $$"                             >> Makefile
-	@echo "{ROOTDIR}/src/lists/etc"                        >> Makefile
+	@echo -n "RTRIEDIR   = $$"                             >> Makefile
+	@echo "{ROOTDIR}/src/tries/etc"                        >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 	@cat ${ETCDIR}/FileSystem                              >> Makefile
 	@echo                                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${RLETCDIR}/Makefile.leaf                         >> Makefile
+	@cat ${RTRIEDIR}/etc/Makefile.leaf                     >> Makefile
 	@echo                                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${RLETCDIR}/LIBS                                  >> Makefile
+	@cat ${RTRIEDIR}/etc/LIBS                              >> Makefile
 
 # Static Library
 ${STLIB}: ${LIBOBJS}
@@ -73,15 +73,7 @@ ${SHLIB}:
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ${RLLIB} ${RLIBCLIB}
-	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
-
-ut-run: ut-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
-	@echo "=*= making program $@ =*="
-	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
-
-suite-run: suite-run.o bsd-tailq.o ${STLIB} ${RLIBCLIB}
+${PROGRAM}: ${MAINOBJS} ${STLIB} ../utils/librtrie-utils.a ../../rut/librut.a ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

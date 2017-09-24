@@ -30,19 +30,6 @@ static rl_t * grow_head (unsigned argc, void * argv [])
 }
 
 
-#if defined(ROCCO)
-/* Allocate and populate a list inserting argc elements at the list tail */
-static rl_t * grow_tail (unsigned argc, void * argv [])
-{
-  rl_t * list = rl_alloc ();
-  unsigned i;
-  for (i = 0; i < argc; i ++)
-    rl_prepend (list, argv [i]);
-  return list;
-}
-#endif /* ROCCO */
-
-
 /* Allocate and populate a list inserting argc elements at the list head */
 rtime_t rlsuite_grow_head (unsigned argc, void * argv [])
 {

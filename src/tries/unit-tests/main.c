@@ -4,17 +4,23 @@
 #include <getopt.h>
 
 /* Project headers */
-#include "rlsuite.h"
-#include "rltest.h"
 #include "roptions.h"
 #include "sargv.h"
+#include "support.h"
+
+#include "rut.h"
+#define INITIALS 1e3
+#define LOOPS    1
 
 
-/* Include the names of the functions implemented */
-#include "README.c"
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+unsigned rtrieargc (void);
+rut_t * rtrieargv (void);
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
 
 /* Program name/version */
-#define _NAME_      "Run builtin Test Scenarios"
+#define _NAME_      "Select/Display/Run Unit Tests"
 #define _VERSION_   "0.1.0"
 
 
@@ -92,21 +98,40 @@ static struct option lopts [] =
 };
 
 
-/* Build the testsuite to run */
-static rlsuite_t ** build_tests (char * progname, char * included [], char * excluded [])
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+
+static rut_t ** rut_handles_all (void)
 {
-  char ** names      = included ? included : excluded;     /* User-included items have priority over user-excluded */
-  rlsuite_t ** tests = included ? NULL : rlsuite_all ();   /* The tests to run (nothing or everything but these)   */
-  char ** defined     = argsblanks ((char *) functions);
-  rlsuite_t ** t;
+  return rut_handles (rtrieargc (), rtrieargv ());
+}
+
+
+static rut_t * rut_legal (char * name)
+{
+  return rut_valid (rtrieargc (), rtrieargv (), name);
+}
+
+
+static void rut_run_all (rut_t * rut, unsigned items, unsigned seq)
+{
+  rut_run (rut, items, digits (rtrieargc ()), seq, 15);
+}
+
+
+/* Build the Unit Tests to run */
+static rut_t ** build_tests (char * progname, char * included [], char * excluded [])
+{
+  char ** names  = included ? included : excluded;        /* User-included items have priority over user-excluded */
+  rut_t ** tests = included ? NULL : rut_handles_all ();  /* The tests to run (nothing or everything but these)   */
 
   /* Loop over all defined tests to build the subset of user selected */
   while (names && * names)
     {
-      /* Add/Delete the given item to/from the table of identifiers to run */
-      rlsuite_t * test = rlsuite_valid (* names);
-      if (test)
-	tests = included ? arrmore (tests, test, rlsuite_t) : arrless (tests, test, rlsuite_t, NULL);
+      /* Add/Delete the given test to/from the table of tests to run */
+      rut_t * t = rut_legal (* names);
+      if (t)
+	tests = included ? arrmore (tests, t, rut_t) : arrless (tests, t, rut_t, NULL);
       else
 	{
 	  printf ("%s: [%s] is not a valid id\n", progname, * names);
@@ -115,42 +140,36 @@ static rlsuite_t ** build_tests (char * progname, char * included [], char * exc
 	}
       names ++;
     }
-  /* Do not run tests not defined in README.c */
-  t  = tests;
-  while (t && * t)
-    {
-      if (! argsexists (defined, (* t) -> name))
-	t = tests = arrless (tests, * t, rlsuite_t, NULL);
-      t ++;
-    }
-  argsclear (defined);
-
   return tests;
 }
 
 
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+
 /* Attempt to do what has been required by the user */
-static void doit (char * progname, unsigned choice, rlsuite_t * suite [],
-		  unsigned items, unsigned loops,
+static void doit (char * progname, unsigned choice,
+		  rut_t * tests [],
+		  unsigned loops, unsigned items,
 		  bool verbose, bool quiet)
 {
-  relem_t ** elems = NULL;
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: rlsuite_print_all (); break;
+    case OPT_LIST: rut_prints (rtrieargc (), rtrieargv ()); break;
 
     case OPT_RUN:
-      elems = mkelems (items);
-      for (l = 0; l < loops; l ++)
-	rlsuite_run (suite, items, (void **) elems);
-      rmelems (elems);
+      for (l = 0; l < arrlen (tests); l ++)
+	rut_run_all (tests [l], items, l + 1);
       break;
 
     default:
       break;
     }
 }
+
+
+/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 /* Display the syntax for using this program */
@@ -173,8 +192,8 @@ static void _usage_ (char * progname, char * version, struct option * options)
   printf ("\n");
 
   printf ("  Finger:\n");
-  usage_item (options, n, OPT_INCLUDE, "include (repeatable)");
-  usage_item (options, n, OPT_EXCLUDE, "exclude (repeatable)");
+  usage_item (options, n, OPT_INCLUDE, "include Unit Test (repeatable)");
+  usage_item (options, n, OPT_EXCLUDE, "exclude Unit Test (repeatable)");
   printf ("\n");
 
   printf ("  Operations:\n");
@@ -204,26 +223,27 @@ static void _usage_ (char * progname, char * version, struct option * options)
 /* Display/Select/Run */
 int main (int argc, char * argv [])
 {
-  char * progname    = basename (argv [0]);    /* notice program name */
-  char * sopts       = optlegitimate (lopts);  /* short option list   */
+  char * progname  = basename (argv [0]);    /* notice program name */
+  char * sopts     = optlegitimate (lopts);  /* short option list   */
 
   /* Booleans */
-  bool verbose       = false;
-  bool quiet         = false;
+  bool verbose     = false;
+  bool quiet       = false;
 
-  /* Test Suite to run */
-  char ** included   = NULL;
-  char ** excluded   = NULL;
-  rlsuite_t ** tests = NULL;
-
-  /* Elements counters */
-  unsigned items     = INITIALS;               /* initial # of elements per test */
-
-  /* Loops counter */
-  unsigned loops     = 1;                      /* # of loops per test            */
+  /* Unit Tests to run */
+  char ** included = NULL;
+  char ** excluded = NULL;
+  rut_t ** tests   = NULL;
 
   /* What to do by default */
-  unsigned choice    = OPT_RUN;
+  unsigned choice  = OPT_RUN;
+
+  /* Elements counter */
+  unsigned items   = INITIALS;               /* initial # of elements per test */
+
+  /* Loops counter */
+  unsigned loops   = LOOPS;                  /* # of loops per test           */
+
   int option;
 
   /* Set unbuffered stdout */
@@ -285,7 +305,7 @@ int main (int argc, char * argv [])
 
   /* Avoid to run with 0 loops */
   if (! loops)
-    loops = LOOPS;
+    loops = 1;
 
   /* Switch default to run when something to include/exclude has been specified */
   if (included || excluded)
@@ -294,7 +314,7 @@ int main (int argc, char * argv [])
   /* Build the set of tests to run and go! */
   tests = build_tests (progname, included, excluded);
   if (tests)
-    doit (progname, choice, tests, items, loops, verbose, quiet);
+    doit (progname, choice, tests, loops, items, verbose, quiet);
   else
     printf ("%s: no test to run\n", progname);
 

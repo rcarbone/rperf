@@ -1,0 +1,15 @@
+# The name of the games
+LIB       = rut
+PROGRAM   = run
+
+# C source files
+LIBSRCS  += rut.c
+LIBSRCS  += elapsed.c
+MAINSRCS += main.c
+MAINSRCS += builtins.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   =
+CFLAGS    =
+C++FLAGS  =
+SYSLIBS   =

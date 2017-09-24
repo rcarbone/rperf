@@ -60,3 +60,10 @@ rlsuite_f rlsuite_grow_tail;
 rlsuite_f rlsuite_iterate;
 rlsuite_f rlsuite_pop_head;
 rlsuite_f rlsuite_pop_tail;
+
+
+/* To implement */
+
+/* Copy src list A to dest list B */
+/* Appends list B at the end of list A */
+/* Reverse a list */

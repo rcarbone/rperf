@@ -22,6 +22,7 @@
 /* ulib - Zilong Tan */
 #include "ulib-list.h"
 
+/* some implementations require fields embedded into the elements to save memory/cycles */
 
 /* List Element definition */
 typedef struct relem relem_t;

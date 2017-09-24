@@ -1,0 +1,13 @@
+# The name of the games
+LIB       = rtrie-utils
+# PROGRAM   = run
+
+# C source files
+LIBSRCS  += nodes.c
+LIBSRCS  += fake-implementation.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   =
+CFLAGS    =
+C++FLAGS  =
+SYSLIBS   =

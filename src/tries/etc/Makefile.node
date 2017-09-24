@@ -1,0 +1,63 @@
+# Dependency files for generation of Makefiles
+TEMPLATES = ${RTRIEDIR}/etc/Makefile.node
+
+# The main target is responsible to recursively scan subdirectories and make all the defined targets
+all: Makefile
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo "Making $$dir ..." ; \
+             make -C $$dir -s --no-print-directory ; \
+           else \
+             echo "Warning: missing sub-directory $$dir" ; \
+           fi \
+         done
+
+# Cleanup rules
+clean distclean:
+	@rm -f *~
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             make -C $$dir -s --no-print-directory $@ ; \
+           fi \
+         done
+
+Makefile: Makefile.in ${TEMPLATES}
+	@ROOTDIR=`grep ROOTDIR Makefile`
+	@echo "=*= making $@ =*="
+	@cat Makefile.in                                        > Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# Do not edit anything below, make creates it." >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# The project's root directory"                 >> Makefile
+	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo -n "ETCDIR     = $$"                             >> Makefile
+	@echo "{ROOTDIR}/etc"                                  >> Makefile
+	@echo -n "RTRIEDIR   = $$"                             >> Makefile
+	@echo "{ROOTDIR}/src/tries/etc"                        >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${TEMPLATES}                                      >> Makefile
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Targets that are eventually handled by recursive Makefile
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+%:
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo $$dir; \
+             make -C $$dir -s --no-print-directory $@ ; \
+             echo ; \
+           fi \
+         done
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+.PHONY: all clean distclean ${SUBDIRS}
+
+# In the event an unknown rule has been used
+.DEFAULT:
+	@true

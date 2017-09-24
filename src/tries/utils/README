@@ -1,0 +1,17 @@
+1. define the objects of the container
+   eg. nodes.h
+
+2. implements the functions to allocate/free the elements
+   eg. nodes.c
+
+3. define the virtual interface
+   eg. rtrie-api.h
+
+4. implements the virtual interface as an example of mapping
+   eg. fake-implementation.c
+
+5. implements the functions of Unit Tests and group them in a static table, then implements the [argc, argv] functions
+   eg. builtins-trie.c
+
+6. implements a main program to Display/Select/Run Unit Tests
+   eg. main.c

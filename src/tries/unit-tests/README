@@ -1,0 +1,6 @@
+1. implements the functions of Unit Tests and group them in a static table,
+   then implements the [argc, argv] functions
+   eg. builtins.c
+
+2. implements a main program to Display/Select/Run Unit Tests
+   eg. main.c

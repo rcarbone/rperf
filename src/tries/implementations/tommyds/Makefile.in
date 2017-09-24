@@ -1,0 +1,13 @@
+# The name of the games
+NAME       = trie-tommyds
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE    = -I./pub -I../../../rut -I../../suite
+CFLAGS     =
+C++FLAGS   =
+USRLIBS    = ../../suite/librtrie-suite.a
+SYSLIBS    =

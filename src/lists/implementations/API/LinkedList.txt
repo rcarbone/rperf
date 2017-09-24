@@ -1,0 +1,138 @@
+          o **** Constructor Summary ****
+
+            Constructor and Description
+            LinkedList()
+            Constructs an empty list.
+            LinkedList(Collection<? extends E> c)
+            Constructs a list containing the elements of the specified
+            collection, in the order they are returned by the collection's
+            iterator.
+
+          o **** Method Summary ****
+
+            Modifier and Type Method and Description
+                              add(E e)
+            boolean           Appends the specified element to the end of this
+                              list.
+                              add(int index, E element)
+            void              Inserts the specified element at the specified
+                              position in this list.
+                              addAll(Collection<? extends E> c)
+                              Appends all of the elements in the specified
+            boolean           collection to the end of this list, in the order
+                              that they are returned by the specified
+                              collection's iterator.
+                              addAll(int index, Collection<? extends E> c)
+            boolean           Inserts all of the elements in the specified
+                              collection into this list, starting at the
+                              specified position.
+                              addFirst(E e)
+            void              Inserts the specified element at the beginning of
+                              this list.
+                              addLast(E e)
+            void              Appends the specified element to the end of this
+                              list.
+            void              clear()
+                              Removes all of the elements from this list.
+            Object            clone()
+                              Returns a shallow copy of this LinkedList.
+                              contains(Object o)
+            boolean           Returns true if this list contains the specified
+                              element.
+                              descendingIterator()
+            Iterator<E>       Returns an iterator over the elements in this
+                              deque in reverse sequential order.
+                              element()
+            E                 Retrieves, but does not remove, the head (first
+                              element) of this list.
+                              get(int index)
+            E                 Returns the element at the specified position in
+                              this list.
+            E                 getFirst()
+                              Returns the first element in this list.
+            E                 getLast()
+                              Returns the last element in this list.
+                              indexOf(Object o)
+            int               Returns the index of the first occurrence of the
+                              specified element in this list, or -1 if this
+                              list does not contain the element.
+                              lastIndexOf(Object o)
+            int               Returns the index of the last occurrence of the
+                              specified element in this list, or -1 if this
+                              list does not contain the element.
+                              listIterator(int index)
+            ListIterator<E>   Returns a list-iterator of the elements in this
+                              list (in proper sequence), starting at the
+                              specified position in the list.
+                              offer(E e)
+            boolean           Adds the specified element as the tail (last
+                              element) of this list.
+                              offerFirst(E e)
+            boolean           Inserts the specified element at the front of
+                              this list.
+                              offerLast(E e)
+            boolean           Inserts the specified element at the end of this
+                              list.
+                              peek()
+            E                 Retrieves, but does not remove, the head (first
+                              element) of this list.
+                              peekFirst()
+            E                 Retrieves, but does not remove, the first element
+                              of this list, or returns null if this list is
+                              empty.
+                              peekLast()
+            E                 Retrieves, but does not remove, the last element
+                              of this list, or returns null if this list is
+                              empty.
+                              poll()
+            E                 Retrieves and removes the head (first element) of
+                              this list.
+                              pollFirst()
+            E                 Retrieves and removes the first element of this
+                              list, or returns null if this list is empty.
+                              pollLast()
+            E                 Retrieves and removes the last element of this
+                              list, or returns null if this list is empty.
+                              pop()
+            E                 Pops an element from the stack represented by
+                              this list.
+                              push(E e)
+            void              Pushes an element onto the stack represented by
+                              this list.
+                              remove()
+            E                 Retrieves and removes the head (first element) of
+                              this list.
+                              remove(int index)
+            E                 Removes the element at the specified position in
+                              this list.
+                              remove(Object o)
+            boolean           Removes the first occurrence of the specified
+                              element from this list, if it is present.
+                              removeFirst()
+            E                 Removes and returns the first element from this
+                              list.
+                              removeFirstOccurrence(Object o)
+            boolean           Removes the first occurrence of the specified
+                              element in this list (when traversing the list
+                              from head to tail).
+                              removeLast()
+            E                 Removes and returns the last element from this
+                              list.
+                              removeLastOccurrence(Object o)
+            boolean           Removes the last occurrence of the specified
+                              element in this list (when traversing the list
+                              from head to tail).
+                              set(int index, E element)
+            E                 Replaces the element at the specified position in
+                              this list with the specified element.
+            int               size()
+                              Returns the number of elements in this list.
+                              toArray()
+            Object[]          Returns an array containing all of the elements
+                              in this list in proper sequence (from first to
+                              last element).
+                              toArray(T[] a)
+                              Returns an array containing all of the elements
+            <T> T[]          in this list in proper sequence (from first to
+                              last element); the runtime type of the returned
+                              array is that of the specified array.

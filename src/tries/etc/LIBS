@@ -1,0 +1,9 @@
+# Project libraries
+
+# rlibc
+${RLIBCLIB}:
+	@echo "==================="
+	@echo "=*= making ${RLIBCLIB} =*="
+	@(cd ${RLIBCDIR} && make -s)
+	@echo "==================="
+

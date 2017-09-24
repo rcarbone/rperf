@@ -1,5 +1,6 @@
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
-SUBDIRS += rut
-SUBDIRS += hashtables
-SUBDIRS += lists
-SUBDIRS += tries
+SUBDIRS += utils
+SUBDIRS += unit-tests
+SUBDIRS += suite
+SUBDIRS += speed
+SUBDIRS += implementations

@@ -1,0 +1,14 @@
+# The name of the games
+LIB       = rtrie-ut
+PROGRAM   = run
+
+# C source files
+LIBSRCS  += builtins.c
+MAINSRCS += main.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   = -I../utils -I../../rut
+CFLAGS    =
+C++FLAGS  =
+USRLIBS   = ../../unit-tests/librtrie-ut.a ../../../rut/librut.a ../../utils/librtrie-utils.a
+SYSLIBS   =

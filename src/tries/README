@@ -1,0 +1,16 @@
+How to add a scenario
+=====================
+
+1. add in builtins/rtsuite.h the declaration of the function (near the end of the file)
+2. add in builtins/suite.c an item in the static table of builtins scenarios
+3. add in builtins/suite-code.c the implementation of the scenario in terms of rt_xxx() calls
+
+4. add in etc/plugin.c
+  a. an item in enum rtsuite_id_t
+  b. a case in function run_this()
+  c. a function to handle the call
+
+5. update README.c foreach plugin
+
+
+That's all folks!

@@ -1,0 +1,17 @@
+# The name of the games
+LIB       = rtrie-speed
+# PROGRAM   = rtrie-speed
+
+# C source files
+LIBSRCS  += run.c
+LIBSRCS  += sw.c
+LIBSRCS  += print.c
+MAINSRCS += main.c
+# MAINSRCS += fake-rl.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE   = -I../../rut -I../suite
+CFLAGS    =
+C++FLAGS  =
+USRLIBS   = ../utils/librtrie-utils.a ../../rut/librut.a
+SYSLIBS   = -ldl

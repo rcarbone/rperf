@@ -4,7 +4,7 @@
 #include <limits.h>
 
 /* Project headers */
-#include "rht-test.h"
+#include "rltest.h"
 #include "safe.h"
 
 
@@ -138,7 +138,7 @@ relapsed_t * dupelapsed (relapsed_t * src)
   dst -> avg     = src -> avg;
   dst -> max     = src -> max;
   dst -> rate    = src -> rate;
-  dst -> items   = src -> items;
+  dst -> elems   = src -> elems;
   dst -> slow    = src -> slow;
   dst -> sw      = src -> sw;
 

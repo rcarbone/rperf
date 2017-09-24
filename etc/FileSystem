@@ -1,11 +1,12 @@
 # The project's run-time tree
-INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
 INSTALLDIR2 = ${ROOTDIR}/src/hashtables/plugins
+INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
 
 # The project's source tree
 RLIBCDIR    = ${ROOTDIR}/rlibc
-RLDIR       = ${ROOTDIR}/src/lists/builtins
 RHTDIR      = ${ROOTDIR}/src/hashtables/builtins
+RLDIR       = ${ROOTDIR}/src/lists/builtins
+RTRIEDIR    = ${ROOTDIR}/src/tries
 
 # The project's libraries
 
@@ -14,12 +15,17 @@ INCLUDE    += -I${RLIBCDIR}
 RLIBCLIB    = ${RLIBCDIR}/librlibc.a
 USRLIBS    += ${RLIBCLIB}
 
-# rl
-INCLUDE    += -I${RLDIR}
-RLLIB       = ${RLDIR}/librl.a
-USRLIBS    += ${RLLIB}
-
 # rht
 INCLUDE    += -I${RHTDIR}
 RHTLIB      = ${RHTDIR}/librht.a
 USRLIBS    += ${RHTLIB}
+
+# rlist
+INCLUDE    += -I${RLDIR}
+RLLIB       = ${RLDIR}/librl.a
+USRLIBS    += ${RLLIB}
+
+# rtrie
+INCLUDE    += -I${RTRIEDIR}/utils
+RTRIELIB    = ${RTRIEDIR}/utils/librtrie-utils.a
+USRLIBS    += ${RTRIELIB}
