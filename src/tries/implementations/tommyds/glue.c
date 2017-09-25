@@ -32,21 +32,17 @@ rtrie_t * rtrie_alloc (void)
 
 void rtrie_free (rtrie_t * trie)
 {
+  tommy_allocator_done (& alloc);
   safefree (trie);
 }
 
 
 void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data)
 {
-#if defined(ROCCO)
-  tommy_node * node = tommy_trie_bucket (trie, value);
-  while (node)
-    {
-      if (fn)
-	fn (data);
-      node = node -> next;
-    }
-#endif /* ROCCO */
+  unsigned i = tommy_trie_count (trie);
+  while (i --)
+    if (fn)
+      fn (data);
 }
 
 
@@ -58,26 +54,17 @@ unsigned rtrie_count (rtrie_t * trie)
 
 void rtrie_add (rtrie_t * trie, void * node)
 {
-#if defined(ROCCO)
-  tommy_trie_insert (trie, & node -> tommy, node, node -> value);
-#endif /* ROCCO */
+  tommy_trie_insert (trie, & ((rnode_t *) node) -> tommy, node, ((rnode_t *) node) -> val);
 }
 
 
 void * rtrie_get (rtrie_t * trie, void * node)
 {
-#if defined(ROCCO)
-  tommy_node * node = tommy_search (node -> value);
-  if (node)
-    return node;
-#endif /* ROCCO */
-  return NULL;
+  return tommy_trie_search (trie, ((rnode_t *) node) -> val);
 }
 
 
 void rtrie_del (rtrie_t * trie, void * node)
 {
-#if defined(ROCCO)
-  tommy_list_remove (trie, value);
-#endif /* ROCCO */
+  tommy_trie_remove (trie, ((rnode_t *) node) -> val);
 }

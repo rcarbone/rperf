@@ -1,4 +1,5 @@
 TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Makefile.plugins ${RTRIEDIR}/etc/LIBS
+INSTALLDIR = ${RTRIEDIR}/plugins
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
@@ -7,7 +8,7 @@ SHLIB     = ${NAME}.so
 PROGRAMS  = ut-run suite-run
 
 # All the targets
-TARGETS   = ${SHLIB} ${INSTALLDIR1}/${SHLIB} ${PROGRAMS}
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
 
 # Source, object and depend files
 CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
@@ -37,7 +38,7 @@ LDFLAGS   =
 SYSLIBS  += -ldl
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c ut-run.c suite-run.c ${INSTALLDIR1} ${TARGETS} ${RLIBCLIB} ${RLLIB}
+all: Makefile plugin.c ut-run.c suite-run.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RTRIELIB}
 
 Makefile: Makefile.in ${TEMPLATES}
 	@ROOTDIR=`grep ROOTDIR Makefile`
@@ -90,16 +91,16 @@ ${SHLIB}: plugin.o glue.o ${RTRIELIB} ${RLIBCLIB}
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
 # Shared Library
-${INSTALLDIR1}/${SHLIB}: ${SHLIB}
-	@if [ -d ${INSTALLDIR1} ] ; then \
+${INSTALLDIR}/${SHLIB}: ${SHLIB}
+	@if [ -d ${INSTALLDIR} ] ; then \
           (rm -f $@ ; cp $^ $@) ; \
          else \
-          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR1}" ; \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
          fi
 
-${INSTALLDIR1}:
-	@if [ ! -d ${INSTALLDIR1} ] ; then \
-           mkdir ${INSTALLDIR1} ; \
+${INSTALLDIR}:
+	@if [ ! -d ${INSTALLDIR} ] ; then \
+           mkdir ${INSTALLDIR} ; \
          fi
 
 # Binary programs

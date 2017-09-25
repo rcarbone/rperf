@@ -1,11 +1,13 @@
 # Executables
 rtest
 rl-speed
+rtrie-speed
 rspeed
 rbattle
 
 ut-run
 suite-run
+run
 ut
 suite
 

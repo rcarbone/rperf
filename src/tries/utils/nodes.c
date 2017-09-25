@@ -16,8 +16,8 @@ rnode_t * mknode (unsigned x)
   rnode_t * node = calloc (1, sizeof (* node));
 
   node -> key = strdup (utoa (x));
-  node -> foo = x;
-  node -> bar = node;
+  node -> val = x;
+  node -> foo = node;
 
   return node;
 }

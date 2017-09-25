@@ -3,13 +3,21 @@
 
 /* Some implementations require fields embedded into the elements to save memory/cycles */
 
+
+/* tommyds - Andrea Mazzoleni */
+#include "tommytypes.h"
+
+
 /* Trie Node definition */
 typedef struct rnode rnode_t;
 typedef struct rnode
 {
   char     * key;
-  unsigned   foo;
-  rnode_t  * bar;
+  unsigned   val;
+  rnode_t  * foo;
+
+  /* Required by tommyds implementation to make the structure trie-able */
+  tommy_node tommy;
 
 } rnode_t;
 

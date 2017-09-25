@@ -1,6 +1,6 @@
 # The name of the games
 LIB       = rtrie-speed
-# PROGRAM   = rtrie-speed
+PROGRAM   = rtrie-speed
 
 # C source files
 LIBSRCS  += run.c
