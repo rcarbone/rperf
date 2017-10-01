@@ -1,5 +1,5 @@
 # Dependency files for generation of Makefiles
-TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Makefile.leaf
+TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Dirs ${RTRIEDIR}/etc/Makefile.leaf
 
 # Static library
 STLIB     = lib${LIB}.a
@@ -31,36 +31,47 @@ C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
 LDFLAGS   = ${OPTIMIZE}
 
-# The main target is responsible to make all the programs
+# The main target is responsible to make all the targets
 all: Makefile ${TARGETS}
 
 Makefile: Makefile.in ${TEMPLATES}
-	@ROOTDIR=`grep ROOTDIR Makefile`
 	@echo "=*= making $@ =*="
-	@cat Makefile.in                                        > Makefile
-	@echo                                                  >> Makefile
+#
+	@ROOTDIR=`grep ROOTDIR Makefile | head -1`
+	@ETCDIR=`grep ETCDIR Makefile | head -1`
+	@RLIBCDIR=`grep RLIBCDIR Makefile | head -1`
+	@RUTDIR=`grep RUTDIR Makefile | head -1`
+	@RTRIEDIR=`grep RTRIEDIR Makefile | head -1`
+#
+	@echo                                                   > Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo "# Do not edit anything below, make creates it." >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
+#
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo "# The project's root directory"                 >> Makefile
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
-	@echo -n "ETCDIR     = $$"                             >> Makefile
-	@echo "{ROOTDIR}/etc"                                  >> Makefile
-	@echo -n "RTRIEDIR   = $$"                             >> Makefile
-	@echo "{ROOTDIR}/src/tries/etc"                        >> Makefile
+	@echo "ETCDIR     = ${ETCDIR}"                         >> Makefile
+	@echo "RLIBCDIR   = ${RLIBCDIR}"                       >> Makefile
+	@echo "RUTDIR     = ${RUTDIR}"                         >> Makefile
+	@echo "RTRIEDIR   = ${RTRIEDIR}"                       >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${ETCDIR}/FileSystem                              >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
+	@cat ${RTRIEDIR}/etc/Dirs                              >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat Makefile.in                                       >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 	@cat ${RTRIEDIR}/etc/Makefile.leaf                     >> Makefile
 	@echo                                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${RTRIEDIR}/etc/LIBS                              >> Makefile
 
 # Static Library
 ${STLIB}: ${LIBOBJS}
@@ -73,7 +84,7 @@ ${SHLIB}:
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ../utils/librtrie-utils.a ../../rut/librut.a ${RLIBCLIB}
+${PROGRAM}: ${MAINOBJS} ${STLIB} ${USRLIBS} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 

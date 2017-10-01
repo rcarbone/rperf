@@ -15,7 +15,7 @@
 #define _NAME_      "Time several implementations and sort the results"
 #define _VERSION_   "0.1.0"
 
-#define _INITIALS_  1e4
+#define _INITIALS_  1e6
 #define _LOOPS_     1
 
 

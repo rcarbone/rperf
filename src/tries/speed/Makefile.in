@@ -7,11 +7,15 @@ LIBSRCS  += run.c
 LIBSRCS  += sw.c
 LIBSRCS  += print.c
 MAINSRCS += main.c
-# MAINSRCS += fake-rl.c
 
 # Compiler flags and System libraries (optional)
-INCLUDE   = -I../../rut -I../suite
-CFLAGS    =
-C++FLAGS  =
-USRLIBS   = ../utils/librtrie-utils.a ../../rut/librut.a
-SYSLIBS   = -ldl
+INCLUDE  += -I${RUTDIR}
+INCLUDE  += -I${UTILSDIR}
+INCLUDE  += -I${SUITEDIR}
+CFLAGS   +=
+C++FLAGS +=
+USRLIBS  += ${RUTLIB}
+USRLIBS  += ${SUITELIB}
+USRLIBS  += ${UTILSLIB}
+USRLIBS  += ${RLIBCLIB}
+SYSLIBS  += -ldl

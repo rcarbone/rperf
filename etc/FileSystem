@@ -1,9 +1,7 @@
-# The project's run-time tree
-INSTALLDIR2 = ${ROOTDIR}/src/hashtables/plugins
-INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
-
 # The project's source tree
+ETCDIR      = ${ROOTDIR}/etc
 RLIBCDIR    = ${ROOTDIR}/rlibc
+RUTDIR      = ${ROOTDIR}/src/rut
 RHTDIR      = ${ROOTDIR}/src/hashtables/builtins
 RLDIR       = ${ROOTDIR}/src/lists/builtins
 RTRIEDIR    = ${ROOTDIR}/src/tries
@@ -15,6 +13,12 @@ INCLUDE    += -I${RLIBCDIR}
 RLIBCLIB    = ${RLIBCDIR}/librlibc.a
 USRLIBS    += ${RLIBCLIB}
 
+# The project's run-time tree
+INSTALLDIR2 = ${ROOTDIR}/src/hashtables/plugins
+INSTALLDIR1 = ${ROOTDIR}/src/lists/plugins
+
+# ###### Will be deleted ######
+
 # rht
 INCLUDE    += -I${RHTDIR}
 RHTLIB      = ${RHTDIR}/librht.a
@@ -24,8 +28,3 @@ USRLIBS    += ${RHTLIB}
 INCLUDE    += -I${RLDIR}
 RLLIB       = ${RLDIR}/librl.a
 USRLIBS    += ${RLLIB}
-
-# rtrie
-INCLUDE    += -I${RTRIEDIR}/utils
-RTRIELIB    = ${RTRIEDIR}/utils/librtrie-utils.a
-USRLIBS    += ${RTRIELIB}

@@ -1,5 +1,5 @@
-TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Makefile.plugins ${RTRIEDIR}/etc/LIBS
-INSTALLDIR = ${RTRIEDIR}/plugins
+# Dependency files for generation of Makefiles
+TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Dirs ${RTRIEDIR}/etc/Makefile.plugins
 
 # Plugin (dynamic library)
 SHLIB     = ${NAME}.so
@@ -32,41 +32,52 @@ CFLAGS   += -fPIC
 CFLAGS   += -fno-diagnostics-color
 C++FLAGS += ${CFLAGS}
 ARFLAGS   = rv
-LDFLAGS   =
+LDFLAGS   = ${OPTIMIZE}
 
 # System libraries
 SYSLIBS  += -ldl
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c ut-run.c suite-run.c ${INSTALLDIR} ${TARGETS} ${RLIBCLIB} ${RTRIELIB}
+all: Makefile plugin.c ut-run.c suite-run.c ${INSTALLDIR} ${TARGETS}
 
 Makefile: Makefile.in ${TEMPLATES}
-	@ROOTDIR=`grep ROOTDIR Makefile`
 	@echo "=*= making $@ =*="
-	@cat Makefile.in                                        > Makefile
-	@echo                                                  >> Makefile
+#
+	@ROOTDIR=`grep ROOTDIR Makefile | head -1`
+	@ETCDIR=`grep ETCDIR Makefile | head -1`
+	@RLIBCDIR=`grep RLIBCDIR Makefile | head -1`
+	@RUTDIR=`grep RUTDIR Makefile | head -1`
+	@RTRIEDIR=`grep RTRIEDIR Makefile | head -1`
+#
+	@echo                                                   > Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo "# Do not edit anything below, make creates it." >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
+#
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo "# The project's root directory"                 >> Makefile
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
-	@echo -n "ETCDIR     = $$"                             >> Makefile
-	@echo "{ROOTDIR}/etc"                                  >> Makefile
-	@echo -n "RLETCDIR   = $$"                             >> Makefile
-	@echo "{ROOTDIR}/src/tries/etc"                        >> Makefile
+	@echo "ETCDIR     = ${ETCDIR}"                         >> Makefile
+	@echo "RLIBCDIR   = ${RLIBCDIR}"                       >> Makefile
+	@echo "RUTDIR     = ${RUTDIR}"                         >> Makefile
+	@echo "RTRIEDIR   = ${RTRIEDIR}"                       >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${ETCDIR}/FileSystem                              >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
+	@cat ${RTRIEDIR}/etc/Dirs                              >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat Makefile.in                                       >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 	@cat ${RTRIEDIR}/etc/Makefile.plugins                  >> Makefile
 	@echo                                                  >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${RTRIEDIR}/etc/LIBS                              >> Makefile
 
 plugin.c: README.c ${RTRIEDIR}/etc/plugin.c
 	@echo "=*= making C source $@ =*="
@@ -86,7 +97,7 @@ ${STLIB}: ${LIBOBJS}
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
 # Dynamic Library
-${SHLIB}: plugin.o glue.o ${RTRIELIB} ${RLIBCLIB}
+${SHLIB}: plugin.o glue.o ${SUITELIB} ${RUTLIB} ${UTILSLIB} ${RLIBCLIB}
 	@echo "=*= making plugin $@ =*="
 	@${CC} -shared $^ ${SYSLIBS} -o $@
 
@@ -104,11 +115,11 @@ ${INSTALLDIR}:
          fi
 
 # Binary programs
-ut-run: ut-run.o glue.o ${RTRIELIB} ${RLIBCLIB}
+ut-run: ut-run.o glue.o ${RUTLIB} ${UTLIB} ${UTILSLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
-suite-run: suite-run.o glue.o ${RTRIELIB} ${RLIBCLIB}
+suite-run: suite-run.o glue.o ${SUITELIB} ${RUTLIB} ${UTILSLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -222,5 +233,3 @@ help:
 # The fake targets
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 .PHONY: all clean distclean leaks vleaks
-
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

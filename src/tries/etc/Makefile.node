@@ -1,5 +1,5 @@
 # Dependency files for generation of Makefiles
-TEMPLATES = ${RTRIEDIR}/etc/Makefile.node
+TEMPLATES = ${RTRIEDIR}/etc/Dirs ${RTRIEDIR}/etc/Makefile.node
 
 # The main target is responsible to recursively scan subdirectories and make all the defined targets
 all: Makefile
@@ -35,11 +35,17 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
 	@echo -n "ETCDIR     = $$"                             >> Makefile
 	@echo "{ROOTDIR}/etc"                                  >> Makefile
+	@echo -n "RLIBCDIR   = $$"                             >> Makefile
+	@echo "{ROOTDIR}/rlibc"                                >> Makefile
 	@echo -n "RTRIEDIR   = $$"                             >> Makefile
-	@echo "{ROOTDIR}/src/tries/etc"                        >> Makefile
+	@echo "{ROOTDIR}/src/tries"                            >> Makefile
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
-	@cat ${TEMPLATES}                                      >> Makefile
+	@echo                                                  >> Makefile
+	@for t in ${TEMPLATES} ; do \
+           cat $$t                                             >> Makefile ; \
+           echo                                                >> Makefile ; \
+         done
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 # Targets that are eventually handled by recursive Makefile

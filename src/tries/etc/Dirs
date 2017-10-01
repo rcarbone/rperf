@@ -1,0 +1,21 @@
+# Source dirs are here
+UTILSDIR  = ${RTRIEDIR}/utils
+UTDIR     = ${RTRIEDIR}/unit-tests
+SUITEDIR  = ${RTRIEDIR}/suite
+
+# Libraries are here
+UTILSLIB  = ${UTILSDIR}/librtrie-utils.a
+UTLIB     = ${UTDIR}/librtrie-ut.a
+SUITELIB  = ${SUITEDIR}/librtrie-suite.a
+
+INSTALLDIR = ${RTRIEDIR}/plugins
+
+# External Libraries are here
+
+# rlibc
+INCLUDE  += -I${RLIBCDIR}
+RLIBCLIB  = ${RLIBCDIR}/librlibc.a
+
+# rut
+INCLUDE  += -I${RUTDIR}
+RUTLIB    = ${RUTDIR}/librut.a

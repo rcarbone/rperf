@@ -1,0 +1,25 @@
+NAME
+        Yet Another Trie
+AUTHOR
+
+SYNOPSIS
+
+TYPEDEFS
+       typedef uint64_t word_t;
+       typedef word_t * yatrie_t;
+
+NAME
+
+       /* Creates a new, empty yatrie */
+       yatrie_t yatrie_new (void);
+
+       /* Free the yatrie */
+       void yatrie_free (yatrie_t yatrie);
+
+       /* Insert a key, value pair into a yatrie, and return its new value */
+       yatrie_t yatrie_insert (yatrie_t yatrie, word_t key, word_t value);
+
+       /* Return a pointer to the value of the given key. Returns NULL if the key was not found */
+       word_t * yatrie_get (yatrie_t yatrie, word_t key);
+
+       void yatrie_print (yatrie_t yatrie, int spaces);

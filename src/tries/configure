@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# This script will attempt to configure the development source tree
+# by generation of Makefiles in each subdirectory where a template
+# Makefile.in file is found.
+#
+# It is not a robust and safe build system but I am only on a Debian Systems
+# and I am not currently interested to run the software on different platforms,
+# so the compilation only depends on the root directory on the filesystem
+# where the software has been pulled out from git.
+#
+# May be things can be changed in a near future.
+#
+
+# rootdir=`pwd`
+ROOTDIR=/home/rocco/git/rcarbone/rperf
+ETCDIR=etc
+RLIBCDIR=rlibc
+RUTDIR=src/rut
+RTRIEDIR=src/tries
+srcdir=$ROOTDIR/$RTRIEDIR
+
+echo "Configuring software for $ROOTDIR ..."
+
+makefiles=`find . -name Makefile.in`
+for file in $makefiles; do
+
+  echo $file
+
+  d=`dirname $file`
+
+  cp /dev/null $d/Makefile
+
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo "# Do not edit anything below, make creates it." >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  #
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo "# Main directories"                             >> $d/Makefile
+  echo "ROOTDIR    = ${ROOTDIR}"                        >> $d/Makefile
+  echo "ETCDIR     = \${ROOTDIR}/$ETCDIR"               >> $d/Makefile
+  echo "RLIBCDIR   = \${ROOTDIR}/$RLIBCDIR"             >> $d/Makefile
+  echo "RUTDIR     = \${ROOTDIR}/$RUTDIR"               >> $d/Makefile
+  echo "RTRIEDIR   = \${ROOTDIR}/$RTRIEDIR"             >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  #
+  cat $srcdir/etc/Dirs                                  >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  cat $file                                             >> $d/Makefile
+  echo                                                  >> $d/Makefile
+  echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+  echo                                                  >> $d/Makefile
+
+  # Check for node/leaf/plugins
+  node=`grep SUBDIRS $d/Makefile.in | head -1`
+  if [ "$node" != "" ]; then
+    cat $srcdir/etc/Makefile.node                         >> $d/Makefile
+  else
+    plugin=`echo $d | grep implementations`
+    if [ "$plugin" != "" ]; then
+      cat $srcdir/etc/Makefile.plugins                    >> $d/Makefile
+    else
+      cat $srcdir/etc/Makefile.leaf                       >> $d/Makefile
+    fi
+    echo                                                  >> $d/Makefile
+    echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> $d/Makefile
+    echo                                                  >> $d/Makefile
+  fi
+
+done
+
+# Create symlinks
+(cd utils;
+ ln -sf ../implementations/tommyds/pub/tommytypes.h .
+)

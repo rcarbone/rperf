@@ -6,8 +6,12 @@ LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = -I./pub -I../../../rut -I../../suite
-CFLAGS     =
-C++FLAGS   =
-USRLIBS    = ../../suite/librtrie-suite.a
-SYSLIBS    =
+INCLUDE   += -I./pub
+INCLUDE   += -I${RUTDIR}
+INCLUDE   += -I${UTILSDIR}
+INCLUDE   += -I${SUITEDIR}
+USRLIBS   += ${SUITELIB}
+CFLAGS    +=
+C++FLAGS  +=
+USRLIBS   += ${SUITELIB}
+SYSLIBS   +=
