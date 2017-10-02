@@ -9,7 +9,6 @@ ut-run
 suite-run
 run
 ut
-suite
 
 # Automatically generated symlinks
 src/*/builtins/ht-internal.h

@@ -1,0 +1,17 @@
+# The name of the games
+LIB       = rtrie-suite
+PROGRAM   = run
+
+# C source files
+LIBSRCS  += builtins.c
+LIBSRCS  += rsuite.c
+MAINSRCS += main.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE  += -I${RUTDIR}
+INCLUDE  += -I${UTILSDIR}
+CFLAGS   +=
+C++FLAGS +=
+USRLIBS  += ${RUTLIB}
+USRLIBS  += ${UTILSLIB}
+SYSLIBS  +=

@@ -1,0 +1,8 @@
+1. implements the functions of the Suite and group them in a static table, then implements the [argc, argv] functions
+   eg. builtins.c
+
+2. implements the virtual interface as an example of mapping
+   eg. implementation.c
+
+3. implements a main program to Display/Select/Run Unit Tests
+   eg. main.c
