@@ -13,7 +13,8 @@ extern "C" {
 
 
 void * safefree (void * a);
-void * safedup (void * a, void * b);
+void * safedup (void * a);
+void * safereplace (void * a, void * b);
 FILE * safeopen (char * f);
 FILE * safeclose (FILE * fd);
 

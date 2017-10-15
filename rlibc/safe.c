@@ -9,7 +9,13 @@ void * safefree (void * a)
 }
 
 
-void * safedup (void * a, void * b)
+void * safedup (void * a)
+{
+  return a ? strdup (a) : a;
+}
+
+
+void * safereplace (void * a, void * b)
 {
   safefree (b);
   return a ? strdup (a) : a;

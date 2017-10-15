@@ -15,3 +15,35 @@
 
 6. implements a main program to Display/Select/Run Unit Tests
    eg. main.c
+
+
+Operations on trie include:
+
+ - Add/delete entries with
+     trie_store()
+     trie_delete()
+
+ - Retrieve entries with
+     trie_retrieve()
+
+ - Walk through trie stepwise with TrieState and its functions
+     trie_root()
+     trie_state_walk()
+     trie_state_rewind()
+     trie_state_clone()
+     trie_state_copy()
+     trie_state_is_walkable()
+     trie_state_walkable_chars()
+     trie_state_is_single()
+     trie_state_get_data()
+     trie_state_free()
+
+ - Enumerate all keys using
+     trie_enumerate()
+
+  - Iterate entries using TrieIterator and its functions
+    trie_iterator_new()
+    trie_iterator_next()
+    trie_iterator_get_key()
+    trie_iterator_get_data()
+    trie_iterator_free()

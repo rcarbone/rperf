@@ -130,3 +130,26 @@ void ** vasort (void * argv [], vasort_f * cmp)
 
   return argv;
 }
+
+
+/* Shuffle an array */
+void ** vashuffle (void * argv [])
+{
+  unsigned n = valen (argv);
+  srand (nswall ());
+
+  if (n > 1)
+    {
+      unsigned i;
+      unsigned j;
+      void * t;
+      for (i = 0; i < n - 1; i ++)
+        {
+          j = i + rand () / (RAND_MAX / (n - i) + 1);
+          t = argv [j];
+          argv [j] = argv [i];
+          argv [i] = t;
+        }
+    }
+  return argv;
+}

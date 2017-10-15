@@ -29,8 +29,11 @@ char ** argspieces (char * list, char * sep);
 char ** argsblanks (char * list);
 char ** argsuniq (char * argv [], char * item);
 bool argsexists (char * argv [], char * name);
-void argsrows (char * argv []);
 
+void argsrows (char * argv []);
+unsigned argslongest (char * argv []);
+void argscols (char * argv []);
+void args_2d_rows (char * argv []);
 
 #ifdef __cplusplus
 }

@@ -40,6 +40,7 @@ void ** vadup (void * argv []);
 void ** varev (void * argv []);
 void ** vacat (void * a [], void * b []);
 void ** vasort (void * argv [], vasort_f cmp);
+void ** vashuffle (void * argv []);
 
 
 #ifdef __cplusplus

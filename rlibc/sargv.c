@@ -194,3 +194,77 @@ void argsrows (char * argv [])
   while (argv && * argv)
     printf ("%3d. \"%s\"\n", ++ argc, * argv ++);
 }
+
+
+/* Find the longest name */
+unsigned argslongest (char * argv [])
+{
+  unsigned longest = 0;
+
+  while (argv && * argv)
+    {
+      longest = RMAX (longest, strlen (* argv));
+      argv ++;
+    }
+  return longest;
+}
+
+
+/* fit on a 25x80 terminal */
+void argscols (char * argv [])
+{
+  unsigned argc = arrlen (argv);
+  int rows, cols;
+  int i, j;
+
+  int max = argslongest (argv);
+
+  if (! max)
+    return;
+
+  /* how many columns? */
+  cols = 80 / ((max + 8) &~ 7);
+  if (cols == 0)
+    cols = 1;
+  rows = (argc + cols - 1) / cols;
+
+  for (i = 0; i < rows; i ++)
+    {
+      for (j = 0; j < cols; j ++)
+	if ((i + j * rows) < argc)
+	  printf ("%-*.*s", max + 1, max + 1, argv [i + j * rows]);
+	else
+	  break;
+      printf ("\n");
+    }
+}
+
+
+/* fit on a 25x80 terminal by rows */
+void args_2d_rows (char * argv [])
+{
+  unsigned argc = arrlen (argv);
+  int rows, cols;
+  int i, j;
+
+  unsigned max = argslongest (argv);
+
+  if (! max)
+    return;
+
+  /* how many columns? */
+  cols = 80 / ((max + 8) &~ 7);
+  if (cols == 0)
+    cols = 1;
+  rows = (argc + cols - 1) / cols;
+
+  for (i = 0; i < rows; i ++)
+    {
+      for (j = 0; j < cols; j ++)
+	if (i * cols + j < argc)
+	  printf ("%-*.*s", max + 1, max + 1, argv [i * cols + j]);
+	else
+	  break;
+      printf ("\n");
+    }
+}
