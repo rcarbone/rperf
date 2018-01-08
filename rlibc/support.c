@@ -120,3 +120,29 @@ void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned m
     printf (".");
   printf (" ");
 }
+
+
+/* Well formatted percentage */
+char * xpercentage (unsigned long partial, unsigned long total)
+{
+#define DECIMALS 2
+#define ITEMS 10
+  static char buffer [ITEMS] [64];
+  static short k = -1;
+
+  k = (k + 1) % ITEMS;
+
+  if (partial && total)
+    {
+      float percent = (float) partial * 100 / (float) total;
+
+      if (partial == total)
+	sprintf (buffer [k], "(%3d%%)", (int) percent);
+      else
+	sprintf (buffer [k], "(%4.*f%%)", DECIMALS, percent);  /* vv.dd% */
+    }
+  else
+    strcpy (buffer [k], "");    /* just the empty string */
+
+  return buffer [k];
+}

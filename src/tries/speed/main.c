@@ -134,7 +134,7 @@ static struct option lopts [] =
   /* Loop counter */
   { "loops",        required_argument, NULL, OPT_LOOPS        },
 
-  /* End of options */
+  /* Sentinel */
   { NULL,           0,                 NULL, 0                }
 };
 
@@ -384,7 +384,7 @@ int main (int argc, char * argv [])
   char * progname  = basename (argv [0]);    /* notice program name */
   char * sopts     = optlegitimate (lopts);  /* short option list   */
 
-  /* Booleans */
+  /* Toogles */
   bool verbose     = false;
   bool quiet       = false;
 
@@ -457,7 +457,7 @@ int main (int argc, char * argv [])
         case OPT_ADD_PLUGIN:   included = argsuniq (included, optarg);  break;
         case OPT_DEL_PLUGIN:   excluded = argsuniq (excluded, optarg);  break;
 
-	  /* Item counter */
+	  /* Items counter */
 	case OPT_ITEMS:   items = atoi (optarg); break;
 	case OPT_ITEMS_0: items = 1e0;           break;
 	case OPT_ITEMS_1: items = 1e1;           break;

@@ -1,0 +1,3 @@
+Surround sections of code to benchmark with TICK(); ... TOCK();
+and look at the benchmark_total_time variable to get the
+total number of microseconds elapsed between TICK and TOCK calls

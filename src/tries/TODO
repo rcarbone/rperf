@@ -1,0 +1,20 @@
+c
+==
+datrie
+critbit
+libdict
+ccl (scape)
+jsw_ (eternallyconfuzzled)
+tst
+dcjones/hat-trie
+
+c++
+===
+cedar
+cedarpp   // prefix trie
+libtrie
+dlecocq/hat-trie
+hopscotch map (tessil)
+array map (tessil)
+htrie map (tessil)
+sparsepp (tessil)

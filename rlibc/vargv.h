@@ -18,6 +18,7 @@
 #define arrless(argv, item, type, rm)  (type **) valess ((void **) argv, (void *) item, rm)
 #define arrclear(argv, func)           vaclear ((void **) argv, func)
 #define arrsort(argv, func, type)      (type **) vasort ((void **) argv, func)
+#define arrrev(argv, type)             (type **) varev ((void **) argv)
 
 
 /* Helper functions */

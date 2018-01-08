@@ -5,6 +5,7 @@
 
 /* Public header */
 #include "vargv.h"
+#include "rwall.h"
 
 
 /* Return the # of items in an array */

@@ -33,6 +33,15 @@ void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned m
 /* Evaluate the number of digits in n */
 unsigned digits (unsigned n);
 
+/* Well formatted percentage */
+char * xpercentage (unsigned long partial, unsigned long total);
+
+char * rfqname (void);
+void rhelloworld (char * progname, char * version, char * date, char * time, char * nodename, char * author);
+void rversion (char * progname, char * version, char * date, char * time);
+
+char * scenter (char * s, unsigned max);
+
 
 #ifdef __cplusplus
 }

@@ -9,6 +9,7 @@
 
 /* Project headers */
 #include "vargv.h"
+#include "sargv.h"
 
 
 #ifdef __cplusplus

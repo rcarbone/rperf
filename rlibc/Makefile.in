@@ -11,6 +11,8 @@ LIBSRCS  += safe.c
 LIBSRCS  += support.c
 LIBSRCS  += rctype.c
 LIBSRCS  += roptions.c
+LIBSRCS  += other.c
+LIBSRCS  += rstring.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE   =
