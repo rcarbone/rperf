@@ -4,6 +4,10 @@
 /* Public header */
 #include "rwall.h"
 
+#if !defined(CLOCK_MONOTONIC_RAW)
+#define CLOCK_MONOTONIC_RAW CLOCK_MONOTONIC
+#endif
+
 
 /* Return the current wall time in nanoseconds */
 rtime_t nswall (void)
@@ -35,6 +39,9 @@ rtime_t mswall (void)
 /* Evaluate a random number in the range [0 n-1] */
 unsigned rrand (unsigned n)
 {
+  if (! n)
+    return 0;
+
   srand (nswall ());
   return rand () % n;
 }

@@ -5,15 +5,16 @@
  * define NEED_RTRIE_TYPEDEF to have a generic definition
  *
  * e.g.
- *  typedef struct my_own_trie rtrie_t;
- *  #include "rt-api.h"
+ *    typedef struct my_own_trie rtrie_t;
+ *    #include "rt-api.h"
  *
  * or
- * #define NEED_RTRIE_TYPEDEF
- *  #include "rt-api.h"
+ *    #define NEED_RTRIE_TYPEDEF
+ *    #include "rt-api.h"
  */
 
 #pragma once
+
 
 #if defined(NEED_RTRIE_TYPEDEF)
 typedef struct rt rtrie_t;
@@ -46,13 +47,11 @@ extern "C" {
 /* Allocates and initializes the trie */
 rtrie_t * rtrie_alloc (void);
 
-  /* Deallocates the memory used by the trie */
+/* Deallocates the memory used by the trie */
 void rtrie_free (rtrie_t * trie);
 
 
-/*
- * Iterators
- */
+/* Iterators */
 void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data);
 
 

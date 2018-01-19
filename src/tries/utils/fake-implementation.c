@@ -7,6 +7,7 @@
 #include "nodes.h"
 #include "safe.h"
 
+
 /* This implementation uses a dynamic array of void pointers just as example */
 typedef struct
 {
