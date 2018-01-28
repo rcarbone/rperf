@@ -7,15 +7,16 @@
 #include "roptions.h"
 #include "sargv.h"
 #include "support.h"
-
 #include "rut.h"
+
+
 #define INITIALS 1e3
 #define LOOPS    1
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-unsigned rtrieargc (void);
-rut_t * rtrieargv (void);
+unsigned rtrie_ut_argc (void);
+rut_t * rtrie_ut_argv (void);
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
@@ -103,19 +104,19 @@ static struct option lopts [] =
 
 static rut_t ** rut_handles_all (void)
 {
-  return rut_handles (rtrieargc (), rtrieargv ());
+  return rut_handles (rtrie_ut_argc (), rtrie_ut_argv ());
 }
 
 
 static rut_t * rut_legal (char * name)
 {
-  return rut_valid (rtrieargc (), rtrieargv (), name);
+  return rut_valid (rtrie_ut_argc (), rtrie_ut_argv (), name);
 }
 
 
 static void rut_run_all (rut_t * rut, unsigned items, unsigned seq)
 {
-  rut_run (rut, items, digits (rtrieargc ()), seq, 15);
+  rut_run (rut, items, digits (rtrie_ut_argc ()), seq, 15);
 }
 
 
@@ -156,7 +157,7 @@ static void doit (char * progname, unsigned choice,
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: rut_prints (rtrieargc (), rtrieargv ()); break;
+    case OPT_LIST: rut_prints (rtrie_ut_argc (), rtrie_ut_argv ()); break;
 
     case OPT_RUN:
       for (l = 0; l < arrlen (tests); l ++)
@@ -293,7 +294,7 @@ int main (int argc, char * argv [])
   /* Check for unsupported arguments */
   if (argc != optind)
     {
-      printf ("Unsupported arguments: %u\n", argc - optind);
+      printf ("Unsupported arguments: #%u\n", argc - optind);
       while (argc != optind)
 	printf ("%s\n", argv [optind ++]);
       return 1;

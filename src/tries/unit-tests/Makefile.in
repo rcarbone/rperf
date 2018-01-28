@@ -1,10 +1,9 @@
 # The name of the games
-LIB       = rtrie-ut
-PROGRAM   = run
+LIBNAME   = rtrie-ut
 
 # C source files
 LIBSRCS  += builtins.c
-MAINSRCS += main.c
+MAINSRCS += run-it.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE  += -I${RLIBCDIR}
@@ -12,6 +11,8 @@ INCLUDE  += -I${RUTDIR}
 INCLUDE  += -I${UTILSDIR}
 CFLAGS   +=
 C++FLAGS +=
+USRLIBS  += ${STLIB}
 USRLIBS  += ${RUTLIB}
 USRLIBS  += ${UTILSLIB}
+USRLIBS  += ${RLIBCLIB}
 SYSLIBS  +=

@@ -1,0 +1,36 @@
+NAME
+       tommy-trieinp - Inplace trie
+
+AUTHOR
+       Copyright (c) 2010, Andrea Mazzoleni. All rights reserved.
+
+SYNOPSIS
+       #include "tommytrieinp.h"
+
+TYPEDEFS
+       typedef struct tommy_trie_inplace_struct tommy_trie_inplace;
+
+NAME
+       - Initializes the trie
+         void tommy_trie_inplace_init (tommy_trie_inplace * trie_inplace);
+
+       - Inserts an element in the trie
+         void tommy_trie_inplace_insert (tommy_trie_inplace * trie_inplace, tommy_trie_inplace_node * node, void * data, tommy_key_t key);
+
+       - Searches and removes the first element with the specified key
+         void * tommy_trie_inplace_remove (tommy_trie_inplace * trie_inplace, tommy_key_t key);
+
+       - Gets the bucket of the specified key
+         tommy_trie_inplace_node * tommy_trie_inplace_bucket (tommy_trie_inplace * trie_inplace, tommy_key_t key);
+
+       - Searches an element in the trie
+         void * tommy_trie_inplace_search (tommy_trie_inplace * trie_inplace, tommy_key_t key)
+
+       - Removes an element from the trie
+         void * tommy_trie_inplace_remove_existing (tommy_trie_inplace * trie_inplace, tommy_trie_inplace_node * node);
+
+       - Gets the number of elements
+         tommy_count_t tommy_trie_inplace_count (tommy_trie_inplace * trie_inplace)
+
+       - Gets the size of allocated memory
+         tommy_size_t tommy_trie_inplace_memory_usage (tommy_trie_inplace * trie_inplace);

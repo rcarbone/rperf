@@ -3,7 +3,6 @@
 #include <libgen.h>
 #include <getopt.h>
 
-
 /* Project headers */
 #include "rut.h"
 #include "sargv.h"

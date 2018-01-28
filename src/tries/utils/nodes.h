@@ -5,21 +5,30 @@
 
 
 /* tommyds - Andrea Mazzoleni */
-#include "tommytypes.h"
+#include "tommytrie.h"
+#include "tommytrieinp.h"
+
+/* nedtrie - Niall Douglas */
+#include "nedtrie.h"
 
 
 /* Trie Node definition */
 typedef struct rnode rnode_t;
-typedef struct rnode
+struct rnode
 {
   char     * key;
   unsigned   val;
   rnode_t  * foo;
 
   /* Required by tommyds implementation to make the structure trie-able */
-  tommy_node tommy;
+  tommy_trie_node tommy;
 
-} rnode_t;
+  /* Required by tommyds implementation to make the structure trie-able */
+  tommy_trie_inplace_node andrea;
+
+  /* Required by nedtrie implementation to make the structure trie-able */
+  NEDTRIE_ENTRY(rnode) ned;
+};
 
 
 /* API */

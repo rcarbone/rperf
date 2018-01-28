@@ -1,17 +1,3 @@
-# The name of the games
-NAME       = trie-tommyds
-
-# C/C++ source files
-LIBCSRCS   = glue.c
-LIBC++SRCS =
-
-# Compiler flags and System libraries (optional)
-INCLUDE   += -I./pub
-INCLUDE   += -I${RUTDIR}
-INCLUDE   += -I${UTILSDIR}
-INCLUDE   += -I${SUITEDIR}
-USRLIBS   += ${SUITELIB}
-CFLAGS    +=
-C++FLAGS  +=
-USRLIBS   += ${SUITELIB}
-SYSLIBS   +=
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+SUBDIRS += trie
+SUBDIRS += trieinp

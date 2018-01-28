@@ -1,0 +1,37 @@
+NAME
+       tommy-trie - Trie optimized for cache utilization
+
+AUTHOR
+       Copyright (c) 2010, Andrea Mazzoleni. All rights reserved.
+
+SYNOPSIS
+       #include "tommytrie.h"
+
+TYPEDEFS
+       typedef typedef struct tommy_allocator_struct tommy_allocator;
+       typedef struct tommy_trie_struct tommy_trie;
+
+NAME
+       - Initializes the trie
+         void tommy_trie_init (tommy_trie * trie, tommy_allocator * alloc);
+
+       - Inserts an element in the trie
+         void tommy_trie_insert (tommy_trie * trie, tommy_trie_node * node, void * data, tommy_key_t key);
+
+       - Searches and removes the first element with the specified key
+         void * tommy_trie_remove (tommy_trie * trie, tommy_key_t key);
+
+       - Gets the bucket of the specified key
+         tommy_trie_node * tommy_trie_bucket (tommy_trie * trie, tommy_key_t key);
+
+       - Searches an element in the trie
+         void * tommy_trie_search (tommy_trie * trie, tommy_key_t key);
+
+       - Removes an element from the trie
+         void * tommy_trie_remove_existing (tommy_trie * trie, tommy_trie_node * node);
+
+       - Gets the number of elements
+         tommy_count_t tommy_trie_count (tommy_trie * trie)
+
+       - Gets the size of allocated memory
+         tommy_size_t tommy_trie_memory_usage (tommy_trie * trie);

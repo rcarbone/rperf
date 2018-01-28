@@ -83,7 +83,7 @@ plugin.c: README.c ${RTRIEDIR}/etc/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-ut-run.c: ${RTRIEDIR}/unit-tests/main.c
+ut-run.c: ${RTRIEDIR}/unit-tests/run-it.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 

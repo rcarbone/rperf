@@ -74,6 +74,10 @@ for file in $makefiles; do
 done
 
 # Create symlinks
-(cd utils;
+(cd include;
  ln -sf ../implementations/tommyds/pub/tommytypes.h .
+ ln -sf ../implementations/tommyds/pub/tommyalloc.h .
+ ln -sf ../implementations/tommyds/pub/tommytrie.h .
+ ln -sf ../implementations/tommyds/pub/tommytrieinp.h .
+ ln -sf ../implementations/nedtrie/pub/nedtrie.h .
 )

@@ -1,19 +1,21 @@
 # Dependency files for generation of Makefiles
 TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Dirs ${RTRIEDIR}/etc/Makefile.leaf
 
-# Static library
-STLIB     = lib${LIB}.a
+# Static and Dynamic libraries
+STLIB     = lib${LIBNAME}.a
+SHLIB     = ${STLIB:%.a=%.so}
+PROGRAMS  = ${MAINSRCS:%.c=%}
 
 # All the targets
-TARGETS   = ${STLIB} ${PROGRAM}
+TARGETS   = ${STLIB} ${SHLIB} ${PROGRAMS}
 
-# Source, object and depend files
+# Object, depend and binary files
 LIBOBJS   = ${LIBSRCS:%.c=%.o}
 MAINOBJS  = ${MAINSRCS:%.c=%.o}
-DEPS      = ${LIBSRCS:%.c=%.M} ${MAINSRCS:%.c=%.M}
 OBJS      = ${LIBOBJS} ${MAINOBJS}
+DEPS      = ${LIBSRCS:%.c=%.M} ${MAINSRCS:%.c=%.M}
 
-# C compiler and flags
+# Compiler and flags
 INCLUDES  = -I./
 INCLUDES += ${INCLUDE}
 CC        = gcc
@@ -21,15 +23,14 @@ C++       = g++
 AR        = ar
 LD        = gcc
 # OPTIMIZE  = -O3
-# OPTIMIZE += -flto -fuse-linker-plugin
 CFLAGS   += -g -Wall
 CFLAGS   += ${OPTIMIZE}
 CFLAGS   += ${INCLUDES}
 CFLAGS   += -fPIC
 CFLAGS   += -fno-diagnostics-color
 C++FLAGS += ${CFLAGS}
-ARFLAGS   = rv
-LDFLAGS   = ${OPTIMIZE}
+ARFLAGS   = rs
+LDFLAGS   =
 
 # The main target is responsible to make all the targets
 all: Makefile ${TARGETS}
@@ -73,18 +74,18 @@ Makefile: Makefile.in ${TEMPLATES}
 	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
 	@echo                                                  >> Makefile
 
-# Static Library
+# Static library
 ${STLIB}: ${LIBOBJS}
 	@echo "=*= making static library $@ =*="
 	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
 
-# Dynamic Library
-${SHLIB}:
+# Dynamic library
+${SHLIB}: ${LIBOBJS}
 	@echo "=*= making shared library $@ =*="
 	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
 
 # Binary programs
-${PROGRAM}: ${MAINOBJS} ${STLIB} ${USRLIBS} ${RLIBCLIB}
+%: %.o ${USRLIBS}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
@@ -92,7 +93,6 @@ ${PROGRAM}: ${MAINOBJS} ${STLIB} ${USRLIBS} ${RLIBCLIB}
 clean:
 	@rm -f ${TARGETS}
 	@rm -f ${OBJS}
-	@rm -f *.o
 	@rm -f *~
 
 distclean: clean
@@ -122,9 +122,9 @@ distclean: clean
 
 # Check for errors and memory leaks
 
-VFLAGS    = --show-leak-kinds=all
-VFLAGS   += --leak-check=full
 VFLAGS   += --error-exitcode=1
+VFLAGS   += --leak-check=full
+VFLAGS   += --show-leak-kinds=all
 VVFLAGS   = ${VFLAGS}
 VVFLAGS  += --show-reachable=yes
 VVFLAGS  += --error-limit=no

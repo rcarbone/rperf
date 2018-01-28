@@ -1,6 +1,22 @@
-1. implements the functions of Unit Tests and group them in a static table,
-   then implements the [argc, argv] functions
-   eg. builtins.c
+A library of Unit Tests for rtrie
+=================================
 
-2. implements a main program to Display/Select/Run Unit Tests
-   eg. main.c
+All the Unit Tests defined here are implemented in terms
+of the virtual interface rtrie and when linked with the
+dummy implementation in ../rut/ do more or less nothing.
+
+
+
+API
+===
+unsigned rtrie_ut_argc (void);
+rut_t * rtrie_ut_argv (void);
+
+
+1. The file [builtins.c] implements the functions of Unit Tests
+   and group them all together in a static table, accessible
+   via the rtrie_ut_[argc, argv] functions
+
+2. The file [main.c] implements a main program to Display/Select/Run Unit Tests
+
+

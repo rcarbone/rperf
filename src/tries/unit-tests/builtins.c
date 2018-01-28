@@ -1,5 +1,5 @@
 /*
- * All the Unit Tests for the tries are here, all items grouped together in a static table.
+ * All the Unit Tests are here, grouped together in a static table.
  */
 
 
@@ -43,7 +43,7 @@ static rut_t builtins [] =
 /* === Implementation of the builtin Unit Tests === */
 
 
-/* Callback to iterate over the trie elements */
+/* Callback to iterate over the elements */
 static void addone_cb (void * x)
 {
   (* (unsigned *) x) ++;
@@ -64,6 +64,7 @@ static rtrie_t * populate (unsigned argc, rnode_t * argv [])
 }
 
 
+/* Unit test */
 static unsigned alloc_free (unsigned argc)
 {
   rtrie_t * trie = populate (0, NULL);
@@ -74,6 +75,7 @@ static unsigned alloc_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_add_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -84,6 +86,7 @@ static unsigned alloc_add_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_iterate_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -97,6 +100,7 @@ static unsigned alloc_iterate_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_count_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -108,6 +112,7 @@ static unsigned alloc_count_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_found_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -124,6 +129,7 @@ static unsigned alloc_found_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_miss_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -138,6 +144,7 @@ static unsigned alloc_miss_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_delete_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -152,6 +159,7 @@ static unsigned alloc_delete_free (unsigned argc)
 }
 
 
+/* Unit test */
 static unsigned alloc_missed_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -169,14 +177,14 @@ static unsigned alloc_missed_free (unsigned argc)
 
 
 /* Return the # of Unit Tests */
-unsigned rtrieargc (void)
+unsigned rtrie_ut_argc (void)
 {
   return RUTNO;
 }
 
 
 /* Return the table of the Unit Tests */
-rut_t * rtrieargv (void)
+rut_t * rtrie_ut_argv (void)
 {
   return builtins;
 }

@@ -1,3 +1,28 @@
+'rtrie' is an abstract specification that defines an independent C interface for Trie implementations
+=====================================================================================================
+
+include/
+   API Specification
+
+etc/
+   templates for generation of Makefiles
+
+utils/
+   utility to define the objects of the container
+
+unit-tests/
+   a static table with all defined unit tests
+   use assert()
+
+suite/
+speed/
+
+implementations/
+   all the implementations under test
+
+plugins/
+
+
 How to add a scenario
 =====================
 

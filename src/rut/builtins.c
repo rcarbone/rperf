@@ -6,7 +6,7 @@
 /* Project headers */
 #include "rut.h"
 
-/* Forward declaration */
+/* Forward declarations */
 static unsigned alloc_free (unsigned argc);
 static unsigned alloc_add_free (unsigned argc);
 static unsigned alloc_iterate_free (unsigned argc);

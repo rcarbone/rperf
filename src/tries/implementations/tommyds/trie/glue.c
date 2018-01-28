@@ -23,7 +23,7 @@ static tommy_allocator alloc;
 
 rtrie_t * rtrie_alloc (void)
 {
-  tommy_trie * trie = calloc (1, sizeof (* trie));
+  rtrie_t * trie = calloc (1, sizeof (* trie));
   tommy_allocator_init (& alloc, TOMMY_TRIE_BLOCK_SIZE, TOMMY_TRIE_BLOCK_SIZE);
   tommy_trie_init (trie, & alloc);
   return trie;
