@@ -534,8 +534,6 @@ namespace nedtries {
       } \
       goto functexit; \
     } \
-    if (! r->field.trie_parent) \
-     return; \
     /* I must therefore be part of the tree */ \
     assert(r->field.trie_parent); \
     assert(!r->field.trie_prev); \

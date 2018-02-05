@@ -36,3 +36,4 @@ rnode_t * mknode (unsigned key);
 void rmnode (rnode_t * node);
 rnode_t ** mknodes (unsigned argc);
 void rmnodes (rnode_t * argv []);
+rnode_t ** mkmiss (unsigned argc);

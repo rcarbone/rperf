@@ -54,3 +54,17 @@ void rmnodes (rnode_t * argv [])
     rmnode (* e ++);
   safefree (argv);
 }
+
+
+/* Initializes the array with the natural numbers from argc + 1 to 2 * argc */
+rnode_t ** mkmiss (unsigned argc)
+{
+  rnode_t ** argv = calloc (argc + 1, sizeof (* argv));
+  unsigned i;
+
+  for (i = 0; i < argc; i ++)
+    argv [i] = mknode (argc + i + 1);
+  argv [i] = NULL;
+
+  return argv;
+}

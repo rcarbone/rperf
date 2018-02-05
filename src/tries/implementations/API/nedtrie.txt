@@ -1,0 +1,50 @@
+NAME
+       nedtrie - An in-place binary trie implementation for C and C++
+
+AUTHOR
+       (C) 2010-2012 Niall Douglas
+
+SYNOPSIS
+       #include "nedtrie.h"
+
+TYPEDEFS
+        typedef struct rtrie ned_tree_t;
+        NEDTRIE_HEAD(rtrie, rnode);
+
+NAME
+       - Initializes the trie
+         NEDTRIE_INIT (trie);
+
+       - Inserts an element in the trie
+         NEDTRIE_INSERT (rtrie, trie, node);
+
+       - Searches an element in the trie
+         NEDTRIE_FIND (rtrie, trie, node);
+
+       - Removes an element from the trie
+         NEDTRIE_REMOVE (rtrie, trie, node);
+
+       - Gets the number of elements
+ 
+       - Gets the size of allocated memory
+
+         NEDTRIE_HEAD 
+         NEDTRIE_ENTRY
+
+         NEDTRIE_COUNT
+         NEDTRIE_EMPTY
+         NEDTRIE_EXACTFIND
+         NEDTRIE_CFIND
+         NEDTRIE_NFIND
+         NEDTRIE_PREV
+         NEDTRIE_NEXT
+         NEDTRIE_PREVLEAF
+         NEDTRIE_NEXTLEAF
+         NEDTRIE_MIN
+         NEDTRIE_MAX
+         NEDTRIE_FOREACH
+         NEDTRIE_FOREACH_SAFE
+         NEDTRIE_FOREACH_REVERSE
+         NEDTRIE_FOREACH_REVERSE_SAFE
+         NEDTRIE_HASNODEHEADER
+

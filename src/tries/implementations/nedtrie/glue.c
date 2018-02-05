@@ -21,7 +21,7 @@ static unsigned fun (const rnode_t * node);
 
 
 /* Trie definition */
-typedef struct rtrie ned_tree_t;
+typedef struct rtrie nedtrie_t;
 NEDTRIE_HEAD(rtrie, rnode);
 
 
@@ -69,7 +69,7 @@ void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data)
 
 unsigned rtrie_count (rtrie_t * trie)
 {
-  return trie -> count;
+  return NEDTRIE_COUNT (trie);
 }
 
 

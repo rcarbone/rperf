@@ -64,7 +64,7 @@ static rtrie_t * populate (unsigned argc, rnode_t * argv [])
 }
 
 
-/* Unit test */
+/* Unit test - memory */
 static unsigned alloc_free (unsigned argc)
 {
   rtrie_t * trie = populate (0, NULL);
@@ -75,7 +75,7 @@ static unsigned alloc_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - insertions */
 static unsigned alloc_add_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -86,7 +86,7 @@ static unsigned alloc_add_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - iterating */
 static unsigned alloc_iterate_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -100,7 +100,7 @@ static unsigned alloc_iterate_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - counting */
 static unsigned alloc_count_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -112,7 +112,7 @@ static unsigned alloc_count_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - getting existing values (successful lookup) */
 static unsigned alloc_found_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -129,22 +129,23 @@ static unsigned alloc_found_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - getting nonexistent values (lookup failure) */
 static unsigned alloc_miss_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
+  rnode_t ** miss = mkmiss (argc);
   rtrie_t * trie = populate (argc, argv);
   unsigned i;
-  rnode_t miss;
   for (i = 0; i < argc; i ++)
-    assert (! rtrie_get (trie, & miss));
+    assert (! rtrie_get (trie, miss [i]));
   rtrie_free (trie);
+  rmnodes (miss);
   rmnodes (argv);
   return argc;
 }
 
 
-/* Unit test */
+/* Unit test - deleting existing values (successful lookup) */
 static unsigned alloc_delete_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
@@ -159,15 +160,18 @@ static unsigned alloc_delete_free (unsigned argc)
 }
 
 
-/* Unit test */
+/* Unit test - deleting nonexistent values (lookup failure) */
 static unsigned alloc_missed_free (unsigned argc)
 {
   rnode_t ** argv = mknodes (argc);
-  rnode_t ** miss = mknodes (argc);
+  rnode_t ** miss = mkmiss (argc);
   rtrie_t * trie = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
-    rtrie_del (trie, miss [i]);
+    {
+      rtrie_del (trie, miss [i]);
+      assert (rtrie_count (trie) == argc);
+    }
   assert (rtrie_count (trie) == argc);
   rtrie_free (trie);
   rmnodes (miss);
