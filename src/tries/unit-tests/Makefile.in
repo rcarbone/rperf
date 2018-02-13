@@ -3,7 +3,7 @@ LIBNAME   = rtrie-ut
 
 # C source files
 LIBSRCS  += builtins.c
-MAINSRCS += run-it.c
+MAINSRCS += run-ut.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE  += -I${RLIBCDIR}

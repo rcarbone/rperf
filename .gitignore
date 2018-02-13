@@ -22,6 +22,9 @@ src/*/implementations/*/*/*/plugin-rl.c
 src/*/implementations/*/ut-run.c
 src/*/implementations/*/*/ut-run.c
 src/*/implementations/*/*/*/ut-run.c
+src/*/implementations/*/run-ut.c
+src/*/implementations/*/*/run-ut.c
+src/*/implementations/*/*/*/run-ut.c
 src/*/implementations/*/suite-run.c
 src/*/implementations/*/*/suite-run.c
 src/*/implementations/*/*/*/suite-run.c

@@ -6,7 +6,6 @@ of the virtual interface rtrie and when linked with the
 dummy implementation in ../rut/ do more or less nothing.
 
 
-
 API
 ===
 unsigned rtrie_ut_argc (void);
@@ -17,6 +16,4 @@ rut_t * rtrie_ut_argv (void);
    and group them all together in a static table, accessible
    via the rtrie_ut_[argc, argv] functions
 
-2. The file [main.c] implements a main program to Display/Select/Run Unit Tests
-
-
+2. The file [run-ut.c] implements a main program to Display/Select/Run Unit Tests

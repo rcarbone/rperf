@@ -5,7 +5,7 @@ TEMPLATES = ${ETCDIR}/FileSystem ${RTRIEDIR}/etc/Dirs ${RTRIEDIR}/etc/Makefile.p
 SHLIB     = ${NAME}.so
 
 # All the binary programs
-PROGRAMS  = ut-run suite-run
+PROGRAMS  = run-ut suite-run
 
 # All the targets
 TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
@@ -38,7 +38,7 @@ LDFLAGS   = ${OPTIMIZE}
 SYSLIBS  += -ldl
 
 # The main target is responsible to make all the targets
-all: Makefile plugin.c ut-run.c suite-run.c ${INSTALLDIR} ${TARGETS}
+all: Makefile plugin.c run-ut.c suite-run.c ${INSTALLDIR} ${TARGETS}
 
 Makefile: Makefile.in ${TEMPLATES}
 	@echo "=*= making $@ =*="
@@ -83,7 +83,7 @@ plugin.c: README.c ${RTRIEDIR}/etc/plugin.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
-ut-run.c: ${RTRIEDIR}/unit-tests/run-it.c
+run-ut.c: ${RTRIEDIR}/unit-tests/run-ut.c
 	@echo "=*= making C source $@ =*="
 	@cat $^ > $@
 
@@ -115,7 +115,7 @@ ${INSTALLDIR}:
          fi
 
 # Binary programs
-ut-run: ut-run.o glue.o ${RUTLIB} ${UTLIB} ${UTILSLIB} ${RLIBCLIB}
+run-ut: run-ut.o glue.o ${RUTLIB} ${UTLIB} ${UTILSLIB} ${RLIBCLIB}
 	@echo "=*= making program $@ =*="
 	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
 
