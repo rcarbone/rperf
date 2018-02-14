@@ -16,6 +16,10 @@ typedef struct
 
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 unsigned rutargc (void);
 rut_t * rutargv (void);
 
@@ -37,3 +41,8 @@ char ** rut_names (unsigned argc, rut_t * argv);
 
 /* Print all the Unit Tests */
 void rut_prints (unsigned argc, rut_t * argv);
+
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */

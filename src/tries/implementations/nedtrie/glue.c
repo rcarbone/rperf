@@ -21,7 +21,6 @@ static unsigned fun (const rnode_t * node);
 
 
 /* Trie definition */
-typedef struct rtrie nedtrie_t;
 NEDTRIE_HEAD(rtrie, rnode);
 
 
@@ -55,15 +54,12 @@ void rtrie_free (rtrie_t * trie)
 
 void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data)
 {
-#if !defined(ROCCO)
-  unsigned i = rtrie_count (trie);
-  while (i --)
+  rnode_t * node;
+  NEDTRIE_FOREACH (node, rtrie, trie)
+  {
     if (fn)
       fn (data);
-#else
-  rnode_t * node;
-  NEDTRIE_FOREACH (node, rtrie, trie);
-#endif /* ROCCO */
+  }
 }
 
 
