@@ -1,0 +1,17 @@
+# The name of the games
+NAME       = c-nedtrie
+
+# C/C++ source files
+LIBCSRCS   = glue.c
+LIBC++SRCS =
+
+# Compiler flags and System libraries (optional)
+INCLUDE   += -I../pub
+INCLUDE   += -I${RUTDIR}
+INCLUDE   += -I${UTILSDIR}
+INCLUDE   += -I${SUITEDIR}
+USRLIBS   += ${SUITELIB}
+CFLAGS    +=
+C++FLAGS  +=
+USRLIBS   += ${SUITELIB}
+SYSLIBS   +=

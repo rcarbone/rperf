@@ -146,7 +146,7 @@ clean:
 	@rm -f ${OBJS}
 	@rm -f *~
 	@rm -f plugin.o
-	@rm -f ut-run.o
+	@rm -f run-ut.o
 	@rm -f suite-run.o
 
 distclean: clean

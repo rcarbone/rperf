@@ -13,7 +13,7 @@
 
 rnode_t * mknode (unsigned x)
 {
-  rnode_t * node = calloc (1, sizeof (* node));
+  rnode_t * node = (rnode_t *) calloc (1, sizeof (* node));
 
   node -> key = strdup (utoa (x));
   node -> val = x;
@@ -36,7 +36,7 @@ void rmnode (rnode_t * node)
 /* Initializes the array with the natural numbers from 1 to argc */
 rnode_t ** mknodes (unsigned argc)
 {
-  rnode_t ** argv = calloc (argc + 1, sizeof (* argv));
+  rnode_t ** argv = (rnode_t **) calloc (argc + 1, sizeof (* argv));
   unsigned i;
 
   for (i = 0; i < argc; i ++)
@@ -59,7 +59,7 @@ void rmnodes (rnode_t * argv [])
 /* Initializes the array with the natural numbers from argc + 1 to 2 * argc */
 rnode_t ** mkmiss (unsigned argc)
 {
-  rnode_t ** argv = calloc (argc + 1, sizeof (* argv));
+  rnode_t ** argv = (rnode_t **) calloc (argc + 1, sizeof (* argv));
   unsigned i;
 
   for (i = 0; i < argc; i ++)

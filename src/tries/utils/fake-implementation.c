@@ -28,7 +28,7 @@ typedef struct
 
 rtrie_t * rtrie_alloc (void)
 {
-  return calloc (1, sizeof (rtrie_t));
+  return (rtrie_t *) calloc (1, sizeof (rtrie_t));
 }
 
 

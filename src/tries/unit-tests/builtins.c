@@ -119,10 +119,7 @@ static unsigned alloc_found_free (unsigned argc)
   rtrie_t * trie = populate (argc, argv);
   unsigned i;
   for (i = 0; i < argc; i ++)
-    {
-      rnode_t * node = rtrie_get (trie, argv [i]);
-      assert (node);
-    }
+    assert (rtrie_get (trie, argv [i]));
   rtrie_free (trie);
   rmnodes (argv);
   return argc;
