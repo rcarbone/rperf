@@ -5,10 +5,13 @@ rtrie-speed
 rspeed
 rbattle
 
-run-ut
+src/tries/*/main
+
+src/*/implementations/ut-run
+src/*/implementations/*/ut-run
+src/*/implementations/*/*/ut-run
+src/*/implementations/*/*/*/ut-run
 suite-run
-run
-ut
 
 # Automatically generated symlinks
 src/*/builtins/ht-internal.h

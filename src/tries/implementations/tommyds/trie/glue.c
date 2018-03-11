@@ -14,6 +14,7 @@
 typedef tommy_trie rtrie_t;
 #include "rtrie-api.h"
 
+/* Node definition */
 #include "nodes.h"
 #include "safe.h"
 
