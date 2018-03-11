@@ -6,7 +6,12 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wwrite-strings"
 #endif
+
+#endif /* __cplusplus */
 
 
 unsigned optmax (struct option * options);

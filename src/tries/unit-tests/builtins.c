@@ -13,6 +13,12 @@
 #include "vargv.h"
 #include "nodes.h"
 
+#ifdef __cplusplus
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+#endif /* __cplusplus */
+
 
 /* Forward declarations */
 static rut_f alloc_free;

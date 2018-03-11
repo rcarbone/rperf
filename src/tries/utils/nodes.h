@@ -9,6 +9,9 @@
 #include "tommytrieinp.h"
 
 /* nedtrie - Niall Douglas */
+#if defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#endif
 #include "nedtrie.h"
 
 

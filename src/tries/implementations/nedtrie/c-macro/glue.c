@@ -84,5 +84,6 @@ void * rtrie_get (rtrie_t * trie, void * node)
 
 void rtrie_del (rtrie_t * trie, void * node)
 {
-  NEDTRIE_REMOVE (rtrie, trie, node);
+  if (NEDTRIE_FIND (rtrie, trie, node))
+    NEDTRIE_REMOVE (rtrie, trie, node);
 }
