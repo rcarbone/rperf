@@ -1,0 +1,36 @@
+NAME
+       xxx - xxx
+
+AUTHOR
+       xxx
+
+SYNOPSIS
+       #include "xxx.h"
+
+TYPEDEFS
+       typedef struct xxx xxx;
+
+NAME
+       - Initializes the trie
+         void xxx (xxx);
+
+       - Inserts an element in the trie
+         void xxx (xxx);
+
+       - Searches and removes the first element with the specified key
+         void xxx (xxx);
+
+       - Gets the bucket of the specified key
+         void xxx (xxx);
+
+       - Searches an element in the trie
+         void xxx (xxx);
+
+       - Removes an element from the trie
+         void xxx (xxx);
+
+       - Gets the number of elements
+         void xxx (xxx);
+
+       - Gets the size of allocated memory
+         void xxx (xxx);
