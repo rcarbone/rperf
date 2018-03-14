@@ -1,5 +1,5 @@
 # The name of the games
-LIB       = rtrie-suite
+LIBNAME   = rtrie-suite
 PROGRAM   = run
 
 # C source files

@@ -48,7 +48,7 @@ Operations on trie include:
  - Enumerate all keys using
      trie_enumerate()
 
-  - Iterate entries using TrieIterator and its functions
+ - Iterate entries using TrieIterator and its functions
     trie_iterator_new()
     trie_iterator_next()
     trie_iterator_get_key()

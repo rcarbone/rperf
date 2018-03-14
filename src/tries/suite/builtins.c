@@ -18,9 +18,10 @@
 /* The Suite in a static table */
 static rsuite_t builtins [] =
 {
-  { "grow",    "Populate an empty container",    rsuite_grow    },
-  { "iterate", "Iterate over all trie elements", rsuite_iterate },
-  { "pop",     "Remove all elements one-by-one", rsuite_pop     },
+  { "grow_seq", "Populate an empty container [unique sequential keys]", rsuite_grow_seq },
+  { "grow_rnd", "Populate an empty container [unique random keys]",     rsuite_grow_rnd },
+  { "pop",      "Remove all elements one-by-one", rsuite_pop     },
+  { "iterate",  "Iterate over all trie elements", rsuite_iterate },
 };
 #define RSUITENO (sizeof (builtins) / sizeof (* builtins))
 
@@ -46,8 +47,8 @@ static rtrie_t * populate (unsigned argc, void * argv [])
 }
 
 
-/* Allocate and populate a trie inserting argc elements */
-rtime_t rsuite_grow (unsigned argc, void * argv [])
+/* Allocate and populate a trie inserting argc elements in sequential order */
+rtime_t rsuite_grow_seq (unsigned argc, void * argv [])
 {
   rtrie_t * trie = rtrie_alloc ();
   rtime_t t1;
@@ -63,18 +64,22 @@ rtime_t rsuite_grow (unsigned argc, void * argv [])
 }
 
 
-/* Iterate over all the trie elements */
-rtime_t rsuite_iterate (unsigned argc, void * argv [])
+/* Allocate and populate a trie inserting argc elements in random order */
+rtime_t rsuite_grow_rnd (unsigned argc, void * argv [])
 {
-  rtrie_t * trie = populate (argc, argv);
-  unsigned n = 0;
+  rtrie_t * trie = rtrie_alloc ();
+  unsigned * order = rndorder (argc);
   rtime_t t1;
   rtime_t t2;
+  unsigned i;
   t1 = nswall ();
-  rtrie_foreach (trie, addone_cb, & n);
+  for (i = 0; i < argc; i ++)
+    rtrie_add (trie, argv [order [i]]);
   t2 = nswall ();
+  free (order);
+  i = rtrie_count (trie);
   rtrie_free (trie);
-  return n == argc ? t2 - t1 : 0;
+  return i == argc ? t2 - t1 : 0;
 }
 
 
@@ -96,15 +101,30 @@ rtime_t rsuite_pop (unsigned argc, void * argv [])
 }
 
 
+/* Iterate over all the trie elements */
+rtime_t rsuite_iterate (unsigned argc, void * argv [])
+{
+  rtrie_t * trie = populate (argc, argv);
+  unsigned n = 0;
+  rtime_t t1;
+  rtime_t t2;
+  t1 = nswall ();
+  rtrie_foreach (trie, addone_cb, & n);
+  t2 = nswall ();
+  rtrie_free (trie);
+  return n == argc ? t2 - t1 : 0;
+}
+
+
 /* Return the # of items */
-unsigned rtriesuiteargc (void)
+unsigned rtrie_suite_argc (void)
 {
   return RSUITENO;
 }
 
 
 /* Return the table of the Suite */
-rsuite_t * rtriesuiteargv (void)
+rsuite_t * rtrie_suite_argv (void)
 {
   return builtins;
 }

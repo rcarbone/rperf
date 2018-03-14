@@ -13,9 +13,10 @@ typedef enum
 {
   RSUITE_BOOT       = 1,
   RSUITE_HALT,
-  RSUITE_GROW,
-  RSUITE_ITERATE,
+  RSUITE_GROW_SEQ,
+  RSUITE_GROW_RND,
   RSUITE_POP,
+  RSUITE_ITERATE,
 
 } rsuite_id_t;
 
@@ -63,11 +64,12 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
     {
       switch (which)
 	{
-	case RSUITE_BOOT:                                   break;
-	case RSUITE_HALT:                                   break;
-	case RSUITE_GROW:    rsuite_grow (nelems, envp);    break;
-	case RSUITE_ITERATE: rsuite_iterate (nelems, envp); break;
-	case RSUITE_POP:     rsuite_pop (nelems, envp);     break;
+	case RSUITE_BOOT:                                     break;
+	case RSUITE_HALT:                                     break;
+	case RSUITE_GROW_SEQ: rsuite_grow_seq (nelems, envp); break;
+	case RSUITE_GROW_RND: rsuite_grow_rnd (nelems, envp); break;
+	case RSUITE_POP:     rsuite_pop (nelems, envp);       break;
+	case RSUITE_ITERATE: rsuite_iterate (nelems, envp);   break;
 	}
     }
 
@@ -89,19 +91,25 @@ int halt (int argc, char * argv [], void * envp [])
 }
 
 
-int grow (int argc, char * argv [], void * envp [])
+int grow_seq (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_GROW, argc, argv, envp);
+  return run_this (RSUITE_GROW_SEQ, argc, argv, envp);
 }
 
 
-int iterate (int argc, char * argv [], void * envp [])
+int grow_rnd (int argc, char * argv [], void * envp [])
 {
-  return run_this (RSUITE_ITERATE, argc, argv, envp);
+  return run_this (RSUITE_GROW_RND, argc, argv, envp);
 }
 
 
 int pop (int argc, char * argv [], void * envp [])
 {
   return run_this (RSUITE_POP, argc, argv, envp);
+}
+
+
+int iterate (int argc, char * argv [], void * envp [])
+{
+  return run_this (RSUITE_ITERATE, argc, argv, envp);
 }

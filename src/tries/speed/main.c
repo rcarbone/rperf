@@ -144,19 +144,19 @@ static struct option lopts [] =
 
 static rsuite_t ** rsuite_handles_all (void)
 {
-  return rsuite_handles (rtriesuiteargc (), rtriesuiteargv ());
+  return rsuite_handles (rtrie_suite_argc (), rtrie_suite_argv ());
 }
 
 
 static rsuite_t * rsuite_valid_all (char * name)
 {
-  return rsuite_valid (rtriesuiteargc (), rtriesuiteargv (), name);
+  return rsuite_valid (rtrie_suite_argc (), rtrie_suite_argv (), name);
 }
 
 
 static void rsuite_print_all (void)
 {
-  rsuite_prints (rtriesuiteargc (), rtriesuiteargv ());
+  rsuite_prints (rtrie_suite_argc (), rtrie_suite_argv ());
 }
 
 

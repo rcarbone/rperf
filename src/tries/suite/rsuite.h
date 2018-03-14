@@ -52,11 +52,12 @@ char ** rsuite_NAMES (rsuite_t * suite []);
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-unsigned rtriesuiteargc (void);
-rsuite_t * rtriesuiteargv (void);
+unsigned rtrie_suite_argc (void);
+rsuite_t * rtrie_suite_argv (void);
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 /* declarations */
-rsuite_f rsuite_grow;
-rsuite_f rsuite_iterate;
+rsuite_f rsuite_grow_seq;
+rsuite_f rsuite_grow_rnd;
 rsuite_f rsuite_pop;
+rsuite_f rsuite_iterate;

@@ -97,19 +97,19 @@ static struct option lopts [] =
 
 static rsuite_t ** rsuite_handles_all (void)
 {
-  return rsuite_handles (rtriesuiteargc (), rtriesuiteargv ());
+  return rsuite_handles (rtrie_suite_argc (), rtrie_suite_argv ());
 }
 
 
 static rsuite_t * rsuite_valid_all (char * name)
 {
-  return rsuite_valid (rtriesuiteargc (), rtriesuiteargv (), name);
+  return rsuite_valid (rtrie_suite_argc (), rtrie_suite_argv (), name);
 }
 
 
 static void rsuite_run_all (rsuite_t * suite [], unsigned items, rnode_t * nodes [])
 {
-  unsigned maxn = rsuite_maxn (rtriesuiteargc (), rtriesuiteargv ());
+  unsigned maxn = rsuite_maxn (rtrie_suite_argc (), rtrie_suite_argv ());
   unsigned n    = digits (arrlen (suite));
   unsigned seq  = 0;
 
@@ -151,7 +151,7 @@ static void doit (char * progname, unsigned choice, rsuite_t * suite [],
   unsigned l;
   switch (choice)
     {
-    case OPT_LIST: rsuite_prints (rtriesuiteargc (), rtriesuiteargv ()); break;
+    case OPT_LIST: rsuite_prints (rtrie_suite_argc (), rtrie_suite_argv ()); break;
 
     case OPT_RUN:
       nodes = mknodes (items);
