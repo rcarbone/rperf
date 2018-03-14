@@ -14,4 +14,4 @@ USRLIBS   += ${SUITELIB}
 CFLAGS    +=
 C++FLAGS  +=
 USRLIBS   += ${SUITELIB}
-SYSLIBS   += -lstdc++
+SYSLIBS   += -lstdc++ -lm

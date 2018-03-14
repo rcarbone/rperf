@@ -1,5 +1,5 @@
 NAME
-       treap interface - Copyright (c) 2001-2014, Farooq Mela All rights reserved.
+       treap implementation
 
 AUTHOR
        Copyright (c) 2001-2014, Farooq Mela All rights reserved.
