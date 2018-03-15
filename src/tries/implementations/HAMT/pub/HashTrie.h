@@ -19,6 +19,7 @@
 #include <assert.h>
 #include <wchar.h>
 #include <exception>
+#include <new>
 
 #if _MSC_VER
 #include <intrin.h>
