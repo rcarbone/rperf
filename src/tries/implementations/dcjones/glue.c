@@ -40,19 +40,19 @@ unsigned rtrie_count (rtrie_t * trie)
 
 void rtrie_add (rtrie_t * trie, void * node)
 {
-  hattrie_get (trie, ((rnode_t *) node) -> key, strlen (((rnode_t *) node) -> key));
+  hattrie_get (trie, ((rnode_t *) node) -> key, ((rnode_t *) node) -> len);
 }
 
 
 void * rtrie_get (rtrie_t * trie, void * node)
 {
-  return hattrie_tryget (trie, ((rnode_t *) node) -> key, strlen (((rnode_t *) node) -> key));
+  return hattrie_tryget (trie, ((rnode_t *) node) -> key, ((rnode_t *) node) -> len);
 }
 
 
 void rtrie_del (rtrie_t * trie, void * node)
 {
-  hattrie_del (trie, ((rnode_t *) node) -> key, strlen (((rnode_t *) node) -> key));
+  hattrie_del (trie, ((rnode_t *) node) -> key, ((rnode_t *) node) -> len);
 }
 
 

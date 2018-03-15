@@ -44,12 +44,9 @@ extern "C" {
 /* Allocates and initializes the trie */
 rtrie_t * rtrie_alloc (void);
 
+
 /* Deallocates the memory used by the trie */
 void rtrie_free (rtrie_t * trie);
-
-
-/* Iterators */
-void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data);
 
 
 /* Returns the size of a trie */
@@ -63,11 +60,17 @@ bool rtrie_isempty (rtrie_t * trie);
 /* Write */
 void rtrie_add (rtrie_t * trie, void * node);
 
+
 /* Read */
 void * rtrie_get (rtrie_t * trie, void * node);
 
+
 /* Delete */
 void rtrie_del (rtrie_t * trie, void * node);
+
+
+/* Iterators */
+void rtrie_foreach (rtrie_t * trie, rtrie_each_f * fn, void * data);
 
 
 /* Prints trie nodes inline or separating them with a new line */

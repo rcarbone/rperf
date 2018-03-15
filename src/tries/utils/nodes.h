@@ -22,6 +22,7 @@ struct rnode
   char     * key;
   unsigned   val;
   rnode_t  * foo;
+  unsigned   len;
 
   /* Required by tommyds implementation to make the structure trie-able */
   tommy_trie_node tommy;

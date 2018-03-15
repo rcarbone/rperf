@@ -18,6 +18,7 @@ rnode_t * mknode (unsigned x)
   node -> key = strdup (utoa (x));
   node -> val = x;
   node -> foo = node;
+  node -> len = strlen (node -> key);
 
   return node;
 }
