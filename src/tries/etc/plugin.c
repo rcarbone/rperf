@@ -15,6 +15,8 @@ typedef enum
   RSUITE_HALT,
   RSUITE_GROW_SEQ,
   RSUITE_GROW_RND,
+  RSUITE_HIT_SEQ,
+  RSUITE_HIT_RND,
   RSUITE_POP,
   RSUITE_ITERATE,
 
@@ -68,8 +70,10 @@ static int run_this (int which, int argc, char * argv [], void * envp [])
 	case RSUITE_HALT:                                     break;
 	case RSUITE_GROW_SEQ: rsuite_grow_seq (nelems, envp); break;
 	case RSUITE_GROW_RND: rsuite_grow_rnd (nelems, envp); break;
-	case RSUITE_POP:     rsuite_pop (nelems, envp);       break;
-	case RSUITE_ITERATE: rsuite_iterate (nelems, envp);   break;
+	case RSUITE_HIT_SEQ:  rsuite_hit_seq (nelems, envp);  break;
+	case RSUITE_HIT_RND:  rsuite_hit_rnd (nelems, envp);  break;
+	case RSUITE_POP:      rsuite_pop (nelems, envp);      break;
+	case RSUITE_ITERATE:  rsuite_iterate (nelems, envp);  break;
 	}
     }
 
@@ -100,6 +104,18 @@ int grow_seq (int argc, char * argv [], void * envp [])
 int grow_rnd (int argc, char * argv [], void * envp [])
 {
   return run_this (RSUITE_GROW_RND, argc, argv, envp);
+}
+
+
+int hit_seq (int argc, char * argv [], void * envp [])
+{
+  return run_this (RSUITE_HIT_SEQ, argc, argv, envp);
+}
+
+
+int hit_rnd (int argc, char * argv [], void * envp [])
+{
+  return run_this (RSUITE_HIT_RND, argc, argv, envp);
 }
 
 

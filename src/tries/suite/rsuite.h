@@ -59,5 +59,7 @@ rsuite_t * rtrie_suite_argv (void);
 /* declarations */
 rsuite_f rsuite_grow_seq;
 rsuite_f rsuite_grow_rnd;
+rsuite_f rsuite_hit_seq;
+rsuite_f rsuite_hit_rnd;
 rsuite_f rsuite_pop;
 rsuite_f rsuite_iterate;

@@ -3,7 +3,8 @@
 
 /* Plugin declarations */
 const char * variables   = "library module author description url";
-const char * functions   = "boot halt grow_seq grow_rnd pop iterate";
+const char * functions   =
+  "boot halt grow_seq grow_rnd hit_seq hit_rnd pop iterate";
 
 /* Plugin definitions */
 const char * library     = "ytakano";
