@@ -1,9 +1,3 @@
-https://stackoverflow.com/questions/19714795/hash-array-mapped-trie-hamt
-========================================================================
-
-CPU: Intel(R) Core(TM) i5 CPU M 540  @ 2.53GHz
-==============================================
-
 'rtrie' is an abstract specification that defines an independent C interface for Trie implementations
 =====================================================================================================
 
@@ -45,3 +39,19 @@ How to add a scenario
 
 
 That's all folks!
+
+https://stackoverflow.com/questions/19714795/hash-array-mapped-trie-hamt
+========================================================================
+
+CPU: Intel(R) Core(TM) i5 CPU M 540  @ 2.53GHz
+==============================================
+
+https://stackoverflow.com/questions/4737904/difference-between-tries-and-trees
+==============================================================================
+A tree is a general structure of recursive nodes. There are many types of trees. Popular ones are binary tree and balanced tree. A Trie is a kind of tree, known by many names including prefix tree, digital search tree, and retrieval tree (hence the name 'trie').
+
+Each kind of tree has a different purpose, structure and behaviour. For example, a binary tree stores a collection of comparable items (eg numbers). It can therefore be used to store a set of numbers, or to index other data that can be represented by numbers (eg objects that can be hashed). Its structure is sorted so it can be searched quickly to find a single item. Other tree structures, such as a balanced tree, are similar in principle.
+
+A trie represents a sequence in its structure. It is very different in that it stores sequences of values rather than individual single values. Each level of recursion says 'what is the value of item I of the input list'. This is different to a binary tree which compares the single searched value to each node.
+
+

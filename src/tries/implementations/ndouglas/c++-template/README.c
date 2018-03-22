@@ -8,7 +8,7 @@ const char * functions   =
 
 /* Plugin definitions */
 const char * library     = "nedtrie";
-const char * module      = "nedtrie/c-macro";
+const char * module      = "nedtrie/c++-template";
 const char * author      = "Niall Douglas";
 const char * description = "An in-place binary trie implementation for C and C++";
 const char * url         = "http://github.com/ned14/nedtries";

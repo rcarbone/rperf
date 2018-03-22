@@ -1,6 +1,6 @@
 # The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
 SUBDIRS += dcjones
-SUBDIRS += HAMT
+# SUBDIRS += HAMT
 SUBDIRS += libdict
 SUBDIRS += nedtrie
 SUBDIRS += tessil

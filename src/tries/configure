@@ -79,5 +79,5 @@ done
  ln -sf ../implementations/tommyds/pub/tommyalloc.h .
  ln -sf ../implementations/tommyds/pub/tommytrie.h .
  ln -sf ../implementations/tommyds/pub/tommytrieinp.h .
- ln -sf ../implementations/nedtrie/pub/nedtrie.h .
+ ln -sf ../implementations/ndouglas/pub/nedtrie.h .
 )

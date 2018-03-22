@@ -13,6 +13,7 @@
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"
+#include "nodes.h"
 
 
 /* The Suite in a static table */
@@ -100,7 +101,7 @@ rtime_t rsuite_hit_seq (unsigned argc, void * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rtrie_get (trie, argv [i]);
-      if (found /* && found == ((rnode_t *) argv [i]) -> foo */)           /* dereference */
+      if (found && found == ((rnode_t *) argv [i]) -> foo)           /* dereference */
 	hit ++;
     }
   t2 = nswall ();
@@ -123,7 +124,7 @@ rtime_t rsuite_hit_rnd (unsigned argc, void * argv [])
   for (i = 0; i < argc; i ++)
     {
       found = rtrie_get (trie, argv [order [i]]);
-      if (found /* && found == ((rnode_t *) argv [order [i]]) -> foo */)           /* dereference */
+      if (found && found == ((rnode_t *) argv [order [i]]) -> foo)  /* dereference */
 	hit ++;
     }
   t2 = nswall ();
