@@ -1,0 +1,24 @@
+# Source dirs are here
+APIDIR     = ${RTREEDIR}/include
+UTILSDIR   = ${RTREEDIR}/utils
+UTDIR      = ${RTREEDIR}/unit-tests
+SUITEDIR   = ${RTREEDIR}/suite
+
+# Libraries are here
+UTILSLIB   = ${UTILSDIR}/librtree-utils.a
+UTLIB      = ${UTDIR}/librtree-ut.a
+SUITELIB   = ${SUITEDIR}/librtree-suite.a
+
+INSTALLDIR = ${RTREEDIR}/plugins
+
+# External Libraries are here
+
+INCLUDE   += -I${APIDIR}
+
+# rlibc
+INCLUDE   += -I${RLIBCDIR}
+RLIBCLIB   = ${RLIBCDIR}/librlibc.a
+
+# rut
+INCLUDE   += -I${RUTDIR}
+RUTLIB     = ${RUTDIR}/librut.a

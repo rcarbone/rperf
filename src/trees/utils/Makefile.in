@@ -1,5 +1,5 @@
 # The name of the games
-LIBNAME   = rtrie-utils
+LIBNAME   = rtree-utils
 PROGRAM   =
 
 # C source files

@@ -1,0 +1,21 @@
+# The name of the games
+LIBNAME   = rtree-suite
+PROGRAM   = run
+
+# C source files
+LIBSRCS  += builtins.c
+LIBSRCS  += rsuite.c
+MAINSRCS += main.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE  += -I../include
+INCLUDE  += -I${RLIBCDIR}
+INCLUDE  += -I${RUTDIR}
+INCLUDE  += -I../utils
+CFLAGS   +=
+C++FLAGS +=
+USRLIBS  += ${STLIB}
+USRLIBS  += ${RUTLIB}
+USRLIBS  += -I../utils/librtree-utils.a
+USRLIBS  += ${RLIBCLIB}
+SYSLIBS  +=

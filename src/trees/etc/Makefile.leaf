@@ -1,0 +1,160 @@
+# Dependency files for generation of Makefiles
+TEMPLATES = ${ETCDIR}/FileSystem ${RTREEDIR}/etc/Dirs ${RTREEDIR}/etc/Makefile.leaf
+
+# Static and Dynamic libraries
+STLIB     = lib${LIBNAME}.a
+SHLIB     = ${STLIB:%.a=%.so}
+PROGRAMS  = ${MAINSRCS:%.c=%}
+
+# All the targets
+TARGETS   = ${STLIB} ${SHLIB} ${PROGRAMS}
+
+# Object, depend and binary files
+LIBOBJS   = ${LIBSRCS:%.c=%.o}
+MAINOBJS  = ${MAINSRCS:%.c=%.o}
+OBJS      = ${LIBOBJS} ${MAINOBJS}
+DEPS      = ${LIBSRCS:%.c=%.M} ${MAINSRCS:%.c=%.M}
+
+# Compiler and flags
+INCLUDES  = -I./
+INCLUDES += ${INCLUDE}
+CC        = gcc
+C++       = g++
+AR        = ar
+LD        = gcc
+# OPTIMIZE  = -O3
+CFLAGS   += -g -Wall
+CFLAGS   += ${OPTIMIZE}
+CFLAGS   += ${INCLUDES}
+CFLAGS   += -fPIC
+CFLAGS   += -fno-diagnostics-color
+C++FLAGS += ${CFLAGS}
+ARFLAGS   = rs
+LDFLAGS   =
+
+# The main target is responsible to make all the targets
+all: Makefile ${TARGETS}
+
+Makefile: Makefile.in ${TEMPLATES}
+	@echo "=*= making $@ =*="
+#
+	@ROOTDIR=`grep ROOTDIR Makefile | head -1`
+	@ETCDIR=`grep ETCDIR Makefile | head -1`
+	@RLIBCDIR=`grep RLIBCDIR Makefile | head -1`
+	@RUTDIR=`grep RUTDIR Makefile | head -1`
+	@RTREEDIR=`grep RTREEDIR Makefile | head -1`
+#
+	@echo                                                   > Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# Do not edit anything below, make creates it." >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# The project's root directory"                 >> Makefile
+	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo "ETCDIR     = ${ETCDIR}"                         >> Makefile
+	@echo "RLIBCDIR   = ${RLIBCDIR}"                       >> Makefile
+	@echo "RUTDIR     = ${RUTDIR}"                         >> Makefile
+	@echo "RTREEDIR   = ${RTREEDIR}"                       >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RTREEDIR}/etc/Dirs                              >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat Makefile.in                                       >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RTREEDIR}/etc/Makefile.leaf                     >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+
+# Static library
+${STLIB}: ${LIBOBJS}
+	@echo "=*= making static library $@ =*="
+	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
+
+# Dynamic library
+${SHLIB}: ${LIBOBJS}
+	@echo "=*= making shared library $@ =*="
+	@${CC} -shared $^ ${USRLIBS} ${SYSLIBS} -o $@
+
+# Binary programs
+%: %.o ${USRLIBS}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+# Cleanup rules
+clean:
+	@rm -f ${TARGETS}
+	@rm -f ${OBJS}
+	@rm -f *~
+
+distclean: clean
+	@rm -f ${DEPS}
+
+# How to make an object file from a C source
+%.o: %.c
+	@echo "=*= making object $@ =*="
+	@${CC} -c ${CFLAGS} $<
+
+# How to make an object file from a C++ source
+%.o: %.cpp
+	@echo "=*= making object $@ =*="
+	@${C++} -c ${C++FLAGS} $<
+
+# How to make a depend file from a C source
+%.M: %.c
+	@-${CC} -MM ${INCLUDES} $< -o $@
+
+# How to make a depend file from a C++ source
+%.M: %.cpp
+	@-${C++} -MM ${INCLUDES} $< -o $@
+
+-include ${DEPS}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Check for errors and memory leaks
+
+VFLAGS   += --error-exitcode=1
+VFLAGS   += --leak-check=full
+VFLAGS   += --show-leak-kinds=all
+VVFLAGS   = ${VFLAGS}
+VVFLAGS  += --show-reachable=yes
+VVFLAGS  += --error-limit=no
+
+# Run valgrind to check for errors and memory leaks
+leaks: ${PROGRAMS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${PROGRAMS} ; do \
+           make -s leak-$$bin ; \
+         done
+
+vleaks: ${PROGRAMS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${PROGRAMS} ; do \
+           make -s vleak-$$bin ; \
+         done
+
+leak-%: %
+	@echo -n "  $^ "
+	@valgrind -q ${VFLAGS} $^ 1> /dev/null 2>& 1
+	@if [ $? ]; then echo -n "Ok"; fi
+	@echo
+
+vleak-%: %
+	@echo "  $^ "
+	@echo "valgrind ${VFLAGS} $^"
+	@valgrind ${VFLAGS} $^
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Everything else
+.DEFAULT:
+	@true

@@ -1,0 +1,235 @@
+# Dependency files for generation of Makefiles
+TEMPLATES = ${ETCDIR}/FileSystem ${RTREEDIR}/etc/Dirs ${RTREEDIR}/etc/Makefile.plugins
+
+# Plugin (dynamic library)
+SHLIB     = ${NAME}.so
+
+# All the binary programs
+PROGRAMS  = run-ut suite-run
+
+# All the targets
+TARGETS   = ${SHLIB} ${INSTALLDIR}/${SHLIB} ${PROGRAMS}
+
+# Source, object and depend files
+CSRCS     = ${LIBCSRCS} ${LIBC++SRCS}
+LIBOBJS   = ${LIBCSRCS:%.c=%.o} ${LIBC++SRCS:%.cpp=%.o}
+DEPS      = ${LIBCSRCS:%.c=%.M} ${LIBC++SRCS:%.cpp=%.M}
+OBJS      = ${LIBOBJS} ${MAINOBJS}
+
+# C compiler and flags
+INCLUDES  = -I./
+INCLUDES += ${INCLUDE}
+CC        = gcc
+C++       = g++
+AR        = ar
+LD        = gcc
+# OPTIMIZE  = -O3
+# OPTIMIZE += -flto -fuse-linker-plugin
+CFLAGS   += -g -Wall
+CFLAGS   += ${OPTIMIZE}
+CFLAGS   += ${INCLUDES}
+CFLAGS   += -fPIC
+CFLAGS   += -fno-diagnostics-color
+C++FLAGS += ${CFLAGS}
+ARFLAGS   = rv
+LDFLAGS   = ${OPTIMIZE}
+
+# System libraries
+SYSLIBS  += -ldl
+
+# The main target is responsible to make all the targets
+all: Makefile plugin.c run-ut.c suite-run.c ${INSTALLDIR} ${TARGETS}
+
+Makefile: Makefile.in ${TEMPLATES}
+	@echo "=*= making $@ =*="
+#
+	@ROOTDIR=`grep ROOTDIR Makefile | head -1`
+	@ETCDIR=`grep ETCDIR Makefile | head -1`
+	@RLIBCDIR=`grep RLIBCDIR Makefile | head -1`
+	@RUTDIR=`grep RUTDIR Makefile | head -1`
+	@RTREEDIR=`grep RTREEDIR Makefile | head -1`
+#
+	@echo                                                   > Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# Do not edit anything below, make creates it." >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# The project's root directory"                 >> Makefile
+	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo "ETCDIR     = ${ETCDIR}"                         >> Makefile
+	@echo "RLIBCDIR   = ${RLIBCDIR}"                       >> Makefile
+	@echo "RUTDIR     = ${RUTDIR}"                         >> Makefile
+	@echo "RTREEDIR   = ${RTREEDIR}"                       >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+#
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RTREEDIR}/etc/Dirs                              >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat Makefile.in                                       >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@cat ${RTREEDIR}/etc/Makefile.plugins                  >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+
+plugin.c: README.c ${RTREEDIR}/etc/plugin.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
+
+run-ut.c: ${RTREEDIR}/unit-tests/run-ut.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
+
+suite-run.c: ${RTREEDIR}/suite/main.c
+	@echo "=*= making C source $@ =*="
+	@cat $^ > $@
+
+# Static Library
+${STLIB}: ${LIBOBJS}
+	@echo "=*= making static library $@ =*="
+	@${AR} ${ARFLAGS} $@ $^ 1> /dev/null 2>& 1
+
+# Dynamic Library
+${SHLIB}: plugin.o glue.o ${SUITELIB} ${RUTLIB} ${UTILSLIB} ${RLIBCLIB}
+	@echo "=*= making plugin $@ =*="
+	@${CC} -shared $^ ${SYSLIBS} -o $@
+
+# Shared Library
+${INSTALLDIR}/${SHLIB}: ${SHLIB}
+	@if [ -d ${INSTALLDIR} ] ; then \
+          (rm -f $@ ; cp $^ $@) ; \
+         else \
+          echo "Warning: plugin $@ not locally installed in ${INSTALLDIR}" ; \
+         fi
+
+${INSTALLDIR}:
+	@if [ ! -d ${INSTALLDIR} ] ; then \
+           mkdir ${INSTALLDIR} ; \
+         fi
+
+# Binary programs
+run-ut: run-ut.o glue.o ${RUTLIB} ${UTLIB} ${UTILSLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+suite-run: suite-run.o glue.o ${SUITELIB} ${RUTLIB} ${UTILSLIB} ${RLIBCLIB}
+	@echo "=*= making program $@ =*="
+	@${LD} ${LDFLAGS} $^ ${SYSLIBS} -o $@
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+unit: ut-run
+	@./$^ -x
+
+run: suite-run
+	@./$^ -x
+
+x:
+	@echo "=*= running unit tests =*="
+	@./ut-run -x
+	@echo
+	@echo "=*= running test suite =*="
+	@./suite-run -x
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Cleanup rules
+clean:
+	@rm -f ${TARGETS}
+	@rm -f ${OBJS}
+	@rm -f *~
+	@rm -f plugin.o
+	@rm -f run-ut.o
+	@rm -f suite-run.o
+
+distclean: clean
+	@rm -f ${DEPS}
+	@rm -f plugin.c
+	@rm -f ut-run.c
+	@rm -f suite-run.c
+
+# How to make an object file from a C source
+%.o: %.c
+	@echo "=*= making object $@ =*="
+	@${CC} -c ${CFLAGS} $<
+
+# How to make an object file from a C++ source
+%.o: %.cpp
+	@echo "=*= making object $@ =*="
+	@${C++} -c ${C++FLAGS} $<
+
+# How to make a depend file from a C source
+%.M: %.c
+	@-${CC} -MM ${CFLAGS} $< -o $@
+
+# How to make a depend file from a C++ source
+%.M: %.cpp
+	@-${C++} -MM ${C++FLAGS} $< -o $@
+
+-include ${DEPS}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+# Check for errors and memory leaks
+
+VFLAGS    = --show-leak-kinds=all
+VFLAGS   += --leak-check=full
+VFLAGS   += --error-exitcode=1
+VVFLAGS   = ${VFLAGS}
+VVFLAGS  += --show-reachable=yes
+VVFLAGS  += --error-limit=no
+RUNFLAG   = -x
+
+# Run valgrind to check for errors and memory leaks
+leaks: ${PROGRAMS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${PROGRAMS} ; do \
+           make -s leak-$$bin ; \
+         done
+
+vleaks: ${PROGRAMS}
+	@echo "=*= ckecking programs for errors with valgrind =*="
+	@for bin in ${PROGRAMS} ; do \
+           make -s vleak-$$bin ; \
+         done
+
+leak-%: %
+	@echo -n "  $^ ${RUNFLAG} "
+	@valgrind -q ${VFLAGS} $^ ${RUNFLAG} 1> /dev/null 2>& 1
+	@if [ $? ] ; then echo -n "Ok" ; fi
+	@echo
+
+vleak-%: %
+	@echo "  $^ ${RUNFLAG} "
+	@echo "valgrind ${VFLAGS} $^ ${RUNFLAG}"
+	@valgrind ${VFLAGS} $^ ${RUNFLAG}
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+help:
+	@echo "Usage:"
+	@echo
+	@echo "[all]"     | awk '{ printf "  make %-15.15s  --> Compile all the defined targets (default)\n", $$1 }'
+	@echo ${STLIB}    | awk '{ printf "  make %-15.15s  --> Compile the static library\n", $$1 }'
+#	@echo ${SHLIB}    | awk '{ printf "  make %-15.15s  --> Compile the shared library\n", $$1 }'
+	@echo ${PROGRAMS} | awk '{ printf "  make %-15.15s  --> Compile the binary program\n", $$1 }'
+	@echo
+	@echo "clean"     | awk '{ printf "  make %-15.15s  --> Clean all generated files\n", $$1 }'
+	@echo "distclean" | awk '{ printf "  make %-15.15s  --> Clean all generated files (included temporary)\n", $$1 }'
+	@echo
+	@echo "unit"      | awk '{ printf "  make %-15.15s  --> Run all the unit tests\n", $$1 }'
+	@echo "run"       | awk '{ printf "  make %-15.15s  --> Run the test suite\n", $$1 }'
+	@echo "leaks"     | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks\n", $$1 }'
+	@echo "vleaks"    | awk '{ printf "  make %-15.15s  --> Ckeck for errors and memory leaks (verbose mode)\n", $$1 }'
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# The fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+.PHONY: all clean distclean leaks vleaks

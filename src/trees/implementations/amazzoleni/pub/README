@@ -1,0 +1,20 @@
+Rocco Carbone (rocco@tecsiel.it)
+Pisa, Sep 2017
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Name         tommyds
+Module       Doubly linked lists
+Author       Andrea Mazzoleni (amadvance@gmail.com)
+Description  TommyDS is a C library of array, hashtables and tries data structures
+Download     http://github.com/amadvance/tommyds
+Date         2010, 2017
+Language     C
+
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+The following sources files were copied from latest git version:
+
+  - tommytypes.h
+  - tommychain.h
+  - tommylist.h
+  - tommylist.c

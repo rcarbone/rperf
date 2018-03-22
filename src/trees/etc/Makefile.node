@@ -1,0 +1,69 @@
+# Dependency files for generation of Makefiles
+TEMPLATES = ${RTREEDIR}/etc/Dirs ${RTREEDIR}/etc/Makefile.node
+
+# The main target is responsible to recursively scan subdirectories and make all the defined targets
+all: Makefile
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo "Making $$dir ..." ; \
+             make -C $$dir -s --no-print-directory ; \
+           else \
+             echo "Warning: missing sub-directory $$dir" ; \
+           fi \
+         done
+
+# Cleanup rules
+clean distclean:
+	@rm -f *~
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             make -C $$dir -s --no-print-directory $@ ; \
+           fi \
+         done
+
+Makefile: Makefile.in ${TEMPLATES}
+	@ROOTDIR=`grep ROOTDIR Makefile`
+	@echo "=*= making $@ =*="
+	@cat Makefile.in                                        > Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# Do not edit anything below, make creates it." >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo "# The project's root directory"                 >> Makefile
+	@echo "ROOTDIR    = ${ROOTDIR}"                        >> Makefile
+	@echo -n "ETCDIR     = $$"                             >> Makefile
+	@echo "{ROOTDIR}/etc"                                  >> Makefile
+	@echo -n "RLIBCDIR   = $$"                             >> Makefile
+	@echo "{ROOTDIR}/rlibc"                                >> Makefile
+	@echo -n "RTREEDIR   = $$"                             >> Makefile
+	@echo "{ROOTDIR}/src/trees"                            >> Makefile
+	@echo "# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" >> Makefile
+	@echo                                                  >> Makefile
+	@echo                                                  >> Makefile
+	@for t in ${TEMPLATES} ; do \
+           cat $$t                                             >> Makefile ; \
+           echo                                                >> Makefile ; \
+         done
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Targets that are eventually handled by recursive Makefile
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+%:
+	@for dir in ${SUBDIRS} ; do \
+           if [ -d $$dir ] ; then \
+             echo $$dir; \
+             make -C $$dir -s --no-print-directory $@ ; \
+             echo ; \
+           fi \
+         done
+
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+# Fake targets
+# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+.PHONY: all clean distclean ${SUBDIRS}
+
+# In the event an unknown rule has been used
+.DEFAULT:
+	@true

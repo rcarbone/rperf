@@ -1,0 +1,19 @@
+A library of Unit Tests for rtree
+=================================
+
+All the Unit Tests defined here are implemented in terms
+of the virtual interface rtree and when linked with the
+dummy implementation in ../rut/ do more or less nothing.
+
+
+API
+===
+unsigned rtree_ut_argc (void);
+rut_t * rtree_ut_argv (void);
+
+
+1. The file [builtins.c] implements the functions of Unit Tests
+   and group them all together in a static table, accessible
+   via the rtree_ut_[argc, argv] functions
+
+2. The file [run-ut.c] implements a main program to Display/Select/Run Unit Tests

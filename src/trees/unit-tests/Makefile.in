@@ -1,0 +1,18 @@
+# The name of the games
+LIBNAME   = rtree-ut
+
+# C source files
+LIBSRCS  += builtins.c
+MAINSRCS += run-ut.c
+
+# Compiler flags and System libraries (optional)
+INCLUDE  += -I${RLIBCDIR}
+INCLUDE  += -I../include
+INCLUDE  += -I${UTILSDIR}
+CFLAGS   +=
+C++FLAGS +=
+USRLIBS  += ${STLIB}
+USRLIBS  += ${RUTLIB}
+USRLIBS  += ../utils/librtree-utils.a
+USRLIBS  += ${RLIBCLIB}
+SYSLIBS  +=

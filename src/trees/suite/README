@@ -1,0 +1,50 @@
+A library of Test Scenarios for rtrie
+=====================================
+
+All the Test Scenarios defined here are implemented in terms
+of the virtual interface rtrie and when linked with the
+dummy implementation in ../rut/ do more or less nothing.
+
+
+API
+===
+unsigned rtrie_suite_argc (void);
+rsuite_t * rtrie_suite_argv (void);
+
+
+1. The file [builtins.c] implements the functions of Test Scenarios
+   and group them all together in a static table, accessible
+   via the rtrie_suite_[argc, argv] functions
+
+2. The file [run-suite.c] implements a main program to Display/Select/Run Test Scenarios
+
+
+=======================================
+
+How to add a scenario
+=====================
+
+1. add in [rsuite.h] the declaration of the function (near the end of the file)
+2  add in [builtins.c]
+   a. an item in the static table of builtins scenarios
+   b. the implementation of the scenario in terms of rtrie_xxx() calls
+3. add in etc/plugin.c
+  a. an item in enum rsuite_id_t
+  b. a case in function run_this()
+  c. a function to handle the call
+5. update README.c foreach plugin
+
+
+That's all folks!
+
+
+=====================
+
+1. implements the functions of the Suite and group them in a static table, then implements the [argc, argv] functions
+   eg. builtins.c
+
+2. implements the virtual interface as an example of mapping
+   eg. implementation.c
+
+3. implements a main program to Display/Select/Run Unit Tests
+   eg. main.c
