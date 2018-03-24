@@ -9,8 +9,14 @@
 #include "support.h"
 #include "rut.h"
 
+/* Inline a stupid implementation */
+#if defined(NEED_FAKE)
+#include "fake-implementation.c"
+#define INITIALS 1e4
+#else
+#define INITIALS 1e6
+#endif
 
-#define INITIALS 1e3
 #define LOOPS    1
 
 

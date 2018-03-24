@@ -4,7 +4,7 @@ PROGRAM   =
 
 # C source files
 LIBSRCS  += rnodes.c
-LIBSRCS  += fake-implementation.c
+# LIBSRCS  += fake-implementation.c
 MAINSRCS +=
 
 # Compiler flags and System libraries (optional)

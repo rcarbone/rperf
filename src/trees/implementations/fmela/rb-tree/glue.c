@@ -6,6 +6,8 @@
 #include "rb_tree.c"
 #include "tree_common.c"
 #include "dict.c"
+#undef RB_BLACK
+#undef RB_RED
 
 
 /* Project headers */

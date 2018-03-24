@@ -9,12 +9,19 @@
 #include "roptions.h"
 #include "sargv.h"
 
+/* Inline a stupid implementation */
+#if defined(NEED_FAKE)
+#include "fake-implementation.c"
+#define _INITIALS_  1e4
+#else
+#define _INITIALS_  1e6
+#endif
+
 
 /* Program name/version */
 #define _NAME_      "Select/Display/Run"
 #define _VERSION_   "0.1.0"
 
-#define _INITIALS_  1e6
 #define _LOOPS_     1
 
 

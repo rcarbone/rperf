@@ -77,4 +77,6 @@ done
 (cd include;
  ln -sf ../implementations/amazzoleni/pub/tommytypes.h .
  ln -sf ../implementations/amazzoleni/pub/tommytree.h .
+ ln -sf ../implementations/nprovos/pub/ht-internal.h .
+ ln -sf ../implementations/nprovos/pub/tree.h .
 )
