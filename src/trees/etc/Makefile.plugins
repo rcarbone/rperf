@@ -152,7 +152,7 @@ clean:
 distclean: clean
 	@rm -f ${DEPS}
 	@rm -f plugin.c
-	@rm -f ut-run.c
+	@rm -f run-ut.c
 	@rm -f suite-run.c
 
 # How to make an object file from a C source

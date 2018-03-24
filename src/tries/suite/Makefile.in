@@ -8,6 +8,7 @@ LIBSRCS  += rsuite.c
 MAINSRCS += main.c
 
 # Compiler flags and System libraries (optional)
+INCLUDE  += -I../include
 INCLUDE  += -I${RLIBCDIR}
 INCLUDE  += -I${RUTDIR}
 INCLUDE  += -I${UTILSDIR}

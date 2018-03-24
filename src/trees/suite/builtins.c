@@ -13,10 +13,10 @@
 #include "rwall.h"
 #include "rctype.h"
 #include "support.h"
-#include "nodes.h"
+#include "rnodes.h"
 
 
-/* The Suite in a static table */
+/* The Test Suite in a static table */
 static rsuite_t builtins [] =
 {
   { "grow_seq", "Populate an empty container [unique sequential keys]", rsuite_grow_seq },

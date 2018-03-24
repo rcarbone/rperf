@@ -16,6 +16,6 @@ CFLAGS   +=
 C++FLAGS +=
 USRLIBS  += ${STLIB}
 USRLIBS  += ${RUTLIB}
-USRLIBS  += -I../utils/librtree-utils.a
+USRLIBS  += ../utils/librtree-utils.a
 USRLIBS  += ${RLIBCLIB}
 SYSLIBS  +=

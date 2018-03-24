@@ -11,7 +11,7 @@
 #include "rtree-api.h"
 #include "rut.h"
 #include "vargv.h"
-#include "nodes.h"
+#include "rnodes.h"
 
 #ifdef __cplusplus
 #if defined(__GNUC__)
@@ -23,12 +23,12 @@
 /* Forward declarations */
 static rut_f alloc_free;
 static rut_f alloc_add_free;
-static rut_f alloc_iterate_free;
 static rut_f alloc_count_free;
 static rut_f alloc_found_free;
 static rut_f alloc_miss_free;
 static rut_f alloc_delete_free;
 static rut_f alloc_missed_free;
+static rut_f alloc_iterate_free;
 
 
 /* All the Unit Tests in a static table */
@@ -36,12 +36,12 @@ static rut_t builtins [] =
 {
   { "make",    "Allocate and free an empty container", alloc_free         },
   { "add",     "Add elements one-by-one",              alloc_add_free     },
-  { "iterate", "Iterate over existent one-by-one",     alloc_iterate_free },
   { "count",   "Add elements and count",               alloc_count_free   },
   { "found",   "Search for existent one-by-one",       alloc_found_free   },
   { "miss",    "Search for non-existent one-by-one",   alloc_miss_free    },
   { "delete",  "Delete existent one-by-one",           alloc_delete_free  },
   { "missed",  "Delete non-existent one-by-one",       alloc_missed_free  },
+  { "iterate", "Iterate over existent one-by-one",     alloc_iterate_free },
 };
 #define RUTNO (sizeof (builtins) / sizeof (* builtins))
 

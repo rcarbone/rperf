@@ -6,7 +6,7 @@
 
 
 /* Project headers */
-#include "nodes.h"
+#include "rnodes.h"
 #include "safe.h"
 #include "support.h"
 
@@ -31,6 +31,12 @@ void rmnode (rnode_t * node)
 
   safefree (node -> key);
   free (node);
+}
+
+
+int cmpnode (const void * n1, const void * n2)
+{
+  return strcmp (((rnode_t *) n1) -> key, ((rnode_t *) n2) -> key);
 }
 
 

@@ -5,7 +5,7 @@
 
 /* Project headers */
 #include "rsuite.h"
-#include "nodes.h"
+#include "rnodes.h"
 #include "roptions.h"
 #include "sargv.h"
 
@@ -197,16 +197,16 @@ static void _usage_ (char * progname, char * version, struct option * options)
 
   printf ("  Elements counter: (default %.0f)\n", _INITIALS_);
   usage_item (options, n, OPT_ITEMS,   "set the initial number of elements per test");
-  usage_item (options, n, OPT_ITEMS_0, "one item                   (1e0)");
-  usage_item (options, n, OPT_ITEMS_1, "ten items                  (1e1)");
-  usage_item (options, n, OPT_ITEMS_2, "one hundred items          (1e2)");
-  usage_item (options, n, OPT_ITEMS_3, "one thousand items         (1e3)");
-  usage_item (options, n, OPT_ITEMS_4, "ten thousand items         (1e4)");
-  usage_item (options, n, OPT_ITEMS_5, "one hundred thousand items (1e5)");
-  usage_item (options, n, OPT_ITEMS_6, "one million items          (1e6)");
-  usage_item (options, n, OPT_ITEMS_7, "ten million items          (1e7)");
-  usage_item (options, n, OPT_ITEMS_8, "one hundred million items  (1e8)");
-  usage_item (options, n, OPT_ITEMS_9, "one billion items          (1e9)");
+  usage_item (options, n, OPT_ITEMS_0, "one                  (1e0)");
+  usage_item (options, n, OPT_ITEMS_1, "ten                  (1e1)");
+  usage_item (options, n, OPT_ITEMS_2, "one hundred          (1e2)");
+  usage_item (options, n, OPT_ITEMS_3, "one thousand         (1e3)");
+  usage_item (options, n, OPT_ITEMS_4, "ten thousand         (1e4)");
+  usage_item (options, n, OPT_ITEMS_5, "one hundred thousand (1e5)");
+  usage_item (options, n, OPT_ITEMS_6, "one million          (1e6)");
+  usage_item (options, n, OPT_ITEMS_7, "ten million          (1e7)");
+  usage_item (options, n, OPT_ITEMS_8, "one hundred million  (1e8)");
+  usage_item (options, n, OPT_ITEMS_9, "one billion          (1e9)");
   printf ("\n");
 
   printf ("  Loops counter: (default %u)\n", _LOOPS_);

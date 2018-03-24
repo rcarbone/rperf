@@ -34,6 +34,12 @@ void rmnode (rnode_t * node)
 }
 
 
+int rnodescmp (const void * n1, const void * n2)
+{
+  return strcmp (((rnode_t *) n1) -> key, ((rnode_t *) n2) -> key);
+}
+
+
 /* Initializes the array with the natural numbers from 1 to argc */
 rnode_t ** mknodes (unsigned argc)
 {

@@ -25,6 +25,7 @@ struct rnode
 /* API */
 rnode_t * mknode (unsigned key);
 void rmnode (rnode_t * node);
+int cmpnode (const void * n1, const void * n2);
 rnode_t ** mknodes (unsigned argc);
 void rmnodes (rnode_t * argv []);
 rnode_t ** mkmiss (unsigned argc);

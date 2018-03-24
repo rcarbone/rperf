@@ -1,0 +1,8 @@
+# The macro SUBDIRS defines the ordered list of all the sub-directories that are recursively tried.
+SUBDIRS += hb-tree
+SUBDIRS += rb-tree
+SUBDIRS += sp-tree
+SUBDIRS += wb-tree
+SUBDIRS += pr-tree
+SUBDIRS += tr-tree
+SUBDIRS += skiplist

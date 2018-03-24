@@ -16,13 +16,6 @@ typedef skiplist rtrie_t;
 
 /* Node definition */
 #include "nodes.h"
-#include "safe.h"
-
-
-static int rnodescmp (const void * n1, const void * n2)
-{
-  return strcmp (((rnode_t *) n1) -> key, ((rnode_t *) n2) -> key);
-}
 
 
 rtrie_t * rtrie_alloc (void)
@@ -60,7 +53,7 @@ void rtrie_add (rtrie_t * trie, void * node)
 
 void * rtrie_get (rtrie_t * trie, void * node)
 {
-  return skiplist_search (trie, node);
+  return skiplist_search (trie, node) ? node : NULL;
 }
 
 

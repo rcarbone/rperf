@@ -3,7 +3,7 @@ LIBNAME   = rtree-utils
 PROGRAM   =
 
 # C source files
-LIBSRCS  += nodes.c
+LIBSRCS  += rnodes.c
 LIBSRCS  += fake-implementation.c
 MAINSRCS +=
 
