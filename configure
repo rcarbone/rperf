@@ -13,7 +13,7 @@
 #
 
 rootdir=`pwd`
-etcdir=etc
+etcdir=src/etc
 rletcdir=src/lists/etc
 rhtetcdir=src/hashtables/etc # will be in effect later
 

@@ -1,6 +1,6 @@
 # The project's source tree
-ETCDIR      = ${ROOTDIR}/etc
-RLIBCDIR    = ${ROOTDIR}/rlibc
+ETCDIR      = ${ROOTDIR}/src/etc
+RLIBCDIR    = ${ROOTDIR}/src/rlibc
 RUTDIR      = ${ROOTDIR}/src/rut
 RHTDIR      = ${ROOTDIR}/src/hashtables/builtins
 RLDIR       = ${ROOTDIR}/src/lists/builtins

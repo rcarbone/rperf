@@ -1,0 +1,56 @@
+'rtree' is an abstract specification that defines an independent C interface for Tree implementations
+=====================================================================================================
+
+
+1. define the virtual interface
+     eg. rtree-api.h
+
+2. define the objects of the container
+     eg. nodes.h
+
+3. implements the functions to allocate/free the objects of the container
+     eg. nodes.c
+
+4. implements the virtual interface as an example of mapping
+     eg. fake-implementation.c
+
+5. implements the functions of Unit Tests and group them in a static table, then implements the [argc, argv] functions
+     eg. builtins-tree.c
+
+6. implements a main program to Display/Select/Run Unit Tests
+     eg. main.c
+
+
+=====================================================================================================
+
+
+Operations on tree include:
+
+ - Add/delete entries with
+     tree_store()
+     tree_delete()
+
+ - Retrieve entries with
+     tree_retrieve()
+
+ - Walk through tree stepwise with TreeState and its functions
+     tree_root()
+     tree_state_walk()
+     tree_state_rewind()
+     tree_state_clone()
+     tree_state_copy()
+     tree_state_is_walkable()
+     tree_state_walkable_chars()
+     tree_state_is_single()
+     tree_state_get_data()
+     tree_state_free()
+
+ - Enumerate all keys using
+     tree_enumerate()
+
+ - Iterate entries using TreeIterator and its functions
+    tree_iterator_new()
+    tree_iterator_next()
+    tree_iterator_get_key()
+    tree_iterator_get_data()
+    tree_iterator_free()

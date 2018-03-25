@@ -1,0 +1,16 @@
+# The name of the games
+LIBNAME   = rci-datasets
+PROGRAM   =
+
+# C source files
+LIBSRCS  += robject.c
+# LIBSRCS  += simple-rci.c
+MAINSRCS +=
+
+# Compiler flags and System libraries (optional)
+INCLUDE  += -I${RLIBCDIR}
+INCLUDE  += -I../include
+CFLAGS   +=
+C++FLAGS +=
+USRLIBS  +=
+SYSLIBS  +=

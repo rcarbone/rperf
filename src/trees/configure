@@ -14,8 +14,8 @@
 
 # rootdir=`pwd`
 ROOTDIR=/home/rocco/git/rcarbone/rperf
-ETCDIR=etc
-RLIBCDIR=rlibc
+ETCDIR=src/etc
+RLIBCDIR=src/rlibc
 RUTDIR=src/rut
 RTREEDIR=src/trees
 srcdir=$ROOTDIR/$RTREEDIR
