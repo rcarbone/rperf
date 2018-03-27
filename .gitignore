@@ -7,16 +7,31 @@ rbattle
 
 src/tries/*/main
 
-src/*/implementations/ut-run
+src/*/ut-run
+src/*/*/ut-run
 src/*/implementations/*/ut-run
 src/*/implementations/*/*/ut-run
 src/*/implementations/*/*/*/ut-run
+
+src/*/run-ut
+src/*/*/run-ut
+src/*/implementations/*/run-ut
+src/*/implementations/*/*/run-ut
+src/*/implementations/*/*/*/run-ut
 suite-run
 
 # Automatically generated symlinks
 src/*/builtins/ht-internal.h
 src/*/builtins/tommytypes.h
 src/*/builtins/uthash.h
+src/*/builtins/tree.h
+src/*/builtins/tj-list.h
+src/*/builtins/ulib-list.h
+
+src/*/include/ht-internal.h
+src/*/include/tree.h
+
+src/*/implementations/latest-run.txt
 
 # Automatically generated C sources
 src/*/implementations/*/plugin-rl.c
