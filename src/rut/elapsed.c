@@ -149,7 +149,10 @@ relapsed_t * dupelapsed (relapsed_t * src)
 /* Sort test results by avg time elapsed */
 int sort_by_more_avg (const void * a, const void * b)
 {
-  return (* (relapsed_t **) b) -> avg - (* (relapsed_t **) a) -> avg;
+  uint64_t t1 = (* (relapsed_t **) a) -> avg;
+  uint64_t t2 = (* (relapsed_t **) b) -> avg;
+
+  return t1 == t2 ? 0 : t1 < t2 ? 1 : -1;
 }
 
 

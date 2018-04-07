@@ -359,20 +359,16 @@ remove_node(sp_tree* tree, sp_node* node)
 	SWAP(node->datum, out->datum, tmp);
     }
 
-    sp_node* temp = out->llink ? out->llink : out->rlink;
-    sp_node* parent = out->parent;
+    sp_node* const temp = out->llink ? out->llink : out->rlink;
+    sp_node* const parent = out->parent;
     if (temp)
 	temp->parent = parent;
     *(parent ? (parent->llink == out ? &parent->llink : &parent->rlink) : &tree->root) = temp;
 
-    /* Splay an adjacent node to the root, if possible. */
-    temp =
-	node->parent ? node->parent :
-	node->rlink ? node->rlink :
-	node->llink;
-    if (temp) {
-	splay(tree, temp);
-	ASSERT(tree->root == temp);
+    /* Splay the parent node of the one being deleted to the root. */
+    if (parent) {
+      splay(tree, parent);
+      ASSERT(tree->root == parent);
     }
 
     FREE(out);
