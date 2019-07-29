@@ -6,10 +6,10 @@ LIBCSRCS   = glue.c
 LIBC++SRCS =
 
 # Compiler flags and System libraries (optional)
-INCLUDE    = `pkg-config --cflags python`
+INCLUDE    = `pkg-config --cflags python-2.7`
 CFLAGS     =
 C++FLAGS   =
-SYSLIBS    = `pkg-config --libs python`
+SYSLIBS    = `pkg-config --libs python-2.7`
 
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 

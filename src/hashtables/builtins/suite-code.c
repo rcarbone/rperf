@@ -152,8 +152,8 @@ rtime_t rhtsuite_delete_seq (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     rht_del (ht, argv [i] -> skey);
-  deleted = argc - rht_count (ht);
   t2 = nswall ();
+  deleted = argc - rht_count (ht);
   rht_free (ht);
   return deleted == argc ? t2 - t1 : 0;
 }
@@ -171,8 +171,8 @@ rtime_t rhtsuite_delete_rnd (unsigned argc, robj_t * argv [])
   t1 = nswall ();
   for (i = 0; i < argc; i ++)
     rht_del (ht, argv [order [i]] -> skey);
-  deleted = argc - rht_count (ht);
   t2 = nswall ();
+  deleted = argc - rht_count (ht);
   free (order);
   rht_free (ht);
   return deleted == argc ? t2 - t1 : 0;
