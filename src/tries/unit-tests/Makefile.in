@@ -7,6 +7,7 @@ MAINSRCS += run-ut.c
 
 # Compiler flags and System libraries (optional)
 INCLUDE  += -I${RLIBCDIR}
+INCLUDE  += -I../include
 INCLUDE  += -I${RUTDIR}
 INCLUDE  += -I${UTILSDIR}
 CFLAGS   +=

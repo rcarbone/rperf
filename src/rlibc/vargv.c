@@ -21,7 +21,7 @@ void ** vamore (void * argv [], void * item)
   if (item)
     {
       unsigned argc = valen (argv);
-      argv = realloc (argv, (1 + argc + 1) * sizeof (void **));
+      argv = (void **) realloc (argv, (1 + argc + 1) * sizeof (void **));
       if (! argv)
 	return NULL;
       argv [argc ++] = item;
@@ -48,7 +48,7 @@ void ** valess (void * argv [], void * item, varm_f rm)
       argv [j] = NULL;                   /* NULL terminate the array */
 
       if (argc > 1)
-        argv = realloc (argv, argc * sizeof (void *));
+        argv = (void **) realloc (argv, argc * sizeof (void *));
       else
         free (argv);
     }

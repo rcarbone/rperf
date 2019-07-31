@@ -1,14 +1,16 @@
+/* This implementation uses a vector of void pointers just as example */
+
+
 /* System headers */
 #include <stdlib.h>
 
-
 /* Project headers */
-#include "vargv.h"
 #include "rnodes.h"
+#include "vargv.h"
 #include "safe.h"
 
 
-/* This implementation uses a dynamic array of void pointers just as example */
+/* Typedefs required by the Abstract Container Interface */
 typedef struct
 {
   rnode_t ** tree;
@@ -18,9 +20,6 @@ typedef struct
 
 /* librtree - an abstract C library over real tree implementations */
 #include "rtree-api.h"
-
-
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
@@ -50,7 +49,7 @@ void rtree_foreach (rtree_t * tree, rtree_each_f * fn, void * data)
 
 unsigned rtree_count (rtree_t * tree)
 {
-  return (arrlen (tree -> tree));
+  return arrlen (tree -> tree);
 }
 
 

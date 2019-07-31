@@ -11,6 +11,10 @@
 #include "vargv.h"
 #include "sargv.h"
 
+#if !defined(RMAX)
+#define RMAX(a, b)  (((a) > (b)) ? (a) : (b))
+#endif
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +29,7 @@ char ** argsclear (char * argv []);
 char ** argsdup (char * argv []);
 char ** argscat (char * a [], char * b []);
 char ** argssort (char * argv []);
+char * argsjoin (char * argv []);
 char ** argssplit (char * str, char * sep);
 char ** argspieces (char * list, char * sep);
 char ** argsblanks (char * list);

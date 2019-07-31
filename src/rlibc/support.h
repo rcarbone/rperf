@@ -11,8 +11,12 @@
 
 
 /* Useful macros */
-#define RMIN(a, b) (((a) < (b)) ? (a) : (b))
+#if !defined(RMAX)
 #define RMAX(a, b) (((a) > (b)) ? (a) : (b))
+#endif
+#if !defined(RMIN)
+#define RMIN(a, b) (((a) < (b)) ? (a) : (b))
+#endif
 
 
 #ifdef __cplusplus
@@ -26,6 +30,7 @@ unsigned * rndorder (unsigned n);
 /* sprintf() replacement */
 void itoa (int c, char * ret);
 char * utoa (unsigned n);
+char * tentoa (unsigned n);
 
 /* Print left aligned 'name' and leading dots */
 void print_dots (char * name, char * label, unsigned n, unsigned seq, unsigned maxn);

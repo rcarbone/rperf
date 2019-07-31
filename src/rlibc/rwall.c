@@ -9,12 +9,22 @@
 #endif
 
 
+static rtime_t ts2ns (struct timespec ts)
+{
+#if defined(ROCCO)
+  return (ts . tv_sec * 1e9 + ts . tv_nsec) / 1e3;
+#else
+  return ts . tv_sec * 1e9 + ts . tv_nsec;
+#endif /* ROCCO */
+}
+
+
 /* Return the current wall time in nanoseconds */
 rtime_t nswall (void)
 {
   struct timespec ts;
   clock_gettime (CLOCK_MONOTONIC_RAW, & ts);
-  return ts . tv_sec * 1e9 + ts . tv_nsec;
+  return ts2ns (ts);
 }
 
 
@@ -23,7 +33,7 @@ rtime_t uswall (void)
 {
   struct timespec ts;
   clock_gettime (CLOCK_MONOTONIC_RAW, & ts);
-  return ts . tv_sec * 1e6 + ts . tv_nsec / 1e3;
+  return ts2ns (ts) / 1e3;
 }
 
 
@@ -32,7 +42,7 @@ rtime_t mswall (void)
 {
   struct timespec ts;
   clock_gettime (CLOCK_MONOTONIC_RAW, & ts);
-  return ts . tv_sec * 1e3 + ts . tv_nsec / 1e6;
+  return ts2ns (ts) / 1e6;
 }
 
 
@@ -71,4 +81,11 @@ void ** varnd (unsigned argc, void * argv [])
         }
     }
   return argv;
+}
+
+
+/* Return k operations per second */
+double kops (rtime_t delta, unsigned n)
+{
+  return (1e6 / (delta / n)) / 1e3;
 }

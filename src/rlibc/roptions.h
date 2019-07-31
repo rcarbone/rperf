@@ -1,7 +1,13 @@
 #pragma once
 
+
 /* System headers */
 #include <getopt.h>
+
+
+#if !defined(RMAX)
+#define RMAX(a, b)  (((a) > (b)) ? (a) : (b))
+#endif
 
 
 #ifdef __cplusplus

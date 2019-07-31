@@ -3,12 +3,18 @@
  */
 
 
+#ifdef __cplusplus
+#if defined(__clang__)
+#pragma clang diagnostic ignored "-Wwrite-strings"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+#endif /* __cplusplus */
+
+
 /* Project headers */
 #include "sargv.h"
 #include "safe.h"
-
-
-#define RMAX(a, b)  (((a) > (b)) ? (a) : (b))
 
 
 static int argscmp (const void * _a, const void * _b)
@@ -64,7 +70,7 @@ char ** argsless (char * argv [], char * s)
       argv [j] = NULL;                   /* terminate the table */
 
       if (argc > 1)
-	argv = realloc (argv, argc * sizeof (char *));  /* the size is argc not argc-1 because of trailing NULL */
+	argv = (char **) realloc (argv, argc * sizeof (char *));  /* the size is argc not argc-1 because of trailing NULL */
       else
 	free (argv);
     }
@@ -107,6 +113,30 @@ char ** argscat (char * a [], char * b [])
 char ** argssort (char * argv [])
 {
   return (char **) vasort ((void **) argv, argscmp);
+}
+
+
+/* Join items in argv[] */
+char * argsjoin (char * argv [])
+{
+  unsigned size = 0;
+  char * join = NULL;
+  while (argv && * argv)
+    {
+      size += (strlen (* argv) + 1 + 1);  /* '\n' plus a blank separator */
+      if (join)
+	{
+	  strncat (join, " ", 1);
+	  join = (char *) realloc (join, size);
+	  strcat (join, * argv ++);
+	}
+      else
+	{
+	  join = (char *) calloc (size + 1, 1);  /* one more char to avoid strncat overflow */
+	  strcpy (join, * argv ++);
+	}
+    }
+  return join;
 }
 
 
@@ -214,10 +244,10 @@ unsigned argslongest (char * argv [])
 void argscols (char * argv [])
 {
   unsigned argc = arrlen (argv);
-  int rows, cols;
-  int i, j;
+  unsigned rows, cols;
+  unsigned i, j;
 
-  int max = argslongest (argv);
+  unsigned max = argslongest (argv);
 
   if (! max)
     return;
@@ -244,8 +274,8 @@ void argscols (char * argv [])
 void args_2d_rows (char * argv [])
 {
   unsigned argc = arrlen (argv);
-  int rows, cols;
-  int i, j;
+  unsigned rows, cols;
+  unsigned i, j;
 
   unsigned max = argslongest (argv);
 

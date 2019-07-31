@@ -9,9 +9,6 @@
 #include "roptions.h"
 
 
-#define RMAX(a,b)  (a > b ? a : b)
-
-
 /* Evaluate the max length of option names */
 unsigned optmax (struct option * options)
 {
@@ -106,8 +103,8 @@ void _welcome_ (char * progname, char * version)
   uname (& u);
   _version_ (progname, version);
   printf ("\n");
-  printf ("Local time : %s", ctime (& now));
   printf ("Running on : %s %s %s %s %s\n", u . sysname, u . nodename, u . release, u . version, u . machine);
+  printf ("Local time : %s", ctime (& now));
   printf ("\n");
   fflush (stdout);
 }

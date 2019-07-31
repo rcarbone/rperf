@@ -39,7 +39,7 @@ static void shuffle (unsigned n, unsigned * array)
 /* Evaluate a random order to run implementation */
 unsigned * rndorder (unsigned n)
 {
-  unsigned * array = calloc (n, sizeof (unsigned));
+  unsigned * array = (unsigned *) calloc (n, sizeof (unsigned));
   unsigned i;
   for (i = 0; i < n; i ++)
     array [i] = i;
@@ -96,6 +96,20 @@ char * utoa (unsigned n)
 unsigned digits (unsigned n)
 {
   return n < 10 ? 1 : 1 + digits (n / 10);
+}
+
+
+/* Evaluate the number of digits in n */
+char * tentoa (unsigned n)
+{
+  static char txt [1024];
+
+  if (n % 10)
+    sprintf (txt, "%s", utoa (n));
+  else
+    sprintf (txt, "1e%s", utoa (digits (n) - 1));
+
+  return txt;
 }
 
 

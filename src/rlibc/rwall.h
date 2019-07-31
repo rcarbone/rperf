@@ -22,6 +22,8 @@ rtime_t mswall (void);
 unsigned rrand (unsigned n);
 void ** varnd (unsigned argc, void * argv []);
 
+double kops (rtime_t delta, unsigned n);
+
 
 #ifdef __cplusplus
 }

@@ -4,21 +4,22 @@
 
 void * safefree (void * a)
 {
-  if (a) free (a);
+  if (a)
+    free (a);
   return NULL;
 }
 
 
 void * safedup (void * a)
 {
-  return a ? strdup (a) : a;
+  return a ? strdup ((char *) a) : a;
 }
 
 
 void * safereplace (void * a, void * b)
 {
   safefree (b);
-  return a ? strdup (a) : a;
+  return a ? strdup ((char *) a) : a;
 }
 
 
