@@ -1,0 +1,45 @@
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+http://www.codejava.net/java-core/collections/java-collections-framework-summary-table
+
+TreeMap<K, V>
+
+
+Creating a new Map
+
+Performing Basic Operations on a Map
+  The basic operations of a Map are
+  association (put),
+  lookup (get),
+  checking (containsKey and containsValue),
+  modification (remove and replace)
+  and cardinality (size and isEmpty)
+
+  * Associating a value with a key
+     The get (Object key)
+
+  * Checking if the map contains a specified key
+    The method containsKey (Object key)
+
+  * Checking if the map contains a specified value
+    The method containsValue (Object value)
+
+  * Removing a mapping from the map
+    The remove (Object key)
+
+  * Replacing a value associated with a specified key
+    The replace (K key, V value) method
+
+Getting the size of the map
+  The size () method
+
+Checking if the map is empty
+  The isEmpty () method
+
+ Iterating Over a Map (using Collection views)
+  keySet ()
+  values ()
+  entrySet ()
+
+Performing Bulk Operations with Maps
+ The clear () method
+  putAll (Map<K, V> m)

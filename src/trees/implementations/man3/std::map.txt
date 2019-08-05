@@ -1,0 +1,102 @@
+http://www.cplusplus.com/reference/map/map
+==========================================
+
+Maps are associative containers that store elements formed by a combination
+of a key value and a mapped value, following a specific order.
+
+In a map, the key values are generally used to sort and uniquely identify the elements,
+while the mapped values store the content associated to this key.
+The types of key and mapped value may differ, and are grouped together
+in member type value_type, which is a pair type combining both:
+
+typedef pair<const Key, T> value_type;
+
+Internally, the elements in a map are always sorted by its key following
+a specific strict weak ordering criterion indicated by its internal
+comparison object (of type Compare).
+
+map containers are generally slower than unordered_map containers to access
+individual elements by their key, but they allow the direct iteration
+on subsets based on their order.
+
+The mapped values in a map can be accessed directly by their corresponding
+key using the bracket operator ((operator[]).
+
+Maps are typically implemented as binary search trees.
+
+Typedefs
+========
+key_type	        The first template parameter (Key)
+mapped_type	        The second template parameter (T)
+value_type	        pair<const key_type, mapped_type>
+key_compare	        The third template parameter (Compare)               defaults to: less<key_type>
+value_compare	        Nested function class to compare elements	     see value_comp
+allocator_type	        The fourth template parameter (Alloc)		     defaults to: allocator<value_type>
+reference	        value_type&
+const_reference	        const value_type&
+pointer		        allocator_traits<allocator_type>::pointer            for the default allocator: value_type*
+const_pointer	        allocator_traits<allocator_type>::const_pointer      for the default allocator: const value_type*
+iterator	        a bidirectional iterator to value_type               convertible to const_iterator
+const_iterator	        a bidirectional iterator to const value_type
+reverse_iterator        reverse_iterator<iterator>
+const_reverse_iterator	reverse_iterator<const_iterator>
+difference_type		a signed integral type, identical to:                usually the same as ptrdiff_t
+                        iterator_traits<iterator>::difference_type
+size_type                                                                    usually the same as size_t
+
+
+
+Member functions
+================
+(constructor)  Construct map
+(destructor)   Map destructor
+operator=      Copy container content
+
+Capacity
+========
+empty          Test whether container is empty
+size           Return container size
+max_size       Return maximum size
+
+Iterators
+=========
+begin          Return iterator to beginning
+end            Return iterator to end
+cbegin         Return const_iterator to beginning
+cend           Return const_iterator to end
+rbegin         Return reverse iterator to reverse beginning
+rend           Return reverse iterator to reverse end
+crbegin        Return const_reverse_iterator to reverse beginning
+crend          Return const_reverse_iterator to reverse end
+
+Element access
+==============
+operator[]     Access element
+at             Access element
+
+Modifiers
+=========
+insert         Insert elements
+erase          Erase elements
+clear          Clear content
+swap           Swap content
+emplace        Construct and insert element
+emplace_hint   Construct and insert element with hint
+
+Operations
+==========
+find           Get iterator to element
+count          Count elements with a specific key
+equal_range    Get range of equal elements
+lower_bound    Return iterator to lower bound
+upper_bound    Return iterator to upper bound
+
+Observers
+=========
+key_comp       Return key comparison object
+value_comp     Return value comparison object
+
+Allocator
+=========
+get_allocator  Get allocator
+

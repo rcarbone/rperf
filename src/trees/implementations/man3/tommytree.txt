@@ -1,0 +1,43 @@
+NAME
+       tommy-tree - AVL tree
+
+AUTHOR
+       Copyright (c) 2010-2015, Andrea Mazzoleni. All rights reserved.
+
+SYNOPSIS
+       #include "tommytree.h"
+
+TYPEDEFS
+       typedef tommy_node tommy_tree_node;
+       typedef struct tommy_tree_struct tommy_tree;
+
+NAME
+       - Initializes the tree
+         void tommy_tree_init (tommy_tree * tree, tommy_compare_func * cmp);
+
+       - Inserts an element in the tree
+         void * tommy_tree_insert (tommy_tree * tree, tommy_tree_node * node, void * data);
+
+       - Searches and removes an element
+         void * tommy_tree_remove (tommy_tree * tree, void * data);
+
+       - Searches an element in the tree
+         void * tommy_tree_search (tommy_tree * tree, void * data);
+
+       - Searches an element in the tree with a specific comparison function
+         void * tommy_tree_search_compare (tommy_tree * tree, tommy_compare_func * cmp, void * cmp_arg);
+
+       - Removes an element from the tree
+         void * tommy_tree_remove_existing (tommy_tree * tree, tommy_tree_node * node);
+
+       - Calls the specified function for each element in the tree
+         void tommy_tree_foreach (tommy_tree * tree, tommy_foreach_func * func);
+
+       - Calls the specified function with an argument for each element in the tree
+         void tommy_tree_foreach_arg (tommy_tree * tree, tommy_foreach_arg_func * func, void * arg);
+
+       - Gets the number of elements
+         tommy_size_t tommy_tree_count (tommy_tree * tree)
+
+       - Gets the size of allocated memory
+         tommy_size_t tommy_tree_memory_usage (tommy_tree * tree);
